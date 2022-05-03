@@ -59,14 +59,14 @@ background: linear-gradient(180deg, rgba(181,0,0,1) 12%, rgba(237,193,193,1) 100
                                 <div class="row rounded-3 shadow d-flex align-items-center m-5 " style="background:#f9f9f9">
                                     <div class="col-12 mt-5" style="color:#920f0f; font-weight:bold">
                                         No. de Nómina
-                                        <input type="text" class="form-control "></input>
+                                        <input v-model="username" type="text" class="form-control "></input>
                                     </div>
                                     <div class="col-12 mt-5" style="color:#920f0f; font-weight:bold"> 
                                         Contraseña
-                                        <input type="password" class="form-control"></input>
+                                        <input v-model="password" type="password" class="form-control"></input>
                                     </div>
                                     <div class="col-12 my-5 text-center"> 
-                                        <button type="button" class="btn btn-danger">E n t r a r</button>
+                                        <button @click="verificar()" type="button" class="btn btn-danger">E n t r a r</button>
                                     </div>
                                 </div>
                       
@@ -80,9 +80,9 @@ background: linear-gradient(180deg, rgba(181,0,0,1) 12%, rgba(237,193,193,1) 100
                     </div>
                     
             </div>
-            <footer style="height:10vh;   background: url(img/pie.jpg); background-repeat: repeat; background-size: 5% 50%;">
+            <div class="row" style="height:10vh;   background: url(img/pie.jpg); background-repeat: repeat; background-size: 5% 50%;">
            
-            </footer>
+            </div>
         
     </div>
 
@@ -91,14 +91,22 @@ background: linear-gradient(180deg, rgba(181,0,0,1) 12%, rgba(237,193,193,1) 100
     {
         data(){
             return {
-                vari: 0    
+                username: '',
+                password: ''  
             }
         },
         mounted(){
-
+            
         },
         methods:{
-
+            verificar(){
+                axios.post('index_verificando.php',{
+                usuario:this.username,
+                contrasena: this.password
+                }).then(response =>{
+                    console.log(response.data)
+                })
+            }
         }
     }
     var mountedApp = Vue.createApp(vue3).mount('#app');
