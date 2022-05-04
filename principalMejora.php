@@ -1,6 +1,7 @@
-<?php 
+<?php
 session_start();
-session_destroy();
+if ($_SESSION["usuario"]){
+$_SESSION['usuario']; 
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -8,9 +9,8 @@ session_destroy();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <!--Bootstrap 5 css-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+     <!--Bootstrap 5 css-->
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <!--Bootstrap 5 js-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <!--Bootstrap Separadors-->
@@ -24,10 +24,12 @@ session_destroy();
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet"> 
-
+    <!--Incluyendo Estilo-->
+    <link rel="stylesheet" type="text/css"  href="estilos/miestilo.css">
+    <title>Principal Mejora</title>
 </head>
 <body>
-    <style>
+<style>
             .titulo{
                     font-family: 'Luckiest Guy', cursive;
                     -webkit-text-stroke: 1px white;
@@ -52,37 +54,36 @@ session_destroy();
               
     </style>
     <div id="app" class="container-fluid  " >
+                <!--BARRA SUPERIOR-->
             <div class="div_susperior d-flex justify-content-around align-items-center" style="height:10vh">
                 <div class=""><img class="img-fluid" src="img/logo_gonher.png"></img></div>
-                <div class=" titulo fs-2 lh-1 text-center">Sistema de Sugerencias de Mejora</div>
+                <div class=" titulo fs-2 lh-1 text-center">Principal Mejora Continua</div>
                 <div class=""><img class="img-fluid" src="img/logo_mejora_continua.png"></img></div>
             </div>
-            <div class="row" style="height:80vh">
-                    <div class="col-12 col-sm-6 d-flex align-items-center justify-content-center rounded-3 " style="background:#f5f5f5">
-                                <div class="row rounded-3 shadow d-flex align-items-center m-5 " style="background:#f9f9f9">
-                                    <div class="col-12 mt-5" style="color:#920f0f; font-weight:bold">
-                                        No. de Nómina
-                                        <input v-model="username" type="text" class="form-control "></input>
-                                    </div>
-                                    <div class="col-12 mt-5" style="color:#920f0f; font-weight:bold"> 
-                                        Contraseña
-                                        <input v-model="password" type="password" class="form-control"></input>
-                                    </div>
-                                    <div class="col-12 my-5 text-center"> 
-                                        <button @click="verificar()" type="button" class="btn btn-danger">E n t r a r</button>
-                                    </div>
-                                </div>
-                      
-                    </div>
-                    <div class="col-12 col-sm-6 d-flex align-items-center justify-content-center">
-                        <div class="row">
-                            <div class="col-12">
-                                <img class="img-fluid" src="img/img_index.png"></img>
-                            </div>
-                        </div>
-                    </div>
-                    
+             <!--BARRA MENÚ-->
+            <div class="row" style="height:2vh">
+                <div class="d-flex justify-content-center text-white">
+                            <button class="opciones  m-lg-1 p-1 rounded-3">
+                                Concentrado de sugerencias
+                            </button>  
+                            <button class="opciones m-lg-1 p-1 rounded-3">
+                                Administración de Premios
+                            </button>
+                            <button class="opciones  m-lg-1 p-1 rounded-3">
+                                Administración de Retos
+                            </button>
+                            <button class="opciones  m-lg-1 p-1 rounded-3">
+                                Configuración
+                            </button>
+                </div>
             </div>
+                 <!--CUERPO-->
+            <div class="row" style="height:78vh">
+                   
+                           
+              
+            </div>
+                <!--FOOTER-->
             <div class="row" style="height:10vh;   background: url(img/pie.jpg); background-repeat: repeat; background-size: 5% 50%;">
            
             </div>
@@ -120,6 +121,10 @@ session_destroy();
     var mountedApp = Vue.createApp(vue3).mount('#app');
 </script>
 
-
 </body>
-</html>
+</html>  
+<?php
+}else{
+    header("Location: index.php");
+}
+?>

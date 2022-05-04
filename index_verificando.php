@@ -12,6 +12,7 @@ $consulta = "SELECT * FROM usuarios_sugerencias WHERE user='$user' AND password=
 $resultado = mysqli_query($conexion,$consulta);
 if (mysqli_num_rows($resultado)>0)
 {
+    $_SESSION["usuario"] = $user;
     echo "Si";
 }else{
     echo "No";
