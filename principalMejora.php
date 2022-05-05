@@ -26,7 +26,7 @@ $_SESSION['usuario'];
     <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet"> 
     <!--Incluyendo Estilo-->
     <link rel="stylesheet" type="text/css"  href="estilos/miestilo.css">
-    <title>Principal Mejora</title>
+    <title>Sugerencias</title>
 </head>
 <body>
 <style>
@@ -57,34 +57,52 @@ $_SESSION['usuario'];
                 <!--BARRA SUPERIOR-->
             <div class="div_susperior d-flex justify-content-around align-items-center" style="height:10vh">
                 <div class=""><img class="img-fluid" src="img/logo_gonher.png"></img></div>
-                <div class=" titulo fs-2 lh-1 text-center">Principal Mejora Continua</div>
+                <div class=" titulo fs-2 lh-1 text-center">{{title}}</div>
                 <div class=""><img class="img-fluid" src="img/logo_mejora_continua.png"></img></div>
             </div>
              <!--BARRA MENÚ-->
-            <div class="row" style="height:2vh">
+            <div class="row" style="height:5vh">
                 <div class="d-flex justify-content-center text-white">
-                            <button class="opciones  m-lg-1 p-1 rounded-3">
+                            <button class="opciones  my-lg-3 mx-lg-2 rounded-3" @click="mostrar('principalMejora')"  v-bind:class="{pintarUno}">
+                                Principal Mejora
+                            </button>  
+                            <button class="opciones my-lg-3 mx-lg-2 rounded-3" @click="mostrar('concentrado')" v-bind:class="{pintarDos}">
                                 Concentrado de sugerencias
                             </button>  
-                            <button class="opciones m-lg-1 p-1 rounded-3">
+                            <button class="opciones my-lg-3 mx-lg-2  rounded-3" @click="mostrar('premios')" v-bind:class="{pintarTres}">
                                 Administración de Premios
                             </button>
-                            <button class="opciones  m-lg-1 p-1 rounded-3">
+                            <button class="opciones my-lg-3 mx-lg-2  rounded-3" @click="mostrar('retos')" v-bind:class="{pintarCuatro}">
                                 Administración de Retos
                             </button>
-                            <button class="opciones  m-lg-1 p-1 rounded-3">
+                            <button class="opciones  my-lg-3 mx-lg-2 rounded-3" @click="mostrar('configuracion')" v-bind:class="{pintarCinco}">
                                 Configuración
                             </button>
                 </div>
             </div>
                  <!--CUERPO-->
-            <div class="row" style="height:78vh">
-                   
+            <div class="row" style="height:75vh">
+    
+                   <div v-if="ventana=='principalMejora'" class="row">
+                        Principal
+                   </div>
+                   <div v-else-if="ventana=='concentrado'" class="row">
+                        Concentrado
+                   </div>
+                   <div v-else-if="ventana=='premios'"  class="row">
+                        Premios
+                   </div>
+                   <div v-else-if="ventana=='retos'" class="row">
+                        Retos
+                   </div>
+                   <div v-else-if="ventana=='configuracion'" class="row">
+                        Configuración
+                   </div>
                            
               
             </div>
                 <!--FOOTER-->
-            <div class="row" style="height:10vh;   background: url(img/pie.jpg); background-repeat: repeat; background-size: 5% 50%;">
+            <div class="row" style="height:10vh; background: url(img/pie.jpg); background-repeat: repeat-x; background-size: 8% 100%;">
            
             </div>
         
@@ -95,8 +113,15 @@ $_SESSION['usuario'];
     {
         data(){
             return {
+                title: 'Principal Mejora',
                 username: '',
-                password: ''  
+                password: '',
+                ventana: 'principalMejora',  
+                pintarUno:true,
+                pintarDos:false,
+                pintarTres:false,
+                pintarCuatro:false,
+                pintarCinco: false,
             }
         },
         mounted(){
@@ -104,18 +129,27 @@ $_SESSION['usuario'];
         },
         methods:{
             verificar(){
-                axios.post('index_verificando.php',{
-                usuario:this.username,
-                contrasena: this.password
-                }).then(response =>{
-                    console.log(response.data)
-                    if(response.data=='Si'){
-                      window.location.href = "principalMejora.php"
-                    }else{
-                        alert("Usuario/Contraseña Incorrecta")
-                    }
-                })
-            }
+                    axios.post('index_verificando.php',{
+                    usuario:this.username,
+                    contrasena: this.password
+                    }).then(response =>{
+                        console.log(response.data)
+                        if(response.data=='Si'){
+                        window.location.href = "principalMejora.php"
+                        }else{
+                            alert("Usuario/Contraseña Incorrecta")
+                        }
+                    })
+                },
+                mostrar(dato){
+                   this.ventana=dato;
+                   if(dato=='principalMejora'){this.title = 'PRINCIPAL MEJORA'; this.pintarUno=true}else{this.pintarUno=false}
+                   if(dato=='concentrado'){this.title = 'CONCENTRADO DE SUGERENCIAS'; this.pintarDos=true}else{this.pintarDos=false}
+                   if(dato=='premios'){this.title = 'ADMINISTRACIÓN DE PREMIOS'; this.pintarTres=true}else{this.pintarTres=false}
+                   if(dato=='retos'){this.title = 'ADMINISTRACIÓN DE RETOS'; this.pintarCuatro=true}else{this.pintarCuatro=false}
+                   if(dato=='configuracion'){this.title = 'CONFIGURACIÓN DE USUARIOS'; this.pintarCinco=true}else{this.pintarCinco=false}
+                   
+             }
         }
     }
     var mountedApp = Vue.createApp(vue3).mount('#app');

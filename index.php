@@ -83,7 +83,7 @@ session_destroy();
                     </div>
                     
             </div>
-            <div class="row" style="height:10vh;   background: url(img/pie.jpg); background-repeat: repeat; background-size: 5% 50%;">
+            <div class="row" style="height:10vh;   background: url(img/pie.jpg); background-repeat: repeat-x; background-size: 8% 100%;">
            
             </div>
         

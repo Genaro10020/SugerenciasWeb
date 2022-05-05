@@ -5,6 +5,7 @@
 
 /* Small devices (landscape phones, 576px and up)*/
 @media (min-width: 0px) {
+  
     .opciones{
         background: rgb(255, 223, 223);
         color: rgb(83, 83, 83);
@@ -15,14 +16,23 @@
         /*-webkit-text-stroke: 1px black;*/
         font-weight: bold;
         box-shadow: 2px 2px 1px black;
-    
+        transition: transform 0.1s;
+    }
+    .opciones:hover{
+        transform: scale(1.1);
+        /*color:rgb(0, 121, 16)*/
     }
  }
  
 @media (min-width: 576px) {
+    .pintarUno, .pintarDos, .pintarTres, .pintarCuatro, .pintarCinco{
+        background: rgb(137, 0, 0);
+        color: white;
+    }
     .opciones{
         font-size: 0.9em;
     }
+
  }
 
 /* Medium devices (tablets, 768px and up)*/
