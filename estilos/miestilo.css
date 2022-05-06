@@ -7,6 +7,7 @@
 @media (min-width: 0px) {
   
     .opciones{
+        height:30px;
         background: rgb(255, 223, 223);
         color: rgb(83, 83, 83);
         border-style: solid;
@@ -22,16 +23,31 @@
         transform: scale(1.1);
         /*color:rgb(0, 121, 16)*/
     }
- }
- 
-@media (min-width: 576px) {
     .pintarUno, .pintarDos, .pintarTres, .pintarCuatro, .pintarCinco{
         background: rgb(137, 0, 0);
         color: white;
     }
+    .cintilla{
+        letter-spacing: 2px;
+        color:rgb(255, 255, 255);
+        /*text-shadow: 0px 1px 1px rgb(255, 255, 255);*/
+        font-family: 'Goldman', cursive;
+        /*font-family: 'Koulen', cursive;*/
+        font-size: 14px;
+        background: rgb(137, 0, 0);
+        border-style: solid;
+        border-width: 2px 0px 2px 0px;
+        border-color: rgb(0, 0, 0);
+    }
+   
+ }
+ 
+@media (min-width: 576px) {
+   
     .opciones{
         font-size: 0.9em;
     }
+    
 
  }
 

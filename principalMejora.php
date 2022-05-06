@@ -24,16 +24,18 @@ $_SESSION['usuario'];
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet"> 
+    <!--Subtitulos-->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Goldman&family=Koulen&display=swap" rel="stylesheet"> 
     <!--Incluyendo Estilo-->
     <link rel="stylesheet" type="text/css"  href="estilos/miestilo.css">
     <title>Sugerencias</title>
 </head>
 <body>
 <style>
-            .titulo{
-                    font-family: 'Luckiest Guy', cursive;
-                    -webkit-text-stroke: 1px white;
-                }
+                .titulo{
+                        font-family: 'Luckiest Guy', cursive;
+                        -webkit-text-stroke: 1px white;
+                    }
 
                .div_susperior{
                 background: rgb(255,255,255);
@@ -57,46 +59,115 @@ $_SESSION['usuario'];
                 <!--BARRA SUPERIOR-->
             <div class="div_susperior d-flex justify-content-around align-items-center" style="height:10vh">
                 <div class=""><img class="img-fluid" src="img/logo_gonher.png"></img></div>
-                <div class=" titulo fs-2 lh-1 text-center">{{title}}</div>
+                <div class=" titulo fs-2 lh-1 text-center">SISTEMA DE SUGERENCIAS DE MEJORA CONTINUA</div>
                 <div class=""><img class="img-fluid" src="img/logo_mejora_continua.png"></img></div>
             </div>
              <!--BARRA MENÚ-->
-            <div class="row" style="height:5vh">
-                <div class="d-flex justify-content-center text-white">
-                            <button class="opciones  my-lg-3 mx-lg-2 rounded-3" @click="mostrar('principalMejora')"  v-bind:class="{pintarUno}">
+            <div class="row" style="height:4vh">
+                <div class="d-flex justify-content-center text-white align-items-center" >
+               
+                            <button class="opciones mx-lg-2 rounded-3 " @click="mostrar('principalMejora')"  v-bind:class="{pintarUno}" >
                                 Principal Mejora
                             </button>  
-                            <button class="opciones my-lg-3 mx-lg-2 rounded-3" @click="mostrar('concentrado')" v-bind:class="{pintarDos}">
+                            <button class="opciones  mx-lg-2 rounded-3" @click="mostrar('concentrado')" v-bind:class="{pintarDos}">
                                 Concentrado de sugerencias
                             </button>  
-                            <button class="opciones my-lg-3 mx-lg-2  rounded-3" @click="mostrar('premios')" v-bind:class="{pintarTres}">
+                            <button class="opciones  mx-lg-2  rounded-3" @click="mostrar('premios')" v-bind:class="{pintarTres}">
                                 Administración de Premios
                             </button>
-                            <button class="opciones my-lg-3 mx-lg-2  rounded-3" @click="mostrar('retos')" v-bind:class="{pintarCuatro}">
+                            <button class="opciones  mx-lg-2  rounded-3" @click="mostrar('retos')" v-bind:class="{pintarCuatro}">
                                 Administración de Retos
                             </button>
-                            <button class="opciones  my-lg-3 mx-lg-2 rounded-3" @click="mostrar('configuracion')" v-bind:class="{pintarCinco}">
+                            <button class="opciones   mx-lg-2 rounded-3" @click="mostrar('configuracion')" v-bind:class="{pintarCinco}">
                                 Configuración
                             </button>
+             
                 </div>
             </div>
                  <!--CUERPO-->
-            <div class="row" style="height:75vh">
-    
-                   <div v-if="ventana=='principalMejora'" class="row">
-                        Principal
+            <div class="row" style="height:76vh">
+            <!--////////////////////////////////////////////////////////-->
+                   <div v-if="ventana=='principalMejora'">
+                            <!--cinta apartado-->
+                            <div class="row justify-content-center align-items-start ">
+                                    <div class="cintilla col-12 text-center">
+                                    <b> PRINCIPAL MEJORA </b>
+                                    </div>
+                            </div>
+                            <!--fin cinta apartado-->
+                            <!-- contenido principal gonher-->
+                            
+                             <!--fin contenido principal gonher-->
                    </div>
-                   <div v-else-if="ventana=='concentrado'" class="row">
-                        Concentrado
+                   <!--////////////////////////////////////////////////////////-->
+                   <div v-else-if="ventana=='concentrado'">
+                       <!--cinta apartado-->
+                            <div class="row justify-content-center align-items-start ">
+                                <div class="cintilla col-12 text-center">
+                                   <b> CONCENTRADO DE SUGERENCIAS </b>
+                                </div>
+                            </div>
+                             <!--fin cinta apartado-->
+                            <!-- contenido principal gonher-->
+                            <div class="row">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">First</th>
+                                            <th scope="col">Last</th>
+                                            <th scope="col">Handle</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                            <th scope="row">1</th>
+                                            <td>Mark</td>
+                                            <td>Otto</td>
+                                            <td>@mdo</td>
+                                            </tr>
+                                            <tr>
+                                            <th scope="row">2</th>
+                                            <td>Jacob</td>
+                                            <td>Thornton</td>
+                                            <td>@fat</td>
+                                            </tr>
+                                            <tr>
+                                            <th scope="row">3</th>
+                                            <td colspan="2">Larry the Bird</td>
+                                            <td>@twitter</td>
+                                            </tr>
+                                        </tbody>
+                                        </table>
+                            </div>
+                             <!--fin contenido principal gonher-->
                    </div>
-                   <div v-else-if="ventana=='premios'"  class="row">
-                        Premios
+                  <!--////////////////////////////////////////////////////////-->
+                   <div v-else-if="ventana=='premios'">
+                            <!--cinta apartado-->
+                            <div class="row justify-content-center align-items-start ">
+                                <div class="cintilla col-12 text-center">
+                                   <b> ADMINISTRACIÓN DE PREMIOS </b>
+                                </div>
+                            </div>
+                             <!--fin cinta apartado-->
+                            <!-- contenido principal gonher-->
+                            
+                             <!--fin contenido principal gonher-->
                    </div>
-                   <div v-else-if="ventana=='retos'" class="row">
-                        Retos
+                   <div v-else-if="ventana=='retos'">
+                            <div class="row justify-content-center align-items-start ">
+                                <div class="cintilla col-12 text-center">
+                                   <b> ADMINISTRACIÓN DE RETOS </b>
+                                </div>
+                            </div>
                    </div>
-                   <div v-else-if="ventana=='configuracion'" class="row">
-                        Configuración
+                   <div v-else-if="ventana=='configuracion'">
+                        <div class="row justify-content-center align-items-start ">
+                                <div class="cintilla col-12 text-center">
+                                   <b> CONFIGURACIÓN</b>
+                                </div>
+                            </div>
                    </div>
                            
               
@@ -113,7 +184,6 @@ $_SESSION['usuario'];
     {
         data(){
             return {
-                title: 'Principal Mejora',
                 username: '',
                 password: '',
                 ventana: 'principalMejora',  
@@ -143,11 +213,11 @@ $_SESSION['usuario'];
                 },
                 mostrar(dato){
                    this.ventana=dato;
-                   if(dato=='principalMejora'){this.title = 'PRINCIPAL MEJORA'; this.pintarUno=true}else{this.pintarUno=false}
-                   if(dato=='concentrado'){this.title = 'CONCENTRADO DE SUGERENCIAS'; this.pintarDos=true}else{this.pintarDos=false}
-                   if(dato=='premios'){this.title = 'ADMINISTRACIÓN DE PREMIOS'; this.pintarTres=true}else{this.pintarTres=false}
-                   if(dato=='retos'){this.title = 'ADMINISTRACIÓN DE RETOS'; this.pintarCuatro=true}else{this.pintarCuatro=false}
-                   if(dato=='configuracion'){this.title = 'CONFIGURACIÓN DE USUARIOS'; this.pintarCinco=true}else{this.pintarCinco=false}
+                   if(dato=='principalMejora'){ this.pintarUno=true}else{this.pintarUno=false}
+                   if(dato=='concentrado'){this.pintarDos=true}else{this.pintarDos=false}
+                   if(dato=='premios'){ this.pintarTres=true}else{this.pintarTres=false}
+                   if(dato=='retos'){this.pintarCuatro=true}else{this.pintarCuatro=false}
+                   if(dato=='configuracion'){this.pintarCinco=true}else{this.pintarCinco=false}
                    
              }
         }
