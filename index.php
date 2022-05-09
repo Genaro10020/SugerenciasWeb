@@ -30,7 +30,9 @@ session_destroy();
     <style>
             .titulo{
                     font-family: 'Luckiest Guy', cursive;
-                    -webkit-text-stroke: 1px white;
+                    color: white;
+                    text-shadow: 0px 0px 1px black;
+                    /*-webkit-text-stroke: 1px white;*/
                 }
 
                .div_susperior{
@@ -59,20 +61,25 @@ session_destroy();
             </div>
             <div class="row" style="height:80vh">
                     <div class="col-12 col-sm-6 d-flex align-items-center justify-content-center rounded-3 " style="background:#f5f5f5">
-                                <div class="row rounded-3 shadow d-flex align-items-center m-5 " style="background:#f9f9f9">
-                                    <div class="col-12 mt-5" style="color:#920f0f; font-weight:bold">
-                                        No. de Nómina
-                                        <input v-model="username" type="text" class="form-control "></input>
-                                    </div>
-                                    <div class="col-12 mt-5" style="color:#920f0f; font-weight:bold"> 
-                                        Contraseña
-                                        <input v-model="password" type="password" class="form-control"></input>
-                                    </div>
-                                    <div class="col-12 my-5 text-center"> 
-                                        <button @click="verificar()" type="button" class="btn btn-danger">E n t r a r</button>
-                                    </div>
+                    <form @submit.prevent="verificar" class="rounded-3 shadow"  style="background: rgb(181,0,0);">
+                                <div class="row rounded-3  d-flex align-items-center m-1 " style="background:#f9f9f9">
+                                   
+                                        <div class="col-12 mt-5" style="color:#920f0f; font-weight:bold">
+                                            No. de Nómina
+                                            <input v-model="username" type="text" class="form-control "></input>
+                                            
+                                        </div>
+                                        <div class="col-12 mt-5" style="color:#920f0f; font-weight:bold"> 
+                                            Contraseña
+                                            <input v-model="password" type="password" class="form-control"></input>
+                                        </div>
+                                        <div class="col-12 my-5 text-center"> 
+                                            <button  type="submit" class="btn btn-danger">E n t r a r</button>
+                                        </div>
+                                    
                                 </div>
-                      
+                                </form>
+
                     </div>
                     <div class="col-12 col-sm-6 d-flex align-items-center justify-content-center">
                         <div class="row">

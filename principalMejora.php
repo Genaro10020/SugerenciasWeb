@@ -34,7 +34,9 @@ $_SESSION['usuario'];
 <style>
                 .titulo{
                         font-family: 'Luckiest Guy', cursive;
-                        -webkit-text-stroke: 1px white;
+                        color: white; 
+                        text-shadow: 0px 0px 1px black;
+                        /*-webkit-text-stroke: 1px white;*/
                     }
 
                .div_susperior{
@@ -109,14 +111,22 @@ $_SESSION['usuario'];
                             </div>
                              <!--fin cinta apartado-->
                             <!-- contenido principal gonher-->
-                            <div class="row">
-                                    <table class="table">
+                            <div class="row mt-5">
+                                    <table class="table table-striped">
                                         <thead>
                                             <tr>
                                             <th scope="col">#</th>
-                                            <th scope="col">First</th>
-                                            <th scope="col">Last</th>
-                                            <th scope="col">Handle</th>
+                                            <th scope="col">Editar</th>
+                                            <th scope="col">Nombre sugerencias</th>
+                                            <th scope="col">%Cumplimiento</th>
+                                            <th scope="col">Folio</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Situación Actual</th>
+                                            <th scope="col">Idea Propuesta</th>
+                                            <th scope="col">Colaborador</th>
+                                            <th scope="col">No. de Nomina</th>
+                                            <th scope="col">Puesto</th>
+
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -125,17 +135,13 @@ $_SESSION['usuario'];
                                             <td>Mark</td>
                                             <td>Otto</td>
                                             <td>@mdo</td>
-                                            </tr>
-                                            <tr>
-                                            <th scope="row">2</th>
-                                            <td>Jacob</td>
-                                            <td>Thornton</td>
-                                            <td>@fat</td>
-                                            </tr>
-                                            <tr>
-                                            <th scope="row">3</th>
-                                            <td colspan="2">Larry the Bird</td>
-                                            <td>@twitter</td>
+                                            <td>@mdo</td>
+                                            <td>@mdo</td>
+                                            <td>@mdo</td>
+                                            <td>@mdo</td>
+                                            <td>@mdo</td>
+                                            <td>@mdo</td>
+                                            <td>@mdo</td>
                                             </tr>
                                         </tbody>
                                         </table>
