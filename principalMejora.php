@@ -28,6 +28,8 @@ $_SESSION['usuario'];
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Goldman&family=Koulen&display=swap" rel="stylesheet"> 
     <!--Incluyendo Estilo-->
     <link rel="stylesheet" type="text/css"  href="estilos/miestilo.css">
+    <!--Iconos boostrap-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <title>Sugerencias</title>
 </head>
 <body>
@@ -109,14 +111,17 @@ $_SESSION['usuario'];
                                    <b> CONCENTRADO DE SUGERENCIAS </b>
                                 </div>
                             </div>
-                             <!--fin cinta apartado-->
+                        <!--fin cinta apartado-->
                             <!-- contenido principal gonher-->
-                            <div class="row mt-5">
-                                    <table class="table table-striped">
+                            <div class="row m-lg-5">
+                                <div class="col-12 text-center">
+                                    <button class="boton-nuevo"><i class="bi bi-plus-circle"></i> Nueva Sugerencia</button>
+                                </div>
+                                    <table class="table tablaConcentrado table-striped">
                                         <thead>
                                             <tr>
                                             <th scope="col">#</th>
-                                            <th scope="col">Editar</th>
+                                            <th scope="col">Editar/Guardar</th>
                                             <th scope="col">Nombre sugerencias</th>
                                             <th scope="col">%Cumplimiento</th>
                                             <th scope="col">Folio</th>
@@ -126,22 +131,37 @@ $_SESSION['usuario'];
                                             <th scope="col">Colaborador</th>
                                             <th scope="col">No. de Nomina</th>
                                             <th scope="col">Puesto</th>
-
+                                            <th scope="col">Eliminar</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
+                                        <tr class="align-middle">
+                                            <th scope="row">0</th>
+                                            <td><button type="button" class="btn btn-warning" title="Actulizar"><i class="bi bi-pen"></button></i></td>
+                                            <td><input class="inputs-concentrado" type="text" value="Genaro Villanuevap Pérez" name="sugerencia" ></input><label style="display:none;">Otto</label></td>
+                                            <td><input class="inputs-concentrado" type="text" value="Genaro Villanuevap Pérez" name="sugerencia" ></input><label style="display:none;">Otto</label></td>
+                                            <td><input class="inputs-concentrado" type="text" value="Genaro Villanuevap Pérez" name="sugerencia" ></input><label style="display:none;">Otto</label></td>
+                                            <td><input class="inputs-concentrado" type="text" value="Genaro Villanuevap Pérez" name="sugerencia" ></input><label style="display:none;">Otto</label></td>
+                                            <td><input class="inputs-concentrado" type="text" value="Genaro Villanuevap Pérez" name="sugerencia" ></input><label style="display:none;">Otto</label></td>
+                                            <td><input class="inputs-concentrado" type="text" value="Genaro Villanuevap Pérez" name="sugerencia" ></input><label style="display:none;">Otto</label></td>
+                                            <td><input class="inputs-concentrado" type="text" value="Genaro Villanuevap Pérez" name="sugerencia" ></input><label style="display:none;">Otto</label></td>
+                                            <td><input class="inputs-concentrado" type="text" value="Genaro Villanuevap Pérez" name="sugerencia" ></input><label style="display:none;">Otto</label></td>
+                                            <td><input class="inputs-concentrado" type="text" value="Genaro Villanuevap Pérez" name="sugerencia" ></input><label style="display:none;">Otto</label></td>
+                                            <td><button type="button" class="btn btn-danger" title="Eliminar"><i class="bi bi-trash"></button></i></td>
+                                            </tr>
+                                            <tr class="align-middle">
                                             <th scope="row">1</th>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                            <td>@mdo</td>
-                                            <td>@mdo</td>
-                                            <td>@mdo</td>
-                                            <td>@mdo</td>
-                                            <td>@mdo</td>
-                                            <td>@mdo</td>
-                                            <td>@mdo</td>
+                                            <td><button type="button" class="btn btn-warning" title="Actualizar"><i class="bi bi-pen"></button></i></td>
+                                            <td><input class="inputs-concentrado" type="text" value="Genaro Villanuevap Pérez" name="sugerencia" ></input><label style="display:none;">Otto</label></td>
+                                            <td><input class="inputs-concentrado" type="text" value="Genaro Villanuevap Pérez" name="sugerencia" ></input><label style="display:none;">Otto</label></td>
+                                            <td><input class="inputs-concentrado" type="text" value="Genaro Villanuevap Pérez" name="sugerencia" ></input><label style="display:none;">Otto</label></td>
+                                            <td><input class="inputs-concentrado" type="text" value="Genaro Villanuevap Pérez" name="sugerencia" ></input><label style="display:none;">Otto</label></td>
+                                            <td><input class="inputs-concentrado" type="text" value="Genaro Villanuevap Pérez" name="sugerencia" ></input><label style="display:none;">Otto</label></td>
+                                            <td><input class="inputs-concentrado" type="text" value="Genaro Villanuevap Pérez" name="sugerencia" ></input><label style="display:none;">Otto</label></td>
+                                            <td><input class="inputs-concentrado" type="text" value="Genaro Villanuevap Pérez" name="sugerencia" ></input><label style="display:none;">Otto</label></td>
+                                            <td><input class="inputs-concentrado" type="text" value="Genaro Villanuevap Pérez" name="sugerencia" ></input><label style="display:none;">Otto</label></td>
+                                            <td><input class="inputs-concentrado" type="text" value="Genaro Villanuevap Pérez" name="sugerencia" ></input><label style="display:none;">Otto</label></td>
+                                            <td><button type="button" class="btn btn-danger" title="Eliminar"><i class="bi bi-trash"></button></i></td>
                                             </tr>
                                         </tbody>
                                         </table>
