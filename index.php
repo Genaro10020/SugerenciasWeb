@@ -32,7 +32,7 @@ session_destroy();
                     font-family: 'Luckiest Guy', cursive;
                     color: white;
                     text-shadow: 0px 0px 1px black;
-                    /*-webkit-text-stroke: 1px white;*/
+                    -webkit-text-stroke: 1px black;
                 }
 
                .div_susperior{
