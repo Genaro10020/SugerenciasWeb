@@ -159,7 +159,35 @@ $_SESSION['usuario'];
                                             <tr class="align-middle">
                                                 <th scope="row">0</th>
                                                 <td><button type="button" class="btn btn-success" title="Guardar"><i class="bi bi-check-circle"></i></button></td>
-                                                
+                                                <td></input><label>0%</label></td>
+                                                <td><input class="inputs-concentrado" type="text" value="Nombre Sugerencia" name="nombre_sugerencia" ></input><label style="display:none;">Otto</label></td>
+                                                <td><input class="inputs-concentrado" type="text" value="Folio" name="folio" ></input><label style="display:none;">Otto</label></td>
+                                                <td><label >En Factibilidad</label></td>
+                                                <td><input class="inputs-concentrado" type="text" value="causa de no factibilidad" name="causa_no_factibilidad" ></input><label style="display:none;">Otto</label></td>
+                                                <td><input class="inputs-concentrado" type="text" value="situacion actul" name="situacion_actual" ></input><label style="display:none;">Otto</label></td>
+                                                <td><input class="inputs-concentrado" type="text" value="idea propuesta" name="idea_propuesta" ></input><label style="display:none;">Otto</label></td>
+                                                <td><input class="inputs-concentrado" type="text" value="nomina" name="nomina" ></input><label style="display:none;">Otto</label></td>
+                                                <td><input class="inputs-concentrado" type="text" value="colaborador" name="colaborador" ></input><label style="display:none;">Otto</label></td>
+                                                <td><input class="inputs-concentrado" type="text" value="puesto" name="puesto" ></input><label style="display:none;">Otto</label></td>
+                                                <td><input class="inputs-concentrado" type="text" value="planta" name="planta" ></input><label style="display:none;">Otto</label></td>
+                                                <td><input class="inputs-concentrado" type="text" value="area" name="area" ></input><label style="display:none;">Otto</label></td>
+                                                <td><input class="inputs-concentrado" type="text" value="area del participante" name="area_participante" ></input><label style="display:none;">Otto</label></td>
+                                                <td><input class="inputs-concentrado" type="text" value="subárea" name="subarea" ></input><label style="display:none;">Otto</label></td>
+                                                <td><input class="inputs-concentrado" type="text" value="impacto primario" name="impacto_primario" ></input><label style="display:none;">Otto</label></td>
+                                                <td><input class="inputs-concentrado" type="text" value="impacto secundario" name="impacto_recundario" ></input><label style="display:none;">Otto</label></td>
+                                                <td><input class="inputs-concentrado" type="text" value="tipo de desperdicio" name="tipo_de_desperdicio" ></input><label style="display:none;">Otto</label></td>
+                                                <td><input class="inputs-concentrado" type="text" value="objetivo de calidad M.A." name="objetivo_de_calidadMA" ></input><label style="display:none;">Otto</label></td>
+                                                <td><input class="inputs-concentrado" type="text" value="fecha de sugerencias" name="fecha_de_sugerencias" ></input><label style="display:none;">Otto</label></td>
+                                                <td><input class="inputs-concentrado" type="text" value="fecha de inicio" name="fecha_de_inicio" ></input><label style="display:none;">Otto</label></td>
+                                                <td><input class="inputs-concentrado" type="text" value="fecha compromiso" name="fecha_compromiso" ></input><label style="display:none;">Otto</label></td>
+                                                <td><input class="inputs-concentrado" type="text" value="fecha real de cierre" name="fecha_real_de_cierre" ></input><label style="display:none;">Otto</label></td>
+                                                <td><input class="inputs-concentrado" type="text" value="analista de factibilidad" name="analista_de_factibilidad" ></input><label style="display:none;">Otto</label></td>
+                                                <td><input class="inputs-concentrado" type="text" value="impacto planeado" name="impacto planeado" ></input><label style="display:none;">Otto</label></td>
+                                                <td><input class="inputs-concentrado" type="text" value="impacto real" name="impacto_real" ></input><label style="display:none;">Otto</label></td>
+                                                <td><input class="inputs-concentrado" type="text" value="creado por" name="creado_por" ></input><label style="display:none;">Otto</label></td>
+                                                <td><input class="inputs-concentrado" type="text" value="creado" name="creado_fecha" ></input><label style="display:none;">Otto</label></td>
+                                                <td><input class="inputs-concentrado" type="text" value="modificado por" name="modificado_por" ></input><label style="display:none;">Otto</label></td>
+                                                <td><input class="inputs-concentrado" type="text" value="modificado fecha" name="modificado_fecha" ></input><label style="display:none;">Otto</label></td>
                                                 <td><button type="button" class="btn btn-danger" title="Eliminar"><i class="bi bi-trash"></button></i></td>
                                             </tr>
                                             <tr class="align-middle">
@@ -168,7 +196,11 @@ $_SESSION['usuario'];
                                                 <td><input class="inputs-concentrado" type="text" value="% porcentaje" name="porcentaje" disabled></input><label style="display:none;">Otto</label></td>
                                                 <td><input class="inputs-concentrado" type="text" value="Nombre Sugerencia" name="nombre_sugerencia" ></input><label style="display:none;">Otto</label></td>
                                                 <td><input class="inputs-concentrado" type="text" value="Folio" name="folio" ></input><label style="display:none;">Otto</label></td>
-                                                <td><input class="inputs-concentrado" type="text" value="status" name="status" ></input><label style="display:none;">Otto</label></td>
+                                                <td>
+                                                    <select class="inputs-concentrado">
+                                                        <option v-for="status in lista_status" :key="status" :value="status">{{status}}</option>
+                                                    </select>
+                                                <label style="display:none;">Otto</label></td>
                                                 <td><input class="inputs-concentrado" type="text" value="causa de no factibilidad" name="causa_no_factibilidad" ></input><label style="display:none;">Otto</label></td>
                                                 <td><input class="inputs-concentrado" type="text" value="situacion actul" name="situacion_actual" ></input><label style="display:none;">Otto</label></td>
                                                 <td><input class="inputs-concentrado" type="text" value="idea propuesta" name="idea_propuesta" ></input><label style="display:none;">Otto</label></td>
@@ -245,32 +277,28 @@ $_SESSION['usuario'];
         data(){
             return {
                 username: '',
-                password: '',
+                prueba: '',
                 ventana: 'principalMejora',  
                 pintarUno:true,
                 pintarDos:false,
                 pintarTres:false,
                 pintarCuatro:false,
                 pintarCinco: false,
+                lista_status: [],
+
             }
         },
         mounted(){
-            
+           axios.post('lista_status.php',{
+
+            }).then(response =>{
+               
+                this.lista_status = response.data
+                console.log(this.lista_status);
+            })
+
         },
         methods:{
-            verificar(){
-                    axios.post('index_verificando.php',{
-                    usuario:this.username,
-                    contrasena: this.password
-                    }).then(response =>{
-                        console.log(response.data)
-                        if(response.data=='Si'){
-                        window.location.href = "principalMejora.php"
-                        }else{
-                            alert("Usuario/Contraseña Incorrecta")
-                        }
-                    })
-                },
                 mostrar(dato){
                    this.ventana=dato;
                    if(dato=='principalMejora'){ this.pintarUno=true}else{this.pintarUno=false}
