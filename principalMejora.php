@@ -37,8 +37,8 @@ $_SESSION['usuario'];
                 .titulo{
                         font-family: 'Luckiest Guy', cursive;
                         color: white; 
-                        text-shadow: 0px 0px 2px black;
-                        -webkit-text-stroke: 1px black;
+                        /*text-shadow: 0px 0px 2px black;*/
+                       /* -webkit-text-stroke: 1px black;*/
                     }
 
                .div_susperior{
@@ -63,7 +63,7 @@ $_SESSION['usuario'];
                 <!--BARRA SUPERIOR-->
             <div class="div_susperior d-flex justify-content-around align-items-center" style="height:10vh">
                 <div class=""><img class="img-fluid" src="img/logo_gonher.png"></img></div>
-                <div class=" titulo fs-2 lh-1 text-center">SISTEMA DE SUGERENCIAS DE MEJORA CONTINUA</div>
+                <div class=" titulo fs-2 lh-1 text-center">SISTEMA DE SUGERENCIAS DE MEJORA</div>
                 <div class=""><img class="img-fluid" src="img/logo_mejora_continua.png"></img></div>
             </div>
              <!--BARRA MENÚ-->
@@ -160,8 +160,8 @@ $_SESSION['usuario'];
                                                 <th scope="row">0</th>
                                                 <td><button type="button" class="btn btn-success" title="Guardar"><i class="bi bi-check-circle"></i></button></td>
                                                 <td></input><label>0%</label></td>
-                                                <td><input class="inputs-concentrado" type="text" value="Nombre Sugerencia" name="nombre_sugerencia" ></input><label style="display:none;">Otto</label></td>
-                                                <td><input class="inputs-concentrado" type="text" value="Folio" name="folio" ></input><label style="display:none;">Otto</label></td>
+                                                <td><input class="inputs-concentrado" type="text" value="Nombre Sugerencia" name="nombre_sugerencia" ></input></td>
+                                                <td><input class="inputs-concentrado" type="text" value="Folio" name="folio" ></input></td>
                                                 <td><label >En Factibilidad</label></td>
                                                 <td><input class="inputs-concentrado" type="text" value="causa de no factibilidad" name="causa_no_factibilidad" ></input><label style="display:none;">Otto</label></td>
                                                 <td><input class="inputs-concentrado" type="text" value="situacion actul" name="situacion_actual" ></input><label style="display:none;">Otto</label></td>
@@ -169,12 +169,36 @@ $_SESSION['usuario'];
                                                 <td><input class="inputs-concentrado" type="text" value="nomina" name="nomina" ></input><label style="display:none;">Otto</label></td>
                                                 <td><input class="inputs-concentrado" type="text" value="colaborador" name="colaborador" ></input><label style="display:none;">Otto</label></td>
                                                 <td><input class="inputs-concentrado" type="text" value="puesto" name="puesto" ></input><label style="display:none;">Otto</label></td>
-                                                <td><input class="inputs-concentrado" type="text" value="planta" name="planta" ></input><label style="display:none;">Otto</label></td>
-                                                <td><input class="inputs-concentrado" type="text" value="area" name="area" ></input><label style="display:none;">Otto</label></td>
-                                                <td><input class="inputs-concentrado" type="text" value="area del participante" name="area_participante" ></input><label style="display:none;">Otto</label></td>
-                                                <td><input class="inputs-concentrado" type="text" value="subárea" name="subarea" ></input><label style="display:none;">Otto</label></td>
-                                                <td><input class="inputs-concentrado" type="text" value="impacto primario" name="impacto_primario" ></input><label style="display:none;">Otto</label></td>
-                                                <td><input class="inputs-concentrado" type="text" value="impacto secundario" name="impacto_recundario" ></input><label style="display:none;">Otto</label></td>
+                                                <td>
+                                                    <select class="inputs-concentrado" name="select_planta">
+                                                            <option v-for="planta in lista_planta" :key="planta" :value="planta">{{planta}}</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <select class="inputs-concentrado" name="select_area">
+                                                            <option v-for="area in lista_area" :key="area" :value="area">{{area}}</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <select class="inputs-concentrado" name="select_area_participante">
+                                                        <option v-for="area_participante in lista_area_participante" :key="area_participante" :value="area_participante">{{area_participante}}</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <select class="inputs-concentrado" name="select_subarea">
+                                                        <option v-for="subarea in lista_subarea" :key="subarea" :value="subarea">{{subarea}}</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <select class="inputs-concentrado" name="select_impacto_primario">
+                                                        <option v-for="impacto_primario in lista_impacto_primario" :key="impacto_primario" :value="impacto_primario">{{impacto_primario}}</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <select class="inputs-concentrado" name="select_impacto_secundario">
+                                                        <option v-for="impacto_secundario in lista_impacto_secundario" :key="impacto_secundario" :value="impacto_secundario">{{impacto_secundario}}</option>
+                                                    </select>
+                                                </td>
                                                 <td><input class="inputs-concentrado" type="text" value="tipo de desperdicio" name="tipo_de_desperdicio" ></input><label style="display:none;">Otto</label></td>
                                                 <td><input class="inputs-concentrado" type="text" value="objetivo de calidad M.A." name="objetivo_de_calidadMA" ></input><label style="display:none;">Otto</label></td>
                                                 <td><input class="inputs-concentrado" type="text" value="fecha de sugerencias" name="fecha_de_sugerencias" ></input><label style="display:none;">Otto</label></td>
@@ -197,7 +221,7 @@ $_SESSION['usuario'];
                                                 <td><input class="inputs-concentrado" type="text" value="Nombre Sugerencia" name="nombre_sugerencia" ></input><label style="display:none;">Otto</label></td>
                                                 <td><input class="inputs-concentrado" type="text" value="Folio" name="folio" ></input><label style="display:none;">Otto</label></td>
                                                 <td>
-                                                    <select class="inputs-concentrado">
+                                                    <select class="inputs-concentrado" name ="select_status">
                                                         <option v-for="status in lista_status" :key="status" :value="status">{{status}}</option>
                                                     </select>
                                                 <label style="display:none;">Otto</label></td>
@@ -285,18 +309,58 @@ $_SESSION['usuario'];
                 pintarCuatro:false,
                 pintarCinco: false,
                 lista_status: [],
+                lista_planta: [],
+                lista_area: [],
+                lista_area_participante: [],
+                lista_subarea: [],
+                lista_impacto_primario: [],
+                lista_impacto_secundario: [],
 
             }
         },
         mounted(){
+            //consultado lista status
            axios.post('lista_status.php',{
-
             }).then(response =>{
-               
                 this.lista_status = response.data
                 console.log(this.lista_status);
+            }),
+             //consultado lista planta
+           axios.post('lista_planta.php',{
+            }).then(response =>{
+                this.lista_planta = response.data
+                console.log(this.lista_planta);
+            }),
+            //consultado lista area
+           axios.post('lista_area.php',{
+            }).then(response =>{
+                this.lista_area = response.data
+                console.log(this.lista_area);
             })
-
+            //consultado lista participante
+           axios.post('lista_area_participante.php',{
+            }).then(response =>{
+                this.lista_area_participante = response.data
+                console.log(this.lista_area_participante);
+            }),
+             //consultado lista subareas
+           axios.post('lista_subarea.php',{
+            }).then(response =>{
+                this.lista_subarea = response.data
+                console.log(this.lista_subarea);
+            }),
+             //consultado lista impacto primario
+            axios.post('lista_impacto_primario.php',{
+            }).then(response =>{
+                this.lista_impacto_primario = response.data
+                console.log(this.lista_impacto_primario);
+            }),
+             //consultado lista impacto secundario
+             axios.post('lista_impacto_secundario.php',{
+            }).then(response =>{
+                this.lista_impacto_secundario = response.data
+                console.log(this.lista_impacto_secundario);
+            })
         },
         methods:{
                 mostrar(dato){
