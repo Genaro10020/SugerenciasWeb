@@ -3,10 +3,10 @@ session_start();
 header("Content-Type: application/json");
 $variables = json_decode(file_get_contents('php://input'), true);
 include "conexionGhoner.php";
-$consulta = "SELECT * FROM lista_impacto_primario_sugerencias";
+$consulta = "SELECT * FROM lista_impacto_sugerencias";
 $resultado = mysqli_query($conexion,$consulta);
 while($datos=mysqli_fetch_array($resultado)){
-    $impacto_primario[] = $datos['impacto_primario'];
+    $impacto[] = $datos['impacto'];
 }
-echo json_encode($impacto_primario);
+echo json_encode($impacto);
 ?>

@@ -156,11 +156,12 @@ $_SESSION['usuario'];
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <!--Nueva Sugerencia-->
                                             <tr class="align-middle">
                                                 <th scope="row">0</th>
                                                 <td><button type="button" class="btn btn-success" title="Guardar"><i class="bi bi-check-circle"></i></button></td>
                                                 <td></input><label>0%</label></td>
-                                                <td><input class="inputs-concentrado" type="text" value="Nombre Sugerencia" name="nombre_sugerencia" ></input></td>
+                                                <td><input  class="inputs-concentrado" type="text" value="Nombre Sugerencia" name="nombre_sugerencia" style=" height:"></input></td>
                                                 <td><input class="inputs-concentrado" type="text" value="Folio" name="folio" ></input></td>
                                                 <td><label >En Factibilidad</label></td>
                                                 <td><input class="inputs-concentrado" type="text" value="causa de no factibilidad" name="causa_no_factibilidad" ></input><label style="display:none;">Otto</label></td>
@@ -199,13 +200,28 @@ $_SESSION['usuario'];
                                                         <option v-for="impacto_secundario in lista_impacto_secundario" :key="impacto_secundario" :value="impacto_secundario">{{impacto_secundario}}</option>
                                                     </select>
                                                 </td>
-                                                <td><input class="inputs-concentrado" type="text" value="tipo de desperdicio" name="tipo_de_desperdicio" ></input><label style="display:none;">Otto</label></td>
-                                                <td><input class="inputs-concentrado" type="text" value="objetivo de calidad M.A." name="objetivo_de_calidadMA" ></input><label style="display:none;">Otto</label></td>
-                                                <td><input class="inputs-concentrado" type="text" value="fecha de sugerencias" name="fecha_de_sugerencias" ></input><label style="display:none;">Otto</label></td>
-                                                <td><input class="inputs-concentrado" type="text" value="fecha de inicio" name="fecha_de_inicio" ></input><label style="display:none;">Otto</label></td>
-                                                <td><input class="inputs-concentrado" type="text" value="fecha compromiso" name="fecha_compromiso" ></input><label style="display:none;">Otto</label></td>
-                                                <td><input class="inputs-concentrado" type="text" value="fecha real de cierre" name="fecha_real_de_cierre" ></input><label style="display:none;">Otto</label></td>
-                                                <td><input class="inputs-concentrado" type="text" value="analista de factibilidad" name="analista_de_factibilidad" ></input><label style="display:none;">Otto</label></td>
+                                                <td>
+                                                    <select class="inputs-concentrado" name="select_tipo_desperdicio">
+                                                        <option v-for="tipo_desperdicio in lista_tipo_desperdicio" :key="tipo_desperdicio" :value="tipo_desperdicio">{{tipo_desperdicio}}</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                <div  class="inputs-concentrado" style="overflow-y: scroll; max-height:50px;">
+                                                <label>{{objetivo_de_calidadMA_Seleccionados}}</label>
+                                                    <ul>
+                                                        <li v-for="objetivo_de_calidad in objetivo_de_calidadMA">
+                                                            <input type="checkbox" :value="objetivo_de_calidad" v-model="objetivo_de_calidadMA_Seleccionados">
+                                                            <label for="objetivo_de_calidad">{{objetivo_de_calidad}}</label>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                        <!--<option v-for="objetivo_de_calidad in objetivo_de_calidadMA" :key="objetivo_de_calidad" :value="objetivo_de_calidad">{{objetivo_de_calidad}}</option>-->
+                                                </td>
+                                                <td><input class="inputs-concentrado" type="date" value="fecha de sugerencias" name="fecha_de_sugerencias" ></input></td>
+                                                <td><input class="inputs-concentrado" type="date" value="fecha de inicio" name="fecha_de_inicio" ></input></td>
+                                                <td><input class="inputs-concentrado" type="date" value="fecha compromiso" name="fecha_compromiso" ></input></td>
+                                                <td><input class="inputs-concentrado" type="date" value="fecha real de cierre" name="fecha_real_de_cierre" ></input></td>
+                                                <td><input class="inputs-concentrado" type="text" value="" name="analista_de_factibilidad" ></td>
                                                 <td><input class="inputs-concentrado" type="text" value="impacto planeado" name="impacto planeado" ></input><label style="display:none;">Otto</label></td>
                                                 <td><input class="inputs-concentrado" type="text" value="impacto real" name="impacto_real" ></input><label style="display:none;">Otto</label></td>
                                                 <td><input class="inputs-concentrado" type="text" value="creado por" name="creado_por" ></input><label style="display:none;">Otto</label></td>
@@ -214,6 +230,7 @@ $_SESSION['usuario'];
                                                 <td><input class="inputs-concentrado" type="text" value="modificado fecha" name="modificado_fecha" ></input><label style="display:none;">Otto</label></td>
                                                 <td><button type="button" class="btn btn-danger" title="Eliminar"><i class="bi bi-trash"></button></i></td>
                                             </tr>
+                                            <!--Editar Segerencia-->
                                             <tr class="align-middle">
                                                 <th scope="row">1</th>
                                                 <td><button type="button" class="btn btn-warning" title="Actualizar"><i class="bi bi-pen"></i></button></td>
@@ -315,7 +332,9 @@ $_SESSION['usuario'];
                 lista_subarea: [],
                 lista_impacto_primario: [],
                 lista_impacto_secundario: [],
-
+                lista_tipo_desperdicio: [],
+                objetivo_de_calidadMA: [],
+                objetivo_de_calidadMA_Seleccionados: [],
             }
         },
         mounted(){
@@ -350,16 +369,24 @@ $_SESSION['usuario'];
                 console.log(this.lista_subarea);
             }),
              //consultado lista impacto primario
-            axios.post('lista_impacto_primario.php',{
+            axios.post('lista_impacto.php',{
             }).then(response =>{
                 this.lista_impacto_primario = response.data
-                console.log(this.lista_impacto_primario);
-            }),
-             //consultado lista impacto secundario
-             axios.post('lista_impacto_secundario.php',{
-            }).then(response =>{
                 this.lista_impacto_secundario = response.data
+                console.log(this.lista_impacto_primario);
                 console.log(this.lista_impacto_secundario);
+            }),
+            //consultado lista impacto primario
+            axios.post('lista_tipo_desperdicio.php',{
+            }).then(response =>{
+                this.lista_tipo_desperdicio = response.data
+                console.log(this.lista_tipo_desperdicio);
+            }),
+            //consultado lista impacto primario
+            axios.post('lista_objetivos_calidad_ma.php',{
+            }).then(response =>{
+                this.objetivo_de_calidadMA = response.data
+                console.log(this.objetivo_de_calidadMA);
             })
         },
         methods:{

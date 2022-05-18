@@ -42,7 +42,7 @@
     }
      /*Concentrado sugerencias*/
     .boton-nuevo{
-        background:rgb(62, 163, 104);
+        background:rgb(31, 134, 74);
         border-radius: 10px;
         border-width: 0px;
         color: rgb(248, 248, 248);
@@ -50,7 +50,7 @@
     }
 
     .boton-nuevo:hover{
-        background:rgb(6, 112, 50);
+        background:rgb(8, 93, 43);
     }
     .div-scroll{
         overflow-x: scroll;
@@ -60,9 +60,10 @@
         font-size: 0.4em;         
      }
     .inputs-concentrado{
-        width: 100%;
-        border-width: 1;
-        border-radius: 1;
+        background: white;
+        border: 1px solid;
+        border-color: rgb(150, 236, 150);
+        border-radius: 5px;
         height:100%;
         
     }
@@ -70,10 +71,9 @@
  }
  
 @media (min-width: 576px) {
-    .tablaConcentrado{
-
-        font-size: 0.3em;         
-     }
+     .inputs-concentrado{
+        min-width: 200px;
+    }
    
     
 
