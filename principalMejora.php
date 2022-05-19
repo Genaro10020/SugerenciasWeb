@@ -51,9 +51,10 @@ $_SESSION['usuario'];
                 background: linear-gradient(180deg, rgba(181,0,0,1) 12%, rgba(237,193,193,1) 100%); 
                }
 
-                input[type]:focus, button[type]:focus {
-                border-color: #7b0808;
-                box-shadow: 0 0px 0px rgba(0, 133, 180, 1)inset, 0 0 4px rgba( 187, 16, 16, 1);
+                textarea[type]:focus,input[type]:focus, button[type]:focus {
+                border: 2px solid;    
+                border-color: rgb(137, 0, 0);
+                /*box-shadow: 0 0px 0px rgba(0, 133, 180, 1)inset, 0 0 4px rgba( 187, 16, 16, 1);*/
                 outline: 0 none;
                 }
 
@@ -115,7 +116,7 @@ $_SESSION['usuario'];
                             <!-- contenido principal gonher-->
                             <div class="row m-lg-5">
                                 <div class="col-12 text-center">
-                                    <button class="boton-nuevo"><i class="bi bi-plus-circle"></i> Nueva Sugerencia</button>
+                                    <button class="boton-nuevo" @click="nueva_sugerencia=true"><i class="bi bi-plus-circle"></i> Nueva Sugerencia</button>
                                 </div>
                                 <div class="div-scroll">
                                     <table class="table tablaConcentrado table-striped">
@@ -157,19 +158,19 @@ $_SESSION['usuario'];
                                         </thead>
                                         <tbody>
                                             <!--Nueva Sugerencia-->
-                                            <tr class="align-middle">
+                                            <tr v-show="nueva_sugerencia" class="align-middle">
                                                 <th scope="row">0</th>
                                                 <td><button type="button" class="btn btn-success" title="Guardar"><i class="bi bi-check-circle"></i></button></td>
-                                                <td></input><label>0%</label></td>
-                                                <td><input  class="inputs-concentrado" type="text" value="Nombre Sugerencia" name="nombre_sugerencia" style=" height:"></input></td>
-                                                <td><input class="inputs-concentrado" type="text" value="Folio" name="folio" ></input></td>
+                                                <td><label>0%</label></td>
+                                                <td><input class="inputs-concentrado input-nom-sugerencia" type="text"  name="nombre_sugerencia" v-model="var_nombre_sugerencias"></input></td>
+                                                <td><input class="inputs-concentrado" type="text" name="folio" ></input></td>
                                                 <td><label >En Factibilidad</label></td>
-                                                <td><input class="inputs-concentrado" type="text" value="causa de no factibilidad" name="causa_no_factibilidad" ></input><label style="display:none;">Otto</label></td>
-                                                <td><input class="inputs-concentrado" type="text" value="situacion actul" name="situacion_actual" ></input><label style="display:none;">Otto</label></td>
-                                                <td><input class="inputs-concentrado" type="text" value="idea propuesta" name="idea_propuesta" ></input><label style="display:none;">Otto</label></td>
-                                                <td><input class="inputs-concentrado" type="text" value="nomina" name="nomina" ></input><label style="display:none;">Otto</label></td>
-                                                <td><input class="inputs-concentrado" type="text" value="colaborador" name="colaborador" ></input><label style="display:none;">Otto</label></td>
-                                                <td><input class="inputs-concentrado" type="text" value="puesto" name="puesto" ></input><label style="display:none;">Otto</label></td>
+                                                <td><textarea class="inputs-concentrado text-area" type="text"  name="causa_no_factibilidad" ></textarea><label style="display:none;">Otto</label></td>
+                                                <td><textarea class="inputs-concentrado text-area" type="text" name="situacion_actual" ></textarea><label style="display:none;">Otto</label></td>
+                                                <td><textarea class="inputs-concentrado text-area" type="text"  name="idea_propuesta" ></textarea><label style="display:none;">Otto</label></td>
+                                                <td><input class="inputs-concentrado" type="text"  name="nomina" ></input><label style="display:none;">Otto</label></td>
+                                                <td><input class="inputs-concentrado" type="text"  name="colaborador" ></input><label style="display:none;">Otto</label></td>
+                                                <td><input class="inputs-concentrado" type="text"  name="puesto" ></input><label style="display:none;">Otto</label></td>
                                                 <td>
                                                     <select class="inputs-concentrado" name="select_planta">
                                                             <option v-for="planta in lista_planta" :key="planta" :value="planta">{{planta}}</option>
@@ -215,26 +216,25 @@ $_SESSION['usuario'];
                                                         </li>
                                                     </ul>
                                                 </div>
-                                                        <!--<option v-for="objetivo_de_calidad in objetivo_de_calidadMA" :key="objetivo_de_calidad" :value="objetivo_de_calidad">{{objetivo_de_calidad}}</option>-->
                                                 </td>
                                                 <td><input class="inputs-concentrado" type="date" value="fecha de sugerencias" name="fecha_de_sugerencias" ></input></td>
                                                 <td><input class="inputs-concentrado" type="date" value="fecha de inicio" name="fecha_de_inicio" ></input></td>
                                                 <td><input class="inputs-concentrado" type="date" value="fecha compromiso" name="fecha_compromiso" ></input></td>
                                                 <td><input class="inputs-concentrado" type="date" value="fecha real de cierre" name="fecha_real_de_cierre" ></input></td>
                                                 <td><input class="inputs-concentrado" type="text" value="" name="analista_de_factibilidad" ></td>
-                                                <td><input class="inputs-concentrado" type="text" value="impacto planeado" name="impacto planeado" ></input><label style="display:none;">Otto</label></td>
-                                                <td><input class="inputs-concentrado" type="text" value="impacto real" name="impacto_real" ></input><label style="display:none;">Otto</label></td>
+                                                <td><input class="inputs-concentrado" type="text" value="" name="impacto planeado" ></input><label style="display:none;">Otto</label></td>
+                                                <td><input class="inputs-concentrado" type="text" value="" name="impacto_real" ></input><label style="display:none;">Otto</label></td>
                                                 <td><input class="inputs-concentrado" type="text" value="creado por" name="creado_por" ></input><label style="display:none;">Otto</label></td>
                                                 <td><input class="inputs-concentrado" type="text" value="creado" name="creado_fecha" ></input><label style="display:none;">Otto</label></td>
                                                 <td><input class="inputs-concentrado" type="text" value="modificado por" name="modificado_por" ></input><label style="display:none;">Otto</label></td>
                                                 <td><input class="inputs-concentrado" type="text" value="modificado fecha" name="modificado_fecha" ></input><label style="display:none;">Otto</label></td>
-                                                <td><button type="button" class="btn btn-danger" title="Eliminar"><i class="bi bi-trash"></button></i></td>
+                                                <td><button type="button" class="btn btn-danger" title="Eliminar" @click="nueva_sugerencia=false"><i class="bi bi-trash"></button></i></td>
                                             </tr>
                                             <!--Editar Segerencia-->
-                                            <tr class="align-middle">
+                                            <tr class="align-middle" v-show="actualizar_sugerencia">
                                                 <th scope="row">1</th>
                                                 <td><button type="button" class="btn btn-warning" title="Actualizar"><i class="bi bi-pen"></i></button></td>
-                                                <td><input class="inputs-concentrado" type="text" value="% porcentaje" name="porcentaje" disabled></input><label style="display:none;">Otto</label></td>
+                                                <td><label>0%</label></td>
                                                 <td><input class="inputs-concentrado" type="text" value="Nombre Sugerencia" name="nombre_sugerencia" ></input><label style="display:none;">Otto</label></td>
                                                 <td><input class="inputs-concentrado" type="text" value="Folio" name="folio" ></input><label style="display:none;">Otto</label></td>
                                                 <td>
@@ -302,8 +302,6 @@ $_SESSION['usuario'];
                                 </div>
                             </div>
                    </div>
-                           
-              
             </div>
                 <!--FOOTER-->
             <div class="row" style="height:10vh; background: url(img/pie.jpg); background-repeat: repeat-x; background-size: 8% 100%;">
@@ -325,6 +323,9 @@ $_SESSION['usuario'];
                 pintarTres:false,
                 pintarCuatro:false,
                 pintarCinco: false,
+                nueva_sugerencia:false,
+                actualizar_sugerencia:false,
+                var_nombre_sugerencias:'',
                 lista_status: [],
                 lista_planta: [],
                 lista_area: [],
@@ -335,6 +336,8 @@ $_SESSION['usuario'];
                 lista_tipo_desperdicio: [],
                 objetivo_de_calidadMA: [],
                 objetivo_de_calidadMA_Seleccionados: [],
+                
+            
             }
         },
         mounted(){
@@ -384,6 +387,12 @@ $_SESSION['usuario'];
             }),
             //consultado lista impacto primario
             axios.post('lista_objetivos_calidad_ma.php',{
+            }).then(response =>{
+                this.objetivo_de_calidadMA = response.data
+                console.log(this.objetivo_de_calidadMA);
+            }),
+            //consultado lista impacto primario
+            axios.post('usuarios_sugerencias.php',{
             }).then(response =>{
                 this.objetivo_de_calidadMA = response.data
                 console.log(this.objetivo_de_calidadMA);
