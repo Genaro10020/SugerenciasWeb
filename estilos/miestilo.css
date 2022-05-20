@@ -1,8 +1,6 @@
 /*PRINCIPAL MEJORA*/
 /* Small devices (landscape phones, 576px and up)***************************************/
 @media (min-width: 0px) {
-    
-
     .opciones{
         height:30px;
         background: rgb(255, 223, 223);
@@ -53,26 +51,29 @@
             overflow-x: scroll;
             white-space: nowrap;
         }
+      
         .tablaConcentrado{
-            font-size: 0.4em;         
+            font-size: 0.6em;         
         }
         .inputs-concentrado{
-            background: white;
+            background: rgb(255, 255, 255);
             border: 1px solid;
-            border-color:rgb(137, 0, 0);
+            border-color: rgb(137, 0, 0);
             border-radius: 5px;
-            height:100%;
+            height: 50px;
+            min-width: 100px;
         }
-        .input-nom-sugerencia{width: 250px;}
-        .text-area{resize: inline;}
+        .input-nom-sugerencia{ width: 250px;}
+        .text-area{resize: inline; }
   /*Fin concentrado sugerencias*/
  }
- 
+ /* Medium devices (tablets, 576 and up)***************************************/
 @media (min-width: 576px) {
-     .inputs-concentrado{
+
+    .inputs-concentrado{
         min-width: 200px;
     }
-    .input-nom-sugerencia{width: 300px;}
+  
  }
 /* Medium devices (tablets, 768px and up)***************************************/
 @media (min-width: 768px) { 
@@ -86,7 +87,7 @@
     .tablaConcentrado{
         font-size: 0.6em;         
      }
-     .input-nom-sugerencia{width: 350px;}
+     /*.input-nom-sugerencia{width: 350px;}*/
  }
 /* X-Large devices (large desktops, 1200px and up)***************************************/
 @media (min-width: 1200px) {

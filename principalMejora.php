@@ -1,7 +1,7 @@
 <?php
 session_start();
-if ($_SESSION["usuario"]){
-$_SESSION['usuario']; 
+if ($_SESSION["usuario"]){ 
+  
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -58,6 +58,8 @@ $_SESSION['usuario'];
                 outline: 0 none;
                 }
 
+                
+
               
     </style>
     <div id="app" class="container-fluid  " >
@@ -104,7 +106,7 @@ $_SESSION['usuario'];
                             
                              <!--fin contenido principal gonher-->
                    </div>
-                   <!--////////////////////////////////////////////////////////-->
+                   <!--////////////////////////////////////////////////////////APARTADO CONCENTRADO DE SUGERENCIAS-->
                    <div v-else-if="ventana=='concentrado'">
                        <!--cinta apartado-->
                             <div class="row justify-content-center align-items-start ">
@@ -118,8 +120,8 @@ $_SESSION['usuario'];
                                 <div class="col-12 text-center">
                                     <button class="boton-nuevo" @click="nueva_sugerencia=true"><i class="bi bi-plus-circle"></i> Nueva Sugerencia</button>
                                 </div>
-                                <div class="div-scroll">
-                                    <table class="table tablaConcentrado table-striped">
+                                <div class="div-scroll mt-3">
+                                    <table class="table tablaConcentrado table-striped table-bordered">
                                         <thead>
                                             <tr>
                                             <th scope="col">#</th>
@@ -160,17 +162,17 @@ $_SESSION['usuario'];
                                             <!--Nueva Sugerencia-->
                                             <tr v-show="nueva_sugerencia" class="align-middle">
                                                 <th scope="row">0</th>
-                                                <td><button type="button" class="btn btn-success" title="Guardar"><i class="bi bi-check-circle"></i></button></td>
+                                                <td><button type="button" class="btn btn-success" title="Guardar" @click="guardar_nueva_sugerencia"><i class="bi bi-check-circle"></i></button></td>
                                                 <td><label>0%</label></td>
-                                                <td><input class="inputs-concentrado input-nom-sugerencia" type="text"  name="nombre_sugerencia" v-model="var_nombre_sugerencias"></input></td>
-                                                <td><input class="inputs-concentrado" type="text" name="folio" ></input></td>
+                                                <td><textarea class="inputs-concentrado text-area" type="text"  name="nombre_sugerencia" v-model="var_nombre_sugerencias"></textarea></td>
+                                                <td><input class="inputs-concentrado" type="text" name="folio" v-model="var_folio"></input></td>
                                                 <td><label >En Factibilidad</label></td>
-                                                <td><textarea class="inputs-concentrado text-area" type="text"  name="causa_no_factibilidad" ></textarea><label style="display:none;">Otto</label></td>
-                                                <td><textarea class="inputs-concentrado text-area" type="text" name="situacion_actual" ></textarea><label style="display:none;">Otto</label></td>
-                                                <td><textarea class="inputs-concentrado text-area" type="text"  name="idea_propuesta" ></textarea><label style="display:none;">Otto</label></td>
-                                                <td><input class="inputs-concentrado" type="text"  name="nomina" ></input><label style="display:none;">Otto</label></td>
-                                                <td><input class="inputs-concentrado" type="text"  name="colaborador" ></input><label style="display:none;">Otto</label></td>
-                                                <td><input class="inputs-concentrado" type="text"  name="puesto" ></input><label style="display:none;">Otto</label></td>
+                                                <td><textarea class="inputs-concentrado text-area" type="text"  m-model="var_causa_no_factibilidad" ></textarea></td>
+                                                <td><textarea class="inputs-concentrado text-area" type="text" m-model="var_situacion_actual" ></textarea></td>
+                                                <td><textarea class="inputs-concentrado text-area" type="text"  v-model="var_idea_propuesta" ></textarea></td>
+                                                <td><input class="inputs-concentrado" type="text"  v-model="var_nomina" ></input></td>
+                                                <td><input class="inputs-concentrado" type="text"  v-model="var_colaborador" ></input></td>
+                                                <td><input class="inputs-concentrado" type="text"  v-model="var_puesto" ></input></td>
                                                 <td>
                                                     <select class="inputs-concentrado" name="select_planta">
                                                             <option v-for="planta in lista_planta" :key="planta" :value="planta">{{planta}}</option>
@@ -222,12 +224,12 @@ $_SESSION['usuario'];
                                                 <td><input class="inputs-concentrado" type="date" value="fecha compromiso" name="fecha_compromiso" ></input></td>
                                                 <td><input class="inputs-concentrado" type="date" value="fecha real de cierre" name="fecha_real_de_cierre" ></input></td>
                                                 <td><input class="inputs-concentrado" type="text" value="" name="analista_de_factibilidad" ></td>
-                                                <td><input class="inputs-concentrado" type="text" value="" name="impacto planeado" ></input><label style="display:none;">Otto</label></td>
-                                                <td><input class="inputs-concentrado" type="text" value="" name="impacto_real" ></input><label style="display:none;">Otto</label></td>
-                                                <td><input class="inputs-concentrado" type="text" value="creado por" name="creado_por" ></input><label style="display:none;">Otto</label></td>
-                                                <td><input class="inputs-concentrado" type="text" value="creado" name="creado_fecha" ></input><label style="display:none;">Otto</label></td>
-                                                <td><input class="inputs-concentrado" type="text" value="modificado por" name="modificado_por" ></input><label style="display:none;">Otto</label></td>
-                                                <td><input class="inputs-concentrado" type="text" value="modificado fecha" name="modificado_fecha" ></input><label style="display:none;">Otto</label></td>
+                                                <td><input class="inputs-concentrado" type="text" value="" name="impacto planeado" ></input></td>
+                                                <td><input class="inputs-concentrado" type="text" value="" name="impacto_real" ></input></td>
+                                                <td><label>{{usuario}}</label></td>
+                                                <td><label><?php echo date("Y/m/d"); ?></label></td>
+                                                <td></input></td>
+                                                <td></input></td>
                                                 <td><button type="button" class="btn btn-danger" title="Eliminar" @click="nueva_sugerencia=false"><i class="bi bi-trash"></button></i></td>
                                             </tr>
                                             <!--Editar Segerencia-->
@@ -273,9 +275,8 @@ $_SESSION['usuario'];
                                     </table>
                                 </div>
                             </div>
-                             <!--fin contenido principal gonher-->
                    </div>
-                  <!--////////////////////////////////////////////////////////-->
+                  <!--////////////////////////////////////////////////////////APARTADO PREMIOS SUGERENCIAS-->
                    <div v-else-if="ventana=='premios'">
                             <!--cinta apartado-->
                             <div class="row justify-content-center align-items-start ">
@@ -326,7 +327,14 @@ $_SESSION['usuario'];
                 nueva_sugerencia:false,
                 actualizar_sugerencia:false,
                 var_nombre_sugerencias:'',
+                var_folio:'',
                 lista_status: [],
+                var_causa_no_factibilidad:'',
+                var_situacion_actual:'',
+                var_idea_propuesta:'',
+                var_nomina:'',
+                var_colaborador:'',
+                var_puesto:'',        
                 lista_planta: [],
                 lista_area: [],
                 lista_area_participante: [],
@@ -336,8 +344,7 @@ $_SESSION['usuario'];
                 lista_tipo_desperdicio: [],
                 objetivo_de_calidadMA: [],
                 objetivo_de_calidadMA_Seleccionados: [],
-                
-            
+                usuario:'<?php echo $_SESSION['usuario']; ?>'
             }
         },
         mounted(){
@@ -379,23 +386,26 @@ $_SESSION['usuario'];
                 console.log(this.lista_impacto_primario);
                 console.log(this.lista_impacto_secundario);
             }),
-            //consultado lista impacto primario
+            //consultado lista tipo desperdicio
             axios.post('lista_tipo_desperdicio.php',{
             }).then(response =>{
                 this.lista_tipo_desperdicio = response.data
                 console.log(this.lista_tipo_desperdicio);
             }),
-            //consultado lista impacto primario
+            //consultado lista objetivo de calidad MA
             axios.post('lista_objetivos_calidad_ma.php',{
             }).then(response =>{
                 this.objetivo_de_calidadMA = response.data
                 console.log(this.objetivo_de_calidadMA);
             }),
             //consultado lista impacto primario
-            axios.post('usuarios_sugerencias.php',{
+            axios.post('consulta_usuario.php',{
+                usuario: this.usuario
             }).then(response =>{
-                this.objetivo_de_calidadMA = response.data
-                console.log(this.objetivo_de_calidadMA);
+                this.usuario = response.data.nombre
+                //console.log(this.usuario = response.data)
+                //this.objetivo_de_calidadMA = response.data
+                //console.log(this.objetivo_de_calidadMA);
             })
         },
         methods:{
@@ -406,8 +416,10 @@ $_SESSION['usuario'];
                    if(dato=='premios'){ this.pintarTres=true}else{this.pintarTres=false}
                    if(dato=='retos'){this.pintarCuatro=true}else{this.pintarCuatro=false}
                    if(dato=='configuracion'){this.pintarCinco=true}else{this.pintarCinco=false}
-                   
-             }
+             },
+                guardar_nueva_sugerencia(){
+                    alert(this.var_nombre_sugerencias+"\n"+this.var_folio+"\n"+this.var_nombre_sugerencias+"\n"+this.var_folio+"\n"+this.var_causa_no_factibilidad+"\n"+this.var_situacion_actual+"\n"+this.var_idea_propuesta+"\n"+this.var_nomina+"\n"+this.var_colaborador+"\n"+this.var_puesto);
+                }
         }
     }
     var mountedApp = Vue.createApp(vue3).mount('#app');
