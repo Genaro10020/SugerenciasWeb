@@ -130,7 +130,7 @@ if ($_SESSION["usuario"]){
                                             <th scope="col">Nombre sugerencias</th>
                                             <th scope="col">Folio</th>
                                             <th scope="col">Status</th>
-                                            <th scope="col">Causa de No factividad</th>
+                                            <th scope="col">Causa de No factibidad</th>
                                             <th scope="col">Situación Actual</th>
                                             <th scope="col">Idea Propuesta</th>
                                             <th scope="col">No. de Nomina</th>
@@ -165,18 +165,19 @@ if ($_SESSION["usuario"]){
                                                 <td><button type="button" class="btn btn-success" title="Guardar" @click="guardar_nueva_sugerencia"><i class="bi bi-check-circle"></i></button></td>
                                                 <td><label>0%</label></td>
                                                 <td><textarea class="inputs-concentrado text-area" type="text"  name="nombre_sugerencia" v-model="var_nombre_sugerencias"></textarea></td>
-                                                <td><input class="inputs-concentrado" type="text" name="folio" v-model="var_folio"></input></td>
-                                                <td><label >En Factibilidad</label></td>
-                                                <td><textarea class="inputs-concentrado text-area" type="text"  m-model="var_causa_no_factibilidad" ></textarea></td>
-                                                <td><textarea class="inputs-concentrado text-area" type="text" m-model="var_situacion_actual" ></textarea></td>
+                                                <td><input class="inputs-concentrado" type="text" v-model="var_folio"></input></td>
+                                                <td><label>En Factibilidad</label></td>
+                                                <td>
+                                                <textarea class="inputs-concentrado text-area" type="text"  v-model="var_causa_no_factibilidad" >{{var_causa_no_factibilidad}}</textarea></td>
+                                                <td><textarea class="inputs-concentrado text-area" type="text" v-model="var_situacion_actual" ></textarea></td>
                                                 <td><textarea class="inputs-concentrado text-area" type="text"  v-model="var_idea_propuesta" ></textarea></td>
                                                 <td><input class="inputs-concentrado" type="text"  v-model="var_nomina" ></input></td>
                                                 <td><input class="inputs-concentrado" type="text"  v-model="var_colaborador" ></input></td>
                                                 <td><input class="inputs-concentrado" type="text"  v-model="var_puesto" ></input></td>
                                                 <td>
-                                                    <select class="inputs-concentrado" name="select_planta">
-                                                            <option v-for="planta in lista_planta" :key="planta" :value="planta">{{planta}}</option>
-                                                    </select>
+                                                   <!-- <select class="inputs-concentrado">
+                                                            <option v-for="planta in lista_planta" :key="planta" :value="planta">{{planta}}</option>{{planta}}
+                                                    </select>-->
                                                 </td>
                                                 <td>
                                                     <select class="inputs-concentrado" name="select_area">
@@ -326,17 +327,21 @@ if ($_SESSION["usuario"]){
                 pintarCinco: false,
                 nueva_sugerencia:false,
                 actualizar_sugerencia:false,
+                var_cumplimiento:'0',
                 var_nombre_sugerencias:'',
                 var_folio:'',
                 lista_status: [],
+                var_status:'En Factibilidad',
                 var_causa_no_factibilidad:'',
                 var_situacion_actual:'',
                 var_idea_propuesta:'',
                 var_nomina:'',
                 var_colaborador:'',
-                var_puesto:'',        
+                var_puesto:'', 
+                var_     
                 lista_planta: [],
                 lista_area: [],
+                var_area:'',
                 lista_area_participante: [],
                 lista_subarea: [],
                 lista_impacto_primario: [],
@@ -417,9 +422,9 @@ if ($_SESSION["usuario"]){
                    if(dato=='retos'){this.pintarCuatro=true}else{this.pintarCuatro=false}
                    if(dato=='configuracion'){this.pintarCinco=true}else{this.pintarCinco=false}
              },
-                guardar_nueva_sugerencia(){
-                    alert(this.var_nombre_sugerencias+"\n"+this.var_folio+"\n"+this.var_nombre_sugerencias+"\n"+this.var_folio+"\n"+this.var_causa_no_factibilidad+"\n"+this.var_situacion_actual+"\n"+this.var_idea_propuesta+"\n"+this.var_nomina+"\n"+this.var_colaborador+"\n"+this.var_puesto);
-                }
+            guardar_nueva_sugerencia(){
+                alert(this.var_cumplimiento+"\n"+this.var_nombre_sugerencias+"\n"+this.var_folio+"\n"+this.var_status+"\n"+this.var_causa_no_factibilidad+"\n"+this.var_situacion_actual+"\n"+this.var_idea_propuesta+"\n"+this.var_nomina+"\n"+this.var_colaborador+"\n"+this.var_puesto+"\n"+this.var_area);
+            }
         }
     }
     var mountedApp = Vue.createApp(vue3).mount('#app');
