@@ -57,10 +57,6 @@ if ($_SESSION["usuario"]){
                 /*box-shadow: 0 0px 0px rgba(0, 133, 180, 1)inset, 0 0 4px rgba( 187, 16, 16, 1);*/
                 outline: 0 none;
                 }
-
-                
-
-              
     </style>
     <div id="app" class="container-fluid  " >
                 <!--BARRA SUPERIOR-->
@@ -117,8 +113,14 @@ if ($_SESSION["usuario"]){
                         <!--fin cinta apartado-->
                             <!-- contenido principal gonher-->
                             <div class="row m-lg-5">
-                                <div class="col-12 text-center">
-                                    <button class="boton-nuevo" @click="nueva_sugerencia=true"><i class="bi bi-plus-circle"></i> Nueva Sugerencia</button>
+                                <div class="col-12 text-center inline-block">
+                                    <div class="">
+                                        <button class="boton-nuevo" @click="nueva_sugerencia=true"><i class="bi bi-plus-circle"></i> Nueva Sugerencia</button>
+                                    </div>
+                                    <div class="mt-1" v-show="nueva_sugerencia==true" >
+                                        <button type="button" class="btn btn-primary" title="Guardar" @click="guardar_nueva_sugerencia"><i class="bi bi-check-circle"></i></button>
+                                    </div>
+                                   
                                 </div>
                                 <div class="div-scroll mt-3">
                                     <table class="table tablaConcentrado table-striped table-bordered">
@@ -141,7 +143,7 @@ if ($_SESSION["usuario"]){
                                             <th scope="col">Área del Participante</th>
                                             <th scope="col">Subárea</th>
                                             <th scope="col">Impacto Primario</th>
-                                            <th scope="col">Impacto Secuandario</th>
+                                            <th scope="col">Impacto Secundario</th>
                                             <th scope="col">Tipo de Desperdicio</th>
                                             <th scope="col">Objetivos de Calidad M.A.</th>
                                             <th scope="col">Fecha de Sugerencia</th>
@@ -162,7 +164,7 @@ if ($_SESSION["usuario"]){
                                             <!--Nueva Sugerencia-->
                                             <tr v-show="nueva_sugerencia" class="align-middle">
                                                 <th scope="row">0</th>
-                                                <td><button type="button" class="btn btn-success" title="Guardar" @click="guardar_nueva_sugerencia"><i class="bi bi-check-circle"></i></button></td>
+                                                <td></td>
                                                 <td><label>0%</label></td>
                                                 <td><textarea class="inputs-concentrado text-area" type="text"  name="nombre_sugerencia" v-model="var_nombre_sugerencias"></textarea></td>
                                                 <td><input class="inputs-concentrado" type="text" v-model="var_folio"></input></td>
@@ -175,58 +177,65 @@ if ($_SESSION["usuario"]){
                                                 <td><input class="inputs-concentrado" type="text"  v-model="var_colaborador" ></input></td>
                                                 <td><input class="inputs-concentrado" type="text"  v-model="var_puesto" ></input></td>
                                                 <td>
-                                                   <!-- <select class="inputs-concentrado">
-                                                            <option v-for="planta in lista_planta" :key="planta" :value="planta">{{planta}}</option>{{planta}}
-                                                    </select>-->
+                                                    <select class="inputs-concentrado" v-model="var_planta" >
+                                                            <option value=""  disabled>Seleccione la planta...</option>
+                                                            <option v-for="planta in lista_planta" :key="planta" :value="planta">{{planta}}</option>
+                                                    </select>
                                                 </td>
                                                 <td>
-                                                    <select class="inputs-concentrado" name="select_area">
+                                                    <select class="inputs-concentrado" v-model="var_area">
+                                                            <option value="" disabled>Seleccione el área...</option>
                                                             <option v-for="area in lista_area" :key="area" :value="area">{{area}}</option>
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <select class="inputs-concentrado" name="select_area_participante">
+                                                    <select class="inputs-concentrado" v-model="var_area_participante">
+                                                        <option value="" disabled>Seleccione área participante...</option>
                                                         <option v-for="area_participante in lista_area_participante" :key="area_participante" :value="area_participante">{{area_participante}}</option>
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <select class="inputs-concentrado" name="select_subarea">
+                                                    <select class="inputs-concentrado" v-model="var_subarea">
+                                                        <option value="" disabled>Seleccione Subárea...</option>
                                                         <option v-for="subarea in lista_subarea" :key="subarea" :value="subarea">{{subarea}}</option>
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <select class="inputs-concentrado" name="select_impacto_primario">
+                                                    <select class="inputs-concentrado" v-model="var_impacto_primario">
+                                                        <option value="" disabled>Seleccione impacto primario...</option>
                                                         <option v-for="impacto_primario in lista_impacto_primario" :key="impacto_primario" :value="impacto_primario">{{impacto_primario}}</option>
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <select class="inputs-concentrado" name="select_impacto_secundario">
+                                                    <select class="inputs-concentrado" v-model="var_impacto_secundario">
+                                                        <option value="" disabled>Seleccione impacto secundario...</option>
                                                         <option v-for="impacto_secundario in lista_impacto_secundario" :key="impacto_secundario" :value="impacto_secundario">{{impacto_secundario}}</option>
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <select class="inputs-concentrado" name="select_tipo_desperdicio">
+                                                    <select class="inputs-concentrado" v-model="var_tipo_desperdicio">
+                                                        <option value="" disabled>Seleccione tipo desperdicio..</option>
                                                         <option v-for="tipo_desperdicio in lista_tipo_desperdicio" :key="tipo_desperdicio" :value="tipo_desperdicio">{{tipo_desperdicio}}</option>
                                                     </select>
                                                 </td>
                                                 <td>
                                                 <div  class="inputs-concentrado" style="overflow-y: scroll; max-height:50px;">
-                                                <label>{{objetivo_de_calidadMA_Seleccionados}}</label>
+                                                <label>{{var_objetivo_de_calidadMA}}</label>
                                                     <ul>
                                                         <li v-for="objetivo_de_calidad in objetivo_de_calidadMA">
-                                                            <input type="checkbox" :value="objetivo_de_calidad" v-model="objetivo_de_calidadMA_Seleccionados">
+                                                            <input type="checkbox" :value="objetivo_de_calidad" v-model="var_objetivo_de_calidadMA">
                                                             <label for="objetivo_de_calidad">{{objetivo_de_calidad}}</label>
                                                         </li>
                                                     </ul>
                                                 </div>
                                                 </td>
-                                                <td><input class="inputs-concentrado" type="date" value="fecha de sugerencias" name="fecha_de_sugerencias" ></input></td>
-                                                <td><input class="inputs-concentrado" type="date" value="fecha de inicio" name="fecha_de_inicio" ></input></td>
-                                                <td><input class="inputs-concentrado" type="date" value="fecha compromiso" name="fecha_compromiso" ></input></td>
-                                                <td><input class="inputs-concentrado" type="date" value="fecha real de cierre" name="fecha_real_de_cierre" ></input></td>
-                                                <td><input class="inputs-concentrado" type="text" value="" name="analista_de_factibilidad" ></td>
-                                                <td><input class="inputs-concentrado" type="text" value="" name="impacto planeado" ></input></td>
-                                                <td><input class="inputs-concentrado" type="text" value="" name="impacto_real" ></input></td>
+                                                <td><input class="inputs-concentrado" type="date" v-model="var_fecha_sugerencia" name="fecha_de_sugerencias" ></input></td>
+                                                <td><input class="inputs-concentrado" type="date" v-model="var_fecha_inicio"  name="fecha_de_inicio" ></input></td>
+                                                <td><input class="inputs-concentrado" type="date" v-model="var_fecha_compromiso"  name="fecha_compromiso" ></input></td>
+                                                <td><input class="inputs-concentrado" type="date" v-model="var_fecha_real_de_cierre"  name="fecha_real_de_cierre" ></input></td>
+                                                <td><input class="inputs-concentrado" type="text" v-model="var_analista_de_factibilidad"  name="analista_de_factibilidad" ></td>
+                                                <td><input class="inputs-concentrado" type="text" v-model="var_impacto_planeado" name="impacto planeado" ></input></td>
+                                                <td><input class="inputs-concentrado" type="text" v-model="var_impacto_real" name="impacto_real" ></input></td>
                                                 <td><label>{{usuario}}</label></td>
                                                 <td><label><?php echo date("Y/m/d"); ?></label></td>
                                                 <td></input></td>
@@ -293,7 +302,7 @@ if ($_SESSION["usuario"]){
                    <div v-else-if="ventana=='retos'">
                             <div class="row justify-content-center align-items-start ">
                                 <div class="cintilla col-12 text-center">
-                                   <b> ADMINISTRACIÓN DE RETOS </b>
+                                   <b> ADMINISTRACIÓN DE RETOS</b>
                                 </div>
                             </div>
                    </div>
@@ -338,18 +347,30 @@ if ($_SESSION["usuario"]){
                 var_nomina:'',
                 var_colaborador:'',
                 var_puesto:'', 
-                var_     
                 lista_planta: [],
+                var_planta:'',
                 lista_area: [],
                 var_area:'',
                 lista_area_participante: [],
+                var_area_participante:'',    
                 lista_subarea: [],
+                var_subarea:'',
                 lista_impacto_primario: [],
+                var_impacto_primario:'',
                 lista_impacto_secundario: [],
+                var_impacto_secundario:'',
                 lista_tipo_desperdicio: [],
+                var_tipo_desperdicio:'',
                 objetivo_de_calidadMA: [],
-                objetivo_de_calidadMA_Seleccionados: [],
-                usuario:'<?php echo $_SESSION['usuario']; ?>'
+                var_objetivo_de_calidadMA: [],
+                var_fecha_sugerencia:'',
+                var_fecha_inicio:'',
+                var_fecha_compromiso:'',
+                var_fecha_real_de_cierre:'',
+                var_analista_de_factibilidad:'',
+                var_impacto_planeado:'',
+                var_impacto_real:'',
+                usuario:'<?php echo $_SESSION['usuario']; ?>'   
             }
         },
         mounted(){
@@ -423,13 +444,47 @@ if ($_SESSION["usuario"]){
                    if(dato=='configuracion'){this.pintarCinco=true}else{this.pintarCinco=false}
              },
             guardar_nueva_sugerencia(){
-                alert(this.var_cumplimiento+"\n"+this.var_nombre_sugerencias+"\n"+this.var_folio+"\n"+this.var_status+"\n"+this.var_causa_no_factibilidad+"\n"+this.var_situacion_actual+"\n"+this.var_idea_propuesta+"\n"+this.var_nomina+"\n"+this.var_colaborador+"\n"+this.var_puesto+"\n"+this.var_area);
+                /*alert(this.var_cumplimiento+"\n"+this.var_nombre_sugerencias+"\n"+this.var_folio+"\n"+this.var_status+"\n"+
+                this.var_causa_no_factibilidad+"\n"+this.var_situacion_actual+"\n"+this.var_idea_propuesta+"\n"+this.var_nomina+"\n"+
+                this.var_colaborador+"\n"+this.var_puesto+"\n"+this.var_planta+"\n"+this.var_area+"\n"+this.var_area_participante+"\n"+
+                this.var_subarea+"\n"+this.var_impacto_primario+"\n"+this.var_impacto_secundario+"\n"+this.var_tipo_desperdicio+"\n"+
+                this.var_objetivo_de_calidadMA+"\n"+this.var_fecha_sugerencia+"\n"+this.var_fecha_inicio+"\n"+this.var_fecha_compromiso+"\n"+this.var_fecha_real_de_cierre+"\n"+
+                this.var_analista_de_factibilidad+"\n"+this.var_impacto_planeado+"\n"+this.var_impacto_real+"\n"+this.usuario);*/
+
+                axios.post('guardar_nueva_sugerencia.php',{
+                    cumplimiento: this.var_cumplimiento,
+                    nombre_sugerencia: this.var_nombre_sugerencias,
+                    folio: this.var_folio,
+                    status: this.var_status,
+                    causa_no_factibilidad: this.causa_no_factibilidad,
+                    situacion_actual: this.var_situacion_actual,
+                    idea_propuesta: this.var_idea_propuesta,
+                    nomina: this.var_nomina,
+                    colaborador: this.var_colaborador,
+                    puesto: this.var_puesto,
+                    planta: this.var_planta,
+                    area: this.var_area,
+                    area_participante: this.var_area_participante,
+                    subarea: this.var_subarea,
+                    impacto_primario: this.var_impacto_primario,
+                    impacto_secundario: this.var_impacto_secundario,
+                    tipo_desperdicio: this.var_tipo_desperdicio,
+                    objetivo_de_calidadMA: this.var_objetivo_de_calidadMA,
+                    fecha_sugerencia: this.var_fecha_sugerencia,
+                    fecha_inicio: this.var_fecha_inicio,
+                    fecha_compromiso: this.var_fecha_compromiso,
+                    fecha_compromiso: this.var_fecha_real_de_cierre,
+                    analista_de_factibilidad: this.var_analista_de_factibilidad,
+                    impacto_planeado: this.var_impacto_planeado,
+                    impacto_real: this.var_impacto_real,
+                }).then(response =>{
+                    console.log(response.data)
+                })
             }
         }
     }
     var mountedApp = Vue.createApp(vue3).mount('#app');
 </script>
-
 </body>
 </html>  
 <?php
