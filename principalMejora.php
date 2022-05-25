@@ -1,7 +1,6 @@
 <?php
 session_start();
 if ($_SESSION["usuario"]){ 
-  
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -450,13 +449,13 @@ if ($_SESSION["usuario"]){
                 this.var_subarea+"\n"+this.var_impacto_primario+"\n"+this.var_impacto_secundario+"\n"+this.var_tipo_desperdicio+"\n"+
                 this.var_objetivo_de_calidadMA+"\n"+this.var_fecha_sugerencia+"\n"+this.var_fecha_inicio+"\n"+this.var_fecha_compromiso+"\n"+this.var_fecha_real_de_cierre+"\n"+
                 this.var_analista_de_factibilidad+"\n"+this.var_impacto_planeado+"\n"+this.var_impacto_real+"\n"+this.usuario);*/
-
+                this.nueva_sugerencia=false;
                 axios.post('guardar_nueva_sugerencia.php',{
                     cumplimiento: this.var_cumplimiento,
                     nombre_sugerencia: this.var_nombre_sugerencias,
                     folio: this.var_folio,
                     status: this.var_status,
-                    causa_no_factibilidad: this.causa_no_factibilidad,
+                    causa_no_factibilidad: this.var_causa_no_factibilidad,
                     situacion_actual: this.var_situacion_actual,
                     idea_propuesta: this.var_idea_propuesta,
                     nomina: this.var_nomina,
@@ -473,12 +472,17 @@ if ($_SESSION["usuario"]){
                     fecha_sugerencia: this.var_fecha_sugerencia,
                     fecha_inicio: this.var_fecha_inicio,
                     fecha_compromiso: this.var_fecha_compromiso,
-                    fecha_compromiso: this.var_fecha_real_de_cierre,
+                    fecha_real_de_cierre: this.var_fecha_real_de_cierre,
                     analista_de_factibilidad: this.var_analista_de_factibilidad,
                     impacto_planeado: this.var_impacto_planeado,
                     impacto_real: this.var_impacto_real,
+                    usuario: this.usuario,
                 }).then(response =>{
-                    console.log(response.data)
+                        console.log(response.data)
+                        if(response.data==true)
+                            {
+                                console.log("guardado con éxito");
+                            }
                 })
             }
         }
