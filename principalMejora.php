@@ -122,7 +122,7 @@ if ($_SESSION["usuario"]){
                                    
                                 </div>
                                 <div class="div-scroll mt-3">
-                                    <table class="table tablaConcentrado table-striped table-bordered">
+                                    <table class="table tablaConcentrado table-striped table-bordered" style=" height:10px">
                                         <thead>
                                             <tr>
                                             <th scope="col">#</th>
@@ -241,13 +241,13 @@ if ($_SESSION["usuario"]){
                                                 <td></input></td>
                                                 <td><button type="button" class="btn btn-danger" title="Eliminar" @click="nueva_sugerencia=false"><i class="bi bi-trash"></button></i></td>
                                             </tr>
-                                            <!--Editar Segerencia -->
-                                            <tr class="align-middle" v-for="concentrado in concentrado_sugerencias" :key="concentrado.id" >
-                                                <th scope="row">1</th>
+                                            <!--Consulta/Editar Segerencia -->
+                                            <tr class="align-middle" v-for="(concentrado, index) in concentrado_sugerencias" :key="concentrado.id" >
+                                                <th scope="row">{{index+1}}</th>
                                                 <td><button type="button" class="btn btn-warning" title="Actualizar" @click="mostrar_id(concentrado.id)"><i class="bi bi-pen"></i></button></td>
                                                 <td><label>0%</label></td>
                                                 <td><textarea class="inputs-concentrado text-area" type="text"  name="nombre_sugerencia" v-model="var_nombre_sugerencias" v-if="actualizar_sugerencia==concentrado.id"></textarea> <label v-else>{{concentrado.nombre_sugerencia}}</label></td>
-                                                <td><input class="inputs-concentrado" type="text" v-model="var_folio"></input></td>
+                                                <td><input class="inputs-concentrado" type="text" v-model="var_folio" v-if="actualizar_sugerencia==concentrado.id"></input> <label v-else>{{concentrado.folio}}</label></td>
                                                 <td><label>En Factibilidad</label></td>
                                                 <td>
                                                 <textarea class="inputs-concentrado text-area" type="text"  v-model="var_causa_no_factibilidad" >{{var_causa_no_factibilidad}}</textarea></td>
@@ -376,6 +376,7 @@ if ($_SESSION["usuario"]){
                 pintarCuatro:false,
                 pintarCinco: false,
                 nueva_sugerencia:false,
+                contador: 0,
                 actualizar_sugerencia:'',
                 concentrado_sugerencias:[],
                 var_cumplimiento:'0',
@@ -535,8 +536,9 @@ if ($_SESSION["usuario"]){
                 })
             },
             mostrar_id(id){
-                this.actualizar_sugerencia = id;
-                alert(id)
+                this.var_nombre_sugerencias=this.concentrado_sugerencias[id].folio
+                this.actualizar_sugerencia = id
+                alert(this.var_nombre_sugerencias)
             }
         }
     }
