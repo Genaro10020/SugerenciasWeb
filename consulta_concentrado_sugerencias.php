@@ -12,7 +12,7 @@
     }*/
     while ($fila=$query -> fetch_array()) {
         # code...
-        $producto[] = array_map('utf8_encode',$fila);
+        $producto[] = $fila;
     }
     
     echo json_encode($producto);
