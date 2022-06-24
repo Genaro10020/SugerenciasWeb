@@ -316,15 +316,15 @@ if ($_SESSION["usuario"]){
                                                 </div>
                                                 <label v-else>{{concentrado.objetivo_de_calidad_ma}}</label>
                                                 </td>
-                                                <td><input class="inputs-concentrado" type="date" v-model="var_fecha_sugerencia" name="fecha_de_sugerencias" ></input></td>
-                                                <td><input class="inputs-concentrado" type="date" v-model="var_fecha_inicio"  name="fecha_de_inicio" ></input></td>
-                                                <td><input class="inputs-concentrado" type="date" v-model="var_fecha_compromiso"  name="fecha_compromiso" ></input></td>
-                                                <td><input class="inputs-concentrado" type="date" v-model="var_fecha_real_de_cierre"  name="fecha_real_de_cierre" ></input></td>
-                                                <td><input class="inputs-concentrado" type="text" v-model="var_analista_de_factibilidad"  name="analista_de_factibilidad" ></td>
-                                                <td><input class="inputs-concentrado" type="text" v-model="var_impacto_planeado" name="impacto planeado" ></input></td>
-                                                <td><input class="inputs-concentrado" type="text" v-model="var_impacto_real" name="impacto_real" ></input></td>
+                                                <td><input class="inputs-concentrado" type="date" v-model="var_fecha_sugerencia" v-if="actualizar_sugerencia==index+1"></input><label v-else>{{concentrado.fecha_de_sugerencia}}</label></td>
+                                                <td><input class="inputs-concentrado" type="date" v-model="var_fecha_inicio" v-if="actualizar_sugerencia==index+1"></input><label v-else>{{concentrado.fecha_de_inicio}}</label></td>
+                                                <td><input class="inputs-concentrado" type="date" v-model="var_fecha_compromiso" v-if="actualizar_sugerencia==index+1"></input><label v-else>{{concentrado.fecha_compromiso}}</label></td>
+                                                <td><input class="inputs-concentrado" type="date" v-model="var_fecha_real_de_cierre" v-if="actualizar_sugerencia==index+1"></input><label v-else>{{concentrado.fecha_real_cierre}}</label></td>
+                                                <td><input class="inputs-concentrado" type="text" v-model="var_analista_de_factibilidad" name="analista_de_factibilidad" v-if="actualizar_sugerencia==index+1"><label v-else>{{concentrado.analista_de_factibilidad}}</label></td>
+                                                <td><input class="inputs-concentrado" type="text" v-model="var_impacto_planeado" name="impacto planeado" v-if="actualizar_sugerencia==index+1"></input><label v-else>{{concentrado.impacto_planeado}}</label></td>
+                                                <td><input class="inputs-concentrado" type="text" v-model="var_impacto_real" name="impacto_real" v-if="actualizar_sugerencia==index+1"></input><label v-else>{{concentrado.impacto_real}}</label></td>
                                                 <td><label>{{usuario}}</label></td>
-                                                <td><label><?php echo date("Y/m/d"); ?></label></td>
+                                                <td><label v-if="actualizar_sugerencia==index+1"><?php echo date("Y/m/d"); ?></label><label v-else>{{concentrado.creado}}</label></td>
                                                 <td></input></td>
                                                 <td></input></td>
                                                 <td><button type="button" class="btn btn-danger" title="Eliminar"><i class="bi bi-trash"></button></i></td>
@@ -566,9 +566,11 @@ if ($_SESSION["usuario"]){
                 var longitud = arr.length
                 this.var_objetivo_de_calidadMA.splice(0,15);
                 console.log(longitud)
-                for (var i = 0; i < arr.length; i++){
-                            this.var_objetivo_de_calidadMA[i] = arr[i]
-                 }
+                if(arr.length>1){
+                    for (var i = 0; i < arr.length; i++){
+                                this.var_objetivo_de_calidadMA[i] = arr[i]
+                    }
+                }
             }
         }   
     }
