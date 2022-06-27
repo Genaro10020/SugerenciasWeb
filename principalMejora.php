@@ -114,7 +114,7 @@ if ($_SESSION["usuario"]){
                             <div class="row m-lg-5">
                                 <div class="col-12 text-center inline-block">
                                     <div class="">
-                                        <button class="boton-nuevo" @click="nueva_sugerencia=true"><i class="bi bi-plus-circle"></i> Nueva Sugerencia</button>
+                                        <button class="boton-nuevo" @click="agregar_nueva_sugerencia, mostrar_id(0)"><i class="bi bi-plus-circle"></i> Nueva Sugerencia</button>
                                     </div>
                                     <div class="mt-1" v-show="nueva_sugerencia==true" >
                                         <button type="button" class="btn btn-primary" title="Guardar" @click="guardar_nueva_sugerencia"><i class="bi bi-check-circle"></i></button>
@@ -126,7 +126,7 @@ if ($_SESSION["usuario"]){
                                         <thead>
                                             <tr>
                                             <th scope="col">#</th>
-                                            <th scope="col">Editar/Guardar</th>
+                                            <th scope="col">Editar/Cancelar</th>
                                             <th scope="col">%Cumplimiento</th>
                                             <th scope="col">Nombre sugerencias</th>
                                             <th scope="col">Folio</th>
@@ -163,7 +163,7 @@ if ($_SESSION["usuario"]){
                                             <!--Nueva Sugerencia-->
                                             <tr v-show="nueva_sugerencia" class="align-middle">
                                                 <th scope="row">0</th>
-                                                <td></td>
+                                                <td> <button type="button" class="btn btn-danger" title="Cancelar" @click="nueva_sugerencia=false"><i class="bi bi-pen" ></i></button> </td>
                                                 <td><label>0%</label></td>
                                                 <td><textarea class="inputs-concentrado text-area" type="text"  name="nombre_sugerencia" v-model="var_nombre_sugerencias"></textarea></td>
                                                 <td><input class="inputs-concentrado" type="text" v-model="var_folio"></input></td>
@@ -244,7 +244,11 @@ if ($_SESSION["usuario"]){
                                             <!--Consulta/Editar Segerencia -->
                                             <tr class="align-middle" v-for="(concentrado, index) in concentrado_sugerencias" :key="concentrado.id" >
                                                 <th scope="row">{{index+1}}<br>{{concentrado.id}}</th>
-                                                <td><button type="button" class="btn btn-warning" title="Actualizar" @click="mostrar_id(index+1)"><i class="bi bi-pen"></i></button></td>
+                                                <td>
+                                                    <button type="button" class="btn btn-danger me-2" title="Cancelar" @click="mostrar_id('')" v-if="actualizar_sugerencia==index+1"><i class="bi bi-pen" ></i></button>
+                                                    <button type="button" class="btn btn-primary" title="Guardar" @click="PENDIENTE" v-if="actualizar_sugerencia==index+1"><i class="bi bi-check-circle"></i></button>
+                                                    <button type="button" class="btn btn-warning" title="Actualizar" @click="mostrar_id(index+1)" v-else><i class="bi bi-pen" ></i></button>
+                                                </td>
                                                 <td><label>0%</label></td>
                                                 <td><textarea class="inputs-concentrado text-area" type="text"  name="nombre_sugerencia" v-model="var_nombre_sugerencias" v-if="actualizar_sugerencia==index+1"></textarea> <label v-else>{{concentrado.nombre_sugerencia}}</label></td>
                                                 <td><input class="inputs-concentrado" type="text" v-model="var_folio" v-if="actualizar_sugerencia==index+1"></input> <label v-else>{{concentrado.folio}}</label></td>
@@ -327,7 +331,7 @@ if ($_SESSION["usuario"]){
                                                 <td><label v-if="actualizar_sugerencia==index+1"><?php echo date("Y/m/d"); ?></label><label v-else>{{concentrado.creado}}</label></td>
                                                 <td></input></td>
                                                 <td></input></td>
-                                                <td><button type="button" class="btn btn-danger" title="Eliminar"><i class="bi bi-trash"></button></i></td>
+                                                <td><button type="button" class="btn btn-danger" title="Eliminar" @click="eliminar_sugerencia(concentrado.id)"><i class="bi bi-trash"></button></i></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -499,6 +503,25 @@ if ($_SESSION["usuario"]){
                    if(dato=='retos'){this.pintarCuatro=true}else{this.pintarCuatro=false}
                    if(dato=='configuracion'){this.pintarCinco=true}else{this.pintarCinco=false}
              },
+            /*agregar_nueva_sugerencia(){
+                this.var_nombre_sugerencias=''
+                this.var_folio=''
+                this.var_causa_no_factibilidad=''
+                this.var_situacion_actual = ''
+                this.var_idea_propuesta = ''
+                this.var_nomina = ''
+                this.var_colaborador = ''
+                this.var_puesto = ''
+                this.var_planta = ''
+                this.var_area = ''
+                this.var_area_participante = ''
+                this.var_subarea = ''
+                this.var_impacto_primario = ''
+                this.var_impacto_secundario = ''
+                this.var_tipo_desperdicio = ''
+                this.var_objetivo_de_calidadMA.splice(0,15);
+                this.nueva_sugerencia=true;
+            },*/
             guardar_nueva_sugerencia(){
                 /*alert(this.var_cumplimiento+"\n"+this.var_nombre_sugerencias+"\n"+this.var_folio+"\n"+this.var_status+"\n"+
                 this.var_causa_no_factibilidad+"\n"+this.var_situacion_actual+"\n"+this.var_idea_propuesta+"\n"+this.var_nomina+"\n"+
@@ -535,6 +558,7 @@ if ($_SESSION["usuario"]){
                     impacto_real: this.var_impacto_real,
                     usuario: this.usuario,
                 }).then(response =>{
+                    this.consultado_concentrado()
                         /*console.log(response.data)
                         if(response.data==true)
                             {
@@ -543,34 +567,74 @@ if ($_SESSION["usuario"]){
                 })
             },
             mostrar_id(id){
-                var posicion=id
-                this.actualizar_sugerencia = posicion
-                //alert(this.actualizar_sugerencia)
+                    var posicion=id
+                    console.log(posicion)
+                    this.actualizar_sugerencia = posicion
+                if(id=="0"){// nueva sugerencia
+                    this.var_nombre_sugerencias=''
+                    this.var_folio=''
+                    this.var_causa_no_factibilidad=''
+                    this.var_situacion_actual = ''
+                    this.var_idea_propuesta = ''
+                    this.var_nomina = ''
+                    this.var_colaborador = ''
+                    this.var_puesto = ''
+                    this.var_planta = ''
+                    this.var_area = ''
+                    this.var_area_participante = ''
+                    this.var_subarea = ''
+                    this.var_impacto_primario = ''
+                    this.var_impacto_secundario = ''
+                    this.var_tipo_desperdicio = ''
+                    this.var_objetivo_de_calidadMA.splice(0,15)
+                    this.nueva_sugerencia=true
+                } else if (id==""){//cacelar actualizar
 
-                this.var_nombre_sugerencias=this.concentrado_sugerencias[posicion-1].nombre_sugerencia
-                this.var_folio=this.concentrado_sugerencias[posicion-1].folio
-                this.var_causa_no_factibilidad=this.concentrado_sugerencias[posicion-1].causa_no_factibilidad
-                this.var_situacion_actual = this.concentrado_sugerencias[posicion-1].situacion_actual
-                this.var_idea_propuesta = this.concentrado_sugerencias[posicion-1].idea_propuesta
-                this.var_nomina = this.concentrado_sugerencias[posicion-1].numero_nomina
-                this.var_colaborador = this.concentrado_sugerencias[posicion-1].colaborador
-                this.var_puesto = this.concentrado_sugerencias[posicion-1].puesto
-                this.var_planta = this.concentrado_sugerencias[posicion-1].planta
-                this.var_area = this.concentrado_sugerencias[posicion-1].area
-                this.var_area_participante = this.concentrado_sugerencias[posicion-1].area_participante
-                this.var_subarea = this.concentrado_sugerencias[posicion-1].subarea
-                this.var_impacto_primario = this.concentrado_sugerencias[posicion-1].impacto_primario
-                this.var_impacto_secundario = this.concentrado_sugerencias[posicion-1].impacto_secundario
-                this.var_tipo_desperdicio = this.concentrado_sugerencias[posicion-1].tipo_de_desperdicio
-                var arr = this.concentrado_sugerencias[posicion-1].objetivo_de_calidad_ma.split(',')
-                var longitud = arr.length
-                this.var_objetivo_de_calidadMA.splice(0,15);
-                console.log(longitud)
-                if(arr.length>1){
-                    for (var i = 0; i < arr.length; i++){
-                                this.var_objetivo_de_calidadMA[i] = arr[i]
+                } else {//actualizar sugerencias
+                    this.nueva_sugerencia=false;
+                    this.var_nombre_sugerencias=this.concentrado_sugerencias[posicion-1].nombre_sugerencia
+                    this.var_folio=this.concentrado_sugerencias[posicion-1].folio
+                    this.var_causa_no_factibilidad=this.concentrado_sugerencias[posicion-1].causa_no_factibilidad
+                    this.var_situacion_actual = this.concentrado_sugerencias[posicion-1].situacion_actual
+                    this.var_idea_propuesta = this.concentrado_sugerencias[posicion-1].idea_propuesta
+                    this.var_nomina = this.concentrado_sugerencias[posicion-1].numero_nomina
+                    this.var_colaborador = this.concentrado_sugerencias[posicion-1].colaborador
+                    this.var_puesto = this.concentrado_sugerencias[posicion-1].puesto
+                    this.var_planta = this.concentrado_sugerencias[posicion-1].planta
+                    this.var_area = this.concentrado_sugerencias[posicion-1].area
+                    this.var_area_participante = this.concentrado_sugerencias[posicion-1].area_participante
+                    this.var_subarea = this.concentrado_sugerencias[posicion-1].subarea
+                    this.var_impacto_primario = this.concentrado_sugerencias[posicion-1].impacto_primario
+                    this.var_impacto_secundario = this.concentrado_sugerencias[posicion-1].impacto_secundario
+                    this.var_tipo_desperdicio = this.concentrado_sugerencias[posicion-1].tipo_de_desperdicio
+                    var arr = this.concentrado_sugerencias[posicion-1].objetivo_de_calidad_ma.split(',')
+                    var longitud = arr.length
+                    this.var_objetivo_de_calidadMA.splice(0,15);
+                    //console.log(longitud)
+                    if(arr.length>1){
+                        for (var i = 0; i < arr.length; i++){
+                                    this.var_objetivo_de_calidadMA[i] = arr[i]
+                        }
                     }
+
                 }
+            },
+            eliminar_sugerencia(id_eliminar){
+                if(!confirm("¿Desea eliminar la sugerencia?")) return;
+                axios.post('eliminar_sugerencia.php',{
+                    eliminar_sugerencia:id_eliminar
+                }).then(response =>{
+                    if(response.data==true){// si se elimina consultar concentrado nuevamente
+                        this.consultado_concentrado()
+                    }
+                })
+            },
+            consultado_concentrado(){
+                axios.post('consulta_concentrado_sugerencias.php',{
+                            }).then(response =>{
+                                this.concentrado_sugerencias = response.data
+                                console.log(this.concentrado_sugerencias);
+                            })
             }
         }   
     }
