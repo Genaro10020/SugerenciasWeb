@@ -48,8 +48,8 @@
     }
     /*tabla sugerencias*/
         .div-scroll{
-            
-            overflow-x: scroll;
+            max-height: 70vh;
+            overflow: auto;
             white-space: nowrap;
         }
       

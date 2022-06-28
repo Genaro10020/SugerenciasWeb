@@ -117,7 +117,7 @@ if ($_SESSION["usuario"]){
                                         <button class="boton-nuevo" @click="agregar_nueva_sugerencia, mostrar_id(0)"><i class="bi bi-plus-circle"></i> Nueva Sugerencia</button>
                                     </div>
                                     <div class="mt-1" v-show="nueva_sugerencia==true" >
-                                        <button type="button" class="btn btn-primary" title="Guardar" @click="guardar_nueva_sugerencia"><i class="bi bi-check-circle"></i></button>
+                                        
                                     </div>
                                    
                                 </div>
@@ -126,7 +126,7 @@ if ($_SESSION["usuario"]){
                                         <thead>
                                             <tr>
                                             <th scope="col">#</th>
-                                            <th scope="col">Editar/Cancelar</th>
+                                            <th scope="col">Edit-Cancel/Save</th>
                                             <th scope="col">%Cumplimiento</th>
                                             <th scope="col">Nombre sugerencias</th>
                                             <th scope="col">Folio</th>
@@ -161,9 +161,12 @@ if ($_SESSION["usuario"]){
                                         </thead>
                                         <tbody>
                                             <!--Nueva Sugerencia-->
-                                            <tr v-show="nueva_sugerencia" class="align-middle">
-                                                <th scope="row">0</th>
-                                                <td> <button type="button" class="btn btn-danger" title="Cancelar" @click="nueva_sugerencia=false"><i class="bi bi-pen" ></i></button> </td>
+                                            <tr v-show="nueva_sugerencia" class="align-middle bg-info">
+                                                <th scope="row">Nueva</th>
+                                                <td> 
+                                                    <button type="button" class="btn btn-danger  me-2" title="Cancelar" @click="nueva_sugerencia=false"><i class="bi bi-x-circle" ></i></button>
+                                                    <button type="button" class="btn btn-primary" title="Guardar" @click="guardar_nueva_sugerencia_y_actualizar('nueva','')"><i class="bi bi-check-circle"></i></button>   
+                                                </td>
                                                 <td><label>0%</label></td>
                                                 <td><textarea class="inputs-concentrado text-area" type="text"  name="nombre_sugerencia" v-model="var_nombre_sugerencias"></textarea></td>
                                                 <td><input class="inputs-concentrado" type="text" v-model="var_folio"></input></td>
@@ -243,10 +246,10 @@ if ($_SESSION["usuario"]){
                                             </tr>
                                             <!--Consulta/Editar Segerencia -->
                                             <tr class="align-middle" v-for="(concentrado, index) in concentrado_sugerencias" :key="concentrado.id" >
-                                                <th scope="row">{{index+1}}<br>{{concentrado.id}}</th>
+                                                <th scope="row">{{index+1}}<br><!--{{concentrado.id}}--></th>
                                                 <td>
-                                                    <button type="button" class="btn btn-danger me-2" title="Cancelar" @click="mostrar_id('')" v-if="actualizar_sugerencia==index+1"><i class="bi bi-pen" ></i></button>
-                                                    <button type="button" class="btn btn-primary" title="Guardar" @click="PENDIENTE" v-if="actualizar_sugerencia==index+1"><i class="bi bi-check-circle"></i></button>
+                                                    <button type="button" class="btn btn-danger me-2" title="Cancelar" @click="mostrar_id('')" v-if="actualizar_sugerencia==index+1"><i class="bi bi-x-circle" ></i></button>
+                                                    <button type="button" class="btn btn-primary" title="Guardar" @click="guardar_nueva_sugerencia_y_actualizar('actualizar',concentrado.id), mostrar_id('')" v-if="actualizar_sugerencia==index+1"><i class="bi bi-check-circle"></i></button>
                                                     <button type="button" class="btn btn-warning" title="Actualizar" @click="mostrar_id(index+1)" v-else><i class="bi bi-pen" ></i></button>
                                                 </td>
                                                 <td><label>0%</label></td>
@@ -329,8 +332,8 @@ if ($_SESSION["usuario"]){
                                                 <td><input class="inputs-concentrado" type="text" v-model="var_impacto_real" name="impacto_real" v-if="actualizar_sugerencia==index+1"></input><label v-else>{{concentrado.impacto_real}}</label></td>
                                                 <td><label>{{usuario}}</label></td>
                                                 <td><label v-if="actualizar_sugerencia==index+1"><?php echo date("Y/m/d"); ?></label><label v-else>{{concentrado.creado}}</label></td>
-                                                <td></input></td>
-                                                <td></input></td>
+                                                <td>{{concentrado.modificado_por}}</td>
+                                                <td>{{concentrado.modificado}}</td>
                                                 <td><button type="button" class="btn btn-danger" title="Eliminar" @click="eliminar_sugerencia(concentrado.id)"><i class="bi bi-trash"></button></i></td>
                                             </tr>
                                         </tbody>
@@ -503,34 +506,12 @@ if ($_SESSION["usuario"]){
                    if(dato=='retos'){this.pintarCuatro=true}else{this.pintarCuatro=false}
                    if(dato=='configuracion'){this.pintarCinco=true}else{this.pintarCinco=false}
              },
-            /*agregar_nueva_sugerencia(){
-                this.var_nombre_sugerencias=''
-                this.var_folio=''
-                this.var_causa_no_factibilidad=''
-                this.var_situacion_actual = ''
-                this.var_idea_propuesta = ''
-                this.var_nomina = ''
-                this.var_colaborador = ''
-                this.var_puesto = ''
-                this.var_planta = ''
-                this.var_area = ''
-                this.var_area_participante = ''
-                this.var_subarea = ''
-                this.var_impacto_primario = ''
-                this.var_impacto_secundario = ''
-                this.var_tipo_desperdicio = ''
-                this.var_objetivo_de_calidadMA.splice(0,15);
-                this.nueva_sugerencia=true;
-            },*/
-            guardar_nueva_sugerencia(){
-                /*alert(this.var_cumplimiento+"\n"+this.var_nombre_sugerencias+"\n"+this.var_folio+"\n"+this.var_status+"\n"+
-                this.var_causa_no_factibilidad+"\n"+this.var_situacion_actual+"\n"+this.var_idea_propuesta+"\n"+this.var_nomina+"\n"+
-                this.var_colaborador+"\n"+this.var_puesto+"\n"+this.var_planta+"\n"+this.var_area+"\n"+this.var_area_participante+"\n"+
-                this.var_subarea+"\n"+this.var_impacto_primario+"\n"+this.var_impacto_secundario+"\n"+this.var_tipo_desperdicio+"\n"+
-                this.var_objetivo_de_calidadMA+"\n"+this.var_fecha_sugerencia+"\n"+this.var_fecha_inicio+"\n"+this.var_fecha_compromiso+"\n"+this.var_fecha_real_de_cierre+"\n"+
-                this.var_analista_de_factibilidad+"\n"+this.var_impacto_planeado+"\n"+this.var_impacto_real+"\n"+this.usuario);*/
+            guardar_nueva_sugerencia_y_actualizar(nueva_o_actualizar,id_registro){
                 this.nueva_sugerencia=false;
-                axios.post('guardar_nueva_sugerencia.php',{
+               
+                axios.post('guardar_nueva_sugerencia_y_actualizar.php',{
+                    id: id_registro,
+                    tipo_nueva_o_actualizar: nueva_o_actualizar,
                     cumplimiento: this.var_cumplimiento,
                     nombre_sugerencia: this.var_nombre_sugerencias,
                     folio: this.var_folio,
@@ -558,12 +539,9 @@ if ($_SESSION["usuario"]){
                     impacto_real: this.var_impacto_real,
                     usuario: this.usuario,
                 }).then(response =>{
+                    console.log(response.data);
                     this.consultado_concentrado()
-                        /*console.log(response.data)
-                        if(response.data==true)
-                            {
-                                console.log("guardado con éxito");
-                            }*/
+                       
                 })
             },
             mostrar_id(id){
@@ -616,7 +594,6 @@ if ($_SESSION["usuario"]){
                                     this.var_objetivo_de_calidadMA[i] = arr[i]
                         }
                     }
-
                 }
             },
             eliminar_sugerencia(id_eliminar){
