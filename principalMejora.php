@@ -56,6 +56,12 @@ if ($_SESSION["usuario"]){
                 /*box-shadow: 0 0px 0px rgba(0, 133, 180, 1)inset, 0 0 4px rgba( 187, 16, 16, 1);*/
                 outline: 0 none;
                 }
+                
+
+
+            
+                
+                
     </style>
     <div id="app" class="container-fluid  " >
                 <!--BARRA SUPERIOR-->
@@ -121,12 +127,13 @@ if ($_SESSION["usuario"]){
                                     </div>
                                    
                                 </div>
-                                <div class="div-scroll mt-3">
-                                    <table class="table tablaConcentrado table-striped table-bordered" style=" height:10px">
+                            <div class="div-scroll mt-3 ">
+               
+                                    <table class="table tablaConcentrado table-striped table-bordered" style="height:10px; ">
                                         <thead>
-                                            <tr>
+                                            <tr class="text-light bg-secondary">
+                                            <th scope="col" class="sticky bg-white text-dark ">Edit:Cancel/Save</th>
                                             <th scope="col">#</th>
-                                            <th scope="col">Edit-Cancel/Save</th>
                                             <th scope="col">%Cumplimiento</th>
                                             <th scope="col">Nombre sugerencias</th>
                                             <th scope="col">Folio</th>
@@ -162,11 +169,12 @@ if ($_SESSION["usuario"]){
                                         <tbody>
                                             <!--Nueva Sugerencia-->
                                             <tr v-show="nueva_sugerencia" class="align-middle bg-info">
-                                                <th scope="row">Nueva</th>
-                                                <td> 
+                                                
+                                                <td class="sticky"> 
                                                     <button type="button" class="btn btn-danger  me-2" title="Cancelar" @click="nueva_sugerencia=false"><i class="bi bi-x-circle" ></i></button>
                                                     <button type="button" class="btn btn-primary" title="Guardar" @click="guardar_nueva_sugerencia_y_actualizar('nueva','')"><i class="bi bi-check-circle"></i></button>   
                                                 </td>
+                                                <th scope="row">Nueva</th>
                                                 <td><label>0%</label></td>
                                                 <td><textarea class="inputs-concentrado text-area" type="text"  name="nombre_sugerencia" v-model="var_nombre_sugerencias"></textarea></td>
                                                 <td><input class="inputs-concentrado" type="text" v-model="var_folio"></input></td>
@@ -182,6 +190,9 @@ if ($_SESSION["usuario"]){
                                                     <select class="inputs-concentrado" v-model="var_planta" >
                                                             <option value=""  disabled>Seleccione la planta...</option>
                                                             <option v-for="planta in lista_planta" :key="planta" :value="planta">{{planta}}</option>
+                                                            <option value="" class="text-success">Nuevo Planta (+)</option>
+                                                            <option value=""  class="text-danger">Eliminar Planta (-)</option>
+                                                           
                                                     </select>
                                                 </td>
                                                 <td>
@@ -244,14 +255,15 @@ if ($_SESSION["usuario"]){
                                                 <td></input></td>
                                                 <td><button type="button" class="btn btn-danger" title="Eliminar" @click="nueva_sugerencia=false"><i class="bi bi-trash"></button></i></td>
                                             </tr>
+                                           
                                             <!--Consulta/Editar Segerencia -->
                                             <tr class="align-middle" v-for="(concentrado, index) in concentrado_sugerencias" :key="concentrado.id" >
-                                                <th scope="row">{{index+1}}<br><!--{{concentrado.id}}--></th>
-                                                <td>
+                                                <td class="sticky table-striped table-bordered">
                                                     <button type="button" class="btn btn-danger me-2" title="Cancelar" @click="mostrar_id('')" v-if="actualizar_sugerencia==index+1"><i class="bi bi-x-circle" ></i></button>
                                                     <button type="button" class="btn btn-primary" title="Guardar" @click="guardar_nueva_sugerencia_y_actualizar('actualizar',concentrado.id), mostrar_id('')" v-if="actualizar_sugerencia==index+1"><i class="bi bi-check-circle"></i></button>
                                                     <button type="button" class="btn btn-warning" title="Actualizar" @click="mostrar_id(index+1)" v-else><i class="bi bi-pen" ></i></button>
                                                 </td>
+                                                <th scope="row">{{index+1}}<br><!--{{concentrado.id}}--></th>
                                                 <td><label>0%</label></td>
                                                 <td><textarea class="inputs-concentrado text-area" type="text"  name="nombre_sugerencia" v-model="var_nombre_sugerencias" v-if="actualizar_sugerencia==index+1"></textarea> <label v-else>{{concentrado.nombre_sugerencia}}</label></td>
                                                 <td><input class="inputs-concentrado" type="text" v-model="var_folio" v-if="actualizar_sugerencia==index+1"></input> <label v-else>{{concentrado.folio}}</label></td>
