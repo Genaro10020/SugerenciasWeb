@@ -128,9 +128,9 @@ if ($_SESSION["usuario"]){
                                    
                                 </div>
                             <div class="div-scroll mt-3 ">
-               
+                     
                                     <table class="table tablaConcentrado table-striped table-bordered" style="height:10px; ">
-                                        <thead>
+                                        <thead class="encabezado-tabla">
                                             <tr class="text-light bg-secondary">
                                             <th scope="col" class="sticky bg-white text-dark ">Edit:Cancel/Save</th>
                                             <th scope="col">#</th>
@@ -192,7 +192,6 @@ if ($_SESSION["usuario"]){
                                                             <option v-for="planta in lista_planta" :key="planta" :value="planta">{{planta}}</option>
                                                             <option value="" class="text-success">Nuevo Planta (+)</option>
                                                             <option value=""  class="text-danger">Eliminar Planta (-)</option>
-                                                           
                                                     </select>
                                                 </td>
                                                 <td>
@@ -352,6 +351,7 @@ if ($_SESSION["usuario"]){
                                     </table>
                                 </div>
                             </div>
+                            
                    </div>
                   <!--////////////////////////////////////////////////////////APARTADO PREMIOS SUGERENCIAS-->
                    <div v-else-if="ventana=='premios'">

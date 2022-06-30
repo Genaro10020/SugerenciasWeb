@@ -2,7 +2,7 @@
     session_start();
     header('Content-Type: application/json');
     include "conexionGhoner.php";
-    $consulta = "SELECT * FROM concentrado_sugerencias";
+    $consulta = "SELECT * FROM concentrado_sugerencias ORDER BY id DESC";
     $query = mysqli_query($conexion,$consulta);
     /*while($row = mysqli_fetch_array($query)){
         $dato[]=$row['cumplimiento'];

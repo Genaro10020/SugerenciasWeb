@@ -56,6 +56,10 @@
         .tablaConcentrado{
             font-size: 0.6em;         
         }
+
+        .encabezado-tabla{
+            position: sticky; top: 0; left: 0;
+        }
         .sticky{
             position:sticky;
             left: -15px;
