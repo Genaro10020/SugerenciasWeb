@@ -130,9 +130,9 @@ if ($_SESSION["usuario"]){
                             <div class="div-scroll mt-3 ">
                      
                                     <table class="table tablaConcentrado table-striped table-bordered" style="height:10px; ">
-                                        <thead class="encabezado-tabla">
+                                        <thead class="encabezado-tabla text-center">
                                             <tr class="text-light bg-secondary">
-                                            <th scope="col" class="sticky bg-white text-dark ">Edit:Cancel/Save</th>
+                                            <th scope="col" class="sticky bg-white text-dark ">Edit:Cancel/Save </th>
                                             <th scope="col">#</th>
                                             <th scope="col">%Cumplimiento</th>
                                             <th scope="col">Nombre sugerencias</th>
@@ -144,7 +144,9 @@ if ($_SESSION["usuario"]){
                                             <th scope="col">No. de Nomina</th>
                                             <th scope="col">Colaborador</th> 
                                             <th scope="col">Puesto</th>
-                                            <th scope="col">Planta</th>
+                                            <th scope="col">Planta <br>
+                                                <button class="border border-2 rounded-pill bg-success border-white font-monospace text-light" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Agregar','Planta')">Nueva +</button> &nbsp
+                                                <button class="border border-2 rounded-pill bg-danger border-white font-monospace text-light" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Eliminar','Planta')">Eliminar -</button></th>
                                             <th scope="col">Área</th>
                                             <th scope="col">Área del Participante</th>
                                             <th scope="col">Subárea</th>
@@ -190,9 +192,9 @@ if ($_SESSION["usuario"]){
                                                     <select class="inputs-concentrado" v-model="var_planta" >
                                                             <option value=""  disabled>Seleccione la planta...</option>
                                                             <option v-for="planta in lista_planta" :key="planta" :value="planta">{{planta}}</option>
-                                                            <option value="" class="text-success">Nuevo Planta (+)</option>
-                                                            <option value=""  class="text-danger">Eliminar Planta (-)</option>
                                                     </select>
+                                                    
+                                                    
                                                 </td>
                                                 <td>
                                                     <select class="inputs-concentrado" v-model="var_area">
@@ -351,6 +353,36 @@ if ($_SESSION["usuario"]){
                                     </table>
                                 </div>
                             </div>
+                           
+
+                            <!-- Modal Eliminar/Actualizar Planta -->
+                            <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h6 class="modal-title" id="exampleModalLabel" >{{titulo_modal}}</h6>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                        <div class="text-center" v-if="contenido_modal_agregar_eliminar=='Agregar'">
+                                                <input class="text-center border fs-6 rounded-pill w-100" placeholder="Digite el dato" v-model="nueva_opcion"></input>
+                                        </div>
+                                        <div v-if="contenido_modal_agregar_eliminar=='Eliminar'">
+                                              <div class="row mt-1 mb-2  d-flex align-items-center" v-for="(arreglo,index) in lista_planta" >
+                                                    <div class="col-10 text-center bg-secondary text-light">{{index+1}} - {{arreglo}}</div>
+                                                    <div class="col-2"><button type="button" class="btn btn-danger">x</button></div>
+                                             </div>
+                                            
+                                        </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <button v-if="contenido_modal_agregar_eliminar=='Agregar'" type="button" class="btn btn-primary "  data-bs-dismiss="modal" @click="agregar_planta">Guardar</button>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                           
                             
                    </div>
                   <!--////////////////////////////////////////////////////////APARTADO PREMIOS SUGERENCIAS-->
@@ -439,16 +471,16 @@ if ($_SESSION["usuario"]){
                 var_analista_de_factibilidad:'',
                 var_impacto_planeado:'',
                 var_impacto_real:'',
-                usuario:'<?php echo $_SESSION['usuario']; ?>'   
+                usuario:'<?php echo $_SESSION['usuario']; ?>',
+                titulo_modal:'',
+                mensaje_modal:'',   
+                contenido_modal_agregar_eliminar:'',
+                nueva_opcion:''
             }
         },
         mounted(){
             //Consultado concentrado de sugerencias.
-            axios.post('consulta_concentrado_sugerencias.php',{
-            }).then(response =>{
-                this.concentrado_sugerencias = response.data
-                console.log(this.concentrado_sugerencias);
-            }),
+            this.consultado_concentrado(),
             //consultado lista status
            axios.post('lista_status.php',{
             }).then(response =>{
@@ -456,11 +488,8 @@ if ($_SESSION["usuario"]){
                 console.log(this.lista_status);
             }),
              //consultado lista planta
-           axios.post('lista_planta.php',{
-            }).then(response =>{
-                this.lista_planta = response.data
-                console.log(this.lista_planta);
-            }),
+             this.consultado_plantas()
+           ,
             //consultado lista area
            axios.post('lista_area.php',{
             }).then(response =>{
@@ -549,7 +578,7 @@ if ($_SESSION["usuario"]){
                     analista_de_factibilidad: this.var_analista_de_factibilidad,
                     impacto_planeado: this.var_impacto_planeado,
                     impacto_real: this.var_impacto_real,
-                    usuario: this.usuario,
+                    usuario: this.usuario
                 }).then(response =>{
                     console.log(response.data);
                     this.consultado_concentrado()
@@ -622,8 +651,22 @@ if ($_SESSION["usuario"]){
                 axios.post('consulta_concentrado_sugerencias.php',{
                             }).then(response =>{
                                 this.concentrado_sugerencias = response.data
-                                console.log(this.concentrado_sugerencias);
+                               // console.log(this.concentrado_sugerencias);
                             })
+            },
+            consultado_plantas(){
+                axios.post('lista_planta.php',{
+                }).then(response =>{
+                    this.lista_planta = response.data
+                    console.log(this.lista_planta);
+                })
+            },
+            modal_nueva_eliminar(agregar_o_eliminar,tipo){
+                this.titulo_modal=agregar_o_eliminar+" "+tipo //creando titulo modal
+                this.contenido_modal_agregar_eliminar=agregar_o_eliminar // contenido a mostrar
+            },
+            agregar_planta(){
+               console.log(this.nueva_opcion);
             }
         }   
     }
