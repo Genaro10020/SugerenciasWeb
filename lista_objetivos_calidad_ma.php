@@ -6,7 +6,7 @@ include "conexionGhoner.php";
 $consulta = "SELECT * FROM lista_objetivos_calidad_sugerencias";
 $resultado = mysqli_query($conexion,$consulta);
 while($datos=mysqli_fetch_array($resultado)){
-    $objetivos[] = $datos['objetivos_de_calidad'];
+    $objetivos[] = $datos;
 }
 echo json_encode($objetivos);
 ?>  

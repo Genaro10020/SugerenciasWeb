@@ -6,7 +6,7 @@ include "conexionGhoner.php";
 $consulta = "SELECT * FROM lista_area_participante_sugerencias";
 $resultado = mysqli_query($conexion,$consulta);
 while($datos=mysqli_fetch_array($resultado)){
-    $participante[] = $datos['area_participante'];
+    $participante[] = $datos;
 }
 echo json_encode($participante);
 ?>

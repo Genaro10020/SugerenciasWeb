@@ -145,15 +145,31 @@ if ($_SESSION["usuario"]){
                                             <th scope="col">Colaborador</th> 
                                             <th scope="col">Puesto</th>
                                             <th scope="col">Planta <br>
-                                                <button class="border border-2 rounded-pill bg-success border-white font-monospace text-light" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Agregar','Planta')">Nueva +</button> &nbsp
-                                                <button class="border border-2 rounded-pill bg-danger border-white font-monospace text-light" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Eliminar','Planta')">Eliminar -</button></th>
-                                            <th scope="col">Área</th>
-                                            <th scope="col">Área del Participante</th>
-                                            <th scope="col">Subárea</th>
-                                            <th scope="col">Impacto Primario</th>
-                                            <th scope="col">Impacto Secundario</th>
-                                            <th scope="col">Tipo de Desperdicio</th>
-                                            <th scope="col">Objetivos de Calidad M.A.</th>
+                                                <button class="border border-2  rounded-2 bg-success border-dark font-monospace text-light" style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Agregar','Planta')">Nueva +</button> &nbsp
+                                                <button class="border border-2 rounded-2 bg-danger border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Eliminar','Planta')">Eliminar -</button>
+                                            </th>
+                                            <th scope="col">Área <br>
+                                                <button class="border border-2 rounded-2 bg-success border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Agregar','Area')">Nueva +</button> &nbsp
+                                                <button class="border border-2 rounded-2 bg-danger border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Eliminar','Area')">Eliminar -</button></th>
+                                            </th>
+                                            <th scope="col">Área del Participante <br>
+                                                <button class="border border-2 rounded-2 bg-success border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Agregar','Area Participante')">Nueva +</button> &nbsp
+                                                <button class="border border-2 rounded-2 bg-danger border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Eliminar','Area Participante')">Eliminar -</button></th>
+                                            <th scope="col">Subárea <br>
+                                                <button class="border border-2 rounded-2 bg-success border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Agregar','Subarea')">Nueva +</button> &nbsp
+                                                <button class="border border-2 rounded-2 bg-danger border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Eliminar','Subarea')">Eliminar -</button></th>
+                                            <th scope="col">Impacto Primario <br>
+                                                <button class="border border-2 rounded-2 bg-success border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Agregar','Impacto')">Nueva +</button> &nbsp
+                                                <button class="border border-2 rounded-2 bg-danger border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Eliminar','Impacto')">Eliminar -</button></th>
+                                            <th scope="col">Impacto Secundario<br>
+                                                <button class="border border-2 rounded-2 bg-success border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Agregar','Impacto')">Nueva +</button> &nbsp
+                                                <button class="border border-2 rounded-2 bg-danger border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Eliminar','Impacto')">Eliminar -</button></th>
+                                            <th scope="col">Tipo de Desperdicio<br>
+                                                <button class="border border-2 rounded-2 bg-success border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Agregar','Desperdicio')">Nueva +</button> &nbsp
+                                                <button class="border border-2 rounded-2 bg-danger border-dark font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Eliminar','Desperdicio')">Eliminar -</button></th>
+                                            <th scope="col">Objetivos de Calidad M.A.<br>
+                                                <button class="border border-2 rounded-2 bg-success border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Agregar','Calidad')">Nueva +</button> &nbsp
+                                                <button class="border border-2 rounded-2 bg-danger border-dark font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Eliminar','Calidad')">Eliminar -</button></th>
                                             <th scope="col">Fecha de Sugerencia</th>
                                             <th scope="col">Fecha de Inicio</th>
                                             <th scope="col">Fecha Compromiso</th>
@@ -191,45 +207,43 @@ if ($_SESSION["usuario"]){
                                                 <td>
                                                     <select class="inputs-concentrado" v-model="var_planta" >
                                                             <option value=""  disabled>Seleccione la planta...</option>
-                                                            <option v-for="planta in lista_planta" :key="planta" :value="planta">{{planta}}</option>
+                                                            <option v-for="planta in lista_planta" :key="planta.planta" :value="planta.planta">{{planta.planta}}</option>
                                                     </select>
-                                                    
-                                                    
                                                 </td>
                                                 <td>
                                                     <select class="inputs-concentrado" v-model="var_area">
                                                             <option value="" disabled>Seleccione el área...</option>
-                                                            <option v-for="area in lista_area" :key="area" :value="area">{{area}}</option>
+                                                            <option v-for="area in lista_area" :key="area.area" :value="area.area">{{area.area}}</option>
                                                     </select>
                                                 </td>
                                                 <td>
                                                     <select class="inputs-concentrado" v-model="var_area_participante">
                                                         <option value="" disabled>Seleccione área participante...</option>
-                                                        <option v-for="area_participante in lista_area_participante" :key="area_participante" :value="area_participante">{{area_participante}}</option>
+                                                        <option v-for="area_participante in lista_area_participante" :key="area_participante.area_participante" :value="area_participante.area_participante">{{area_participante.area_participante}}</option>
                                                     </select>
                                                 </td>
                                                 <td>
                                                     <select class="inputs-concentrado" v-model="var_subarea">
                                                         <option value="" disabled>Seleccione Subárea...</option>
-                                                        <option v-for="subarea in lista_subarea" :key="subarea" :value="subarea">{{subarea}}</option>
+                                                        <option v-for="subarea in lista_subarea" :key="subarea.subarea" :value="subarea.subarea">{{subarea.subarea}}</option>
                                                     </select>
                                                 </td>
                                                 <td>
                                                     <select class="inputs-concentrado" v-model="var_impacto_primario">
                                                         <option value="" disabled>Seleccione impacto primario...</option>
-                                                        <option v-for="impacto_primario in lista_impacto_primario" :key="impacto_primario" :value="impacto_primario">{{impacto_primario}}</option>
+                                                        <option v-for="impacto_primario in lista_impacto_primario" :key="impacto_primario.impacto" :value="impacto_primario.impacto">{{impacto_primario.impacto}}</option>
                                                     </select>
                                                 </td>
                                                 <td>
                                                     <select class="inputs-concentrado" v-model="var_impacto_secundario">
                                                         <option value="" disabled>Seleccione impacto secundario...</option>
-                                                        <option v-for="impacto_secundario in lista_impacto_secundario" :key="impacto_secundario" :value="impacto_secundario">{{impacto_secundario}}</option>
+                                                        <option v-for="impacto_secundario in lista_impacto_secundario" :key="impacto_secundario.impacto" :value="impacto_secundario.impacto">{{impacto_secundario.impacto}}</option>
                                                     </select>
                                                 </td>
                                                 <td>
                                                     <select class="inputs-concentrado" v-model="var_tipo_desperdicio">
                                                         <option value="" disabled>Seleccione tipo desperdicio..</option>
-                                                        <option v-for="tipo_desperdicio in lista_tipo_desperdicio" :key="tipo_desperdicio" :value="tipo_desperdicio">{{tipo_desperdicio}}</option>
+                                                        <option v-for="tipo_desperdicio in lista_tipo_desperdicio" :key="tipo_desperdicio.tipo_de_desperdicio" :value="tipo_desperdicio.tipo_de_desperdicio">{{tipo_desperdicio.tipo_de_desperdicio}}</option>
                                                     </select>
                                                 </td>
                                                 <td>
@@ -237,8 +251,8 @@ if ($_SESSION["usuario"]){
                                                 <label>{{var_objetivo_de_calidadMA}}</label>
                                                     <ul>
                                                         <li v-for="objetivo_de_calidad in objetivo_de_calidadMA">
-                                                            <input type="checkbox" :value="objetivo_de_calidad" v-model="var_objetivo_de_calidadMA">
-                                                            <label for="objetivo_de_calidad">{{objetivo_de_calidad}}</label>
+                                                            <input type="checkbox" :value="objetivo_de_calidad.objetivos_de_calidad" v-model="var_objetivo_de_calidadMA">
+                                                            <label for="objetivo_de_calidad">{{objetivo_de_calidad.objetivos_de_calidad}}</label>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -278,49 +292,49 @@ if ($_SESSION["usuario"]){
                                                 <td>
                                                     <select  class="inputs-concentrado" v-model="var_planta" v-if="actualizar_sugerencia==index+1">
                                                             <option value=""  disabled>Seleccione la planta...</option>
-                                                            <option v-for="planta in lista_planta" :key="planta" :value="planta">{{planta}}</option>
+                                                            <option v-for="planta in lista_planta" :key="planta.planta" :value="planta.planta">{{planta.planta}}</option>
                                                     </select>
                                                     <label v-else>{{concentrado.planta}}</label>
                                                 </td>
                                                 <td>
                                                     <select class="inputs-concentrado" v-model="var_area" v-if="actualizar_sugerencia==index+1">
                                                             <option value="" disabled>Seleccione el área...</option>
-                                                            <option v-for="area in lista_area" :key="area" :value="area">{{area}}</option>
+                                                            <option v-for="area in lista_area" :key="area.area" :value="area.area">{{area.area}}</option>
                                                     </select>
                                                     <label v-else>{{concentrado.area}}</label>
                                                 </td>
                                                 <td>
                                                     <select class="inputs-concentrado" v-model="var_area_participante" v-if="actualizar_sugerencia==index+1">
                                                         <option value="" disabled>Seleccione área participante...</option>
-                                                        <option v-for="area_participante in lista_area_participante" :key="area_participante" :value="area_participante">{{area_participante}}</option>
+                                                        <option v-for="area_participante in lista_area_participante" :key="area_participante.area_participante" :value="area_participante.area_participante">{{area_participante.area_participante}}</option>
                                                     </select>
                                                     <label v-else>{{concentrado.area_participante}}</label>
                                                 </td>
                                                 <td>
                                                     <select class="inputs-concentrado" v-model="var_subarea" v-if="actualizar_sugerencia==index+1">
                                                         <option value="" disabled>Seleccione Subárea...</option>
-                                                        <option v-for="subarea in lista_subarea" :key="subarea" :value="subarea">{{subarea}}</option>
+                                                        <option v-for="subarea in lista_subarea" :key="subarea.subarea" :value="subarea.subarea">{{subarea.subarea}}</option>
                                                     </select>
                                                     <label v-else>{{concentrado.subarea}}</label>
                                                 </td>
                                                 <td>
                                                     <select class="inputs-concentrado" v-model="var_impacto_primario" v-if="actualizar_sugerencia==index+1">
                                                         <option value="" disabled>Seleccione impacto primario...</option>
-                                                        <option v-for="impacto_primario in lista_impacto_primario" :key="impacto_primario" :value="impacto_primario">{{impacto_primario}}</option>
+                                                        <option v-for="impacto_primario in lista_impacto_primario" :key="impacto_primario.impacto" :value="impacto_primario.impacto">{{impacto_primario.impacto}}</option>
                                                     </select>
                                                     <label v-else>{{concentrado.impacto_primario}}</label>
                                                 </td>
                                                 <td>
                                                     <select class="inputs-concentrado" v-model="var_impacto_secundario" v-if="actualizar_sugerencia==index+1">
                                                         <option value="" disabled>Seleccione impacto secundario...</option>
-                                                        <option v-for="impacto_secundario in lista_impacto_secundario" :key="impacto_secundario" :value="impacto_secundario">{{impacto_secundario}}</option>
+                                                        <option v-for="impacto_secundario in lista_impacto_secundario" :key="impacto_secundario.impacto" :value="impacto_secundario.impacto">{{impacto_secundario.impacto}}</option>
                                                     </select>
                                                     <label v-else>{{concentrado.impacto_secundario}}</label>
                                                 </td>
                                                 <td>
                                                     <select class="inputs-concentrado" v-model="var_tipo_desperdicio" v-if="actualizar_sugerencia==index+1">
                                                         <option value="" disabled>Seleccione tipo desperdicio..</option>
-                                                        <option v-for="tipo_desperdicio in lista_tipo_desperdicio" :key="tipo_desperdicio" :value="tipo_desperdicio">{{tipo_desperdicio}}</option>
+                                                        <option v-for="tipo_desperdicio in lista_tipo_desperdicio" :key="tipo_desperdicio.tipo_de_desperdicio" :value="tipo_desperdicio.tipo_de_desperdicio">{{tipo_desperdicio.tipo_de_desperdicio}}</option>
                                                     </select>
                                                     <label v-else>{{concentrado.tipo_de_desperdicio}}</label>
                                                 </td>
@@ -329,8 +343,8 @@ if ($_SESSION["usuario"]){
                                                 <label>{{var_objetivo_de_calidadMA}}</label>
                                                     <ul>
                                                         <li v-for="objetivo_de_calidad in objetivo_de_calidadMA">
-                                                            <input type="checkbox" :value="objetivo_de_calidad" v-model="var_objetivo_de_calidadMA">
-                                                            <label for="objetivo_de_calidad">{{objetivo_de_calidad}}</label>
+                                                            <input type="checkbox" :value="objetivo_de_calidad.objetivos_de_calidad" v-model="var_objetivo_de_calidadMA">
+                                                            <label for="objetivo_de_calidad">{{objetivo_de_calidad.objetivos_de_calidad}}</label>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -365,25 +379,58 @@ if ($_SESSION["usuario"]){
                                 </div>
                                 <div class="modal-body">
                                         <div class="text-center" v-if="contenido_modal_agregar_eliminar=='Agregar'">
-                                                <input class="text-center border fs-6 rounded-pill w-100" placeholder="Digite el dato" v-model="nueva_opcion"></input>
+                                                <input class="text-center border fs-6 rounded-2 w-100" placeholder="Digite el nuevo registro" v-model="nueva_opcion"></input>
                                         </div>
-                                        <div v-if="contenido_modal_agregar_eliminar=='Eliminar'">
-                                              <div class="row mt-1 mb-2  d-flex align-items-center" v-for="(arreglo,index) in lista_planta" >
-                                                    <div class="col-10 text-center bg-secondary text-light">{{index+1}} - {{arreglo}}</div>
-                                                    <div class="col-2"><button type="button" class="btn btn-danger">x</button></div>
+                                        <div v-if="contenido_modal_agregar_eliminar=='Eliminar' && tipo_agregar_eliminar=='Planta'">
+                                              <div class="row mt-1 mb-2  d-flex align-items-center" v-for="(lis_plantas,index) in lista_planta" >
+                                                    <div class="col-10 text-center bg-secondary text-light"> {{index+1}} .- {{lis_plantas.planta}}</div>
+                                                    <div class="col-2"><button type="button" class="btn btn-danger"  @click="eliminar_elementos_lista(lis_plantas.id)">x</button></div>
                                              </div>
-                                            
+                                        </div>
+                                        <div v-if="contenido_modal_agregar_eliminar=='Eliminar' && tipo_agregar_eliminar=='Area'">
+                                              <div class="row mt-1 mb-2  d-flex align-items-center" v-for="(lis_area,index) in lista_area" >
+                                                    <div class="col-10 text-center bg-secondary text-light"> {{index+1}} .- {{lis_area.area}}</div>
+                                                    <div class="col-2"><button type="button" class="btn btn-danger"  @click="eliminar_elementos_lista(lis_area.id)">x</button></div>
+                                             </div>
+                                        </div>
+                                        <div v-if="contenido_modal_agregar_eliminar=='Eliminar' && tipo_agregar_eliminar=='Area Participante'">
+                                              <div class="row mt-1 mb-2  d-flex align-items-center" v-for="(lis_area_participante,index) in lista_area_participante" >
+                                                    <div class="col-10 text-center bg-secondary text-light"> {{index+1}} .- {{lis_area_participante.area_participante}}</div>
+                                                    <div class="col-2"><button type="button" class="btn btn-danger"  @click="eliminar_elementos_lista(lis_area_participante.id)">x</button></div>
+                                             </div>
+                                        </div>
+                                        <div v-if="contenido_modal_agregar_eliminar=='Eliminar' && tipo_agregar_eliminar=='Subarea'">
+                                              <div class="row mt-1 mb-2  d-flex align-items-center" v-for="(lis_subarea,index) in lista_subarea" >
+                                                    <div class="col-10 text-center bg-secondary text-light"> {{index+1}} .- {{lis_subarea.subarea}}</div>
+                                                    <div class="col-2"><button type="button" class="btn btn-danger"  @click="eliminar_elementos_lista(lis_subarea.id)">x</button></div>
+                                             </div>
+                                        </div>
+                                        <div v-if="contenido_modal_agregar_eliminar=='Eliminar' && tipo_agregar_eliminar=='Impacto'">
+                                              <div class="row mt-1 mb-2  d-flex align-items-center" v-for="(lis_impacto,index) in lista_impacto_primario" >
+                                                    <div class="col-10 text-center bg-secondary text-light"> {{index+1}} .- {{lis_impacto.impacto}}</div>
+                                                    <div class="col-2"><button type="button" class="btn btn-danger"  @click="eliminar_elementos_lista(lis_impacto.id)">x</button></div>
+                                             </div>
+                                        </div>
+                                        <div v-if="contenido_modal_agregar_eliminar=='Eliminar' && tipo_agregar_eliminar=='Desperdicio'">
+                                              <div class="row mt-1 mb-2  d-flex align-items-center" v-for="(lis_desperdicio,index) in lista_tipo_desperdicio" >
+                                                    <div class="col-10 text-center bg-secondary text-light"> {{index+1}} .- {{lis_desperdicio.tipo_de_desperdicio}}</div>
+                                                    <div class="col-2"><button type="button" class="btn btn-danger"  @click="eliminar_elementos_lista(lis_desperdicio.id)">x</button></div>
+                                             </div>
+                                        </div>
+                                        <div v-if="contenido_modal_agregar_eliminar=='Eliminar' && tipo_agregar_eliminar=='Calidad'">
+                                              <div class="row mt-1 mb-2  d-flex align-items-center" v-for="(lis_calidad,index) in objetivo_de_calidadMA" >
+                                                    <div class="col-10 text-center bg-secondary text-light"> {{index+1}} .- {{lis_calidad.objetivos_de_calidad}}</div>
+                                                    <div class="col-2"><button type="button" class="btn btn-danger"  @click="eliminar_elementos_lista(lis_calidad.id)">x</button></div>
+                                             </div>
                                         </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                    <button v-if="contenido_modal_agregar_eliminar=='Agregar'" type="button" class="btn btn-primary "  data-bs-dismiss="modal" @click="agregar_planta">Guardar</button>
+                                    <button v-if="contenido_modal_agregar_eliminar=='Agregar'" type="button" class="btn btn-primary "  data-bs-dismiss="modal" @click="agregar_nuevo_lista">Guardar</button>
                                 </div>
                                 </div>
                             </div>
                             </div>
-                           
-                            
                    </div>
                   <!--////////////////////////////////////////////////////////APARTADO PREMIOS SUGERENCIAS-->
                    <div v-else-if="ventana=='premios'">
@@ -475,7 +522,8 @@ if ($_SESSION["usuario"]){
                 titulo_modal:'',
                 mensaje_modal:'',   
                 contenido_modal_agregar_eliminar:'',
-                nueva_opcion:''
+                nueva_opcion:'',
+                tipo_agregar_eliminar:''
             }
         },
         mounted(){
@@ -488,46 +536,19 @@ if ($_SESSION["usuario"]){
                 console.log(this.lista_status);
             }),
              //consultado lista planta
-             this.consultado_plantas()
-           ,
+             this.consultando_plantas(),
             //consultado lista area
-           axios.post('lista_area.php',{
-            }).then(response =>{
-                this.lista_area = response.data
-                console.log(this.lista_area);
-            })
+             this.consultando_area(),
             //consultado lista participante
-           axios.post('lista_area_participante.php',{
-            }).then(response =>{
-                this.lista_area_participante = response.data
-                console.log(this.lista_area_participante);
-            }),
+             this.consultando_area_participante(),
              //consultado lista subareas
-           axios.post('lista_subarea.php',{
-            }).then(response =>{
-                this.lista_subarea = response.data
-                console.log(this.lista_subarea);
-            }),
-             //consultado lista impacto primario
-            axios.post('lista_impacto.php',{
-            }).then(response =>{
-                this.lista_impacto_primario = response.data
-                this.lista_impacto_secundario = response.data
-                console.log(this.lista_impacto_primario);
-                console.log(this.lista_impacto_secundario);
-            }),
+             this.consultando_subarea(),
+             //consultado lista impacto primario y secuandario
+             this.consultando_impacto(),
             //consultado lista tipo desperdicio
-            axios.post('lista_tipo_desperdicio.php',{
-            }).then(response =>{
-                this.lista_tipo_desperdicio = response.data
-                console.log(this.lista_tipo_desperdicio);
-            }),
+             this.consultando_lista_de_desperdicio(),
             //consultado lista objetivo de calidad MA
-            axios.post('lista_objetivos_calidad_ma.php',{
-            }).then(response =>{
-                this.objetivo_de_calidadMA = response.data
-                console.log(this.objetivo_de_calidadMA);
-            }),
+            this.consulta_lista_objetivos_calidad_ma(),
             //consultado lista impacto primario
             axios.post('consulta_usuario.php',{
                 usuario: this.usuario
@@ -654,19 +675,118 @@ if ($_SESSION["usuario"]){
                                // console.log(this.concentrado_sugerencias);
                             })
             },
-            consultado_plantas(){
+            consultando_plantas(){
                 axios.post('lista_planta.php',{
                 }).then(response =>{
                     this.lista_planta = response.data
                     console.log(this.lista_planta);
                 })
             },
+            consultando_area(){
+                axios.post('lista_area.php',{
+            }).then(response =>{
+                this.lista_area = response.data
+                console.log(this.lista_area);
+            })
+            },
+            consultando_area_participante(){
+                axios.post('lista_area_participante.php',{
+                }).then(response =>{
+                    this.lista_area_participante = response.data
+                    console.log(this.lista_area_participante);
+                })
+            },
+            consultando_subarea(){
+                axios.post('lista_subarea.php',{
+                }).then(response =>{
+                    this.lista_subarea = response.data
+                    console.log(this.lista_subarea);
+                })
+            },
+            consultando_impacto(){
+                axios.post('lista_impacto.php',{
+                }).then(response =>{
+                    this.lista_impacto_primario = response.data
+                    this.lista_impacto_secundario = response.data
+                    console.log(this.lista_impacto_primario);
+                    console.log(this.lista_impacto_secundario);
+                })
+            },
+            consultando_lista_de_desperdicio(){
+                axios.post('lista_tipo_desperdicio.php',{
+                }).then(response =>{
+                    this.lista_tipo_desperdicio = response.data
+                    console.log(this.lista_tipo_desperdicio);
+                })
+            },
+            consulta_lista_objetivos_calidad_ma(){
+                axios.post('lista_objetivos_calidad_ma.php',{
+            }).then(response =>{
+                this.objetivo_de_calidadMA = response.data
+                console.log(this.objetivo_de_calidadMA);
+            })
+            },
             modal_nueva_eliminar(agregar_o_eliminar,tipo){
+                this.tipo_agregar_eliminar = tipo;
                 this.titulo_modal=agregar_o_eliminar+" "+tipo //creando titulo modal
                 this.contenido_modal_agregar_eliminar=agregar_o_eliminar // contenido a mostrar
             },
-            agregar_planta(){
-               console.log(this.nueva_opcion);
+            agregar_nuevo_lista(){
+                axios.post('agregar_nuevo_en_lista.php',{
+                    nuevo_registro: this.nueva_opcion,
+                    tipo: this.tipo_agregar_eliminar
+                }).then(response =>{
+                    if(response.data=='planta agregada'){
+                        alert("Se agrego la Planta con Éxito.")
+                        this.consultando_plantas()
+                    }else if(response.data=='area agregada'){
+                        alert("Se agrego la Area con Éxito.")
+                        this.consultando_area()
+                    }else if(response.data=='area participante agregada'){
+                        alert("Se agrego la Area con Éxito.")
+                        this.consultando_area_participante()
+                    }else if(response.data=='subarea agregada'){
+                        alert("Se agrego la Subarea con Éxito.")
+                        this.consultando_subarea()
+                    }else if(response.data=='impacto agregada'){
+                        alert("Se agrego Impacto primario con Éxito.")
+                        this.consultando_impacto()
+                    }else if(response.data=='desperdicio agregada'){
+                        alert("Se agrego nuevo tipo de desperdicio con Éxito.")
+                        this.consultando_lista_de_desperdicio()
+                    }else{
+                        alert("Algo salio mal al agregar.")
+                    }
+                })
+            },
+            eliminar_elementos_lista(id_eliminar){
+                //console.log("ID ELIMINAR"+id_eliminar+"TIPO:"+this.tipo_agregar_eliminar)
+               axios.post('eliminar_elementos_lista.php',{
+                id_eliminar: id_eliminar,
+                tipo: this.tipo_agregar_eliminar
+               }).then(response =>{
+                if(response.data=='planta eliminada'){
+                        alert("Se elimino con Éxito.")
+                        this.consultando_plantas()
+                }else if (response.data=='area eliminada'){
+                        alert("Se elimino con Éxito.")
+                        this.consultando_area()
+                }else if (response.data=='area participante eliminada'){
+                        alert("Se elimino con Éxito.")
+                        this.consultando_area_participante()
+                }else if (response.data=='subarea eliminada'){
+                        alert("Se elimino con Éxito.")
+                        this.consultando_subarea()
+                }else if (response.data=='impacto eliminada'){
+                        alert("Se elimino con Éxito.")
+                        this.consultando_impacto()
+                }else if (response.data=='desperdicio eliminada'){
+                        alert("Se elimino con Éxito.")
+                        this.consultando_lista_de_desperdicio()
+                }else{
+                    alert("Algo salio mal al eliminar.")
+                }
+               })
             }
         }   
     }

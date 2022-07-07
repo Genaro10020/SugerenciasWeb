@@ -6,7 +6,7 @@ include "conexionGhoner.php";
 $consulta = "SELECT * FROM lista_tipo_desperdicio_sugerencias";
 $resultado = mysqli_query($conexion,$consulta);
 while($datos=mysqli_fetch_array($resultado)){
-    $desperdicio[] = $datos['tipo_de_desperdicio'];
+    $desperdicio[] = $datos;
 }
 echo json_encode($desperdicio);
 ?>

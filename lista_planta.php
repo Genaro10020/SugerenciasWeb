@@ -6,7 +6,7 @@ include "conexionGhoner.php";
 $consulta = "SELECT * FROM lista_planta_sugerencias";
 $resultado = mysqli_query($conexion,$consulta);
 while($datos=mysqli_fetch_array($resultado)){
-    $planta[] = $datos['planta'];
+    $planta[] = $datos;
 }
 echo json_encode($planta);
 ?>
