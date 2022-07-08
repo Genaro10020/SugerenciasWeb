@@ -4,6 +4,7 @@ header("Content-Type: application/json");
 $variables = json_decode(file_get_contents('php://input'), true);
 $nuevo = $variables['nuevo_registro'];
 $tipo = $variables['tipo'];
+$correo = $variables['correo'];
 include "conexionGhoner.php";
 if($tipo=="Planta"){
   $consulta = "INSERT INTO lista_planta_sugerencias (planta) VALUES ('$nuevo')";
@@ -59,10 +60,19 @@ if($tipo=="Planta"){
           $consulta = "INSERT INTO lista_objetivos_calidad_sugerencias (objetivos_de_calidad) VALUES ('$nuevo')";
                 $query = mysqli_query( $conexion, $consulta);
                 if($query==true){
-                    $resultado="desperdicio agregada";
+                    $resultado="calidad agregada";
                 }else{
                     $resultado = "Mal";
                 }
             }
+else if($tipo=="Analista"){
+                $consulta = "INSERT INTO lista_analista_sugerencias (nombre,correo) VALUES ('$nuevo','$correo')";
+                      $query = mysqli_query( $conexion, $consulta);
+                      if($query==true){
+                          $resultado="analista agregada";
+                      }else{
+                          $resultado = "Mal";
+                      }
+                  }
   echo json_encode($resultado);
 ?>

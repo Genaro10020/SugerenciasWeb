@@ -53,6 +53,22 @@ if($tipo=="Planta"){
    }else{
        $resultado = "No se elimino el registro";
    }
-}
+}else if($tipo=="Calidad"){
+    $consulta = "DELETE FROM lista_objetivos_calidad_sugerencias WHERE id = '$id_eliminar'";
+    $query = mysqli_query( $conexion, $consulta);
+     if($query==true){
+         $resultado="calidad eliminada";
+     }else{
+         $resultado = "No se elimino el registro";
+     }
+  }else if($tipo=="Analista"){
+    $consulta = "DELETE FROM lista_analista_sugerencias WHERE id = '$id_eliminar'";
+    $query = mysqli_query( $conexion, $consulta);
+     if($query==true){
+         $resultado="analista eliminada";
+     }else{
+         $resultado = "No se elimino el registro";
+     }
+  }
   echo json_encode($resultado);
 ?>

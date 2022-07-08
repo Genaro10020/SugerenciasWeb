@@ -104,7 +104,32 @@ if ($_SESSION["usuario"]){
                             </div>
                             <!--fin cinta apartado-->
                             <!-- contenido principal gonher-->
-                            
+                            <div class="div-scroll mt-3 ">
+                                <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Folio</th>
+                                    <th scope="col">Nombre de Sugerencia</th>
+                                    <th scope="col">Fecha Compromiso</th>
+                                    <th scope="col">% Avance</th>
+                                    <th scope="col">Implementación</th>
+                                    <th scope="col">Val. Impactos</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                    <th scope="row">1</th>
+                                        <td>Mark</td>
+                                        <td>Otto</td>
+                                        <td>@mdo</td>
+                                        <td>@mdo</td>
+                                        <td>@mdo</td>
+                                        <td>@mdo</td>
+                                    </tr>
+                                </tbody>
+                                </table>
+                            </div>
                              <!--fin contenido principal gonher-->
                    </div>
                    <!--////////////////////////////////////////////////////////APARTADO CONCENTRADO DE SUGERENCIAS-->
@@ -122,66 +147,64 @@ if ($_SESSION["usuario"]){
                                     <div class="">
                                         <button class="boton-nuevo" @click="agregar_nueva_sugerencia, mostrar_id(0)"><i class="bi bi-plus-circle"></i> Nueva Sugerencia</button>
                                     </div>
-                                    <div class="mt-1" v-show="nueva_sugerencia==true" >
-                                        
-                                    </div>
-                                   
                                 </div>
                             <div class="div-scroll mt-3 ">
                      
                                     <table class="table tablaConcentrado table-striped table-bordered" style="height:10px; ">
-                                        <thead class="encabezado-tabla text-center">
+                                        <thead class="encabezado-tabla text-center ">
                                             <tr class="text-light bg-secondary">
                                             <th scope="col" class="sticky bg-white text-dark ">Edit:Cancel/Save </th>
                                             <th scope="col">#</th>
                                             <th scope="col">%Cumplimiento</th>
-                                            <th scope="col">Nombre sugerencias</th>
-                                            <th scope="col">Folio</th>
+                                            <th scope="col">Nombre sugerencias <span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span></th>
+                                            <th scope="col">Folio <span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span></th>
                                             <th scope="col">Status</th>
-                                            <th scope="col">Causa de No factibidad</th>
-                                            <th scope="col">Situación Actual</th>
-                                            <th scope="col">Idea Propuesta</th>
-                                            <th scope="col">No. de Nomina</th>
-                                            <th scope="col">Colaborador</th> 
-                                            <th scope="col">Puesto</th>
-                                            <th scope="col">Planta <br>
-                                                <button class="border border-2  rounded-2 bg-success border-dark font-monospace text-light" style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Agregar','Planta')">Nueva +</button> &nbsp
-                                                <button class="border border-2 rounded-2 bg-danger border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Eliminar','Planta')">Eliminar -</button>
+                                            <th scope="col">Causa de No factibidad <span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span></th>
+                                            <th scope="col">Situación Actual <span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span></th>
+                                            <th scope="col">Idea Propuesta <span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span></th>
+                                            <th scope="col">No. de Nomina <span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span></th>
+                                            <th scope="col">Colaborador <span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span></th> 
+                                            <th scope="col">Puesto <span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span></th>
+                                            <th scope="col">Planta <span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span><br>
+                                                <button class="rounded-2 bg-success border-dark font-monospace text-light" style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Agregar','Planta')">Agregar +</button> &nbsp
+                                                <button class="rounded-2 bg-danger border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Eliminar','Planta')">Eliminar -</button>
                                             </th>
-                                            <th scope="col">Área <br>
-                                                <button class="border border-2 rounded-2 bg-success border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Agregar','Area')">Nueva +</button> &nbsp
-                                                <button class="border border-2 rounded-2 bg-danger border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Eliminar','Area')">Eliminar -</button></th>
+                                            <th scope="col">Área <span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span><br>
+                                                <button class="rounded-2 bg-success border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Agregar','Area')">Agregar +</button> &nbsp
+                                                <button class="rounded-2 bg-danger border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Eliminar','Area')">Eliminar -</button></th>
                                             </th>
-                                            <th scope="col">Área del Participante <br>
-                                                <button class="border border-2 rounded-2 bg-success border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Agregar','Area Participante')">Nueva +</button> &nbsp
-                                                <button class="border border-2 rounded-2 bg-danger border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Eliminar','Area Participante')">Eliminar -</button></th>
-                                            <th scope="col">Subárea <br>
-                                                <button class="border border-2 rounded-2 bg-success border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Agregar','Subarea')">Nueva +</button> &nbsp
-                                                <button class="border border-2 rounded-2 bg-danger border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Eliminar','Subarea')">Eliminar -</button></th>
-                                            <th scope="col">Impacto Primario <br>
-                                                <button class="border border-2 rounded-2 bg-success border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Agregar','Impacto')">Nueva +</button> &nbsp
-                                                <button class="border border-2 rounded-2 bg-danger border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Eliminar','Impacto')">Eliminar -</button></th>
-                                            <th scope="col">Impacto Secundario<br>
-                                                <button class="border border-2 rounded-2 bg-success border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Agregar','Impacto')">Nueva +</button> &nbsp
-                                                <button class="border border-2 rounded-2 bg-danger border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Eliminar','Impacto')">Eliminar -</button></th>
-                                            <th scope="col">Tipo de Desperdicio<br>
-                                                <button class="border border-2 rounded-2 bg-success border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Agregar','Desperdicio')">Nueva +</button> &nbsp
-                                                <button class="border border-2 rounded-2 bg-danger border-dark font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Eliminar','Desperdicio')">Eliminar -</button></th>
-                                            <th scope="col">Objetivos de Calidad M.A.<br>
-                                                <button class="border border-2 rounded-2 bg-success border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Agregar','Calidad')">Nueva +</button> &nbsp
-                                                <button class="border border-2 rounded-2 bg-danger border-dark font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Eliminar','Calidad')">Eliminar -</button></th>
-                                            <th scope="col">Fecha de Sugerencia</th>
-                                            <th scope="col">Fecha de Inicio</th>
+                                            <th scope="col">Área del Participante <span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span><br>
+                                                <button class="rounded-2 bg-success border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Agregar','Area Participante')">Agregar +</button> &nbsp
+                                                <button class="rounded-2 bg-danger border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Eliminar','Area Participante')">Eliminar -</button></th>
+                                            <th scope="col">Subárea <span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span><br>
+                                                <button class="rounded-2 bg-success border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Agregar','Subarea')">Agregar +</button> &nbsp
+                                                <button class="rounded-2 bg-danger border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Eliminar','Subarea')">Eliminar -</button></th>
+                                            <th scope="col">Impacto Primario <span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span><br>
+                                                <button class="rounded-2 bg-success border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Agregar','Impacto')">Agregar +</button> &nbsp
+                                                <button class="rounded-2 bg-danger border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Eliminar','Impacto')">Eliminar -</button></th>
+                                            <th scope="col">Impacto Secundario <span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span><br>
+                                                <button class="rounded-2 bg-success border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Agregar','Impacto')">Agregar +</button> &nbsp
+                                                <button class="rounded-2 bg-danger border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Eliminar','Impacto')">Eliminar -</button></th>
+                                            <th scope="col">Tipo de Desperdicio <span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span><br>
+                                                <button class="rounded-2 bg-success border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Agregar','Desperdicio')">Agregar +</button> &nbsp
+                                                <button class="rounded-2 bg-danger border-dark font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Eliminar','Desperdicio')">Eliminar -</button></th>
+                                            <th scope="col">Objetivos de Calidad M.A. <span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span><br>
+                                                <button class="rounded-2 bg-success border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Agregar','Calidad')">Agregar +</button> &nbsp
+                                                <button class="rounded-2 bg-danger border-dark font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Eliminar','Calidad')">Eliminar -</button></th>
+                                            <th scope="col">Fecha de Sugerencia <span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span></th>
+                                            <th scope="col">Fecha de Inicio <span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span></th>
                                             <th scope="col">Fecha Compromiso</th>
                                             <th scope="col">Fecha real de cierre</th>
-                                            <th scope="col">Analista de factibilidad</th>
+                                            <th scope="col">Analista de factibilidad <span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span><br>
+                                                <button class="rounded-2 bg-success border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Agregar','Analista')">Agregar +</button> &nbsp
+                                                <button class="rounded-2 bg-danger border-dark font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Eliminar','Analista')">Eliminar -</button></th>
                                             <th scope="col">Impacto Planeado</th>
                                             <th scope="col">Impacto Real (Cuantitativo)</th>
                                             <th scope="col">Creado por</th>
                                             <th scope="col">Creado</th>
                                             <th scope="col">Modificado por</th>
                                             <th scope="col">Modificado</th>
-                                            <th scope="col">Eliminar</th>
+                                            <!--<th scope="col">Eliminar</th>-->
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -259,23 +282,28 @@ if ($_SESSION["usuario"]){
                                                 </td>
                                                 <td><input class="inputs-concentrado" type="date" v-model="var_fecha_sugerencia" name="fecha_de_sugerencias" ></input></td>
                                                 <td><input class="inputs-concentrado" type="date" v-model="var_fecha_inicio"  name="fecha_de_inicio" ></input></td>
-                                                <td><input class="inputs-concentrado" type="date" v-model="var_fecha_compromiso"  name="fecha_compromiso" ></input></td>
-                                                <td><input class="inputs-concentrado" type="date" v-model="var_fecha_real_de_cierre"  name="fecha_real_de_cierre" ></input></td>
-                                                <td><input class="inputs-concentrado" type="text" v-model="var_analista_de_factibilidad"  name="analista_de_factibilidad" ></td>
+                                                <td><!--<input class="inputs-concentrado" type="date" v-model="var_fecha_compromiso"  name="fecha_compromiso" ></input>--></td>
+                                                <td><!--<input class="inputs-concentrado" type="date" v-model="var_fecha_real_de_cierre"  name="fecha_real_de_cierre" ></input>--></td>
+                                                <td>
+                                                    <select class="inputs-concentrado" v-model="var_analista_de_factibilidad" >
+                                                        <option value="" disabled>Seleccione Analista..</option>
+                                                        <option v-for="factibilidad in lista_analista_factibilidad" :key="factibilidad.nombre" :value="factibilidad.nombre">{{factibilidad.nombre}}</option>
+                                                    </select>
+                                                </td>
                                                 <td><input class="inputs-concentrado" type="text" v-model="var_impacto_planeado" name="impacto planeado" ></input></td>
                                                 <td><input class="inputs-concentrado" type="text" v-model="var_impacto_real" name="impacto_real" ></input></td>
                                                 <td><label>{{usuario}}</label></td>
                                                 <td><label><?php echo date("Y/m/d"); ?></label></td>
                                                 <td></input></td>
                                                 <td></input></td>
-                                                <td><button type="button" class="btn btn-danger" title="Eliminar" @click="nueva_sugerencia=false"><i class="bi bi-trash"></button></i></td>
+                                                <!--<td><button type="button" class="btn btn-danger" title="Eliminar" @click="nueva_sugerencia=false"><i class="bi bi-trash"></button></i></td>-->
                                             </tr>
                                            
                                             <!--Consulta/Editar Segerencia -->
                                             <tr class="align-middle" v-for="(concentrado, index) in concentrado_sugerencias" :key="concentrado.id" >
                                                 <td class="sticky table-striped table-bordered">
                                                     <button type="button" class="btn btn-danger me-2" title="Cancelar" @click="mostrar_id('')" v-if="actualizar_sugerencia==index+1"><i class="bi bi-x-circle" ></i></button>
-                                                    <button type="button" class="btn btn-primary" title="Guardar" @click="guardar_nueva_sugerencia_y_actualizar('actualizar',concentrado.id), mostrar_id('')" v-if="actualizar_sugerencia==index+1"><i class="bi bi-check-circle"></i></button>
+                                                    <button type="button" class="btn btn-primary" title="Guardar" @click="guardar_nueva_sugerencia_y_actualizar('actualizar',concentrado.id)" v-if="actualizar_sugerencia==index+1"><i class="bi bi-check-circle"></i></button>
                                                     <button type="button" class="btn btn-warning" title="Actualizar" @click="mostrar_id(index+1)" v-else><i class="bi bi-pen" ></i></button>
                                                 </td>
                                                 <th scope="row">{{index+1}}<br><!--{{concentrado.id}}--></th>
@@ -352,16 +380,22 @@ if ($_SESSION["usuario"]){
                                                 </td>
                                                 <td><input class="inputs-concentrado" type="date" v-model="var_fecha_sugerencia" v-if="actualizar_sugerencia==index+1"></input><label v-else>{{concentrado.fecha_de_sugerencia}}</label></td>
                                                 <td><input class="inputs-concentrado" type="date" v-model="var_fecha_inicio" v-if="actualizar_sugerencia==index+1"></input><label v-else>{{concentrado.fecha_de_inicio}}</label></td>
-                                                <td><input class="inputs-concentrado" type="date" v-model="var_fecha_compromiso" v-if="actualizar_sugerencia==index+1"></input><label v-else>{{concentrado.fecha_compromiso}}</label></td>
-                                                <td><input class="inputs-concentrado" type="date" v-model="var_fecha_real_de_cierre" v-if="actualizar_sugerencia==index+1"></input><label v-else>{{concentrado.fecha_real_cierre}}</label></td>
-                                                <td><input class="inputs-concentrado" type="text" v-model="var_analista_de_factibilidad" name="analista_de_factibilidad" v-if="actualizar_sugerencia==index+1"><label v-else>{{concentrado.analista_de_factibilidad}}</label></td>
+                                                <td><!--<input class="inputs-concentrado" type="date" v-model="var_fecha_compromiso" v-if="actualizar_sugerencia==index+1"></input><label v-else>{{concentrado.fecha_compromiso}}</label></td>-->
+                                                <td><!--<input class="inputs-concentrado" type="date" v-model="var_fecha_real_de_cierre" v-if="actualizar_sugerencia==index+1"></input><label v-else>{{concentrado.fecha_real_cierre}}</label></td>-->
+                                                <td>
+                                                    <select class="inputs-concentrado" v-model="var_analista_de_factibilidad" v-if="actualizar_sugerencia==index+1">
+                                                        <option value="" disabled>Seleccione analista..</option>
+                                                        <option v-for="analistas_factibilidad in lista_analista_factibilidad" :key="analistas_factibilidad.nombre" :value="analistas_factibilidad.nombre">{{analistas_factibilidad.nombre}}</option>
+                                                    </select>
+                                                    <label v-else>{{concentrado.analista_de_factibilidad}}</label>
+                                                </td>
                                                 <td><input class="inputs-concentrado" type="text" v-model="var_impacto_planeado" name="impacto planeado" v-if="actualizar_sugerencia==index+1"></input><label v-else>{{concentrado.impacto_planeado}}</label></td>
                                                 <td><input class="inputs-concentrado" type="text" v-model="var_impacto_real" name="impacto_real" v-if="actualizar_sugerencia==index+1"></input><label v-else>{{concentrado.impacto_real}}</label></td>
                                                 <td><label>{{usuario}}</label></td>
                                                 <td><label v-if="actualizar_sugerencia==index+1"><?php echo date("Y/m/d"); ?></label><label v-else>{{concentrado.creado}}</label></td>
                                                 <td>{{concentrado.modificado_por}}</td>
                                                 <td>{{concentrado.modificado}}</td>
-                                                <td><button type="button" class="btn btn-danger" title="Eliminar" @click="eliminar_sugerencia(concentrado.id)"><i class="bi bi-trash"></button></i></td>
+                                                <!--<td><button type="button" class="btn btn-danger" title="Eliminar" @click="eliminar_sugerencia(concentrado.id)"><i class="bi bi-trash"></button></i></td>-->
                                             </tr>
                                         </tbody>
                                     </table>
@@ -378,8 +412,8 @@ if ($_SESSION["usuario"]){
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                        <div class="text-center" v-if="contenido_modal_agregar_eliminar=='Agregar'">
-                                                <input class="text-center border fs-6 rounded-2 w-100" placeholder="Digite el nuevo registro" v-model="nueva_opcion"></input>
+                                        <div class="text-center" v-if="contenido_modal_agregar_eliminar=='Agregar' && tipo_agregar_eliminar!='Analista'">
+                                                <input class="text-center border rounded-2 w-100" placeholder="Digite el nuevo registro" v-model="nueva_opcion"></input>
                                         </div>
                                         <div v-if="contenido_modal_agregar_eliminar=='Eliminar' && tipo_agregar_eliminar=='Planta'">
                                               <div class="row mt-1 mb-2  d-flex align-items-center" v-for="(lis_plantas,index) in lista_planta" >
@@ -422,6 +456,17 @@ if ($_SESSION["usuario"]){
                                                     <div class="col-10 text-center bg-secondary text-light"> {{index+1}} .- {{lis_calidad.objetivos_de_calidad}}</div>
                                                     <div class="col-2"><button type="button" class="btn btn-danger"  @click="eliminar_elementos_lista(lis_calidad.id)">x</button></div>
                                              </div>
+                                        </div>
+                                        <div v-if="contenido_modal_agregar_eliminar=='Eliminar' && tipo_agregar_eliminar=='Analista'">
+                                              <div class="row mt-1 mb-2  d-flex align-items-center" v-for="(lis_calidad,index) in lista_analista_factibilidad" >
+                                                    <div class="col-10 text-center bg-secondary text-light"> {{index+1}} .- {{lis_calidad.nombre}}</div>
+                                                    <div class="col-2"><button type="button" class="btn btn-danger"  @click="eliminar_elementos_lista(lis_calidad.id)">x</button></div>
+                                             </div>
+                                        </div>
+
+                                        <div class="text-center" v-if="contenido_modal_agregar_eliminar=='Agregar' && tipo_agregar_eliminar=='Analista'">
+                                                <input class="text-center border rounded-2 w-100 mt-3" placeholder="Nombre del analista" v-model="nueva_opcion"></input><br>
+                                                <input class="text-center border rounded-2 w-100 mt-3" placeholder="Correo" v-model="correo_analista"></input>
                                         </div>
                                 </div>
                                 <div class="modal-footer">
@@ -515,6 +560,7 @@ if ($_SESSION["usuario"]){
                 var_fecha_inicio:'',
                 var_fecha_compromiso:'',
                 var_fecha_real_de_cierre:'',
+                lista_analista_factibilidad: [],
                 var_analista_de_factibilidad:'',
                 var_impacto_planeado:'',
                 var_impacto_real:'',
@@ -523,7 +569,8 @@ if ($_SESSION["usuario"]){
                 mensaje_modal:'',   
                 contenido_modal_agregar_eliminar:'',
                 nueva_opcion:'',
-                tipo_agregar_eliminar:''
+                tipo_agregar_eliminar:'',
+                correo_analista:''
             }
         },
         mounted(){
@@ -549,7 +596,8 @@ if ($_SESSION["usuario"]){
              this.consultando_lista_de_desperdicio(),
             //consultado lista objetivo de calidad MA
             this.consulta_lista_objetivos_calidad_ma(),
-            //consultado lista impacto primario
+            //consultado lista analistas de factibilidad
+            this.consulta_lista_analista_factibilidad(),
             axios.post('consulta_usuario.php',{
                 usuario: this.usuario
             }).then(response =>{
@@ -569,42 +617,49 @@ if ($_SESSION["usuario"]){
                    if(dato=='configuracion'){this.pintarCinco=true}else{this.pintarCinco=false}
              },
             guardar_nueva_sugerencia_y_actualizar(nueva_o_actualizar,id_registro){
-                this.nueva_sugerencia=false;
-               
-                axios.post('guardar_nueva_sugerencia_y_actualizar.php',{
-                    id: id_registro,
-                    tipo_nueva_o_actualizar: nueva_o_actualizar,
-                    cumplimiento: this.var_cumplimiento,
-                    nombre_sugerencia: this.var_nombre_sugerencias,
-                    folio: this.var_folio,
-                    status: this.var_status,
-                    causa_no_factibilidad: this.var_causa_no_factibilidad,
-                    situacion_actual: this.var_situacion_actual,
-                    idea_propuesta: this.var_idea_propuesta,
-                    nomina: this.var_nomina,
-                    colaborador: this.var_colaborador,
-                    puesto: this.var_puesto,
-                    planta: this.var_planta,
-                    area: this.var_area,
-                    area_participante: this.var_area_participante,
-                    subarea: this.var_subarea,
-                    impacto_primario: this.var_impacto_primario,
-                    impacto_secundario: this.var_impacto_secundario,
-                    tipo_desperdicio: this.var_tipo_desperdicio,
-                    objetivo_de_calidadMA: this.var_objetivo_de_calidadMA,
-                    fecha_sugerencia: this.var_fecha_sugerencia,
-                    fecha_inicio: this.var_fecha_inicio,
-                    fecha_compromiso: this.var_fecha_compromiso,
-                    fecha_real_de_cierre: this.var_fecha_real_de_cierre,
-                    analista_de_factibilidad: this.var_analista_de_factibilidad,
-                    impacto_planeado: this.var_impacto_planeado,
-                    impacto_real: this.var_impacto_real,
-                    usuario: this.usuario
-                }).then(response =>{
-                    console.log(response.data);
-                    this.consultado_concentrado()
-                       
-                })
+
+                if(this.var_nombre_sugerencias!='' && this.var_folio!='' && this.var_causa_no_factibilidad!='' && this.var_situacion_actual!='' && 
+                    this.var_idea_propuesta!='' && this.var_nomina!='' && this.var_colaborador!='' && this.var_puesto!='' && this.var_planta!='' && 
+                    this.var_area!='' && this.var_area_participante!='' && this.var_subarea!='' && this.var_impacto_primario!='' && 
+                    this.var_impacto_secundario!='' && this.var_tipo_desperdicio!='' && this.var_objetivo_de_calidadMA!='' && this.var_fecha_sugerencia!='' && this.var_fecha_inicio!=''){
+                    this.actualizar_sugerencia="";//desactivar editar o actualizar
+                    this.nueva_sugerencia=false;//desactivar nueva sugerencia
+                        axios.post('guardar_nueva_sugerencia_y_actualizar.php',{
+                            id: id_registro,
+                            tipo_nueva_o_actualizar: nueva_o_actualizar,
+                            cumplimiento: this.var_cumplimiento,
+                            nombre_sugerencia: this.var_nombre_sugerencias,
+                            folio: this.var_folio,
+                            status: this.var_status,
+                            causa_no_factibilidad: this.var_causa_no_factibilidad,
+                            situacion_actual: this.var_situacion_actual,
+                            idea_propuesta: this.var_idea_propuesta,
+                            nomina: this.var_nomina,
+                            colaborador: this.var_colaborador,
+                            puesto: this.var_puesto,
+                            planta: this.var_planta,
+                            area: this.var_area,
+                            area_participante: this.var_area_participante,
+                            subarea: this.var_subarea,
+                            impacto_primario: this.var_impacto_primario,
+                            impacto_secundario: this.var_impacto_secundario,
+                            tipo_desperdicio: this.var_tipo_desperdicio,
+                            objetivo_de_calidadMA: this.var_objetivo_de_calidadMA,
+                            fecha_sugerencia: this.var_fecha_sugerencia,
+                            fecha_inicio: this.var_fecha_inicio,
+                            fecha_compromiso: this.var_fecha_compromiso,
+                            fecha_real_de_cierre: this.var_fecha_real_de_cierre,
+                            analista_de_factibilidad: this.var_analista_de_factibilidad,
+                            impacto_planeado: this.var_impacto_planeado,
+                            impacto_real: this.var_impacto_real,
+                            usuario: this.usuario
+                        }).then(response =>{
+                            console.log(response.data);
+                            this.consultado_concentrado()
+                        })
+                }else{
+                    alert('todos los campos marcados con: (*) son requeridos.')
+                }
             },
             mostrar_id(id){
                     var posicion=id
@@ -630,7 +685,7 @@ if ($_SESSION["usuario"]){
                     this.nueva_sugerencia=true
                 } else if (id==""){//cacelar actualizar
 
-                } else {//actualizar sugerencias
+                } else {//llenado campos de actualizar asignandolos a las variables
                     this.nueva_sugerencia=false;
                     this.var_nombre_sugerencias=this.concentrado_sugerencias[posicion-1].nombre_sugerencia
                     this.var_folio=this.concentrado_sugerencias[posicion-1].folio
@@ -647,6 +702,8 @@ if ($_SESSION["usuario"]){
                     this.var_impacto_primario = this.concentrado_sugerencias[posicion-1].impacto_primario
                     this.var_impacto_secundario = this.concentrado_sugerencias[posicion-1].impacto_secundario
                     this.var_tipo_desperdicio = this.concentrado_sugerencias[posicion-1].tipo_de_desperdicio
+                    this.var_fecha_sugerencia = this.concentrado_sugerencias[posicion-1].fecha_de_sugerencia
+                    this.var_fecha_inicio = this.concentrado_sugerencias[posicion-1].fecha_de_inicio
                     var arr = this.concentrado_sugerencias[posicion-1].objetivo_de_calidad_ma.split(',')
                     var longitud = arr.length
                     this.var_objetivo_de_calidadMA.splice(0,15);
@@ -726,6 +783,13 @@ if ($_SESSION["usuario"]){
                 console.log(this.objetivo_de_calidadMA);
             })
             },
+            consulta_lista_analista_factibilidad(){
+                axios.post('lista_analista_factibilidad.php',{
+            }).then(response =>{
+                this.lista_analista_factibilidad = response.data
+                console.log(this.lista_analista_factibilidad);
+            })
+            },
             modal_nueva_eliminar(agregar_o_eliminar,tipo){
                 this.tipo_agregar_eliminar = tipo;
                 this.titulo_modal=agregar_o_eliminar+" "+tipo //creando titulo modal
@@ -734,8 +798,10 @@ if ($_SESSION["usuario"]){
             agregar_nuevo_lista(){
                 axios.post('agregar_nuevo_en_lista.php',{
                     nuevo_registro: this.nueva_opcion,
-                    tipo: this.tipo_agregar_eliminar
+                    tipo: this.tipo_agregar_eliminar,
+                    correo: this.correo_analista
                 }).then(response =>{
+                    this.nueva_opcion = ''
                     if(response.data=='planta agregada'){
                         alert("Se agrego la Planta con Éxito.")
                         this.consultando_plantas()
@@ -754,6 +820,12 @@ if ($_SESSION["usuario"]){
                     }else if(response.data=='desperdicio agregada'){
                         alert("Se agrego nuevo tipo de desperdicio con Éxito.")
                         this.consultando_lista_de_desperdicio()
+                    }else if(response.data=='calidad agregada'){
+                        alert("Se agrego nuevo objetivo de calidad MA con Éxito.")
+                        this.consulta_lista_objetivos_calidad_ma()
+                    }else if(response.data=='analista agregada'){
+                        alert("Se agrego Analista y correo con Éxito.")
+                        this.consulta_lista_analista_factibilidad()
                     }else{
                         alert("Algo salio mal al agregar.")
                     }
@@ -783,6 +855,12 @@ if ($_SESSION["usuario"]){
                 }else if (response.data=='desperdicio eliminada'){
                         alert("Se elimino con Éxito.")
                         this.consultando_lista_de_desperdicio()
+                }else if (response.data=='calidad eliminada'){
+                        alert("Se elimino con Éxito.")
+                        this.consulta_lista_objetivos_calidad_ma()
+                }else if (response.data=='analista eliminada'){
+                        alert("Se elimino con Éxito.")
+                        this.consulta_lista_analista_factibilidad()
                 }else{
                     alert("Algo salio mal al eliminar.")
                 }

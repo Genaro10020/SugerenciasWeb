@@ -71,6 +71,13 @@
         .tablaConcentrado tbody tr:nth-child(2n) .sticky{
             background: rgb(212, 212, 212);
         }
+        .tablaConcentrado thead tr th{
+            background: rgb(94, 94, 94);
+        }
+
+        .tablaConcentrado thead tr th:nth-child(2n){
+            background: rgb(99, 99, 99);
+        }
 
         .inputs-concentrado{
             background: rgb(255, 255, 255);
@@ -80,6 +87,7 @@
             height: 50px;
             min-width: 100px;
         }
+
         .input-nom-sugerencia{ width: 250px;}
         .text-area{resize: inline; }
   /*Fin concentrado sugerencias*/
