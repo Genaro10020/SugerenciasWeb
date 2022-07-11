@@ -57,11 +57,6 @@ if ($_SESSION["usuario"]){
                 outline: 0 none;
                 }
                 
-
-
-            
-                
-                
     </style>
     <div id="app" class="container-fluid  " >
                 <!--BARRA SUPERIOR-->
@@ -89,12 +84,11 @@ if ($_SESSION["usuario"]){
                             <button class="opciones   mx-lg-2 rounded-3" @click="mostrar('configuracion')" v-bind:class="{pintarCinco}">
                                 Configuración
                             </button>
-             
                 </div>
             </div>
                  <!--CUERPO-->
             <div class="row" style="min-height:76vh">
-            <!--////////////////////////////////////////////////////////-->
+            <!--////////////////////////////////////////////////////////PRINCIPAL MEJORA-->
                    <div v-if="ventana=='principalMejora'">
                             <!--cinta apartado-->
                             <div class="row justify-content-center align-items-start ">
@@ -104,11 +98,12 @@ if ($_SESSION["usuario"]){
                             </div>
                             <!--fin cinta apartado-->
                             <!-- contenido principal gonher-->
-                            <div class="div-scroll mt-3 ">
-                                <table class="table table-striped table-bordered">
-                                <thead>
-                                    <tr>
-                                    <th scope="col">#</th>
+                            <div class="text-center mt-3 "><span class="badge bg-light text-dark">Implementación y validación de impactos de sugerencias:</span></div>
+                            <div class="div-scroll mt-3">
+                                <table class="tablaMonitoreo-sugerencias table table-striped table-bordered ">
+                                <thead class="encabezado-tabla text-center text-light ">
+                                    <tr >
+                                    <th scope="col " class="sticky">#</th>
                                     <th scope="col">Folio</th>
                                     <th scope="col">Nombre de Sugerencia</th>
                                     <th scope="col">Fecha Compromiso</th>
@@ -118,14 +113,14 @@ if ($_SESSION["usuario"]){
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                    <th scope="row">1</th>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
-                                        <td>@mdo</td>
-                                        <td>@mdo</td>
-                                        <td>@mdo</td>
+                                    <tr v-for="(concentrado, index) in concentrado_sugerencias">
+                                    <th scope="row" class="text-center">{{index+1}}</th>
+                                        <td>{{concentrado.folio}}</td>
+                                        <td>{{concentrado.nombre_sugerencia}}</td>
+                                        <td>{{concentrado.fecha_compromiso}}</td>
+                                        <td>{{concentrado.cumplimiento}}</td>
+                                        <td>PENDIENTE</td>
+                                        <td>PENDIENTE</td>
                                     </tr>
                                 </tbody>
                                 </table>
@@ -142,16 +137,16 @@ if ($_SESSION["usuario"]){
                             </div>
                         <!--fin cinta apartado-->
                             <!-- contenido principal gonher-->
-                            <div class="row m-lg-5">
+                            <div class="row m-lg-2">
                                 <div class="col-12 text-center inline-block">
-                                    <div class="">
+                                    <div>
                                         <button class="boton-nuevo" @click="agregar_nueva_sugerencia, mostrar_id(0)"><i class="bi bi-plus-circle"></i> Nueva Sugerencia</button>
                                     </div>
                                 </div>
                             <div class="div-scroll mt-3 ">
                      
                                     <table class="table tablaConcentrado table-striped table-bordered" style="height:10px; ">
-                                        <thead class="encabezado-tabla text-center ">
+                                        <thead class="encabezado-tabla text-center">
                                             <tr class="text-light bg-secondary">
                                             <th scope="col" class="sticky bg-white text-dark ">Edit:Cancel/Save </th>
                                             <th scope="col">#</th>
@@ -498,11 +493,51 @@ if ($_SESSION["usuario"]){
                             </div>
                    </div>
                    <div v-else-if="ventana=='configuracion'">
-                        <div class="row justify-content-center align-items-start ">
-                                <div class="cintilla col-12 text-center">
-                                   <b> CONFIGURACIÓN</b>
+                    <!--//////////////////////////////////////////////////////////////////////////////APARTADO CONFIGURACIÓN-->
+                    
+                                <div class="row justify-content-center align-items-start ">
+                                        <div class="cintilla col-12 text-center">
+                                        <b> CONFIGURACIÓN</b>
+                                        </div>
                                 </div>
-                            </div>
+                                <div class="row h-100">
+                               
+                                    <div class="d-flex justify-content-center align-items-center">
+                                        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 col-xxl-2 bg-light  border bordered-2 border-secondary rounded-2">
+                                            <form @submit.prevent="guardar_admin_y_analista" class="m-2">
+                                            <div class="text-center"><span class="badge text-dark ">Agregue información del Analista o Admin solicitada.</span></div>
+                                                <div class="mb-3">
+                                                <div><span class="badge text-dark">Usuario:</span></div>
+                                                    <input type="text" :required class="form-control" id="exampleInputPassword1">
+                                                </div>
+                                                <div class="mb-3">
+                                                <div><span class="badge text-dark">Password:</span></div>
+                                                    <input type="text" :required class="form-control" id="exampleInputPassword1">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <div><span class="badge text-dark">Correo:</span></div>
+                                                    <input type="email" :required class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <div><span class="badge text-dark">Departamente:</span></div>
+                                                    <input type="text" :required  class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <div><span class="badge text-dark">Tipo:</span></div>
+                                                    <select class="form-control" :required v-model="var_tipo_usuario">
+                                                        <option value="" disabled>Seleccione tipo...</option>
+                                                        <option v-for="array_tipo in array_tipo_usuario" :value="array">{{array_tipo}}</option>
+                                                    </select> 
+
+                                                </div>
+                                               
+                                                <div class="text-center">
+                                                    <button class="boton-nuevo" > Aceptar</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                    </div>
             </div>
                 <!--FOOTER-->
@@ -517,6 +552,7 @@ if ($_SESSION["usuario"]){
     {
         data(){
             return {
+                /*Variables Principal Mejora*/
                 username: '',
                 prueba: '',
                 ventana: 'principalMejora',  
@@ -570,7 +606,11 @@ if ($_SESSION["usuario"]){
                 contenido_modal_agregar_eliminar:'',
                 nueva_opcion:'',
                 tipo_agregar_eliminar:'',
-                correo_analista:''
+                correo_analista:'',
+                /*Variables Configuracion*/
+                array_tipo_usuario: ['Admin','Analista'],
+                var_tipo_usuario:'',
+
             }
         },
         mounted(){
@@ -865,7 +905,11 @@ if ($_SESSION["usuario"]){
                     alert("Algo salio mal al eliminar.")
                 }
                })
-            }
+            },
+            /*METODOS DE ADMINISTRACION*/
+            guardar_admin_y_analista(){
+                alert("HOLA");
+            }  
         }   
     }
     var mountedApp = Vue.createApp(vue3).mount('#app');

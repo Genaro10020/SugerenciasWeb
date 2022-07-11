@@ -53,7 +53,7 @@
             white-space: nowrap;
         }
       
-        .tablaConcentrado{
+        .tablaConcentrado, .tablaMonitoreo-sugerencias{
             font-size: 0.6em;         
         }
 
@@ -71,11 +71,11 @@
         .tablaConcentrado tbody tr:nth-child(2n) .sticky{
             background: rgb(212, 212, 212);
         }
-        .tablaConcentrado thead tr th{
+        .tablaMonitoreo-sugerencias thead tr th, .tablaConcentrado thead tr th{
             background: rgb(94, 94, 94);
         }
 
-        .tablaConcentrado thead tr th:nth-child(2n){
+        .tablaMonitoreo-sugerencias thead tr th:nth-child(2n), .tablaConcentrado thead tr th:nth-child(2n){
             background: rgb(99, 99, 99);
         }
 
@@ -109,14 +109,14 @@
     .opciones{
         font-size: 0.9em;
     }
-    .tablaConcentrado{
+    .tablaConcentrado, .tablaMonitoreo-sugerencias{
         font-size: 0.6em;         
      }
      /*.input-nom-sugerencia{width: 350px;}*/
  }
 /* X-Large devices (large desktops, 1200px and up)***************************************/
 @media (min-width: 1200px) {
-    .tablaConcentrado{
+    .tablaConcentrado, .tablaMonitoreo-sugerencias{
         font-size: 0.7em;         
      }
 
