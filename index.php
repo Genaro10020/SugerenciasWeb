@@ -115,8 +115,10 @@ session_destroy();
                 contrasena: this.password
                 }).then(response =>{
                     console.log(response.data)
-                    if(response.data=='Si'){
+                    if(response.data=='Admin'){
                       window.location.href = "principalMejora.php"
+                    }else if(response.data=='Analista') {
+                        window.location.href = "principalAnalista.php"
                     }else{
                         alert("Usuario/Contraseña Incorrecta")
                     }

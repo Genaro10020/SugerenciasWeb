@@ -174,18 +174,18 @@ if ($_SESSION["usuario"]){
                                             <th scope="col">Subárea <span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span><br>
                                                 <button class="rounded-2 bg-success border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Agregar','Subarea')">Agregar +</button> &nbsp
                                                 <button class="rounded-2 bg-danger border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Eliminar','Subarea')">Eliminar -</button></th>
-                                            <th scope="col">Impacto Primario <span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span><br>
-                                                <button class="rounded-2 bg-success border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Agregar','Impacto')">Agregar +</button> &nbsp
-                                                <button class="rounded-2 bg-danger border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Eliminar','Impacto')">Eliminar -</button></th>
-                                            <th scope="col">Impacto Secundario <span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span><br>
-                                                <button class="rounded-2 bg-success border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Agregar','Impacto')">Agregar +</button> &nbsp
-                                                <button class="rounded-2 bg-danger border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Eliminar','Impacto')">Eliminar -</button></th>
-                                            <th scope="col">Tipo de Desperdicio <span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span><br>
-                                                <button class="rounded-2 bg-success border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Agregar','Desperdicio')">Agregar +</button> &nbsp
-                                                <button class="rounded-2 bg-danger border-dark font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Eliminar','Desperdicio')">Eliminar -</button></th>
-                                            <th scope="col">Objetivos de Calidad M.A. <span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span><br>
-                                                <button class="rounded-2 bg-success border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Agregar','Calidad')">Agregar +</button> &nbsp
-                                                <button class="rounded-2 bg-danger border-dark font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Eliminar','Calidad')">Eliminar -</button></th>
+                                            <th scope="col">Impacto Primario <!--<span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span>--><br v-show="nueva_sugerencia!=true">
+                                                <button v-show="nueva_sugerencia!=true" class="rounded-2 bg-success border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Agregar','Impacto')">Agregar +</button> &nbsp
+                                                <button v-show="nueva_sugerencia!=true" class="rounded-2 bg-danger border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Eliminar','Impacto')">Eliminar -</button></th>
+                                            <th scope="col">Impacto Secundario <!--<span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span>--><br v-show="nueva_sugerencia!=true">
+                                                <button v-show="nueva_sugerencia!=true" class="rounded-2 bg-success border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Agregar','Impacto')">Agregar +</button> &nbsp
+                                                <button v-show="nueva_sugerencia!=true" class="rounded-2 bg-danger border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Eliminar','Impacto')">Eliminar -</button></th>
+                                            <th scope="col">Tipo de Desperdicio <!--<span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span>--><br v-show="nueva_sugerencia!=true">
+                                                <button v-show="nueva_sugerencia!=true" class="rounded-2 bg-success border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Agregar','Desperdicio')">Agregar +</button> &nbsp
+                                                <button v-show="nueva_sugerencia!=true" class="rounded-2 bg-danger border-dark font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Eliminar','Desperdicio')">Eliminar -</button></th>
+                                            <th scope="col">Objetivos de Calidad M.A. <!--<span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span>--><br v-show="nueva_sugerencia!=true">
+                                                <button v-show="nueva_sugerencia!=true" class="rounded-2 bg-success border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Agregar','Calidad')">Agregar +</button> &nbsp
+                                                <button v-show="nueva_sugerencia!=true" class="rounded-2 bg-danger border-dark font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Eliminar','Calidad')">Eliminar -</button></th>
                                             <th scope="col">Fecha de Sugerencia <span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span></th>
                                             <th scope="col">Fecha de Inicio <span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span></th>
                                             <th scope="col">Fecha Compromiso</th>
@@ -247,25 +247,25 @@ if ($_SESSION["usuario"]){
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <select class="inputs-concentrado" v-model="var_impacto_primario">
+                                                    <!--<select class="inputs-concentrado" v-model="var_impacto_primario">
                                                         <option value="" disabled>Seleccione impacto primario...</option>
                                                         <option v-for="impacto_primario in lista_impacto_primario" :key="impacto_primario.impacto" :value="impacto_primario.impacto">{{impacto_primario.impacto}}</option>
-                                                    </select>
+                                                    </select>-->
                                                 </td>
                                                 <td>
-                                                    <select class="inputs-concentrado" v-model="var_impacto_secundario">
+                                                    <!--<select class="inputs-concentrado" v-model="var_impacto_secundario">
                                                         <option value="" disabled>Seleccione impacto secundario...</option>
                                                         <option v-for="impacto_secundario in lista_impacto_secundario" :key="impacto_secundario.impacto" :value="impacto_secundario.impacto">{{impacto_secundario.impacto}}</option>
-                                                    </select>
+                                                    </select>-->
                                                 </td>
                                                 <td>
-                                                    <select class="inputs-concentrado" v-model="var_tipo_desperdicio">
+                                                   <!-- <select class="inputs-concentrado" v-model="var_tipo_desperdicio">
                                                         <option value="" disabled>Seleccione tipo desperdicio..</option>
                                                         <option v-for="tipo_desperdicio in lista_tipo_desperdicio" :key="tipo_desperdicio.tipo_de_desperdicio" :value="tipo_desperdicio.tipo_de_desperdicio">{{tipo_desperdicio.tipo_de_desperdicio}}</option>
-                                                    </select>
+                                                    </select>-->
                                                 </td>
                                                 <td>
-                                                <div  class="inputs-concentrado" style="overflow-y: scroll; max-height:50px;">
+                                                <!--<div  class="inputs-concentrado" style="overflow-y: scroll; max-height:50px;">
                                                 <label>{{var_objetivo_de_calidadMA}}</label>
                                                     <ul>
                                                         <li v-for="objetivo_de_calidad in objetivo_de_calidadMA">
@@ -273,7 +273,7 @@ if ($_SESSION["usuario"]){
                                                             <label for="objetivo_de_calidad">{{objetivo_de_calidad.objetivos_de_calidad}}</label>
                                                         </li>
                                                     </ul>
-                                                </div>
+                                                </div>-->
                                                 </td>
                                                 <td><input class="inputs-concentrado" type="date" v-model="var_fecha_sugerencia" name="fecha_de_sugerencias" ></input></td>
                                                 <td><input class="inputs-concentrado" type="date" v-model="var_fecha_inicio"  name="fecha_de_inicio" ></input></td>
@@ -508,25 +508,29 @@ if ($_SESSION["usuario"]){
                                             <div class="text-center"><span class="badge text-dark ">Agregue información del Analista o Admin solicitada.</span></div>
                                                 <div class="mb-3">
                                                 <div><span class="badge text-dark">Usuario:</span></div>
-                                                    <input type="text" :required class="form-control" id="exampleInputPassword1">
+                                                    <input type="text" class="form-control" v-model="nuevo_usuario"  required>
                                                 </div>
                                                 <div class="mb-3">
                                                 <div><span class="badge text-dark">Password:</span></div>
-                                                    <input type="text" :required class="form-control" id="exampleInputPassword1">
+                                                    <input type="text" class="form-control" v-model="nuevo_password" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <div><span class="badge text-dark">Nombre Completo:</span></div>
+                                                    <input type="text"   class="form-control" v-model="nuevo_nombre" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <div><span class="badge text-dark">Correo:</span></div>
-                                                    <input type="email" :required class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                                    <input type="email" class="form-control" v-model="nuevo_correo" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <div><span class="badge text-dark">Departamente:</span></div>
-                                                    <input type="text" :required  class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                                    <input type="text"   class="form-control" v-model="nuevo_departamento" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <div><span class="badge text-dark">Tipo:</span></div>
-                                                    <select class="form-control" :required v-model="var_tipo_usuario">
+                                                    <select class="form-control" v-model="var_tipo_usuario" required>
                                                         <option value="" disabled>Seleccione tipo...</option>
-                                                        <option v-for="array_tipo in array_tipo_usuario" :value="array">{{array_tipo}}</option>
+                                                        <option v-for="array_tipo in array_tipo_usuario" :value="array_tipo">{{array_tipo}}</option>
                                                     </select> 
 
                                                 </div>
@@ -608,9 +612,13 @@ if ($_SESSION["usuario"]){
                 tipo_agregar_eliminar:'',
                 correo_analista:'',
                 /*Variables Configuracion*/
+                nuevo_usuario:'',
+                nuevo_password:'',
+                nuevo_nombre:'',
+                nuevo_correo:'',
+                nuevo_departamento:'',
                 array_tipo_usuario: ['Admin','Analista'],
                 var_tipo_usuario:'',
-
             }
         },
         mounted(){
@@ -624,20 +632,20 @@ if ($_SESSION["usuario"]){
             }),
              //consultado lista planta
              this.consultando_plantas(),
-            //consultado lista area
+             //consultado lista area
              this.consultando_area(),
-            //consultado lista participante
+             //consultado lista participante
              this.consultando_area_participante(),
              //consultado lista subareas
              this.consultando_subarea(),
              //consultado lista impacto primario y secuandario
              this.consultando_impacto(),
-            //consultado lista tipo desperdicio
+             //consultado lista tipo desperdicio
              this.consultando_lista_de_desperdicio(),
-            //consultado lista objetivo de calidad MA
-            this.consulta_lista_objetivos_calidad_ma(),
-            //consultado lista analistas de factibilidad
-            this.consulta_lista_analista_factibilidad(),
+             //consultado lista objetivo de calidad MA
+             this.consulta_lista_objetivos_calidad_ma(),
+             //consultado lista analistas de factibilidad
+             this.consulta_lista_analista_factibilidad(),
             axios.post('consulta_usuario.php',{
                 usuario: this.usuario
             }).then(response =>{
@@ -660,8 +668,8 @@ if ($_SESSION["usuario"]){
 
                 if(this.var_nombre_sugerencias!='' && this.var_folio!='' && this.var_causa_no_factibilidad!='' && this.var_situacion_actual!='' && 
                     this.var_idea_propuesta!='' && this.var_nomina!='' && this.var_colaborador!='' && this.var_puesto!='' && this.var_planta!='' && 
-                    this.var_area!='' && this.var_area_participante!='' && this.var_subarea!='' && this.var_impacto_primario!='' && 
-                    this.var_impacto_secundario!='' && this.var_tipo_desperdicio!='' && this.var_objetivo_de_calidadMA!='' && this.var_fecha_sugerencia!='' && this.var_fecha_inicio!=''){
+                    this.var_area!='' && this.var_area_participante!='' && this.var_subarea!='' /*&& this.var_impacto_primario!='' && 
+                    this.var_impacto_secundario!='' && this.var_tipo_desperdicio!='' && this.var_objetivo_de_calidadMA!=''*/ && this.var_fecha_sugerencia!='' && this.var_fecha_inicio!=''){
                     this.actualizar_sugerencia="";//desactivar editar o actualizar
                     this.nueva_sugerencia=false;//desactivar nueva sugerencia
                         axios.post('guardar_nueva_sugerencia_y_actualizar.php',{
@@ -722,6 +730,8 @@ if ($_SESSION["usuario"]){
                     this.var_impacto_secundario = ''
                     this.var_tipo_desperdicio = ''
                     this.var_objetivo_de_calidadMA.splice(0,15)
+                    this.var_fecha_sugerencia = ''
+                    this.var_fecha_inicio = ''
                     this.nueva_sugerencia=true
                 } else if (id==""){//cacelar actualizar
 
@@ -908,7 +918,27 @@ if ($_SESSION["usuario"]){
             },
             /*METODOS DE ADMINISTRACION*/
             guardar_admin_y_analista(){
-                alert("HOLA");
+                axios.post('guardar_analista_o_admin.php',{
+                    nuevo_usuario: this.nuevo_usuario,
+                    nuevo_password: this.nuevo_password,
+                    nuevo_nombre: this.nuevo_nombre,
+                    nuevo_correo: this.nuevo_correo,
+                    nuevo_departamento: this.nuevo_departamento,
+                    var_tipo_usuario: this.var_tipo_usuario
+                }).then(response =>{
+                    console.log(response.data);
+                   if(response.data=='Bien'){
+                        this.nuevo_usuario=''
+                        this.nuevo_password=''
+                        this.nuevo_nombre=''
+                        this.nuevo_correo=''
+                        this.nuevo_departamento=''
+                        this.var_tipo_usuario=''
+                        alert("Usuario dado de alta con Éxito.")
+                   }else{
+                    alert("Algo salio mal.")
+                   }
+                })
             }  
         }   
     }

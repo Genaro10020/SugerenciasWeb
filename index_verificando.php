@@ -13,11 +13,11 @@ $resultado = mysqli_query($conexion,$consulta);
 if (mysqli_num_rows($resultado)>0)
 {
     while ($row = mysqli_fetch_array($resultado)){
-        //$_SESSION["nombre"] = $row['nombre'];
-    }
+        $tipo = $row['tipo'];
 
+    }
     $_SESSION["usuario"] = $user;
-    echo "Si";
+    echo $tipo;
 }else{
     echo "No";
 }

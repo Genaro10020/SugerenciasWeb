@@ -2,13 +2,21 @@
 session_start();
 header("Content-Type: application/json");
 $variables = json_decode(file_get_contents('php://input'), true);
-$tipo=$variables['tipo_nueva_o_actualizar'];
+$usuario=$variables['nuevo_usuario'];
+$pasword=$variables['nuevo_password'];
+$nombre=$variables['nuevo_nombre'];
+$correo=$variables['nuevo_correo'];
+$departamento=$variables['nuevo_departamento'];
+$tipo_usuario=$variables['var_tipo_usuario'];
+include "conexionGhoner.php";
 
-        $consulta = "INSERT INTO usuarios_sugerencias (user,password,email) 
-        VALUES ('$cumplimiento','$nombre_sugerencia','$folio','$status', '$causa_no_factibilidad','$situacion_actual','$idea_propuesta','$nomina','$colaborador','$puesto','$planta','$area','$area_participante',
-        '$subarea','$impacto_primario','$impacto_secundario','$tipo_desperdicio','$objetivo_de_calidadMA_cadena','$fecha_sugerencia','$fecha_inicio','$fecha_compromiso','$fecha_real_de_cierre','$analista_de_factibilidad','$impacto_planeado','$impacto_real','$creado_por_o_modificado_por','$creado_o_modificado','modificado por','modificado')";
+        $consulta = "INSERT INTO usuarios_sugerencias (user,password,email,nombre,departamento,tipo)  VALUES ('$usuario','$pasword','$nombre','$correo','$departamento','$tipo_usuario')";
         $query = mysqli_query( $conexion, $consulta);
-
+        if($query==true){
+                $resultado="Bien";
+        }else{
+                $resultado="Mal";
+        }
     
 echo json_encode($resultado);
 ?>
