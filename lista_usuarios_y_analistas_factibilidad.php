@@ -3,11 +3,11 @@ session_start();
 header("Content-Type: application/json");
 $variables = json_decode(file_get_contents('php://input'), true);
 include "conexionGhoner.php";
-$area=[];
-$consulta = "SELECT * FROM lista_area_participante_sugerencias";
+$analistas=[];
+$consulta = "SELECT * FROM usuarios_sugerencias WHERE tipo = 'Analista'" ;
 $resultado = mysqli_query($conexion,$consulta);
 while($datos=mysqli_fetch_array($resultado)){
-    $area[] = $datos;
+    $analistas[] = $datos;
 }
-echo json_encode($area);
+echo json_encode($analistas);
 ?>

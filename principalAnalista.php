@@ -1,6 +1,6 @@
 <?php
 session_start();
-if ($_SESSION["usuario"]){ 
+if ($_SESSION["usuario"] ){ 
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -114,9 +114,11 @@ if ($_SESSION["usuario"]){
                                                         <td>{{concentrado.folio}}</td>
                                                         <td>{{concentrado.nombre_sugerencia}}</td>
                                                         <td>{{concentrado.fecha_de_inicio}}</td>
-                                                        <td>CALCULAR EN AUTOMATICO 7 DIAS</td>
-                                                        <td>{{concentrado.status}}</td>
-                                                      
+                                                        <td>{{concentrado.fecha_limite}}</td>
+                                                        <td>
+                                                            <button v-if="concentrado.status=='En Factibilidad'" type="button" class="btn btn-warning" style=" font-size: 1em"><i class="bi bi-eye"></i>{{concentrado.status}} </button>
+                                                            <button v-else="concentrado.status!='En Factibilidad'" type="button" class="btn btn-danger" style=" font-size: 1em"><i class="bi bi-eye"></i>{{concentrado.status}} </button>
+                                                        </td>
                                                     </tr>
                                                 </tbody>
                                                 </table>
@@ -168,9 +170,6 @@ if ($_SESSION["usuario"]){
                 ventana: 'principalAnalista',  
                 pintarUno:true,
                 pintarDos:false,
-                pintarTres:false,
-                pintarCuatro:false,
-                pintarCinco: false,
                 contador: 0,
                 concentrado_sugerencias:[],
             }
@@ -186,15 +185,12 @@ if ($_SESSION["usuario"]){
                    this.ventana=dato;
                    if(dato=='principalAnalista'){ this.pintarUno=true}else{this.pintarUno=false}
                    if(dato=='concentrado'){this.pintarDos=true}else{this.pintarDos=false}
-                   if(dato=='premios'){ this.pintarTres=true}else{this.pintarTres=false}
-                   if(dato=='retos'){this.pintarCuatro=true}else{this.pintarCuatro=false}
-                   if(dato=='configuracion'){this.pintarCinco=true}else{this.pintarCinco=false}
+
              },
             consultado_concentrado(){
-                axios.post('consulta_concentrado_sugerencias.php',{
+                axios.post('consulta_concentrado_pendientes_factibilidad.php',{
                             }).then(response =>{
                                 this.concentrado_sugerencias = response.data
-                               // console.log(this.concentrado_sugerencias);
                             })
             },
             consultando_usuarios(){

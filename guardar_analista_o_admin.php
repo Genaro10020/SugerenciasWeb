@@ -10,7 +10,7 @@ $departamento=$variables['nuevo_departamento'];
 $tipo_usuario=$variables['var_tipo_usuario'];
 include "conexionGhoner.php";
 
-        $consulta = "INSERT INTO usuarios_sugerencias (user,password,email,nombre,departamento,tipo)  VALUES ('$usuario','$pasword','$nombre','$correo','$departamento','$tipo_usuario')";
+        $consulta = "INSERT INTO usuarios_sugerencias (user,password,email,nombre,departamento,tipo)  VALUES ('$usuario','$pasword','$correo','$nombre','$departamento','$tipo_usuario')";
         $query = mysqli_query( $conexion, $consulta);
         if($query==true){
                 $resultado="Bien";

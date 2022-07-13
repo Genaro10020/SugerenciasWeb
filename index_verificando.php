@@ -14,9 +14,11 @@ if (mysqli_num_rows($resultado)>0)
 {
     while ($row = mysqli_fetch_array($resultado)){
         $tipo = $row['tipo'];
-
+        $nombre = $row['nombre'];
     }
     $_SESSION["usuario"] = $user;
+    $_SESSION["tipo"] = $tipo;
+    $_SESSION["nombre"] = $nombre;
     echo $tipo;
 }else{
     echo "No";

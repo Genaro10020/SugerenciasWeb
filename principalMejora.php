@@ -1,6 +1,6 @@
 <?php
 session_start();
-if ($_SESSION["usuario"]){ 
+if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){ 
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -191,8 +191,8 @@ if ($_SESSION["usuario"]){
                                             <th scope="col">Fecha Compromiso</th>
                                             <th scope="col">Fecha real de cierre</th>
                                             <th scope="col">Analista de factibilidad <span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span><br>
-                                                <button class="rounded-2 bg-success border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Agregar','Analista')">Agregar +</button> &nbsp
-                                                <button class="rounded-2 bg-danger border-dark font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Eliminar','Analista')">Eliminar -</button></th>
+                                               <!-- <button class="rounded-2 bg-success border-dark  font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Agregar','Analista')">Agregar +</button> &nbsp
+                                                <button class="rounded-2 bg-danger border-dark font-monospace text-light"  style="font-weight: bold" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Eliminar','Analista')">Eliminar -</button></th>-->
                                             <th scope="col">Impacto Planeado</th>
                                             <th scope="col">Impacto Real (Cuantitativo)</th>
                                             <th scope="col">Creado por</th>
@@ -280,9 +280,9 @@ if ($_SESSION["usuario"]){
                                                 <td><!--<input class="inputs-concentrado" type="date" v-model="var_fecha_compromiso"  name="fecha_compromiso" ></input>--></td>
                                                 <td><!--<input class="inputs-concentrado" type="date" v-model="var_fecha_real_de_cierre"  name="fecha_real_de_cierre" ></input>--></td>
                                                 <td>
-                                                    <select class="inputs-concentrado" v-model="var_analista_de_factibilidad" >
+                                                    <select class="inputs-concentrado" v-model="var_usuario_y_analista_de_factibilidad" >
                                                         <option value="" disabled>Seleccione Analista..</option>
-                                                        <option v-for="factibilidad in lista_analista_factibilidad" :key="factibilidad.nombre" :value="factibilidad.nombre">{{factibilidad.nombre}}</option>
+                                                        <option v-for="factibilidad in lista_usuarios_y_analistas_factibilidad" :key="factibilidad.nombre" :value="factibilidad.nombre">{{factibilidad.nombre}}</option>
                                                     </select>
                                                 </td>
                                                 <td><input class="inputs-concentrado" type="text" v-model="var_impacto_planeado" name="impacto planeado" ></input></td>
@@ -378,9 +378,9 @@ if ($_SESSION["usuario"]){
                                                 <td><!--<input class="inputs-concentrado" type="date" v-model="var_fecha_compromiso" v-if="actualizar_sugerencia==index+1"></input><label v-else>{{concentrado.fecha_compromiso}}</label></td>-->
                                                 <td><!--<input class="inputs-concentrado" type="date" v-model="var_fecha_real_de_cierre" v-if="actualizar_sugerencia==index+1"></input><label v-else>{{concentrado.fecha_real_cierre}}</label></td>-->
                                                 <td>
-                                                    <select class="inputs-concentrado" v-model="var_analista_de_factibilidad" v-if="actualizar_sugerencia==index+1">
+                                                    <select class="inputs-concentrado" v-model="var_usuario_y_analista_de_factibilidad" v-if="actualizar_sugerencia==index+1">
                                                         <option value="" disabled>Seleccione analista..</option>
-                                                        <option v-for="analistas_factibilidad in lista_analista_factibilidad" :key="analistas_factibilidad.nombre" :value="analistas_factibilidad.nombre">{{analistas_factibilidad.nombre}}</option>
+                                                        <option v-for="analistas_factibilidad in lista_usuarios_y_analistas_factibilidad" :key="analistas_factibilidad.nombre" :value="analistas_factibilidad.nombre">{{analistas_factibilidad.nombre}}</option>
                                                     </select>
                                                     <label v-else>{{concentrado.analista_de_factibilidad}}</label>
                                                 </td>
@@ -505,9 +505,9 @@ if ($_SESSION["usuario"]){
                                     <div class="d-flex justify-content-center align-items-center">
                                         <div class="col-12 col-sm-6 col-lg-4 col-xl-3 col-xxl-2 bg-light  border bordered-2 border-secondary rounded-2">
                                             <form @submit.prevent="guardar_admin_y_analista" class="m-2">
-                                            <div class="text-center"><span class="badge text-dark ">Agregue información del Analista o Admin solicitada.</span></div>
+                                            <div class="text-center"><span class="badge text-dark ">ALTA DE USUARIOS/ANALISTAS.</span></div>
                                                 <div class="mb-3">
-                                                <div><span class="badge text-dark">Usuario:</span></div>
+                                                <div><span class="badge text-dark">Usuario (No. de Control):</span></div>
                                                     <input type="text" class="form-control" v-model="nuevo_usuario"  required>
                                                 </div>
                                                 <div class="mb-3">
@@ -602,6 +602,8 @@ if ($_SESSION["usuario"]){
                 var_fecha_real_de_cierre:'',
                 lista_analista_factibilidad: [],
                 var_analista_de_factibilidad:'',
+                lista_usuarios_y_analistas_factibilidad: [],
+                var_usuario_y_analista_de_factibilidad:'',
                 var_impacto_planeado:'',
                 var_impacto_real:'',
                 usuario:'<?php echo $_SESSION['usuario']; ?>',
@@ -646,6 +648,7 @@ if ($_SESSION["usuario"]){
              this.consulta_lista_objetivos_calidad_ma(),
              //consultado lista analistas de factibilidad
              this.consulta_lista_analista_factibilidad(),
+             this.consulta_lista_usuarios_y_analistas_factibilidad(),
             axios.post('consulta_usuario.php',{
                 usuario: this.usuario
             }).then(response =>{
@@ -668,8 +671,7 @@ if ($_SESSION["usuario"]){
 
                 if(this.var_nombre_sugerencias!='' && this.var_folio!='' && this.var_causa_no_factibilidad!='' && this.var_situacion_actual!='' && 
                     this.var_idea_propuesta!='' && this.var_nomina!='' && this.var_colaborador!='' && this.var_puesto!='' && this.var_planta!='' && 
-                    this.var_area!='' && this.var_area_participante!='' && this.var_subarea!='' /*&& this.var_impacto_primario!='' && 
-                    this.var_impacto_secundario!='' && this.var_tipo_desperdicio!='' && this.var_objetivo_de_calidadMA!=''*/ && this.var_fecha_sugerencia!='' && this.var_fecha_inicio!=''){
+                    this.var_area!='' && this.var_area_participante!='' && this.var_subarea!='' && this.var_fecha_sugerencia!='' && this.var_fecha_inicio!=''){
                     this.actualizar_sugerencia="";//desactivar editar o actualizar
                     this.nueva_sugerencia=false;//desactivar nueva sugerencia
                         axios.post('guardar_nueva_sugerencia_y_actualizar.php',{
@@ -697,7 +699,7 @@ if ($_SESSION["usuario"]){
                             fecha_inicio: this.var_fecha_inicio,
                             fecha_compromiso: this.var_fecha_compromiso,
                             fecha_real_de_cierre: this.var_fecha_real_de_cierre,
-                            analista_de_factibilidad: this.var_analista_de_factibilidad,
+                            analista_de_factibilidad: this.var_usuario_y_analista_de_factibilidad,
                             impacto_planeado: this.var_impacto_planeado,
                             impacto_real: this.var_impacto_real,
                             usuario: this.usuario
@@ -726,6 +728,7 @@ if ($_SESSION["usuario"]){
                     this.var_area = ''
                     this.var_area_participante = ''
                     this.var_subarea = ''
+                    this.var_usuario_y_analista_de_factibilidad=''
                     this.var_impacto_primario = ''
                     this.var_impacto_secundario = ''
                     this.var_tipo_desperdicio = ''
@@ -749,6 +752,7 @@ if ($_SESSION["usuario"]){
                     this.var_area = this.concentrado_sugerencias[posicion-1].area
                     this.var_area_participante = this.concentrado_sugerencias[posicion-1].area_participante
                     this.var_subarea = this.concentrado_sugerencias[posicion-1].subarea
+                    this.var_usuario_y_analista_de_factibilidad = this.var_subarea = this.concentrado_sugerencias[posicion-1].analista_de_factibilidad
                     this.var_impacto_primario = this.concentrado_sugerencias[posicion-1].impacto_primario
                     this.var_impacto_secundario = this.concentrado_sugerencias[posicion-1].impacto_secundario
                     this.var_tipo_desperdicio = this.concentrado_sugerencias[posicion-1].tipo_de_desperdicio
@@ -779,7 +783,7 @@ if ($_SESSION["usuario"]){
                 axios.post('consulta_concentrado_sugerencias.php',{
                             }).then(response =>{
                                 this.concentrado_sugerencias = response.data
-                               // console.log(this.concentrado_sugerencias);
+                                console.log(this.concentrado_sugerencias);
                             })
             },
             consultando_plantas(){
@@ -838,6 +842,13 @@ if ($_SESSION["usuario"]){
             }).then(response =>{
                 this.lista_analista_factibilidad = response.data
                 console.log(this.lista_analista_factibilidad);
+            })
+            },
+            consulta_lista_usuarios_y_analistas_factibilidad(){
+                axios.post('lista_usuarios_y_analistas_factibilidad.php',{
+            }).then(response =>{
+                this.lista_usuarios_y_analistas_factibilidad = response.data
+                console.log(this.lista_usuarios_y_analistas_factibilidad);
             })
             },
             modal_nueva_eliminar(agregar_o_eliminar,tipo){
@@ -935,6 +946,7 @@ if ($_SESSION["usuario"]){
                         this.nuevo_departamento=''
                         this.var_tipo_usuario=''
                         alert("Usuario dado de alta con Éxito.")
+                        this.consulta_lista_usuarios_y_analistas_factibilidad()
                    }else{
                     alert("Algo salio mal.")
                    }
