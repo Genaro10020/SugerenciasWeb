@@ -24,15 +24,17 @@ $tipo_desperdicio= $variables['tipo_desperdicio'];
 $objetivo_de_calidadMA= $variables['objetivo_de_calidadMA'];
 $objetivo_de_calidadMA_cadena=implode(',', $objetivo_de_calidadMA);
 $fecha_sugerencia= $variables['fecha_sugerencia'];
+$fecha_sugerencia = date("d-m-Y", strtotime($fecha_sugerencia));
 $fecha_inicio= $variables['fecha_inicio'];
+$fecha_inicio = date("d-m-Y", strtotime($fecha_inicio));
 $fecha_compromiso= $variables['fecha_compromiso'];
 $fecha_real_de_cierre= $variables['fecha_real_de_cierre'];
 $analista_de_factibilidad= $variables['analista_de_factibilidad'];
 $impacto_planeado= $variables['impacto_planeado'];
 $impacto_real= $variables['impacto_real'];
-$creado_o_modificado= date('Y-m-d');
+$creado_o_modificado= date('d-m-Y');
 $creado_por_o_modificado_por=$variables['usuario'];
-$fecha_limite= date("Y-m-d",strtotime($fecha_inicio."+ 8 days")); //agregando 7 dias
+$fecha_limite= date("d-m-Y",strtotime($fecha_inicio."+ 8 days")); //agregando 7 dias
 include "conexionGhoner.php";
     if($tipo=="nueva"){
         $consulta = "INSERT INTO concentrado_sugerencias (cumplimiento, nombre_sugerencia, folio, status, causa_no_factibilidad, situacion_actual, idea_propuesta,

@@ -288,7 +288,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                 <td><input class="inputs-concentrado" type="text" v-model="var_impacto_planeado" name="impacto planeado" ></input></td>
                                                 <td><input class="inputs-concentrado" type="text" v-model="var_impacto_real" name="impacto_real" ></input></td>
                                                 <td><label>{{usuario}}</label></td>
-                                                <td><label><?php echo date("Y/m/d"); ?></label></td>
+                                                <td><label><?php echo date("d/m/Y"); ?></label></td>
                                                 <td></input></td>
                                                 <td></input></td>
                                                 <!--<td><button type="button" class="btn btn-danger" title="Eliminar" @click="nueva_sugerencia=false"><i class="bi bi-trash"></button></i></td>-->
@@ -387,7 +387,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                 <td><input class="inputs-concentrado" type="text" v-model="var_impacto_planeado" name="impacto planeado" v-if="actualizar_sugerencia==index+1"></input><label v-else>{{concentrado.impacto_planeado}}</label></td>
                                                 <td><input class="inputs-concentrado" type="text" v-model="var_impacto_real" name="impacto_real" v-if="actualizar_sugerencia==index+1"></input><label v-else>{{concentrado.impacto_real}}</label></td>
                                                 <td><label>{{usuario}}</label></td>
-                                                <td><label v-if="actualizar_sugerencia==index+1"><?php echo date("Y/m/d"); ?></label><label v-else>{{concentrado.creado}}</label></td>
+                                                <td><label v-if="actualizar_sugerencia==index+1"><?php echo date("d/m/Y"); ?></label><label v-else>{{concentrado.creado}}</label></td>
                                                 <td>{{concentrado.modificado_por}}</td>
                                                 <td>{{concentrado.modificado}}</td>
                                                 <!--<td><button type="button" class="btn btn-danger" title="Eliminar" @click="eliminar_sugerencia(concentrado.id)"><i class="bi bi-trash"></button></i></td>-->

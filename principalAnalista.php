@@ -89,11 +89,11 @@ if ($_SESSION["usuario"] ){
                                     </div>
                             </div>
                             <!--fin cinta apartado-->
-                            <!-- contenido principal gonher-->
+                            <!-- contenido principal analista gonher-->
                           <div class="row">  
                                 <div class="col-6 col-">
                                             <div class="text-center mt-3 ">
-                                                <span class="badge bg-light text-dark">Sugerencias Pendientes de Factibilidad: <?php echo $_SESSION['usuario']; ?></span>
+                                                <span class="badge bg-light text-dark">Sugerencias Pendientes de Factibilidad: <?php echo $_SESSION['nombre']; ?></span>
                                             </div>
                                             <div class="div-scroll mt-3">
                                                 <table class="tablaMonitoreo-sugerencias table table-striped table-bordered ">
@@ -102,8 +102,8 @@ if ($_SESSION["usuario"] ){
                                                     <th scope="col " class="sticky">#</th>
                                                     <th scope="col">Folio</th>
                                                     <th scope="col">Nombre de Sugerencia</th>
-                                                    <th scope="col">Fecha de Inicio</th>
-                                                    <th scope="col">Fecha Limite</th>
+                                                    <th scope="col">Fecha de Inicio </th>
+                                                    <th scope="col">Fecha Limite </th>
                                                     <th scope="col">Status de Factibilidad</th>
                                                     
                                                     </tr>
@@ -115,9 +115,9 @@ if ($_SESSION["usuario"] ){
                                                         <td>{{concentrado.nombre_sugerencia}}</td>
                                                         <td>{{concentrado.fecha_de_inicio}}</td>
                                                         <td>{{concentrado.fecha_limite}}</td>
-                                                        <td>
-                                                            <button v-if="concentrado.status=='En Factibilidad'" type="button" class="btn btn-warning" style=" font-size: 1em"><i class="bi bi-eye"></i>{{concentrado.status}} </button>
-                                                            <button v-else="concentrado.status!='En Factibilidad'" type="button" class="btn btn-danger" style=" font-size: 1em"><i class="bi bi-eye"></i>{{concentrado.status}} </button>
+                                                        <td class="text-center">
+                                                            <button v-if="concentrado.status_factibilidad=='Pendiente'" type="button" class="btn btn-warning" style=" font-size: 1em" data-bs-toggle="modal" data-bs-target="#modal" @click="datos_modal_factibilidad('factibilidad',concentrado.id,concentrado.folio)"><i class="bi bi-eye"></i> {{concentrado.status}} </button>
+                                                            <button v-else="concentrado.status_factibilidad=='Vencida'" type="button" class="btn btn-danger" style=" font-size: 1em" ><i class="bi bi-eye"></i> {{concentrado.status}} </button>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -126,7 +126,7 @@ if ($_SESSION["usuario"] ){
                                  </div>
                                  <div class="col-6">
                                             <div class="text-center mt-3 ">
-                                                <span class="badge bg-light text-dark">Sugerencias Pendientes de Implementación: <?php echo $_SESSION['usuario']; ?></span>
+                                                <span class="badge bg-light text-dark">Sugerencias Pendientes de Implementación: <?php echo $_SESSION['nombre']; ?></span>
                                             </div>
                                             <div class="div-scroll mt-3">
                                                 <table class="tablaMonitoreo-sugerencias table table-striped table-bordered ">
@@ -150,7 +150,36 @@ if ($_SESSION["usuario"] ){
                                             </div>
                                  </div>
                             </div>
-                             <!--fin contenido principal gonher-->
+                             <!--fin contenido principal analista gonher-->
+                             <!--modal factible o no factible-->
+
+    <!-- Factibilidad/En Implementación -->
+                    <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-xl modal-dialog-centered">
+                                <div class="modal-content">
+                                <div v-show="tipo_factibilida_o_implementacion=='factibilidad'" class="modal-header">
+                                            <h6 class="modal-title" id="exampleModalLabel" >{{titulo_modal}}<span class="fw-bold">{{folio}}</span></h6>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div v-show="tipo_factibilida_o_implementacion=='implementacion'" class="modal-header">
+                                            <h6 class="modal-title" id="exampleModalLabel" >{{titulo_modal}}<span class="fw-bold">{{folio}}</span></h6>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                          <div class="alert alert-primary" role="alert">
+                                               <div class="" v-for="(concentrado,index) in concentrado_sugerencias">
+                                                        <label v-if="(concentrado==index)">{{concentrado}}</label>
+                                               </div>
+                                        </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <button v-if="contenido_modal_agregar_eliminar=='Agregar'" type="button" class="btn btn-primary "  data-bs-dismiss="modal" @click="agregar_nuevo_lista">Guardar</button>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                             <!--fin modal-->
                    </div>
             </div>
                 <!--FOOTER-->
@@ -172,11 +201,17 @@ if ($_SESSION["usuario"] ){
                 pintarDos:false,
                 contador: 0,
                 concentrado_sugerencias:[],
+                /*varibles en modal*/
+                titulo_modal:'',
+                folio_sugerencia:'',
+                tipo_factibilida_o_implementacion:'',
+                folio:'',
+                posicion:0,
             }
         },
         mounted(){
             //Consultado concentrado de sugerencias.
-            this.consultado_concentrado(),
+            this.consultado_concentrado_factibilidad(),
              //Consultado usuarios.
             this.consultando_usuarios()
         },
@@ -185,12 +220,12 @@ if ($_SESSION["usuario"] ){
                    this.ventana=dato;
                    if(dato=='principalAnalista'){ this.pintarUno=true}else{this.pintarUno=false}
                    if(dato=='concentrado'){this.pintarDos=true}else{this.pintarDos=false}
-
              },
-            consultado_concentrado(){
+            consultado_concentrado_factibilidad(){
                 axios.post('consulta_concentrado_pendientes_factibilidad.php',{
                             }).then(response =>{
                                 this.concentrado_sugerencias = response.data
+                                console.log(this.concentrado_sugerencias)
                             })
             },
             consultando_usuarios(){
@@ -199,6 +234,18 @@ if ($_SESSION["usuario"] ){
                 }).then(response =>{
                     this.usuario = response.data.nombre
                 })
+            },
+            datos_modal_factibilidad(tipo,index,folio){
+                this.tipo_factibilida_o_implementacion=tipo
+                this.folio=folio
+                this.posicion=index
+                if(this.tipo_factibilida_o_implementacion=="factibilidad"){
+                    this.titulo_modal='Factibilidad de sugerencia folio: '
+                } else if (this.tipo_factibilida_o_implementacion=="implementacion"){
+
+                }else{
+
+                }
             }
         }   
     }
