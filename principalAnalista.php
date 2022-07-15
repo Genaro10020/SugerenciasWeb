@@ -117,7 +117,7 @@ if ($_SESSION["usuario"] ){
                                                         <td>{{concentrado.fecha_limite}}</td>
                                                         <td class="text-center">
                                                             <button v-if="concentrado.status_factibilidad=='Pendiente'" type="button" class="btn btn-warning" style=" font-size: 1em" data-bs-toggle="modal" data-bs-target="#modal" @click="datos_modal_factibilidad('factibilidad',concentrado.id,concentrado.folio)"><i class="bi bi-eye"></i> {{concentrado.status}} </button>
-                                                            <button v-else="concentrado.status_factibilidad=='Vencida'" type="button" class="btn btn-danger" style=" font-size: 1em" ><i class="bi bi-eye"></i> {{concentrado.status}} </button>
+                                                            <button v-else="concentrado.status_factibilidad=='Vencida'" type="button" class="btn btn-danger" style=" font-size: 1em" data-bs-toggle="modal" data-bs-target="#modal" @click="datos_modal_factibilidad('factibilidad',concentrado.id,concentrado.folio)"><i class="bi bi-eye"></i> {{concentrado.status}} </button>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -154,31 +154,89 @@ if ($_SESSION["usuario"] ){
                              <!--modal factible o no factible-->
 
     <!-- Factibilidad/En Implementación -->
-                    <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-xl modal-dialog-centered">
-                                <div class="modal-content">
-                                <div v-show="tipo_factibilida_o_implementacion=='factibilidad'" class="modal-header">
-                                            <h6 class="modal-title" id="exampleModalLabel" >{{titulo_modal}}<span class="fw-bold">{{folio}}</span></h6>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="font-size:.8em">
+                            <div class="modal-dialog modal-xl modal-dialog-centered " >
+                                <div class="modal-content " >
+                                                <div v-show="tipo_factibilida_o_implementacion=='factibilidad'" class="modal-header">
+                                                            <h6 class="modal-title" id="exampleModalLabel" >{{titulo_modal}}<span class="fw-bold">{{folio}}</span></h6>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                        <div v-show="tipo_factibilida_o_implementacion=='implementacion'" class="modal-header">
+                                                                    <h6 class="modal-title" id="exampleModalLabel" >{{titulo_modal}}<span class="fw-bold">{{folio}}</span></h6>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                                <div class="modal-body">
+                                                                        <div class="alert alert-primary" role="alert">
+                                                                            <div class="" v-for="(concentrado,index) in concentrado_sugerencias">
+                                                                                        <div v-if="concentrado.id==posicion">
+                                                                                        <label class=" fw-bold mt-1">Nombre de la sugerencias: </label> {{ concentrado.nombre_sugerencia}}<br>
+                                                                                        <label class=" fw-bold mt-1">Situacion Actual: </label> {{concentrado.situacion_actual}}<br>
+                                                                                        <label class=" fw-bold mt-1">Idea Propuesta: </label> {{concentrado.idea_propuesta}}<br>
+                                                                                        <label class=" fw-bold mt-1">Colaborador: </label> {{concentrado.colaborador}}<br>
+                                                                                        <label class=" fw-bold mt-1">No. de Nomina:</label> {{concentrado.colaborador}}<br>
+                                                                                        <label class=" fw-bold mt-1">Puesto: </label> {{concentrado.puesto}}<br>
+                                                                                        <label class=" fw-bold mt-1">Área: </label> {{concentrado.area}}<br>
+                                                                                        <label class=" fw-bold mt-1">Subárea: </label> {{concentrado.subarea}}<br>
+                                                                                        <label class=" fw-bold mt-1">Fecha de Sugerencia: </label> {{concentrado.fecha_de_sugerencia}}<br>
+                                                                                        </div>
+                                                                            </div>
+                                                                        </div>
+                                                                   </div>
+
+                                                <div class="row" style="font-size:.8em">
+                                                            <div class="col-12  col-lg-6">
+                                                               PDF
+                                                            </div>
+                                                            <div class="col-12 col-lg-6">
+                                                                        <div class="row mt-2 mx-3">
+                                                                                <div class="col-6 ">
+                                                                                    Impacto Primerio:<br>
+                                                                                    <select class="" >
+                                                                                            <option  v-for=" lista in lista_impacto" :key="lista.id">{{lista.impacto}}</option>
+                                                                                    </select>
+                                                                                </div>
+                                                                                <div class="col-6">
+                                                                                    Impacto Secundario:<br>
+                                                                                    <select class="" >
+                                                                                            <option  v-for=" lista in lista_impacto" :key="lista.id">{{lista.impacto}}</option>
+                                                                                    </select>
+                                                                                </div>
+                                                                            </div>   
+                                                                            <div class="row mt-2 mx-3">
+                                                                                <div class="col-6">
+                                                                                Tipo de desperdicio:<br>
+                                                                                    <select class="" >
+                                                                                            <option  v-for=" lista in lista_tipo_desperdicio" :key="lista.id">{{lista.tipo_de_desperdicio}}</option>
+                                                                                    </select>
+                                                                                </div>
+                                                                                <div class="col-6 mb-2">
+                                                                                Objetivos de Calidad y M.A.:<br>
+                                                                                 <div  class="inputs-concentrado" style="overflow-y: scroll; height:80px">
+                                                                                        <label>{{var_objetivo_de_calidadMA}}</label>
+                                                                                            <ul>
+                                                                                                <li v-for="objetivo_de_calidad in objetivo_de_calidadMA">
+                                                                                                    <input type="checkbox" :value="objetivo_de_calidad.objetivos_de_calidad" v-model="var_objetivo_de_calidadMA">
+                                                                                                    <label for="objetivo_de_calidad">{{objetivo_de_calidad.objetivos_de_calidad}}</label>
+                                                                                                </li>
+                                                                                            </ul>
+                                                                                        </div>
+                                                                                </div>
+                                                                            </div>   
+                                                            </div>
+                                                </div>
+                                        
+
+                                                                           
+                                                    <div class="12 modal-footer " > 
+                                                        <div class="col-12 text-center">
+                                                                <button type="button" class="btn btn-success btn-lg me-2 fst-italic">Fatible</button> 
+                                                                <button type="button" class="btn btn-warning btn-lg fst-italic  ">No factible</button> 
+                                                                <button type="button" class="btn btn-secondary btn-sm ms-5"  data-bs-dismiss="modal" >Cancelar</button>
+                                                        </div>              
+                                                    </div>
+                                    </div>
                                 </div>
-                                <div v-show="tipo_factibilida_o_implementacion=='implementacion'" class="modal-header">
-                                            <h6 class="modal-title" id="exampleModalLabel" >{{titulo_modal}}<span class="fw-bold">{{folio}}</span></h6>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                          <div class="alert alert-primary" role="alert">
-                                               <div class="" v-for="(concentrado,index) in concentrado_sugerencias">
-                                                        <label v-if="(concentrado==index)">{{concentrado}}</label>
-                                               </div>
-                                        </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                    <button v-if="contenido_modal_agregar_eliminar=='Agregar'" type="button" class="btn btn-primary "  data-bs-dismiss="modal" @click="agregar_nuevo_lista">Guardar</button>
-                                </div>
-                                </div>
-                            </div>
-                            </div>
+                        </div>
                              <!--fin modal-->
                    </div>
             </div>
@@ -207,13 +265,22 @@ if ($_SESSION["usuario"] ){
                 tipo_factibilida_o_implementacion:'',
                 folio:'',
                 posicion:0,
+                lista_impacto:[],
+                lista_tipo_desperdicio:[],
+                objetivo_de_calidadMA:[],
+                var_objetivo_de_calidadMA:[]
             }
         },
         mounted(){
             //Consultado concentrado de sugerencias.
             this.consultado_concentrado_factibilidad(),
              //Consultado usuarios.
-            this.consultando_usuarios()
+            this.consultando_usuarios(),
+            //Consultado impacto
+            this.consultando_impacto(),
+            //Consulta desperdiciones
+            this.consultando_lista_de_desperdicio(),
+            this.consulta_lista_objetivos_calidad_ma()
         },
         methods:{
             mostrar(dato){
@@ -235,6 +302,13 @@ if ($_SESSION["usuario"] ){
                     this.usuario = response.data.nombre
                 })
             },
+            consultando_impacto(){
+                axios.post('lista_impacto.php',{
+                }).then(response =>{
+                    this.lista_impacto = response.data
+                    console.log(this.lista_impacto);
+                })
+            },
             datos_modal_factibilidad(tipo,index,folio){
                 this.tipo_factibilida_o_implementacion=tipo
                 this.folio=folio
@@ -246,7 +320,19 @@ if ($_SESSION["usuario"] ){
                 }else{
 
                 }
-            }
+            },
+            consultando_lista_de_desperdicio(){
+                axios.post('lista_tipo_desperdicio.php',{
+                }).then(response =>{
+                    this.lista_tipo_desperdicio = response.data
+                })
+            },
+            consulta_lista_objetivos_calidad_ma(){
+                axios.post('lista_objetivos_calidad_ma.php',{
+            }).then(response =>{
+                this.objetivo_de_calidadMA = response.data
+            })
+            },
         }   
     }
     var mountedApp = Vue.createApp(vue3).mount('#app');
