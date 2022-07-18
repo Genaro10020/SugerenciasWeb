@@ -91,7 +91,7 @@ if ($_SESSION["usuario"] ){
                             <!--fin cinta apartado-->
                             <!-- contenido principal analista gonher-->
                           <div class="row">  
-                                <div class="col-6 col-">
+                                <div class="col-6 col-"><!--tabla pediente factibilidad-->
                                             <div class="text-center mt-3 ">
                                                 <span class="badge bg-light text-dark">Sugerencias Pendientes de Factibilidad: <?php echo $_SESSION['nombre']; ?></span>
                                             </div>
@@ -109,7 +109,7 @@ if ($_SESSION["usuario"] ){
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr v-for="(concentrado, index) in concentrado_sugerencias">
+                                                    <tr v-for="(concentrado, index) in concentrado_sugerencias_pendiente_factibilidad">
                                                     <th scope="row" class="text-center">{{index+1}}</th>
                                                         <td>{{concentrado.folio}}</td>
                                                         <td>{{concentrado.nombre_sugerencia}}</td>
@@ -124,7 +124,7 @@ if ($_SESSION["usuario"] ){
                                                 </table>
                                             </div>
                                  </div>
-                                 <div class="col-6">
+                                 <div class="col-6"><!--tabla pendiente implementacion-->
                                             <div class="text-center mt-3 ">
                                                 <span class="badge bg-light text-dark">Sugerencias Pendientes de Implementación: <?php echo $_SESSION['nombre']; ?></span>
                                             </div>
@@ -139,7 +139,7 @@ if ($_SESSION["usuario"] ){
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr v-for="(concentrado, index) in concentrado_sugerencias">
+                                                    <tr v-for="(concentrado, index) in concentrado_sugerencias_pendiente_implementacion">
                                                     <th scope="row" class="text-center">{{index+1}}</th>
                                                         <td>{{concentrado.folio}}</td>
                                                         <td>{{concentrado.nombre_sugerencia}}</td>
@@ -151,14 +151,14 @@ if ($_SESSION["usuario"] ){
                                  </div>
                             </div>
                              <!--fin contenido principal analista gonher-->
-                             <!--modal factible o no factible-->
-
-    <!-- Factibilidad/En Implementación -->
+    <!-- Factibilidad/En Implementación MODAL -->
                     <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="font-size:.8em">
                             <div class="modal-dialog modal-xl modal-dialog-centered " >
                                 <div class="modal-content " >
                                                 <div v-show="tipo_factibilida_o_implementacion=='factibilidad'" class="modal-header">
-                                                            <h6 class="modal-title" id="exampleModalLabel" >{{titulo_modal}}<span class="fw-bold">{{folio}}</span></h6>
+                                                        <div class="text-center mt-3 ">
+                                                            <span class="badge bg-light text-dark">{{titulo_modal}}</span><span class="fw-bold">{{folio}}</span>
+                                                        </div>
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                         <div v-show="tipo_factibilida_o_implementacion=='implementacion'" class="modal-header">
@@ -167,7 +167,7 @@ if ($_SESSION["usuario"] ){
                                                         </div>
                                                                 <div class="modal-body">
                                                                         <div class="alert alert-primary" role="alert">
-                                                                            <div class="" v-for="(concentrado,index) in concentrado_sugerencias">
+                                                                            <div class="" v-for="(concentrado,index) in concentrado_sugerencias_pendiente_factibilidad">
                                                                                         <div v-if="concentrado.id==posicion">
                                                                                         <label class=" fw-bold mt-1">Nombre de la sugerencias: </label> {{ concentrado.nombre_sugerencia}}<br>
                                                                                         <label class=" fw-bold mt-1">Situacion Actual: </label> {{concentrado.situacion_actual}}<br>
@@ -184,49 +184,80 @@ if ($_SESSION["usuario"] ){
                                                                    </div>
 
                                                 <div class="row" style="font-size:.8em">
-                                                            <div class="col-12  col-lg-6">
-                                                               PDF
-                                                            </div>
-                                                            <div class="col-12 col-lg-6">
-                                                                        <div class="row mt-2 mx-3">
-                                                                                <div class="col-6 ">
+                                                                <div class="col-12 col-xl-6">
+                                                                PDF
+                                                                </div>
+                                                                <div class="col-12 col-xl-6">
+                                                                            <div class="row mt-2 mx-3">
+                                                                                <div class="col-12 col-lg-6 ">
                                                                                     Impacto Primerio:<br>
                                                                                     <select class="" >
                                                                                             <option  v-for=" lista in lista_impacto" :key="lista.id">{{lista.impacto}}</option>
                                                                                     </select>
                                                                                 </div>
-                                                                                <div class="col-6">
+                                                                                <div class="col-12 col-lg-6">
                                                                                     Impacto Secundario:<br>
                                                                                     <select class="" >
                                                                                             <option  v-for=" lista in lista_impacto" :key="lista.id">{{lista.impacto}}</option>
                                                                                     </select>
                                                                                 </div>
                                                                             </div>   
-                                                                            <div class="row mt-2 mx-3">
-                                                                                <div class="col-6">
-                                                                                Tipo de desperdicio:<br>
-                                                                                    <select class="" >
-                                                                                            <option  v-for=" lista in lista_tipo_desperdicio" :key="lista.id">{{lista.tipo_de_desperdicio}}</option>
-                                                                                    </select>
-                                                                                </div>
-                                                                                <div class="col-6 mb-2">
-                                                                                Objetivos de Calidad y M.A.:<br>
-                                                                                 <div  class="inputs-concentrado" style="overflow-y: scroll; height:80px">
-                                                                                        <label>{{var_objetivo_de_calidadMA}}</label>
-                                                                                            <ul>
-                                                                                                <li v-for="objetivo_de_calidad in objetivo_de_calidadMA">
-                                                                                                    <input type="checkbox" :value="objetivo_de_calidad.objetivos_de_calidad" v-model="var_objetivo_de_calidadMA">
-                                                                                                    <label for="objetivo_de_calidad">{{objetivo_de_calidad.objetivos_de_calidad}}</label>
-                                                                                                </li>
-                                                                                            </ul>
+                                                                            <div class="row mt-2 mx-3 ">
+                                                                                    <div class="col-12 col-lg-6">
+                                                                                    Tipo de desperdicio:<br>
+                                                                                        <select class="" >
+                                                                                                <option  v-for=" lista in lista_tipo_desperdicio" :key="lista.id">{{lista.tipo_de_desperdicio}}</option>
+                                                                                        </select>
+                                                                                    </div>
+                                                                                    <div class="col-12  mt-3 mb-2" style=" font-size: 10px">
+                                                                                        Objetivos de Calidad y M.A.:<br>
+                                                                                        <div  class="inputs-concentrado" style="overflow-y: scroll; height:80px" >
+                                                                                                <label>{{var_objetivo_de_calidadMA}}</label>
+                                                                                                    <ul>
+                                                                                                        <li v-for="objetivo_de_calidad in objetivo_de_calidadMA">
+                                                                                                            <input type="checkbox" :value="objetivo_de_calidad.objetivos_de_calidad" v-model="var_objetivo_de_calidadMA">
+                                                                                                            <label for="objetivo_de_calidad">{{objetivo_de_calidad.objetivos_de_calidad}}</label>
+                                                                                                        </li>
+                                                                                                    </ul>
                                                                                         </div>
-                                                                                </div>
+                                                                                    </div>
                                                                             </div>   
-                                                            </div>
-                                                </div>
-                                        
-
-                                                                           
+                                                                </div>
+                                                                <div class="col-12"><!--espacio Plan de trabajo-->
+                                                                        <div class="text-center mt-3 ">
+                                                                            <span class="badge bg-light text-dark">PLAN DE TRABAJO</span>
+                                                                        </div>
+                                                                        <div class="div-scroll mt-3">
+                                                                            <table class="tablaMonitoreo-sugerencias table table-striped table-bordered" style=" font-size: 12px">
+                                                                                <thead class="encabezado-tabla text-center text-light ">
+                                                                                    <tr >
+                                                                                    <th scope="col " class="sticky">#</th>
+                                                                                    <th scope="col">Actividad</th>
+                                                                                    <th scope="col">Responsable</th>
+                                                                                    <th scope="col">Fecha Inicio</th>
+                                                                                    <th scope="col">Fecha Fecha de Cierre</th>
+                                                                                    <th scope="col">% Porcentaje</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    <tr v-for="(concentrado, index) in concentrado_sugerencias_pendiente_factibilidad">
+                                                                                    <th scope="row" class="text-center">{{index+1}}</th>
+                                                                                        <td>{{concentrado.folio}}</td>
+                                                                                        <td>
+                                                                                        <select  v-model="var_reponsable_en_plan" >
+                                                                                            <option value="" disabled>Seleccione Analista..</option>
+                                                                                            <option v-for="responsable in lista_responsable_plan" :key="responsable.nombre" :value="responsable.nombre">{{responsable.nombre}}</option>
+                                                                                        </select>
+                                                                                        </td>
+                                                                                        <td><input type="date" v-model="var_fecha_inicio_actividad" ></input></td>
+                                                                                        <td><input type="date" v-model="var_fecha_final_actividad" ></td>
+                                                                                        <td>0</td>
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                </div> <!--Fin espacio de Plana de trabajo -->  
+                                                    </div>
                                                     <div class="12 modal-footer " > 
                                                         <div class="col-12 text-center">
                                                                 <button type="button" class="btn btn-success btn-lg me-2 fst-italic">Fatible</button> 
@@ -258,7 +289,8 @@ if ($_SESSION["usuario"] ){
                 pintarUno:true,
                 pintarDos:false,
                 contador: 0,
-                concentrado_sugerencias:[],
+                concentrado_sugerencias_pendiente_factibilidad:[],
+                concentrado_sugerencias_pendiente_implementacion:[],
                 /*varibles en modal*/
                 titulo_modal:'',
                 folio_sugerencia:'',
@@ -268,19 +300,26 @@ if ($_SESSION["usuario"] ){
                 lista_impacto:[],
                 lista_tipo_desperdicio:[],
                 objetivo_de_calidadMA:[],
-                var_objetivo_de_calidadMA:[]
+                var_objetivo_de_calidadMA:[],
+                var_fecha_inicio_actividad:'',
+                var_fecha_final_actividad:'',
+                lista_responsable_plan:[],
+                var_reponsable_en_plan:''
             }
         },
         mounted(){
             //Consultado concentrado de sugerencias.
-            this.consultado_concentrado_factibilidad(),
+            this.consultado_concentrado_pendiente_factibilidad(),
+              //Consultado concentrado de sugerencias.
+            this.consultado_concentrado_pendiente_implementacion(),
              //Consultado usuarios.
             this.consultando_usuarios(),
             //Consultado impacto
             this.consultando_impacto(),
             //Consulta desperdiciones
             this.consultando_lista_de_desperdicio(),
-            this.consulta_lista_objetivos_calidad_ma()
+            this.consulta_lista_objetivos_calidad_ma(),
+            this.consulta_responsable_plan()
         },
         methods:{
             mostrar(dato){
@@ -288,11 +327,18 @@ if ($_SESSION["usuario"] ){
                    if(dato=='principalAnalista'){ this.pintarUno=true}else{this.pintarUno=false}
                    if(dato=='concentrado'){this.pintarDos=true}else{this.pintarDos=false}
              },
-            consultado_concentrado_factibilidad(){
+            consultado_concentrado_pendiente_factibilidad(){
                 axios.post('consulta_concentrado_pendientes_factibilidad.php',{
                             }).then(response =>{
-                                this.concentrado_sugerencias = response.data
-                                console.log(this.concentrado_sugerencias)
+                                this.concentrado_sugerencias_pendiente_factibilidad = response.data
+                                console.log(this.concentrado_sugerencias_pendiente_factibilidad)
+                            })
+            },
+            consultado_concentrado_pendiente_implementacion(){
+                axios.post('consulta_concentrado_pendientes_implementar.php',{
+                            }).then(response =>{
+                                this.concentrado_sugerencias_pendiente_implementacion = response.data
+                                console.log(this.concentrado_sugerencias_pendiente_implementacion)
                             })
             },
             consultando_usuarios(){
@@ -314,7 +360,7 @@ if ($_SESSION["usuario"] ){
                 this.folio=folio
                 this.posicion=index
                 if(this.tipo_factibilida_o_implementacion=="factibilidad"){
-                    this.titulo_modal='Factibilidad de sugerencia folio: '
+                    this.titulo_modal='FACTIBILIDAD DE SUGERENCIA FOLIO: '
                 } else if (this.tipo_factibilida_o_implementacion=="implementacion"){
 
                 }else{
@@ -333,6 +379,13 @@ if ($_SESSION["usuario"] ){
                 this.objetivo_de_calidadMA = response.data
             })
             },
+            consulta_responsable_plan(){
+                axios.post('lista_usuarios_y_analistas_factibilidad.php',{
+                }).then(response =>{
+                    this.lista_responsable_plan = response.data
+                    console.log(this.lista_responsable_plan);
+                })
+            }
         }   
     }
     var mountedApp = Vue.createApp(vue3).mount('#app');

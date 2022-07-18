@@ -209,6 +209,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                 <td class="sticky"> 
                                                     <button type="button" class="btn btn-danger  me-2" title="Cancelar" @click="nueva_sugerencia=false"><i class="bi bi-x-circle" ></i></button>
                                                     <button type="button" class="btn btn-primary" title="Guardar" @click="guardar_nueva_sugerencia_y_actualizar('nueva','')"><i class="bi bi-check-circle"></i></button>   
+                                                    
                                                 </td>
                                                 <th scope="row">Nueva</th>
                                                 <td><label>0%</label></td>
@@ -300,6 +301,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                     <button type="button" class="btn btn-danger me-2" title="Cancelar" @click="mostrar_id('')" v-if="actualizar_sugerencia==index+1"><i class="bi bi-x-circle" ></i></button>
                                                     <button type="button" class="btn btn-primary" title="Guardar" @click="guardar_nueva_sugerencia_y_actualizar('actualizar',concentrado.id)" v-if="actualizar_sugerencia==index+1"><i class="bi bi-check-circle"></i></button>
                                                     <button type="button" class="btn btn-warning" title="Actualizar" @click="mostrar_id(index+1)" v-else><i class="bi bi-pen" ></i></button>
+                                                    <button type="button" class="btn btn-success  ms-2" title="Subir PDF" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Subir','Documento')"><i class="bi bi-paperclip"></i></button>
                                                 </td>
                                                 <th scope="row">{{index+1}}<br><!--{{concentrado.id}}--></th>
                                                 <td><label>0%</label></td>
@@ -463,6 +465,30 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                 <input class="text-center border rounded-2 w-100 mt-3" placeholder="Nombre del analista" v-model="nueva_opcion"></input><br>
                                                 <input class="text-center border rounded-2 w-100 mt-3" placeholder="Correo" v-model="correo_analista"></input>
                                         </div>
+
+                                        <div class="text-center" v-if="contenido_modal_agregar_eliminar=='Subir'">
+                                            <!---->
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="custom-file mb-3"> 
+                                                        <input type="file" class="custom-file-input" id="uploadfiles" ref="uploadfiles" multiple required />
+                                                       
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <button type="button" @click="uploadFile()" name="upload" class="btn btn-primary">Subir Archivos{{filenames.length}}</button>
+                                                </div>
+                                            </div> 
+                                                <hr>
+                                                <!-- Mostrando los archivos cargados -->
+                                                <div v-show="filenames.length>0" >
+                                                    VIEW
+                                                    <ul>
+                                                        <li v-for= "(filename,index) in filenames"> {{ filename }} </li>
+                                                    </ul>
+                                                 </div>
+                                            <!---->
+                                        </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -567,6 +593,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 pintarCinco: false,
                 nueva_sugerencia:false,
                 contador: 0,
+                file: '',
+                filenames: [],
                 actualizar_sugerencia:'',
                 concentrado_sugerencias:[],
                 var_cumplimiento:'0',
@@ -624,6 +652,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
             }
         },
         mounted(){
+            
             //Consultado concentrado de sugerencias.
             this.consultado_concentrado(),
             //consultado lista status
@@ -951,10 +980,41 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     alert("Algo salio mal.")
                    }
                 })
+            },
+            uploadFile(){
+               
+                let formData = new FormData();
+                var files = this.$refs.uploadfiles.files;
+                var totalfiles = this.$refs.uploadfiles.files.length;
+                for (var index = 0; index < totalfiles; index++) {
+                formData.append("files[]", files[index]);
+                }
+
+                axios.post("ajaxfile.php", formData,
+                    {
+                    headers: {
+                    "Content-Type": "multipart/form-data"
+                    }
+                    })
+                    .then(function (response) {
+
+                    this.filenames = response.data;
+                    if(this.filenames.length>0){
+                        alert("BIEN"+this.filenames.length)
+                    }
+
+                    alert(this.filenames.length + " los archivos se han subido.");
+
+                    })
+                    .catch(function (error) {
+                    console.log(error);
+                    });
             }  
         }   
     }
     var mountedApp = Vue.createApp(vue3).mount('#app');
+
+
 </script>
 </body>
 </html>  

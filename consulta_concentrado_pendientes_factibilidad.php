@@ -16,7 +16,6 @@
                     }else{
                             $respuesta="Pendiente";
                     }
-
         $producto[] = [$pendiente_o_vencida=>$respuesta]+$fila;//agrego un dato al arreglo pendiete o vencida para mostar boton segun si esta en factibilidad pendiete o vencida.
     }
     echo json_encode($producto);
