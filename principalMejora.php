@@ -301,7 +301,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                     <button type="button" class="btn btn-danger me-2" title="Cancelar" @click="mostrar_id('')" v-if="actualizar_sugerencia==index+1"><i class="bi bi-x-circle" ></i></button>
                                                     <button type="button" class="btn btn-primary" title="Guardar" @click="guardar_nueva_sugerencia_y_actualizar('actualizar',concentrado.id)" v-if="actualizar_sugerencia==index+1"><i class="bi bi-check-circle"></i></button>
                                                     <button type="button" class="btn btn-warning" title="Actualizar" @click="mostrar_id(index+1)" v-else><i class="bi bi-pen" ></i></button>
-                                                    <button type="button" class="btn btn-success  ms-2" title="Subir PDF" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_nueva_eliminar('Subir','Documento')"><i class="bi bi-paperclip"></i></button>
+                                                    <button type="button" class="btn btn-success  ms-2" title="Subir PDF" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_subir_ver_documentos('Subir',concentrado.folio)"><i class="bi bi-paperclip"></i></button>
                                                 </td>
                                                 <th scope="row">{{index+1}}<br><!--{{concentrado.id}}--></th>
                                                 <td><label>0%</label></td>
@@ -467,31 +467,42 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                         </div>
 
                                         <div class="text-center" v-if="contenido_modal_agregar_eliminar=='Subir'">
-                                            <!---->
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="custom-file mb-3"> 
-                                                        <input type="file" class="custom-file-input" id="uploadfiles" ref="uploadfiles" multiple required />
-                                                       
-                                                    </div>
-                                                </div>
-                                                <div class="col-12">
-                                                    <button type="button" @click="uploadFile()" name="upload" class="btn btn-primary">Subir Archivos{{filenames.length}}</button>
-                                                </div>
-                                            </div> 
-                                                <hr>
-                                                <!-- Mostrando los archivos cargados -->
-                                                <div v-show="filenames.length>0" >
-                                                    VIEW
-                                                    <ul>
-                                                        <li v-for= "(filename,index) in filenames"> {{ filename }} </li>
-                                                    </ul>
-                                                 </div>
-                                            <!---->
+                                                <form @submit.prevent="uploadFile">
+                                                    <!---->
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <div class="custom-file my-5"> 
+                                                                <input type="file" id="input_file_subir"  ref="uploadfiles" multiple required/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <button  type="submit" name="upload" class="btn btn-primary">Subir Archivos</button>
+                                                        </div>
+                                                    </div> 
+                                                        <hr>
+                                                        <!-- Mostrando los archivos cargados -->
+                                                        <div v-show="filenames.length>0" >
+                                                                <div class="col-12" v-for= "(filename,index) in filenames">
+                                                                    <label>Documento {{index+1}}<br></label>
+                                                                    <iframe  :src="filenames[index]" style="width:100%;height:500px;"></iframe>
+                                                                   <!-- <iframe src="https://vvnorth.com/Sugerencias/documentos/pdf.pdf" style="width:100%;height:500px;"></iframe>-->
+                                                                </div>
+                                                        </div>
+                                                        <hr>
+                                                        <!-- Mostrando los archivos precargados -->
+                                                        <div v-show="fileconsult.length>0" >
+                                                                <div class="col-12" v-for= "(fileconsulta,index) in fileconsult">
+                                                                    <label>Documento {{index+1}}<br></label>
+                                                                    <iframe  :src="fileconsult[index]" style="width:100%;height:500px;"></iframe>
+                                                                   <!-- <iframe src="https://vvnorth.com/Sugerencias/documentos/pdf.pdf" style="width:100%;height:500px;"></iframe>-->
+                                                                </div>
+                                                        </div>
+                                                    <!---->
+                                                </form>
                                         </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                                     <button v-if="contenido_modal_agregar_eliminar=='Agregar'" type="button" class="btn btn-primary "  data-bs-dismiss="modal" @click="agregar_nuevo_lista">Guardar</button>
                                 </div>
                                 </div>
@@ -595,6 +606,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 contador: 0,
                 file: '',
                 filenames: [],
+                fileconsult: [],
                 actualizar_sugerencia:'',
                 concentrado_sugerencias:[],
                 var_cumplimiento:'0',
@@ -641,6 +653,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 nueva_opcion:'',
                 tipo_agregar_eliminar:'',
                 correo_analista:'',
+                folio_carpeta_doc:'',
                 /*Variables Configuracion*/
                 nuevo_usuario:'',
                 nuevo_password:'',
@@ -678,14 +691,14 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
              //consultado lista analistas de factibilidad
              this.consulta_lista_analista_factibilidad(),
              this.consulta_lista_usuarios_y_analistas_factibilidad(),
-            axios.post('consulta_usuario.php',{
-                usuario: this.usuario
-            }).then(response =>{
-                this.usuario = response.data.nombre
-                //console.log(this.usuario = response.data)
-                //this.objetivo_de_calidadMA = response.data
-                //console.log(this.objetivo_de_calidadMA);
-            })
+                axios.post('consulta_usuario.php',{
+                    usuario: this.usuario
+                }).then(response =>{
+                    this.usuario = response.data.nombre
+                    //console.log(this.usuario = response.data)
+                    //this.objetivo_de_calidadMA = response.data
+                    //console.log(this.objetivo_de_calidadMA);
+                })
         },
         methods:{
             mostrar(dato){
@@ -880,8 +893,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 console.log(this.lista_usuarios_y_analistas_factibilidad);
             })
             },
-            modal_nueva_eliminar(agregar_o_eliminar,tipo){
-                this.tipo_agregar_eliminar = tipo;
+            modal_nueva_eliminar(agregar_o_eliminar,tipo,folio){
+                this.folio_carpeta_doc = folio
+                this.tipo_agregar_eliminar = tipo
                 this.titulo_modal=agregar_o_eliminar+" "+tipo //creando titulo modal
                 this.contenido_modal_agregar_eliminar=agregar_o_eliminar // contenido a mostrar
             },
@@ -956,6 +970,60 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 }
                })
             },
+            modal_subir_ver_documentos(tipo,folio){
+                this.folio_carpeta_doc = folio
+                this.titulo_modal="Suber/Ver Documentos." //creando titulo modal
+                this.contenido_modal_agregar_eliminar=tipo // contenido a mostrar
+                this.buscarDocumentos()
+            },
+            uploadFile(){
+                let formData = new FormData();
+                var files = this.$refs.uploadfiles.files;
+                var totalfiles = this.$refs.uploadfiles.files.length;
+                for (var index = 0; index < totalfiles; index++) {
+                 formData.append("files[]", files[index]);//arreglo de documentos
+                }
+                formData.append("folio", this.folio_carpeta_doc);
+                axios.post("subir_documentos.php", formData,
+                    {
+                    headers: {"Content-Type": "multipart/form-data"}
+                    })
+                    .then(response => {
+                    this.filenames = response.data;
+                    if(this.filenames.length>0){
+                        document.getElementById("input_file_subir").value=""
+                        alert(this.filenames.length + " los archivos se han subido.")
+                    }else{
+                        alert("Intente nuevamente.")
+                    }
+
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+                },
+            buscarDocumentos(){
+                    axios.post("buscar_documentos.php",{
+                        folio_carpeta_doc:this.folio_carpeta_doc
+                    })
+                    .then(response => {
+                    this.fileconsult = response.data;
+                    console.log(response.data);
+                    if(this.fileconsult.length>0){
+                        console.log(this.fileconsult.length + "Archivos encontrados.")
+                    }else{
+                        /*alert("Sin Documentos agregados.")*/
+                    }
+
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+                },
+            limpiarArreglosDoc(){
+                    this.filenames=[] //limpiado vista del documento subido en modal 
+                    this.fileconsult=[]//limpiado vista del documento bajada en modal 
+                },  
             /*METODOS DE ADMINISTRACION*/
             guardar_admin_y_analista(){
                 axios.post('guardar_analista_o_admin.php',{
@@ -980,36 +1048,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     alert("Algo salio mal.")
                    }
                 })
-            },
-            uploadFile(){
-               
-                let formData = new FormData();
-                var files = this.$refs.uploadfiles.files;
-                var totalfiles = this.$refs.uploadfiles.files.length;
-                for (var index = 0; index < totalfiles; index++) {
-                formData.append("files[]", files[index]);
-                }
-
-                axios.post("ajaxfile.php", formData,
-                    {
-                    headers: {
-                    "Content-Type": "multipart/form-data"
-                    }
-                    })
-                    .then(function (response) {
-
-                    this.filenames = response.data;
-                    if(this.filenames.length>0){
-                        alert("BIEN"+this.filenames.length)
-                    }
-
-                    alert(this.filenames.length + " los archivos se han subido.");
-
-                    })
-                    .catch(function (error) {
-                    console.log(error);
-                    });
-            }  
+            }
         }   
     }
     var mountedApp = Vue.createApp(vue3).mount('#app');
