@@ -479,21 +479,34 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                             <button  type="submit" name="upload" class="btn btn-primary">Subir Archivos</button>
                                                         </div>
                                                     </div> 
-                                                        <hr>
-                                                        <!-- Mostrando los archivos cargados -->
+                                                       
+                                                        <!-- Mostrando los archivos nuevos cargados -->
                                                         <div v-show="filenames.length>0" >
+                                                        <hr>
                                                                 <div class="col-12" v-for= "(filename,index) in filenames">
-                                                                    <label>Documento {{index+1}}<br></label>
-                                                                    <iframe  :src="filenames[index]" style="width:100%;height:500px;"></iframe>
+                                                                    <div class="row">
+                                                                    <span class="badge bg-success">Nuevo documento  {{index+1}} agregado</span>
+                                                                            <div class="">
+                                                                                <button type="button" class="btn btn-danger" @click="eliminarDocumento(filename)" >Eliminar</button>
+                                                                            </div>
+                                                                        <iframe  :src="filenames[index]" style="width:100%;height:500px;"></iframe>
+                                                                    </div>
                                                                    <!-- <iframe src="https://vvnorth.com/Sugerencias/documentos/pdf.pdf" style="width:100%;height:500px;"></iframe>-->
                                                                 </div>
                                                         </div>
-                                                        <hr>
-                                                        <!-- Mostrando los archivos precargados -->
+                                                       
+                                                        <!-- Mostrando los archivos cargados -->
                                                         <div v-show="fileconsult.length>0" >
+                                                        <hr>
                                                                 <div class="col-12" v-for= "(fileconsulta,index) in fileconsult">
-                                                                    <label>Documento {{index+1}}<br></label>
+                                                                    <div class="row">
+                                                                        <span class="badge bg-secondary">Documento {{index+1}}</span><br>
+                                                                            <div class="">
+                                                                                <button type="button" class="btn btn-danger" @click="eliminarDocumento(fileconsulta)" >Eliminar</button>
+                                                                            </div>
+                                                                    </div>
                                                                     <iframe  :src="fileconsult[index]" style="width:100%;height:500px;"></iframe>
+                                                                    
                                                                    <!-- <iframe src="https://vvnorth.com/Sugerencias/documentos/pdf.pdf" style="width:100%;height:500px;"></iframe>-->
                                                                 </div>
                                                         </div>
@@ -992,7 +1005,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     this.filenames = response.data;
                     if(this.filenames.length>0){
                         document.getElementById("input_file_subir").value=""
-                        alert(this.filenames.length + " los archivos se han subido.")
+                        alert(this.filenames.length + " archivo/s se han subido.")
                     }else{
                         alert("Intente nuevamente.")
                     }
@@ -1003,12 +1016,14 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     });
                 },
             buscarDocumentos(){
+                this.filenames=[] //limpiado vista del documento subido en modal 
+                this.fileconsult=[]//limpiado vista del documento bajada en modal 
                     axios.post("buscar_documentos.php",{
                         folio_carpeta_doc:this.folio_carpeta_doc
                     })
                     .then(response => {
                     this.fileconsult = response.data;
-                    console.log(response.data);
+                    //console.log(response.data);
                     if(this.fileconsult.length>0){
                         console.log(this.fileconsult.length + "Archivos encontrados.")
                     }else{
@@ -1020,9 +1035,24 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                         console.log(error);
                     });
                 },
-            limpiarArreglosDoc(){
-                    this.filenames=[] //limpiado vista del documento subido en modal 
-                    this.fileconsult=[]//limpiado vista del documento bajada en modal 
+            eliminarDocumento(ruta){
+               
+               axios.post("eliminar_documento.php",{
+                    ruta_eliminar: ruta
+                }).then( reponse=>{
+                    if(reponse.data=="Archivo Eliminado"){
+                        this.buscarDocumentos()
+                        alert("Eliminado con Éxito")
+                    }else if(reponse.data=="No Eliminado"){
+                        alert("Algo no salio bien no se logro Eliminar.")
+                    }else{
+                        alert("Error al eliminar el Documento.")
+                    }
+                    
+                }).catch(error =>{
+
+                })
+                   
                 },  
             /*METODOS DE ADMINISTRACION*/
             guardar_admin_y_analista(){

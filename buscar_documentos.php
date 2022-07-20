@@ -21,7 +21,6 @@ if (is_dir($ruta)){
         // Solo buscamos archivos sin entrar en subdirectorios
         if (is_file($ruta."/".$archivo)) {
             $respuesta [] =  "http://localhost/sugerencias/".$ruta."/".$archivo;
-           /* echo "<img src='".$ruta."/".$archivo."' width='200px' alt='".$archivo."' title='".$archivo."'>";*/
         }            
     }
     // Cierra el gestor de directorios

@@ -151,22 +151,18 @@ if ($_SESSION["usuario"] ){
                                  </div>
                             </div>
                              <!--fin contenido principal analista gonher-->
-    <!-- Factibilidad/En Implementación MODAL -->
+    <!-- Factibilidad -->
                     <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="font-size:.8em">
                             <div class="modal-dialog modal-xl modal-dialog-centered " >
                                 <div class="modal-content " >
-                                                <div v-show="tipo_factibilida_o_implementacion=='factibilidad'" class="modal-header">
-                                                        <div class="text-center mt-3 ">
-                                                            <span class="badge bg-light text-dark">{{titulo_modal}}</span><span class="fw-bold">{{folio}}</span>
-                                                        </div>
+                                                <div class="modal-header">        
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
-                                                        <div v-show="tipo_factibilida_o_implementacion=='implementacion'" class="modal-header">
-                                                                    <h6 class="modal-title" id="exampleModalLabel" >{{titulo_modal}}<span class="fw-bold">{{folio}}</span></h6>
-                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                                <div class="modal-body">
-                                                                        <div class="alert alert-primary" role="alert">
+                                                            <div class="d-flex justify-content-center mt-3 ">
+                                                                <span class="badge bg-light text-dark">FACTIBILIDAD DE SUGERENCIA FOLIO: {{folio}} </span>
+                                                            </div>
+                                                                <div class="modal-body alert alert-secondary">
+                                                                        <div class="">
                                                                             <div class="" v-for="(concentrado,index) in concentrado_sugerencias_pendiente_factibilidad">
                                                                                         <div v-if="concentrado.id==posicion">
                                                                                         <label class=" fw-bold mt-1">Nombre de la sugerencias: </label> {{ concentrado.nombre_sugerencia}}<br>
@@ -181,46 +177,59 @@ if ($_SESSION["usuario"] ){
                                                                                         </div>
                                                                             </div>
                                                                         </div>
-                                                                   </div>
+                                                                </div>
 
                                                 <div class="row" style="font-size:.8em">
-                                                                <div class="col-12 col-xl-6">
-                                                                PDF
-                                                                </div>
-                                                                <div class="col-12 col-xl-6">
-                                                                            <div class="row mt-2 mx-3">
-                                                                                <div class="col-12 col-lg-6 ">
-                                                                                    Impacto Primerio:<br>
-                                                                                    <select class="" >
-                                                                                            <option  v-for=" lista in lista_impacto" :key="lista.id">{{lista.impacto}}</option>
-                                                                                    </select>
-                                                                                </div>
-                                                                                <div class="col-12 col-lg-6">
-                                                                                    Impacto Secundario:<br>
-                                                                                    <select class="" >
-                                                                                            <option  v-for=" lista in lista_impacto" :key="lista.id">{{lista.impacto}}</option>
-                                                                                    </select>
-                                                                                </div>
-                                                                            </div>   
-                                                                            <div class="row mt-2 mx-3 ">
-                                                                                    <div class="col-12 col-lg-6">
-                                                                                    Tipo de desperdicio:<br>
+                                                                <div class="col-12 col-xl-6" v-for= "(documento,index) in documentos"><!--Espacio Vista Documentos-->
+                                                                        <div class="col-12 alert alert-secondary">
+                                                                            <div class="col-12 text-center">
+                                                                                <span class="badge bg-secondary ">Documento {{index+1}}</span><br>
+                                                                            </div>
+                                                                            <iframe :src="documentos[index]" style="width:100%;height:500px;"></iframe>
+                                                                            
+                                                                        <!-- <iframe src="https://vvnorth.com/Sugerencias/documentos/pdf.pdf" style="width:100%;height:500px;"></iframe>-->
+                                                                        </div>
+                                                                </div><!--Fin Vista Documentos--->
+                                                                <div class="col-12">
+                                                                            <div class="text-center mt-3 ">
+                                                                                <span class="badge bg-light text-dark">FORMULARIO </span>
+                                                                            </div>
+                                                                        <div class="col-12 alert alert-secondary">
+                                                                           
+                                                                                <div class="row mt-2 mx-3 ">
+                                                                                    <div class="col-12 col-lg-6 ">
+                                                                                        Impacto Primerio:<br>
                                                                                         <select class="" >
-                                                                                                <option  v-for=" lista in lista_tipo_desperdicio" :key="lista.id">{{lista.tipo_de_desperdicio}}</option>
+                                                                                                <option  v-for=" lista in lista_impacto" :key="lista.id">{{lista.impacto}}</option>
                                                                                         </select>
                                                                                     </div>
-                                                                                    <div class="col-12  mt-3 mb-2" style=" font-size: 10px">
-                                                                                        Objetivos de Calidad y M.A.:<br>
-                                                                                        <div  class="inputs-concentrado" style="overflow-y: scroll; height:80px" >
-                                                                                                <label>{{var_objetivo_de_calidadMA}}</label>
-                                                                                                    <ul>
-                                                                                                        <li v-for="objetivo_de_calidad in objetivo_de_calidadMA">
-                                                                                                            <input type="checkbox" :value="objetivo_de_calidad.objetivos_de_calidad" v-model="var_objetivo_de_calidadMA">
-                                                                                                            <label for="objetivo_de_calidad">{{objetivo_de_calidad.objetivos_de_calidad}}</label>
-                                                                                                        </li>
-                                                                                                    </ul>
-                                                                                        </div>
+                                                                                    <div class="col-12 col-lg-6">
+                                                                                        Impacto Secundario:<br>
+                                                                                        <select class="" >
+                                                                                                <option v-for=" lista in lista_impacto" :key="lista.id">{{lista.impacto}}</option>
+                                                                                        </select>
                                                                                     </div>
+                                                                                </div>   
+                                                                                <div class="row mt-2 mx-3 ">
+                                                                                        <div class="col-12 col-lg-6">
+                                                                                        Tipo de desperdicio:<br>
+                                                                                            <select class="" >
+                                                                                                    <option  v-for=" lista in lista_tipo_desperdicio" :key="lista.id">{{lista.tipo_de_desperdicio}}</option>
+                                                                                            </select>
+                                                                                        </div>
+                                                                                        <div class="col-12 col-lg-6  mt-3 mb-2" style=" font-size: 10px">
+                                                                                            Objetivos de Calidad y M.A.:<br>
+                                                                                            <div  class="inputs-concentrado" style="overflow-y: scroll; height:80px" >
+                                                                                                    <label>{{var_objetivo_de_calidadMA}}</label>
+                                                                                                        <ul>
+                                                                                                            <li v-for="objetivo_de_calidad in objetivo_de_calidadMA">
+                                                                                                                <input type="checkbox" :value="objetivo_de_calidad.objetivos_de_calidad" v-model="var_objetivo_de_calidadMA">
+                                                                                                                <label for="objetivo_de_calidad">{{objetivo_de_calidad.objetivos_de_calidad}}</label>
+                                                                                                            </li>
+                                                                                                        </ul>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                </div>   
                                                                             </div>   
                                                                 </div>
                                                                 <div class="col-12"><!--espacio Plan de trabajo-->
@@ -231,25 +240,23 @@ if ($_SESSION["usuario"] ){
                                                                             <table class="tablaMonitoreo-sugerencias table table-striped table-bordered" style=" font-size: 12px">
                                                                                 <thead class="encabezado-tabla text-center text-light ">
                                                                                     <tr >
-                                                                                    <th scope="col " class="sticky">#</th>
+                                                                                    <th scope="col" class="sticky">#</th>
                                                                                     <th scope="col">Actividad</th>
                                                                                     <th scope="col">Responsable</th>
-                                                                                    <th scope="col">Fecha Inicio</th>
                                                                                     <th scope="col">Fecha Fecha de Cierre</th>
                                                                                     <th scope="col">% Porcentaje</th>
                                                                                     </tr>
                                                                                 </thead>
                                                                                 <tbody>
-                                                                                    <tr v-for="(concentrado, index) in concentrado_sugerencias_pendiente_factibilidad">
-                                                                                    <th scope="row" class="text-center">{{index+1}}</th>
-                                                                                        <td>{{concentrado.folio}}</td>
+                                                                                    <tr >
+                                                                                    <th scope="row" class="text-center"></th>
+                                                                                        <td><input type="text" v-model="var_actividad" ></td>
                                                                                         <td>
                                                                                         <select  v-model="var_reponsable_en_plan" >
                                                                                             <option value="" disabled>Seleccione Analista..</option>
                                                                                             <option v-for="responsable in lista_responsable_plan" :key="responsable.nombre" :value="responsable.nombre">{{responsable.nombre}}</option>
                                                                                         </select>
                                                                                         </td>
-                                                                                        <td><input type="date" v-model="var_fecha_inicio_actividad" ></input></td>
                                                                                         <td><input type="date" v-model="var_fecha_final_actividad" ></td>
                                                                                         <td>0</td>
                                                                                     </tr>
@@ -291,8 +298,7 @@ if ($_SESSION["usuario"] ){
                 contador: 0,
                 concentrado_sugerencias_pendiente_factibilidad:[],
                 concentrado_sugerencias_pendiente_implementacion:[],
-                /*varibles en modal*/
-                titulo_modal:'',
+                /*varibles en modal factibilidad*/
                 folio_sugerencia:'',
                 tipo_factibilida_o_implementacion:'',
                 folio:'',
@@ -301,10 +307,11 @@ if ($_SESSION["usuario"] ){
                 lista_tipo_desperdicio:[],
                 objetivo_de_calidadMA:[],
                 var_objetivo_de_calidadMA:[],
-                var_fecha_inicio_actividad:'',
+                var_actividad:'',
                 var_fecha_final_actividad:'',
                 lista_responsable_plan:[],
-                var_reponsable_en_plan:''
+                var_reponsable_en_plan:'',
+                documentos:[],
             }
         },
         mounted(){
@@ -320,6 +327,7 @@ if ($_SESSION["usuario"] ){
             this.consultando_lista_de_desperdicio(),
             this.consulta_lista_objetivos_calidad_ma(),
             this.consulta_responsable_plan()
+
         },
         methods:{
             mostrar(dato){
@@ -360,7 +368,7 @@ if ($_SESSION["usuario"] ){
                 this.folio=folio
                 this.posicion=index
                 if(this.tipo_factibilida_o_implementacion=="factibilidad"){
-                    this.titulo_modal='FACTIBILIDAD DE SUGERENCIA FOLIO: '
+                    this.buscarDocumentos_analista()
                 } else if (this.tipo_factibilida_o_implementacion=="implementacion"){
 
                 }else{
@@ -375,9 +383,9 @@ if ($_SESSION["usuario"] ){
             },
             consulta_lista_objetivos_calidad_ma(){
                 axios.post('lista_objetivos_calidad_ma.php',{
-            }).then(response =>{
-                this.objetivo_de_calidadMA = response.data
-            })
+                }).then(response =>{
+                    this.objetivo_de_calidadMA = response.data
+                })
             },
             consulta_responsable_plan(){
                 axios.post('lista_usuarios_y_analistas_factibilidad.php',{
@@ -385,7 +393,26 @@ if ($_SESSION["usuario"] ){
                     this.lista_responsable_plan = response.data
                     console.log(this.lista_responsable_plan);
                 })
-            }
+            },
+            buscarDocumentos_analista(){
+                this.documentos=[] //limpiado vista del documento subido en modal 
+                    axios.post("buscar_documentos.php",{
+                        folio_carpeta_doc:this.folio
+                    })
+                    .then(response => {
+                    this.documentos = response.data;
+                    //console.log(response.data);
+                    if(this.documentos.length>0){
+                        /*console.log(this.documentos.length + "Archivos encontrados.")*/
+                    }else{
+                        /*alert("Sin Documentos agregados.")*/
+                    }
+
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+                }
         }   
     }
     var mountedApp = Vue.createApp(vue3).mount('#app');
