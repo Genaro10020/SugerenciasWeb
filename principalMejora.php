@@ -144,7 +144,6 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                     </div>
                                 </div>
                             <div class="div-scroll mt-3 ">
-                     
                                     <table class="table tablaConcentrado table-striped table-bordered" style="height:10px; ">
                                         <thead class="encabezado-tabla text-center">
                                             <tr class="text-light bg-secondary">

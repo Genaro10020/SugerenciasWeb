@@ -179,7 +179,7 @@ if ($_SESSION["usuario"] ){
                                                                         </div>
                                                                 </div>
 
-                                                <div class="row" style="font-size:.8em">
+                                                <div class="row" style="font-size:.9em">
                                                                 <div class="col-12 col-xl-6" v-for= "(documento,index) in documentos"><!--Espacio Vista Documentos-->
                                                                         <div class="col-12 alert alert-secondary">
                                                                             <div class="col-12 text-center">
@@ -233,33 +233,67 @@ if ($_SESSION["usuario"] ){
                                                                             </div>   
                                                                 </div>
                                                                 <div class="col-12"><!--espacio Plan de trabajo-->
-                                                                        <div class="text-center mt-3 ">
+                                                                        <div class="text-center my-3 ">
                                                                             <span class="badge bg-light text-dark">PLAN DE TRABAJO</span>
                                                                         </div>
-                                                                        <div class="div-scroll mt-3">
-                                                                            <table class="tablaMonitoreo-sugerencias table table-striped table-bordered" style=" font-size: 12px">
+                                                                        <div class="col-12 text-center inline-block">
+                                                                            <div>
+                                                                                <button class="boton-nuevo mb-1" @click="nueva_actividad = true"><i class="bi bi-plus-circle"></i> Nueva Actividad</button>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="div-scroll">
+                                                                            <table class="tablaMonitoreo-sugerencias table table-striped table-bordered text-center" style=" font-size: 12px">
                                                                                 <thead class="encabezado-tabla text-center text-light ">
                                                                                     <tr >
-                                                                                    <th scope="col" class="sticky">#</th>
-                                                                                    <th scope="col">Actividad</th>
+                                                                                    <th scope="col" class="sticky"></th>
+                                                                                    <th scope="col">No. Actividad</th>
+                                                                                    <th scope="col">Descripción Actividad</th>
                                                                                     <th scope="col">Responsable</th>
-                                                                                    <th scope="col">Fecha Fecha de Cierre</th>
+                                                                                    <th scope="col">Fecha de Inicio</th>
+                                                                                    <th scope="col">Fecha de Cierre</th>
                                                                                     <th scope="col">% Porcentaje</th>
                                                                                     </tr>
                                                                                 </thead>
                                                                                 <tbody>
-                                                                                    <tr >
-                                                                                    <th scope="row" class="text-center"></th>
-                                                                                        <td><input type="text" v-model="var_actividad" ></td>
+                                                                                    <tr class="align-middle bg-info" v-show="nueva_actividad"><!--Nueva Actividad Fila-->
+                                                                                            <td class="sticky"> 
+                                                                                                <button type="button" class="btn btn-danger  me-2" title="Cancelar" @click="nueva_actividad=false"><i class="bi bi-x-circle" ></i></button>
+                                                                                                <button type="button" class="btn btn-primary" title="Guardar" @click="guardarActividad"><i class="bi bi-check-circle"></i></button>
+                                                                                            </td> 
+                                                                                        <th scope="row">
+                                                                                            <label>{{numero_actividad}}</label></th>
                                                                                         <td>
-                                                                                        <select  v-model="var_reponsable_en_plan" >
+                                                                                            <textarea class="inputs-concentrado text-area" type="text"  name="nombre_sugerencia" v-model="actividad"></textarea></td>
+                                                                                        <td>
+                                                                                        <select class="inputs-concentrado" v-model="var_responsable_plan" >
                                                                                             <option value="" disabled>Seleccione Analista..</option>
                                                                                             <option v-for="responsable in lista_responsable_plan" :key="responsable.nombre" :value="responsable.nombre">{{responsable.nombre}}</option>
                                                                                         </select>
                                                                                         </td>
-                                                                                        <td><input type="date" v-model="var_fecha_final_actividad" ></td>
+                                                                                        <td>
+                                                                                            <input class="inputs-concentrado" type="date" v-model="fecha_inicial_actividad"></input></td>
+                                                                                        <td>
+                                                                                            <input class="inputs-concentrado" type="date" v-model="fecha_final_actividad"></input></td>
                                                                                         <td>0</td>
-                                                                                    </tr>
+                                                                                    </tr><!--Fin Nueva Actividad-->
+                                                                                    <tr class="align-middle" v-for="actividades in concentrado_actividades"><!--Consulta actividades-->
+                                                                                        <td> 
+                                                                                              <button type="button" class="btn btn-danger  me-2" title="Cancelar" @click="nueva_actividad=false"><i class="bi bi-x-circle" ></i></button>
+                                                                                        </td> 
+                                                                                        <th scope="row"></th>
+                                                                                        <td>
+                                                                                            <textarea class="inputs-concentrado text-area" type="text"  name="nombre_sugerencia" ></textarea><label>{{actividades.actividad}}<label></td>
+                                                                                        <td>
+                                                                                        <select class="inputs-concentrado"  >
+                                                                                            <option value="" disabled>Seleccione Analista..</option>
+                                                                                            <option v-for="responsable in lista_responsable_plan" :key="responsable.nombre" :value="responsable.nombre">{{responsable.nombre}}</option>
+                                                                                        </select>
+                                                                                            <label>{{actividades.actividad}}<label>
+                                                                                        </td>
+                                                                                        <td><input class="inputs-concentrado" type="date" ></input><label>{{actividades.fecha_inicial}}<label></td>
+                                                                                        <td><input class="inputs-concentrado" type="date" ></input><label>{{actividades.fecha_final}}<label></td>
+                                                                                        <td>0</td>
+                                                                                    </tr><!--Fin consuta actividades-->    
                                                                                 </tbody>
                                                                             </table>
                                                                         </div>
@@ -267,7 +301,7 @@ if ($_SESSION["usuario"] ){
                                                     </div>
                                                     <div class="12 modal-footer " > 
                                                         <div class="col-12 text-center">
-                                                                <button type="button" class="btn btn-success btn-lg me-2 fst-italic">Fatible</button> 
+                                                                <button type="button" class="btn btn-success btn-lg me-2 fst-italic">Factible</button> 
                                                                 <button type="button" class="btn btn-warning btn-lg fst-italic  ">No factible</button> 
                                                                 <button type="button" class="btn btn-secondary btn-sm ms-5"  data-bs-dismiss="modal" >Cancelar</button>
                                                         </div>              
@@ -299,7 +333,6 @@ if ($_SESSION["usuario"] ){
                 concentrado_sugerencias_pendiente_factibilidad:[],
                 concentrado_sugerencias_pendiente_implementacion:[],
                 /*varibles en modal factibilidad*/
-                folio_sugerencia:'',
                 tipo_factibilida_o_implementacion:'',
                 folio:'',
                 posicion:0,
@@ -307,11 +340,15 @@ if ($_SESSION["usuario"] ){
                 lista_tipo_desperdicio:[],
                 objetivo_de_calidadMA:[],
                 var_objetivo_de_calidadMA:[],
-                var_actividad:'',
-                var_fecha_final_actividad:'',
+                actividad:'',
+                fecha_inicial_actividad:'',
+                fecha_final_actividad:'',
                 lista_responsable_plan:[],
-                var_reponsable_en_plan:'',
+                var_responsable_plan:'',
                 documentos:[],
+                nueva_actividad: true,
+                concentrado_actividades:[],
+                numero_actividad:0,
             }
         },
         mounted(){
@@ -326,7 +363,8 @@ if ($_SESSION["usuario"] ){
             //Consulta desperdiciones
             this.consultando_lista_de_desperdicio(),
             this.consulta_lista_objetivos_calidad_ma(),
-            this.consulta_responsable_plan()
+            this.consulta_responsable_plan(),
+            this.consultarActividades()
 
         },
         methods:{
@@ -412,7 +450,30 @@ if ($_SESSION["usuario"] ){
                     .catch(error => {
                         console.log(error);
                     });
-                }
+                },
+            guardarActividad(){
+                console.log(this.numero_actividad+this.actividad+this.var_responsable_plan+this.fecha_inicial_actividad+this.fecha_final_actividad)
+                /*axios.post("guardar_plan_actividad.php",{
+                    numero_actividad: this.numero_actividad,
+                    actividad: this.actividad,
+                    responsable_plan: this.var_responsable_plan,
+                    fecha_inicial_actividad: this.fecha_inicial_actividad,
+                    fecha_final_actividad: this.fecha_final_actividad
+                }).then(response =>{
+
+                }).catch(error =>){
+                    console.log(error)
+                }*/
+            },
+            consultarActividades(){
+                    axios.post("consultando_actividades.php",{
+                }).then(response =>{
+                    this.concentrado_actividades = response.data
+                    this.numero_actividad = this.concentrado_actividades.length +1
+                }).catch(error => {
+                    console.log(error)
+                })
+            }
         }   
     }
     var mountedApp = Vue.createApp(vue3).mount('#app');
