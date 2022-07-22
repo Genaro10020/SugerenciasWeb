@@ -150,6 +150,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                             <th scope="col" class="sticky bg-white text-dark ">Edit:Cancel/Save </th>
                                             <th scope="col">#</th>
                                             <th scope="col">%Cumplimiento</th>
+                                            <th scope="col">Sindicalizado</th>
                                             <th scope="col">Nombre sugerencias <span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span></th>
                                             <th scope="col">Folio <span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span></th>
                                             <th scope="col">Status</th>
@@ -212,6 +213,13 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                 </td>
                                                 <th scope="row">Nueva</th>
                                                 <td><label>0%</label></td>
+                                                <td>
+                                                    <select class="inputs-concentrado">
+                                                        <option value="">Sindicalizado</option>
+                                                        <option value="">Empleado</option>
+                                                    </select>
+                                                </td> 
+                                                
                                                 <td><textarea class="inputs-concentrado text-area" type="text"  name="nombre_sugerencia" v-model="var_nombre_sugerencias"></textarea></td>
                                                 <td><input class="inputs-concentrado" type="text" v-model="var_folio"></input></td>
                                                 <td><label>En Factibilidad</label></td>
@@ -304,6 +312,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                 </td>
                                                 <th scope="row">{{index+1}}<br><!--{{concentrado.id}}--></th>
                                                 <td><label>0%</label></td>
+                                                <td>
+                                                
+
+                                                </label></td>
                                                 <td><textarea class="inputs-concentrado text-area" type="text"  name="nombre_sugerencia" v-model="var_nombre_sugerencias" v-if="actualizar_sugerencia==index+1"></textarea> <label v-else>{{concentrado.nombre_sugerencia}}</label></td>
                                                 <td><input class="inputs-concentrado" type="text" v-model="var_folio" v-if="actualizar_sugerencia==index+1"></input> <label v-else>{{concentrado.folio}}</label></td>
                                                 <td><label>En Factibilidad</label></td>

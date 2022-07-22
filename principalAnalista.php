@@ -276,22 +276,28 @@ if ($_SESSION["usuario"] ){
                                                                                             <input class="inputs-concentrado" type="date" v-model="fecha_final_actividad"></input></td>
                                                                                         <td>0</td>
                                                                                     </tr><!--Fin Nueva Actividad-->
-                                                                                    <tr class="align-middle" v-for="actividades in concentrado_actividades"><!--Consulta actividades-->
+                                                                                         <!--Consulta actividades-->
+                                                                                    <tr class="align-middle" v-for="(actividades,index) in concentrado_actividades">
                                                                                         <td> 
-                                                                                              <button type="button" class="btn btn-danger  me-2" title="Cancelar" @click="nueva_actividad=false"><i class="bi bi-x-circle" ></i></button>
+                                                                                            <button type="button" class="btn btn-warning" title="Editar"><i class="bi bi-pen" ></i></button>
                                                                                         </td> 
-                                                                                        <th scope="row"></th>
+                                                                                            <th scope="row">
+                                                                                            <label>{{numero_orden_en_select=index+1}}</label>
+                                                                                                    <select class="w-50" v-model="numero_orden_en_select">
+                                                                                                        <option v-for="numero in numero_actividad" @click="datos">{{numero}}</option>
+                                                                                                    </select>     
+                                                                                            </th>
                                                                                         <td>
-                                                                                            <textarea class="inputs-concentrado text-area" type="text"  name="nombre_sugerencia" ></textarea><label>{{actividades.actividad}}<label></td>
+                                                                                            <textarea v-if="actualizar" class="inputs-concentrado text-area" type="text"  name="nombre_sugerencia" ></textarea> <label v-else>{{actividades.actividad}}<label></td>
                                                                                         <td>
-                                                                                        <select class="inputs-concentrado"  >
+                                                                                        <select v-if="actualizar" class="inputs-concentrado" v-model="var_responsable_plan" >
                                                                                             <option value="" disabled>Seleccione Analista..</option>
                                                                                             <option v-for="responsable in lista_responsable_plan" :key="responsable.nombre" :value="responsable.nombre">{{responsable.nombre}}</option>
                                                                                         </select>
-                                                                                            <label>{{actividades.actividad}}<label>
+                                                                                            <label v-else>{{actividades.responsable}}<label>
                                                                                         </td>
-                                                                                        <td><input class="inputs-concentrado" type="date" ></input><label>{{actividades.fecha_inicial}}<label></td>
-                                                                                        <td><input class="inputs-concentrado" type="date" ></input><label>{{actividades.fecha_final}}<label></td>
+                                                                                        <td><input v-if="actualizar" class="inputs-concentrado" type="date" ></input><label v-else>{{actividades.fecha_inicial}}<label></td>
+                                                                                        <td><input v-if="actualizar" class="inputs-concentrado" type="date" ></input><label v-else>{{actividades.fecha_final}}<label></td>
                                                                                         <td>0</td>
                                                                                     </tr><!--Fin consuta actividades-->    
                                                                                 </tbody>
@@ -347,8 +353,10 @@ if ($_SESSION["usuario"] ){
                 var_responsable_plan:'',
                 documentos:[],
                 nueva_actividad: true,
+                actualizar: false,
                 concentrado_actividades:[],
                 numero_actividad:0,
+                numero_orden_en_select:0,
             }
         },
         mounted(){
@@ -365,7 +373,6 @@ if ($_SESSION["usuario"] ){
             this.consulta_lista_objetivos_calidad_ma(),
             this.consulta_responsable_plan(),
             this.consultarActividades()
-
         },
         methods:{
             mostrar(dato){
@@ -452,18 +459,21 @@ if ($_SESSION["usuario"] ){
                     });
                 },
             guardarActividad(){
-                console.log(this.numero_actividad+this.actividad+this.var_responsable_plan+this.fecha_inicial_actividad+this.fecha_final_actividad)
-                /*axios.post("guardar_plan_actividad.php",{
+                /*console.log(this.numero_actividad+this.actividad+this.var_responsable_plan+this.fecha_inicial_actividad+this.fecha_final_actividad)*/
+                axios.post("guardar_actividad_plan.php",{
                     numero_actividad: this.numero_actividad,
                     actividad: this.actividad,
-                    responsable_plan: this.var_responsable_plan,
+                    folio: this.folio,
+                    var_responsable_plan: this.var_responsable_plan,
                     fecha_inicial_actividad: this.fecha_inicial_actividad,
                     fecha_final_actividad: this.fecha_final_actividad
                 }).then(response =>{
-
-                }).catch(error =>){
+                        console.log(response.data)
+                        alert(response.data)
+                        this.consultarActividades()
+                }).catch(error =>{
                     console.log(error)
-                }*/
+                })
             },
             consultarActividades(){
                     axios.post("consultando_actividades.php",{
