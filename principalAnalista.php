@@ -261,7 +261,7 @@ if ($_SESSION["usuario"] ){
                                                                                                 <button type="button" class="btn btn-primary" title="Guardar" @click="guardarActividad"><i class="bi bi-check-circle"></i></button>
                                                                                             </td> 
                                                                                         <th scope="row">
-                                                                                            <label>{{numero_actividad}}</label></th>
+                                                                                            <label>{{numero_nueva_actividad}}</label></th>
                                                                                         <td>
                                                                                             <textarea class="inputs-concentrado text-area" type="text"  name="nombre_sugerencia" v-model="actividad"></textarea></td>
                                                                                         <td>
@@ -284,10 +284,10 @@ if ($_SESSION["usuario"] ){
                                                                                             <th scope="row">
                                                                                             <label>{{numero_orden_en_select=index+1}}</label>
                                                                                                     <select class="w-50" v-model="numero_orden_en_select">
-                                                                                                        <option v-for="numero in numero_actividad" @click="datos">{{numero}}</option>
+                                                                                                        <option v-for="numero in numero_actividad" @click="ordenarActividades(index,numero-1)">{{numero}}</option>
                                                                                                     </select>     
                                                                                             </th>
-                                                                                        <td>
+                                                                                        <td>    
                                                                                             <textarea v-if="actualizar" class="inputs-concentrado text-area" type="text"  name="nombre_sugerencia" ></textarea> <label v-else>{{actividades.actividad}}<label></td>
                                                                                         <td>
                                                                                         <select v-if="actualizar" class="inputs-concentrado" v-model="var_responsable_plan" >
@@ -298,8 +298,10 @@ if ($_SESSION["usuario"] ){
                                                                                         </td>
                                                                                         <td><input v-if="actualizar" class="inputs-concentrado" type="date" ></input><label v-else>{{actividades.fecha_inicial}}<label></td>
                                                                                         <td><input v-if="actualizar" class="inputs-concentrado" type="date" ></input><label v-else>{{actividades.fecha_final}}<label></td>
-                                                                                        <td>0</td>
+                                                                                        <td>0%</td>
+                                                                                        
                                                                                     </tr><!--Fin consuta actividades-->    
+                                                                                   
                                                                                 </tbody>
                                                                             </table>
                                                                         </div>
@@ -356,7 +358,8 @@ if ($_SESSION["usuario"] ){
                 actualizar: false,
                 concentrado_actividades:[],
                 numero_actividad:0,
-                numero_orden_en_select:0,
+                numero_nueva_actividad:0,
+                numero_orden_en_select:0
             }
         },
         mounted(){
@@ -479,10 +482,31 @@ if ($_SESSION["usuario"] ){
                     axios.post("consultando_actividades.php",{
                 }).then(response =>{
                     this.concentrado_actividades = response.data
-                    this.numero_actividad = this.concentrado_actividades.length +1
+                    this.numero_actividad = this.concentrado_actividades.length
+                    this.numero_nueva_actividad = this.numero_actividad + 1
                 }).catch(error => {
                     console.log(error)
                 })
+            },
+            ordenarActividades(posicion_actual,posicion_nueva){
+              console.log("posicion actual:"+posicion_actual+"Nueva posicion"+posicion_nueva)
+              var datos_posicion_actual=this.concentrado_actividades[posicion_actual]
+              var datos_posicion_nueva=this.concentrado_actividades[posicion_nueva]
+              this.concentrado_actividades.splice(posicion_nueva,1,datos_posicion_actual)
+              this.concentrado_actividades.splice(posicion_actual,1,datos_posicion_nueva)
+              //console.log(this.concentrado_actividades)
+              axios.post("guardar_actividades_nuevo_orden.php",{
+                    nuevo_orden: this.concentrado_actividades
+              }).then(response =>{
+                    if(response.data==true){
+                        
+                    }else{
+                        alert("Algo salio mal al actualizar el nuevo orden de las actividades.")
+                        this.consultarActividades()
+                    }   
+              }).catch(error => {
+                console.log("ERROR EN GUARDAR NUEVO ORDEN :-)")
+              })
             }
         }   
     }
