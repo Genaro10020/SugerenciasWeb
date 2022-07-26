@@ -214,9 +214,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                 <th scope="row">Nueva</th>
                                                 <td><label>0%</label></td>
                                                 <td>
-                                                    <select class="inputs-concentrado">
-                                                        <option value="">Sindicalizado</option>
-                                                        <option value="">Empleado</option>
+                                                    <select class="inputs-concentrado" v-model="var_sindicalizado_empleado">
+                                                        <option value="" disabled>Seleccione tipo empleado...</option>
+                                                        <option>Sindicalizado</option>
+                                                        <option>Empleado</option>
                                                     </select>
                                                 </td> 
                                                 
@@ -296,7 +297,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                 <td><input class="inputs-concentrado" type="text" v-model="var_impacto_planeado" name="impacto planeado" ></input></td>
                                                 <td><input class="inputs-concentrado" type="text" v-model="var_impacto_real" name="impacto_real" ></input></td>
                                                 <td><label>{{usuario}}</label></td>
-                                                <td><label><?php echo date("d/m/Y"); ?></label></td>
+                                                <td><label><?php echo date("d-m-Y"); ?></label></td>
                                                 <td></input></td>
                                                 <td></input></td>
                                                 <!--<td><button type="button" class="btn btn-danger" title="Eliminar" @click="nueva_sugerencia=false"><i class="bi bi-trash"></button></i></td>-->
@@ -313,9 +314,12 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                 <th scope="row">{{index+1}}<br><!--{{concentrado.id}}--></th>
                                                 <td><label>0%</label></td>
                                                 <td>
-                                                
-
-                                                </label></td>
+                                                    <select class="inputs-concentrado" v-model="var_sindicalizado_empleado"  v-if="actualizar_sugerencia==index+1">
+                                                        <option>Sindicalizado</option>
+                                                        <option>Empleado</option>
+                                                    </select>
+                                                    <label v-else>{{concentrado.sindicalizado_empleado}}</label>
+                                                </td> 
                                                 <td><textarea class="inputs-concentrado text-area" type="text"  name="nombre_sugerencia" v-model="var_nombre_sugerencias" v-if="actualizar_sugerencia==index+1"></textarea> <label v-else>{{concentrado.nombre_sugerencia}}</label></td>
                                                 <td><input class="inputs-concentrado" type="text" v-model="var_folio" v-if="actualizar_sugerencia==index+1"></input> <label v-else>{{concentrado.folio}}</label></td>
                                                 <td><label>En Factibilidad</label></td>
@@ -400,7 +404,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                 <td><input class="inputs-concentrado" type="text" v-model="var_impacto_planeado" name="impacto planeado" v-if="actualizar_sugerencia==index+1"></input><label v-else>{{concentrado.impacto_planeado}}</label></td>
                                                 <td><input class="inputs-concentrado" type="text" v-model="var_impacto_real" name="impacto_real" v-if="actualizar_sugerencia==index+1"></input><label v-else>{{concentrado.impacto_real}}</label></td>
                                                 <td><label>{{usuario}}</label></td>
-                                                <td><label v-if="actualizar_sugerencia==index+1"><?php echo date("d/m/Y"); ?></label><label v-else>{{concentrado.creado}}</label></td>
+                                                <td><label v-if="actualizar_sugerencia==index+1"><?php echo date("d-m-Y"); ?></label><label v-else>{{concentrado.creado}}</label></td>
                                                 <td>{{concentrado.modificado_por}}</td>
                                                 <td>{{concentrado.modificado}}</td>
                                                 <!--<td><button type="button" class="btn btn-danger" title="Eliminar" @click="eliminar_sugerencia(concentrado.id)"><i class="bi bi-trash"></button></i></td>-->
@@ -634,6 +638,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 actualizar_sugerencia:'',
                 concentrado_sugerencias:[],
                 var_cumplimiento:'0',
+                var_sindicalizado_empleado:'',
                 var_nombre_sugerencias:'',
                 var_folio:'',
                 lista_status: [],
@@ -665,7 +670,6 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 var_fecha_compromiso:'',
                 var_fecha_real_de_cierre:'',
                 lista_analista_factibilidad: [],
-                var_analista_de_factibilidad:'',
                 lista_usuarios_y_analistas_factibilidad: [],
                 var_usuario_y_analista_de_factibilidad:'',
                 var_impacto_planeado:'',
@@ -735,15 +739,16 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
              },
             guardar_nueva_sugerencia_y_actualizar(nueva_o_actualizar,id_registro){
 
-                if(this.var_nombre_sugerencias!='' && this.var_folio!='' && this.var_causa_no_factibilidad!='' && this.var_situacion_actual!='' && 
+                if(this.var_sindicalizado_empleado!='' && this.var_nombre_sugerencias!='' && this.var_folio!='' && this.var_causa_no_factibilidad!='' && this.var_situacion_actual!='' && 
                     this.var_idea_propuesta!='' && this.var_nomina!='' && this.var_colaborador!='' && this.var_puesto!='' && this.var_planta!='' && 
-                    this.var_area!='' && this.var_area_participante!='' && this.var_subarea!='' && this.var_fecha_sugerencia!='' && this.var_fecha_inicio!=''){
+                    this.var_area!='' && this.var_area_participante!='' && this.var_subarea!='' && this.var_fecha_sugerencia!='' && this.var_fecha_inicio!='' && this.var_usuario_y_analista_de_factibilidad!='' ){
                     this.actualizar_sugerencia="";//desactivar editar o actualizar
                     this.nueva_sugerencia=false;//desactivar nueva sugerencia
                         axios.post('guardar_nueva_sugerencia_y_actualizar.php',{
                             id: id_registro,
                             tipo_nueva_o_actualizar: nueva_o_actualizar,
                             cumplimiento: this.var_cumplimiento,
+                            sindicalizado_empleado:this.var_sindicalizado_empleado,
                             nombre_sugerencia: this.var_nombre_sugerencias,
                             folio: this.var_folio,
                             status: this.var_status,
@@ -782,6 +787,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     console.log(posicion)
                     this.actualizar_sugerencia = posicion
                 if(id=="0"){// nueva sugerencia
+                    this.var_sindicalizado_empleado=''
                     this.var_nombre_sugerencias=''
                     this.var_folio=''
                     this.var_causa_no_factibilidad=''
@@ -806,6 +812,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
 
                 } else {//llenado campos de actualizar asignandolos a las variables
                     this.nueva_sugerencia=false;
+                    this.var_sindicalizado_empleado=this.concentrado_sugerencias[posicion-1].sindicalizado_empleado
                     this.var_nombre_sugerencias=this.concentrado_sugerencias[posicion-1].nombre_sugerencia
                     this.var_folio=this.concentrado_sugerencias[posicion-1].folio
                     this.var_causa_no_factibilidad=this.concentrado_sugerencias[posicion-1].causa_no_factibilidad
