@@ -151,7 +151,7 @@ if ($_SESSION["usuario"] ){
                                  </div>
                             </div>
                              <!--fin contenido principal analista gonher-->
-    <!-- Factibilidad -->
+                 <!-- Factibilidad -->
                     <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="font-size:.8em">
                             <div class="modal-dialog modal-xl modal-dialog-centered " >
                                 <div class="modal-content " >
@@ -164,7 +164,7 @@ if ($_SESSION["usuario"] ){
                                                                 <div class="modal-body alert alert-secondary">
                                                                         <div class="">
                                                                             <div class="" v-for="(concentrado,index) in concentrado_sugerencias_pendiente_factibilidad">
-                                                                                        <div v-if="concentrado.id==posicion">
+                                                                                        <div v-if="concentrado.id==id_concentrado_general">
                                                                                         <label class=" fw-bold mt-1">Nombre de la sugerencias: </label> {{ concentrado.nombre_sugerencia}}<br>
                                                                                         <label class=" fw-bold mt-1">Situacion Actual: </label> {{concentrado.situacion_actual}}<br>
                                                                                         <label class=" fw-bold mt-1">Idea Propuesta: </label> {{concentrado.idea_propuesta}}<br>
@@ -191,22 +191,26 @@ if ($_SESSION["usuario"] ){
                                                                         </div>
                                                                 </div><!--Fin Vista Documentos--->
                                                                       <!--Formualario-->
-                                                                <div class="col-12">
+                                                                <div class="col-12" v-show="factible==true">
+                                                                   
+                                                                    <hr>
+                                                                     
                                                                             <div class="text-center mt-3 ">
-                                                                                <span class="badge bg-light text-dark">FORMULARIO </span>
+                                                                                <span class="badge bg-light text-dark">FORMULARIO IMPACTO</span>
                                                                             </div>
-                                                                        <div class="col-12 alert alert-secondary">
-                                                                           
+                                                                        <div class="col-12" style=" background-color:#e9f3e7">
                                                                                 <div class="row mt-2 mx-3 ">
                                                                                     <div class="col-12 col-lg-6 ">
                                                                                         Impacto Primerio:<br>
-                                                                                        <select class="" >
+                                                                                        <select class="" v-model="impacto_primario">
+                                                                                                <option value="" disabled>Seleccione una opción..</option>
                                                                                                 <option  v-for=" lista in lista_impacto" :key="lista.id">{{lista.impacto}}</option>
                                                                                         </select>
                                                                                     </div>
                                                                                     <div class="col-12 col-lg-6">
                                                                                         Impacto Secundario:<br>
-                                                                                        <select class="" >
+                                                                                        <select class="" v-model="impacto_secundario">
+                                                                                                <option value="" disabled>Seleccione una opción..</option>
                                                                                                 <option v-for=" lista in lista_impacto" :key="lista.id">{{lista.impacto}}</option>
                                                                                         </select>
                                                                                     </div>
@@ -214,7 +218,8 @@ if ($_SESSION["usuario"] ){
                                                                                 <div class="row mt-2 mx-3 ">
                                                                                         <div class="col-12 col-lg-6">
                                                                                         Tipo de desperdicio:<br>
-                                                                                            <select class="" >
+                                                                                            <select class="" v-model="tipo_desperdicio">
+                                                                                                    <option value="" disabled>Seleccione una opción..</option>
                                                                                                     <option  v-for=" lista in lista_tipo_desperdicio" :key="lista.id">{{lista.tipo_de_desperdicio}}</option>
                                                                                             </select>
                                                                                         </div>
@@ -231,19 +236,22 @@ if ($_SESSION["usuario"] ){
                                                                                             </div>
                                                                                         </div>
                                                                                 </div>   
-                                                                            </div>   
+                                                                                <div class="col-12 text-center"> <button type="button" class="btn btn-success mb-2" style="font-size:0.9em" @click="guardarFormularioImpacto">Guardar</button></div>
+                                                                        </div>   
                                                                 </div>
                                                                 <!--fin formulario-->
-                                                                <div class="col-12"><!--espacio Plan de trabajo-->
-                                                                        <div class="text-center my-3 ">
+                                                                <div class="col-12" v-show="factible==true" ><!--espacio Plan de trabajo-->
+                                                                        <hr>
+                                                                        <div class="text-center">
                                                                             <span class="badge bg-light text-dark">PLAN DE TRABAJO</span>
                                                                         </div>
-                                                                        <div class="col-12 text-center inline-block">
+                                                                        <div class="col-12 text-center inline-block" >
                                                                             <div>
-                                                                                <button class="boton-nuevo mb-1" @click="nueva_actividad = true"><i class="bi bi-plus-circle"></i> Nueva Actividad</button>
+                                                                                <button class="boton-nuevo mb-1" @click="nueva_actividad = true, editarActividad(0)"><i class="bi bi-plus-circle"></i> Nueva Actividad</button>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="div-scroll">
+                                                                    <div class="col-12" style=" background-color:#e9f3e7">     
+                                                                        <div class="div-scroll"><!--Scroll-->
                                                                             <table class="tablaMonitoreo-sugerencias table table-striped table-bordered text-center" style=" font-size: 12px">
                                                                                 <thead class="encabezado-tabla text-center text-light ">
                                                                                     <tr >
@@ -286,8 +294,8 @@ if ($_SESSION["usuario"] ){
                                                                                             <button type="button" class="btn btn-primary ms-2" title="Guardar" @click="guardarActividad('actualizar',actividades.id)" v-if="id_actualizar==index+1"><i class="bi bi-check-circle"></i></button>
                                                                                         </td> 
                                                                                             <th scope="row">
-                                                                                            <label>{{numero_orden_en_select=index+1}}</label>
-                                                                                                    <select class="w-50" v-model="numero_orden_en_select">
+                                                                                            <label v-show="actualizar==true">{{numero_orden_en_select=index+1}}</label>
+                                                                                                    <select  v-model="numero_orden_en_select" v-show="actualizar==false">
                                                                                                         <option v-for="numero in numero_actividad" @click="ordenarActividades(index,numero-1)">{{numero}}</option>
                                                                                                     </select>     
                                                                                             </th>
@@ -304,26 +312,25 @@ if ($_SESSION["usuario"] ){
                                                                                         <td><input v-if="id_actualizar==index+1" class="inputs-concentrado" v-model="fecha_inicial_actividad" type="date" ></input><label v-else>{{actividades.fecha_inicial}}<label></td>
                                                                                         <td><input v-if="id_actualizar==index+1" class="inputs-concentrado" v-model="fecha_final_actividad" type="date" ></input><label v-else>{{actividades.fecha_final}}<label></td>
                                                                                         <td>
-                                                                                            <select v-if="id_actualizar==index+1" class="inputs-concentrado" v-model="porcentaje" >
-                                                                                                <option value="" disabled>Seleccione avance.</option>
+                                                                                            <select v-if="id_actualizar==index+1" class="" v-model="porcentaje" >
                                                                                                 <option value="0">0</option>
-                                                                                                <option value="10">10</option>
+                                                                                                <option :value="numeros*5" v-for="numeros in 20">{{numeros*5}}</option>
                                                                                             </select>
                                                                                             <label v-else>{{actividades.porcentaje}}<label>
                                                                                         </td>
-                                                                                        
                                                                                     </tr><!--Fin consuta actividades-->    
-                                                                                   
                                                                                 </tbody>
                                                                             </table>
                                                                         </div>
+                                                                    </div><!--scroll-->
+                                                                    <div class="alert alert-success">Los datos insertado en la tabla se guardan automaticamente.</div>
                                                                 </div> <!--Fin espacio de Plana de trabajo -->  
                                                     </div>
                                                     <div class="12 modal-footer " > 
-                                                        <div class="col-12 text-center">
-                                                                <button type="button" class="btn btn-success btn-lg me-2 fst-italic">Factible</button> 
-                                                                <button type="button" class="btn btn-warning btn-lg fst-italic  ">No factible</button> 
-                                                                <button type="button" class="btn btn-secondary btn-sm ms-5"  data-bs-dismiss="modal" >Cancelar</button>
+                                                        <div class="col-12 text-center mt-5">
+                                                                <button type="button" class="btn btn-success btn-lg me-2 fst-italic" @click="factible = true,  no_factible = false">Factible</button> 
+                                                                <button type="button" class="btn btn-warning btn-lg fst-italic" @click="no_factible = true, factible = false">No factible</button> 
+                                                                <button type="button" class="btn btn-secondary btn-sm ms-5"  data-bs-dismiss="modal" >Salir</button>
                                                         </div>              
                                                     </div>
                                     </div>
@@ -353,13 +360,18 @@ if ($_SESSION["usuario"] ){
                 concentrado_sugerencias_pendiente_factibilidad:[],
                 concentrado_sugerencias_pendiente_implementacion:[],
                 /*varibles en modal factibilidad*/
+                factible: false,
+                no_factible: false,
                 tipo_factibilida_o_implementacion:'',
                 folio:'',
-                posicion:0,
+                id_concentrado_general:0,
                 lista_impacto:[],
                 lista_tipo_desperdicio:[],
                 objetivo_de_calidadMA:[],
                 var_objetivo_de_calidadMA:[],
+                impacto_primario:'',
+                impacto_secundario:'',
+                tipo_desperdicio:'',
                 actividad:'',
                 fecha_inicial_actividad:'',
                 fecha_final_actividad:'',
@@ -428,9 +440,10 @@ if ($_SESSION["usuario"] ){
             datos_modal_factibilidad(tipo,index,folio){
                 this.tipo_factibilida_o_implementacion=tipo
                 this.folio=folio
-                this.posicion=index
+                this.id_concentrado_general=index
                 if(this.tipo_factibilida_o_implementacion=="factibilidad"){
                     this.buscarDocumentos_analista()
+                    this.consultarFormularioImpacto()
                 } else if (this.tipo_factibilida_o_implementacion=="implementacion"){
 
                 }else{
@@ -475,13 +488,53 @@ if ($_SESSION["usuario"] ){
                         console.log(error);
                     });
                 },
-            guardarActividad(tipo,id){
+                consultarFormularioImpacto(){
+                axios.post("consultar_formulario_impacto_analista.php",{
+                    id_concentrado: this.id_concentrado_general,
+                }).then(response =>{
+                        this.impacto_primario = response.data[0].impacto_primario
+                        this.impacto_secundario = response.data[0].impacto_secundario
+                        this.tipo_desperdicio = response.data[0].tipo_de_desperdicio
+
+                    var arr = response.data[0].objetivo_de_calidad_ma.split(',')
+                    var longitud = arr.length
+                    this.var_objetivo_de_calidadMA.splice(0,15);
+                    if(arr.length>1){
+                        for (var i = 0; i < arr.length; i++){
+                                    this.var_objetivo_de_calidadMA[i] = arr[i]
+                        }
+                    }
+                    
+                       
+                }).catch(error => {
+
+                })
+                },
+                guardarFormularioImpacto(){
+                    axios.post("guardar_formulario_impacto_analista.php",{
+                        id_concentrado: this.id_concentrado_general,
+                        impacto_primario: this.impacto_primario,
+                        impacto_secundario: this.impacto_secundario,
+                        tipo_desperdicio: this.tipo_desperdicio,
+                        objetivos_de_calidadMA:this.var_objetivo_de_calidadMA
+
+                    }).then(response =>{
+                        alert(response.data)
+                        console.log(response.data)
+                        this.consultarFormularioImpacto()
+                    }).catch(error => {
+
+                    })
+
+                },
+                guardarActividad(tipo,id){
                
                 /*console.log(this.numero_actividad+this.actividad+this.var_responsable_plan+this.fecha_inicial_actividad+this.fecha_final_actividad)*/
                 axios.post("guardar_actividad_plan.php",{
                     tipo_nueva_actualizar:tipo,
                     id:id,
-                    numero_actividad: this.numero_actividad,
+                    id_concentrado:this.id_concentrado_general,
+                    numero_actividad: this.numero_nueva_actividad,
                     actividad: this.actividad,
                     folio: this.folio,
                     responsable_plan: this.responsable_plan,
@@ -493,6 +546,7 @@ if ($_SESSION["usuario"] ){
                             if(response.data=="si"){
                             this.id_actualizar='' // ocultando inputs de actualizar
                             this.nueva_actividad = false //guardando y ocultando fila nuevo
+                            this.actualizar=false //guardando y ocultando fila nuevo
                             this.consultarActividades()
                             }else if(response.data=="no create"){
                                 alert('No se guardaron los datos.')
@@ -511,21 +565,29 @@ if ($_SESSION["usuario"] ){
                 })
             },
             editarActividad(id){
-                this.nueva_actividad=false
-                if(id=="0"){// nueva sugerencia
-
-                }else if(id==""){
-                    this.id_actualizar = '' // ocultar edits
+                
+                if(id=="0"){// nueva actividad (accion del boton nuevo).
+                    this.nueva_actividad=true //activando campos de nueva actividad
+                    this.actualizar = false
+                    this.id_actualizar = '' // ocultado edits en editar
+                    this.actividad = ''
+                    this.responsable_plan = ''
+                    this.fecha_inicial_actividad = ''
+                    this.fecha_final_actividad = ''
+                    this.porcentaje =''
+                }else if(id==""){ //accion del boton cancelar.
+                    this.actualizar = false
+                    this.id_actualizar = '' // ocultar edits en editar
                 }else{
-                    
-                this.actualizar = true
-                var posicion=id
-                this.id_actualizar = id
-                this.actividad = this.concentrado_actividades[posicion-1].actividad
-                this.responsable_plan = this.concentrado_actividades[posicion-1].responsable
-                this.fecha_inicial_actividad = this.concentrado_actividades[posicion-1].fecha_inicial
-                this.fecha_final_actividad = this.concentrado_actividades[posicion-1].fecha_final
-                this.porcentaje = this.concentrado_actividades[posicion-1].porcentaje
+                    this.nueva_actividad=false    
+                    this.actualizar = true
+                    var posicion=id
+                    this.id_actualizar = id
+                    this.actividad = this.concentrado_actividades[posicion-1].actividad
+                    this.responsable_plan = this.concentrado_actividades[posicion-1].responsable
+                    this.fecha_inicial_actividad = this.concentrado_actividades[posicion-1].fecha_inicial
+                    this.fecha_final_actividad = this.concentrado_actividades[posicion-1].fecha_final
+                    this.porcentaje = this.concentrado_actividades[posicion-1].porcentaje
                 }
                
             },
@@ -533,7 +595,7 @@ if ($_SESSION["usuario"] ){
                     axios.post("consultando_actividades.php",{
                 }).then(response =>{
                     this.concentrado_actividades = response.data
-                    this.numero_actividad = this.concentrado_actividades.length
+                    this.numero_actividad = this.concentrado_actividades.length 
                     this.numero_nueva_actividad = this.numero_actividad + 1
                 }).catch(error => {
                     console.log(error)
