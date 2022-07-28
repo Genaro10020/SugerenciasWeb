@@ -23,7 +23,7 @@ $id_concentrado=$variables['id_concentrado'];
 include "conexionGhoner.php";
 
         if($tipo=="nuevo"){
-                $consulta = "INSERT INTO plan_trabajo_sugerencias (id_concentrado,num_actividad,folio,actividad,responsable,fecha_inicial,fecha_final,porcentaje,check_mejora_continua)  VALUES ('$id_concentrado','$numero_actividad','$folio','$actividad','$responsable_plan','$fecha_inicial','$fecha_final','0','PENDIENTE')";
+                $consulta = "INSERT INTO plan_trabajo_sugerencias (id_concentrado,num_actividad,folio,actividad,responsable,fecha_inicial,fecha_final,porcentaje,check_mejora_continua)  VALUES ('$id_concentrado','$numero_actividad','$folio','$actividad','$responsable_plan','$fecha_inicial','$fecha_final','0','')";
                 $query = mysqli_query( $conexion, $consulta);
                 if($query==true){
                         $resultado="si";

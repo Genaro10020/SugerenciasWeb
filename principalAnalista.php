@@ -116,8 +116,8 @@ if ($_SESSION["usuario"] ){
                                                         <td>{{concentrado.fecha_de_inicio}}</td>
                                                         <td>{{concentrado.fecha_limite}}</td>
                                                         <td class="text-center">
-                                                            <button v-if="concentrado.status_factibilidad=='Pendiente'" type="button" class="btn btn-warning" style=" font-size: 1em" data-bs-toggle="modal" data-bs-target="#modal" @click="datos_modal_factibilidad('factibilidad',concentrado.id,concentrado.folio)"><i class="bi bi-eye"></i> {{concentrado.status}} </button>
-                                                            <button v-else="concentrado.status_factibilidad=='Vencida'" type="button" class="btn btn-danger" style=" font-size: 1em" data-bs-toggle="modal" data-bs-target="#modal" @click="datos_modal_factibilidad('factibilidad',concentrado.id,concentrado.folio)"><i class="bi bi-eye"></i> {{concentrado.status}} </button>
+                                                            <button v-if="concentrado.status_factibilidad=='Pendiente'" type="button" class="btn btn-warning" style=" font-size: 1em" data-bs-toggle="modal" data-bs-target="#modal" @click="datos_modal_factibilidad('factibilidad',concentrado.id,concentrado.folio,concentrado.respuesta_analista)"><i class="bi bi-eye"></i> {{concentrado.status}} </button>
+                                                            <button v-else="concentrado.status_factibilidad=='Vencida'" type="button" class="btn btn-danger" style=" font-size: 1em" data-bs-toggle="modal" data-bs-target="#modal" @click="datos_modal_factibilidad('factibilidad',concentrado.id,concentrado.folio,concentrado.respuesta_analista)"><i class="bi bi-eye"></i> {{concentrado.status}} </button>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -203,14 +203,14 @@ if ($_SESSION["usuario"] ){
                                                                                     <div class="col-12 col-lg-6 ">
                                                                                         Impacto Primerio:<br>
                                                                                         <select class="" v-model="impacto_primario">
-                                                                                                <option value="" disabled>Seleccione una opción..</option>
+                                                                                                <option value="" >Seleccione una opción..</option>
                                                                                                 <option  v-for=" lista in lista_impacto" :key="lista.id">{{lista.impacto}}</option>
                                                                                         </select>
                                                                                     </div>
                                                                                     <div class="col-12 col-lg-6">
                                                                                         Impacto Secundario:<br>
                                                                                         <select class="" v-model="impacto_secundario">
-                                                                                                <option value="" disabled>Seleccione una opción..</option>
+                                                                                                <option value="" >Seleccione una opción..</option>
                                                                                                 <option v-for=" lista in lista_impacto" :key="lista.id">{{lista.impacto}}</option>
                                                                                         </select>
                                                                                     </div>
@@ -219,7 +219,7 @@ if ($_SESSION["usuario"] ){
                                                                                         <div class="col-12 col-lg-6">
                                                                                         Tipo de desperdicio:<br>
                                                                                             <select class="" v-model="tipo_desperdicio">
-                                                                                                    <option value="" disabled>Seleccione una opción..</option>
+                                                                                                    <option value="" >Seleccione una opción..</option>
                                                                                                     <option  v-for=" lista in lista_tipo_desperdicio" :key="lista.id">{{lista.tipo_de_desperdicio}}</option>
                                                                                             </select>
                                                                                         </div>
@@ -323,13 +323,14 @@ if ($_SESSION["usuario"] ){
                                                                             </table>
                                                                         </div>
                                                                     </div><!--scroll-->
-                                                                    <div class="alert alert-success">Los datos insertado en la tabla se guardan automaticamente.</div>
+                                                                    <div class="col-12 text-center"> <button type="button" class="btn btn-success mb-2" style="font-size:0.9em" v-show="numero_actividad>0 && bandera_btn_finalizar=='mostrar'" @click="checkPlanActividades">Finalizar Plan</button></div>
+                                                                    <div class="alert alert-warning fw-bold"  v-show="bandera_btn_finalizar!='mostrar'">Su plan de trabajo esta siendo revisado por Mejora Continua.</div>
                                                                 </div> <!--Fin espacio de Plana de trabajo -->  
                                                     </div>
                                                     <div class="12 modal-footer " > 
                                                         <div class="col-12 text-center mt-5">
-                                                                <button type="button" class="btn btn-success btn-lg me-2 fst-italic" @click="factible = true,  no_factible = false">Factible</button> 
-                                                                <button type="button" class="btn btn-warning btn-lg fst-italic" @click="no_factible = true, factible = false">No factible</button> 
+                                                                <button type="button" class="btn btn-success btn-lg me-2 fst-italic" @click="factible = true,  no_factible = false, repuestaFactibleNoFactible('Factible')">Factible</button> 
+                                                                <button type="button" class="btn btn-warning btn-lg fst-italic" @click="no_factible = true, factible = false, repuestaFactibleNoFactible('No Factible')">No factible</button> 
                                                                 <button type="button" class="btn btn-secondary btn-sm ms-5"  data-bs-dismiss="modal" >Salir</button>
                                                         </div>              
                                                     </div>
@@ -385,7 +386,8 @@ if ($_SESSION["usuario"] ){
                 concentrado_actividades:[],
                 numero_actividad:0,
                 numero_nueva_actividad:0,
-                numero_orden_en_select:0
+                numero_orden_en_select:0,
+                bandera_btn_finalizar:''
             }
         },
         mounted(){
@@ -400,8 +402,8 @@ if ($_SESSION["usuario"] ){
             //Consulta desperdiciones
             this.consultando_lista_de_desperdicio(),
             this.consulta_lista_objetivos_calidad_ma(),
-            this.consulta_responsable_plan(),
-            this.consultarActividades()
+            this.consulta_responsable_plan()
+            
         },
         methods:{
             mostrar(dato){
@@ -413,7 +415,7 @@ if ($_SESSION["usuario"] ){
                 axios.post('consulta_concentrado_pendientes_factibilidad.php',{
                             }).then(response =>{
                                 this.concentrado_sugerencias_pendiente_factibilidad = response.data
-                                console.log(this.concentrado_sugerencias_pendiente_factibilidad)
+                                //console.log(this.concentrado_sugerencias_pendiente_factibilidad)
                             })
             },
             consultado_concentrado_pendiente_implementacion(){
@@ -437,13 +439,24 @@ if ($_SESSION["usuario"] ){
                     console.log(this.lista_impacto);
                 })
             },
-            datos_modal_factibilidad(tipo,index,folio){
+            datos_modal_factibilidad(tipo,index,folio,respuesta){
                 this.tipo_factibilida_o_implementacion=tipo
+                if(respuesta=="Factible"){
+                    this.factible=true
+                    this.no_factible=false
+                }else if(respuesta=="No Factible"){
+                    this.factible=false
+                    this.no_factible=true
+                }else{
+
+                }
                 this.folio=folio
                 this.id_concentrado_general=index
                 if(this.tipo_factibilida_o_implementacion=="factibilidad"){
                     this.buscarDocumentos_analista()
                     this.consultarFormularioImpacto()
+                    this.consultarActividades()
+                    
                 } else if (this.tipo_factibilida_o_implementacion=="implementacion"){
 
                 }else{
@@ -488,6 +501,22 @@ if ($_SESSION["usuario"] ){
                         console.log(error);
                     });
                 },
+                repuestaFactibleNoFactible(respuesta){
+                    axios.post("actualizar_respuesta_factible_o_nofactible.php",{
+                    id_concentrado:this.id_concentrado_general,
+                    respuesta: respuesta
+                    }).then(response =>{
+                        if(response.data == true){
+                            console.log("BIEN")
+                            this.consultado_concentrado_pendiente_factibilidad() /*es para refrescar el concentrado y el btn de En factibilidad, retome si es factible o no para mostra en la modal segun factible o no. 
+                                                                                cuando se vuelva a presionar se mantenga a la vista el plan de actividades o sinplement no se muestre.*/
+                        }else{
+                            alert("Algo salio mal.")
+                        }
+                    }).catch(error => {
+                        console.log(error)
+                    })
+                },
                 consultarFormularioImpacto(){
                 axios.post("consultar_formulario_impacto_analista.php",{
                     id_concentrado: this.id_concentrado_general,
@@ -495,15 +524,20 @@ if ($_SESSION["usuario"] ){
                         this.impacto_primario = response.data[0].impacto_primario
                         this.impacto_secundario = response.data[0].impacto_secundario
                         this.tipo_desperdicio = response.data[0].tipo_de_desperdicio
-
-                    var arr = response.data[0].objetivo_de_calidad_ma.split(',')
-                    var longitud = arr.length
-                    this.var_objetivo_de_calidadMA.splice(0,15);
-                    if(arr.length>1){
-                        for (var i = 0; i < arr.length; i++){
-                                    this.var_objetivo_de_calidadMA[i] = arr[i]
+                        var arr = response.data[0].objetivo_de_calidad_ma.split(',')
+                        var longitud = arr.length
+                        this.var_objetivo_de_calidadMA.splice(0,15);
+                        if(arr.length>1){
+                            for (var i = 0; i < arr.length; i++){
+                                        this.var_objetivo_de_calidadMA[i] = arr[i]
+                            }
+                        }else if(arr.length==1){
+                            if(arr!="" || arr!=""){
+                                this.var_objetivo_de_calidadMA[0] = arr[0]
+                            }
+                        }else{
+                            console.log("0 POSICIONES")
                         }
-                    }
                     
                        
                 }).catch(error => {
@@ -530,39 +564,43 @@ if ($_SESSION["usuario"] ){
                 guardarActividad(tipo,id){
                
                 /*console.log(this.numero_actividad+this.actividad+this.var_responsable_plan+this.fecha_inicial_actividad+this.fecha_final_actividad)*/
-                axios.post("guardar_actividad_plan.php",{
-                    tipo_nueva_actualizar:tipo,
-                    id:id,
-                    id_concentrado:this.id_concentrado_general,
-                    numero_actividad: this.numero_nueva_actividad,
-                    actividad: this.actividad,
-                    folio: this.folio,
-                    responsable_plan: this.responsable_plan,
-                    fecha_inicial_actividad: this.fecha_inicial_actividad,
-                    fecha_final_actividad: this.fecha_final_actividad,
-                    porcentaje:this.porcentaje
-                }).then(response =>{
-                        console.log(response.data)
-                            if(response.data=="si"){
-                            this.id_actualizar='' // ocultando inputs de actualizar
-                            this.nueva_actividad = false //guardando y ocultando fila nuevo
-                            this.actualizar=false //guardando y ocultando fila nuevo
-                            this.consultarActividades()
-                            }else if(response.data=="no create"){
-                                alert('No se guardaron los datos.')
-                            }else if(response.data=="no update"){
-                                alert('No se actualizaron los datos')
-                            }else if(response.data=="error create"){
-                                alert('Erro al crear.')
-                            }else if(response.data=="error update"){
-                                alert('Erro al actualizar.')
-                            }else{
+                if(this.actividad!='' && this.responsable_plan!='' && this.fecha_inicial_actividad!='' && this.fecha_final_actividad!=''){
+                        axios.post("guardar_actividad_plan.php",{
+                            tipo_nueva_actualizar:tipo,
+                            id:id,
+                            id_concentrado:this.id_concentrado_general,
+                            numero_actividad: this.numero_nueva_actividad,
+                            actividad: this.actividad,
+                            folio: this.folio,
+                            responsable_plan: this.responsable_plan,
+                            fecha_inicial_actividad: this.fecha_inicial_actividad,
+                            fecha_final_actividad: this.fecha_final_actividad,
+                            porcentaje:this.porcentaje
+                        }).then(response =>{
+                                console.log(response.data)
+                                    if(response.data=="si"){
+                                    this.id_actualizar='' // ocultando inputs de actualizar
+                                    this.nueva_actividad = false //guardando y ocultando fila nuevo
+                                    this.actualizar=false //guardando y ocultando fila nuevo
+                                    this.consultarActividades()
+                                    }else if(response.data=="no create"){
+                                        alert('No se guardaron los datos.')
+                                    }else if(response.data=="no update"){
+                                        alert('No se actualizaron los datos')
+                                    }else if(response.data=="error create"){
+                                        alert('Erro al crear.')
+                                    }else if(response.data=="error update"){
+                                        alert('Erro al actualizar.')
+                                    }else{
 
-                            }
-                       
-                }).catch(error =>{
-                    console.log(error)
-                })
+                                    }
+                            
+                        }).catch(error =>{
+                            console.log(error)
+                        })
+                }else{
+                    alert("Todos los campos son requeridos.")
+                }
             },
             editarActividad(id){
                 
@@ -597,6 +635,18 @@ if ($_SESSION["usuario"] ){
                     this.concentrado_actividades = response.data
                     this.numero_actividad = this.concentrado_actividades.length 
                     this.numero_nueva_actividad = this.numero_actividad + 1
+                    var contar=0;
+                    for(var i = 0; i < this.numero_actividad; i++){
+                        if(this.concentrado_actividades[i].check_mejora_continua == 'PENDIENTE'){
+                            contar++
+                        }
+                    }
+                    if(this.numero_actividad==contar){
+                        this.bandera_btn_finalizar = "no mostrar"
+                    }else{
+                        this.bandera_btn_finalizar = "mostrar"
+                    }
+                    //alert ("contar:"+contar+"numero_actividaddes:"+this.numero_actividad)
                 }).catch(error => {
                     console.log(error)
                 })
@@ -620,6 +670,25 @@ if ($_SESSION["usuario"] ){
               }).catch(error => {
                 console.log("ERROR EN GUARDAR NUEVO ORDEN :-)")
               })
+            },
+            checkPlanActividades(){
+ 
+               
+                    axios.post("actualizar_check_plan_trabajo.php",{
+                    id_concentrado:this.id_concentrado_general,
+                    check: 'PENDIENTE'
+                     }).then(response =>{
+                        if(response.data == true){
+                            alert("Su plan de trabajo sera revisado por Mejora Continua")
+                            this.bandera_btn_finalizar = "no mostrar"
+                        }else{
+                            alert("Algo salio mal.")
+                        }
+                    }).catch(error => {
+                        console.log(error)
+                    })
+                  
+
             }
         }   
     }

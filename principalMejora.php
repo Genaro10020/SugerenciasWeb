@@ -839,6 +839,12 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                         for (var i = 0; i < arr.length; i++){
                                     this.var_objetivo_de_calidadMA[i] = arr[i]
                         }
+                    }else if(arr.length==1){
+                        if(arr!="" || arr!=""){
+                            this.var_objetivo_de_calidadMA[0] = arr[0]
+                        }
+                    }else{
+                        console.log("0 POSICIONES")
                     }
                 }
             },
