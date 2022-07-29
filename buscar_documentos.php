@@ -8,9 +8,10 @@ $respuesta = [];
 $folio="";
 
 $folio=$variables['folio_carpeta_doc'];
+$cual_documento=$variables['cual_documento'];
 
 //ruta para buacar
-$ruta = "documentos/".$folio;
+$ruta = "documentos/".$folio."/".$cual_documento;
 
 if (is_dir($ruta)){
     // Abre un gestor de directorios para la ruta indicada
@@ -20,7 +21,12 @@ if (is_dir($ruta)){
     while (($archivo = readdir($gestor)) !== false)  {
         // Solo buscamos archivos sin entrar en subdirectorios
         if (is_file($ruta."/".$archivo)) {
-            $respuesta [] =  "http://localhost/sugerencias/".$ruta."/".$archivo;
+            if($cual_documento!="ppt"){
+                $respuesta [] =  "http://localhost/sugerencias/".$ruta."/".$archivo;
+            }else{
+                $respuesta [] =  $ruta."/".$archivo;
+            }
+           
         }            
     }
     // Cierra el gestor de directorios

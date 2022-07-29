@@ -309,7 +309,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                     <button type="button" class="btn btn-danger me-2" title="Cancelar" @click="mostrar_id('')" v-if="actualizar_sugerencia==index+1"><i class="bi bi-x-circle" ></i></button>
                                                     <button type="button" class="btn btn-primary" title="Guardar" @click="guardar_nueva_sugerencia_y_actualizar('actualizar',concentrado.id)" v-if="actualizar_sugerencia==index+1"><i class="bi bi-check-circle"></i></button>
                                                     <button type="button" class="btn btn-warning" title="Actualizar" @click="mostrar_id(index+1)" v-else><i class="bi bi-pen" ></i></button>
-                                                    <button type="button" class="btn btn-success  ms-2" title="Subir PDF" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_subir_ver_documentos('Subir',concentrado.folio)"><i class="bi bi-paperclip"></i></button>
+                                                    <button type="button" class="btn btn-success  ms-2" title="Subir Sugerencia" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_subir_ver_documentos('Subir',concentrado.folio,'sugerencia')"><i class="bi bi-paperclip"></i></button>
+                                                    <button type="button" class="btn btn-success  ms-2" title="Subir PPT" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_subir_ver_documentos('Subir',concentrado.folio,'ppt')"><i class="bi bi-paperclip"></i></button>
                                                 </td>
                                                 <th scope="row">{{index+1}}<br><!--{{concentrado.id}}--></th>
                                                 <td><label>0%</label></td>
@@ -420,7 +421,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                 <div class="modal-header">
-                                    <h6 class="modal-title" id="exampleModalLabel" >{{titulo_modal}}</h6>
+                                    <h6 class="modal-title" id="exampleModalLabel" >{{titulo_modal}} {{extensiones_valida}}</h6>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
@@ -482,12 +483,12 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                         </div>
 
                                         <div class="text-center" v-if="contenido_modal_agregar_eliminar=='Subir'">
-                                                <form @submit.prevent="uploadFile">
-                                                    <!---->
+                                                <form @submit.prevent="uploadFile()">
+                                                    <!--Subir Documento Sugerencia-->
                                                     <div class="row">
                                                         <div class="col-12">
                                                             <div class="custom-file my-5"> 
-                                                                <input type="file" id="input_file_subir"  ref="uploadfiles" multiple required/>
+                                                                <input type="file" id="input_file_subir"  ref="documentosugerencia" multiple required/>
                                                             </div>
                                                         </div>
                                                         <div class="col-12">
@@ -496,7 +497,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                     </div> 
                                                        
                                                         <!-- Mostrando los archivos nuevos cargados -->
-                                                        <div v-show="filenames.length>0" >
+                                                        <div v-show="filenames.length>0 && cual_documento=='sugerencia'" >
                                                         <hr>
                                                                 <div class="col-12" v-for= "(filename,index) in filenames">
                                                                     <div class="row">
@@ -511,7 +512,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                         </div>
                                                        
                                                         <!-- Mostrando los archivos cargados -->
-                                                        <div v-show="fileconsult.length>0" >
+                                                        <div v-show="fileconsult.length>0 && cual_documento=='sugerencia'" >
                                                         <hr>
                                                                 <div class="col-12" v-for= "(fileconsulta,index) in fileconsult">
                                                                     <div class="row">
@@ -525,6 +526,27 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                    <!-- <iframe src="https://vvnorth.com/Sugerencias/documentos/pdf.pdf" style="width:100%;height:500px;"></iframe>-->
                                                                 </div>
                                                         </div>
+
+                                                         <!-- Mostrando los archivos nuevos y cargados de PPT-->
+                                                         <div v-show="fileppt.length>0 && cual_documento=='ppt'" >
+                                                         <hr>
+                                                                <div class="col-12" v-for= "(fileppts,index) in fileppt">
+                                                                    <div class="row">
+                                                                        <span class="badge bg-secondary">Documento {{index+1}}</span><br>
+                                                                            <div class="col-12 col-md-12">
+                                                                                <button type="button" class="btn btn-danger" @click="eliminarDocumento(fileppts)" >Eliminar</button>
+                                                                            </div>
+                                                                            <div class="col-12 col-md-12 mt-5">
+                                                                            Descargar<br>
+                                                                                <a :href="fileppts" download="Presentacion.pptx">
+                                                                                    <img src="img/descargar_ppt.png" style="width:100px; height:100px;"></img>
+                                                                                </a>
+                                                                            </div>
+                                                                    </div>
+                                                                </div>
+                                                         </div>
+                                                        <hr>
+                                                    <!---->
                                                     <!---->
                                                 </form>
                                         </div>
@@ -635,6 +657,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 file: '',
                 filenames: [],
                 fileconsult: [],
+                fileppt: [],
                 actualizar_sugerencia:'',
                 concentrado_sugerencias:[],
                 var_cumplimiento:'0',
@@ -676,12 +699,14 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 var_impacto_real:'',
                 usuario:'<?php echo $_SESSION['usuario']; ?>',
                 titulo_modal:'',
-                mensaje_modal:'',   
+                mensaje_modal:'', 
+                extensiones_valida:'',  
                 contenido_modal_agregar_eliminar:'',
                 nueva_opcion:'',
                 tipo_agregar_eliminar:'',
                 correo_analista:'',
                 folio_carpeta_doc:'',
+                cual_documento:'',
                 /*Variables Configuracion*/
                 nuevo_usuario:'',
                 nuevo_password:'',
@@ -1007,7 +1032,16 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 }
                })
             },
-            modal_subir_ver_documentos(tipo,folio){
+            modal_subir_ver_documentos(tipo,folio,cual_documento){
+                
+                this.cual_documento = cual_documento
+                if(this.cual_documento == 'sugerencia'){
+                    this.extensiones_valida = '(.png, .jpeg, .jpg, .pdf)'
+                }else if(this.cual_documento == 'ppt'){
+                    this.extensiones_valida = '(.docx, .ppt, .pptx)'
+                }else{
+                    this.extensiones_valida = ''
+                }
                 this.folio_carpeta_doc = folio
                 this.titulo_modal="Subir/Ver Documentos." //creando titulo modal
                 this.contenido_modal_agregar_eliminar=tipo // contenido a mostrar
@@ -1015,24 +1049,39 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
             },
             uploadFile(){
                 let formData = new FormData();
-                var files = this.$refs.uploadfiles.files;
-                var totalfiles = this.$refs.uploadfiles.files.length;
+                var files = this.$refs.documentosugerencia.files;
+                var totalfiles = this.$refs.documentosugerencia.files.length;
                 for (var index = 0; index < totalfiles; index++) {
                  formData.append("files[]", files[index]);//arreglo de documentos
                 }
                 formData.append("folio", this.folio_carpeta_doc);
+                formData.append("cual_documento", this.cual_documento);
                 axios.post("subir_documentos.php", formData,
                     {
                     headers: {"Content-Type": "multipart/form-data"}
                     })
                     .then(response => {
-                    this.filenames = response.data;
-                    if(this.filenames.length>0){
-                        document.getElementById("input_file_subir").value=""
-                        alert(this.filenames.length + " archivo/s se han subido.")
-                    }else{
-                        alert("Intente nuevamente.")
-                    }
+                     if(this.cual_documento=="ppt"){
+                        this.fileppt = response.data;
+                        if(this.fileppt.length>0){
+                            document.getElementById("input_file_subir").value=""
+                            alert(this.fileppt.length + " archivo/s se han subido.")
+                        }else{
+                            alert("Verifique la extension del archivo o Intente nuevamente.")
+                        }
+
+                     }
+                     if(this.cual_documento=="sugerencia"){
+                        this.filenames = response.data;
+                        if(this.filenames.length>0){
+                            document.getElementById("input_file_subir").value=""
+                            alert(this.filenames.length + " archivo/s se han subido.")
+                        }else{
+                            alert("Verifique la extension del archivo o Intente nuevamente.")
+                        }
+
+                     }   
+                    
 
                     })
                     .catch(error => {
@@ -1042,18 +1091,24 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
             buscarDocumentos(){
                 this.filenames=[] //limpiado vista del documento subido en modal 
                 this.fileconsult=[]//limpiado vista del documento bajada en modal 
+                this.fileppt=[]//limpiado vista del documento bajada en modal 
                     axios.post("buscar_documentos.php",{
-                        folio_carpeta_doc:this.folio_carpeta_doc
+                        folio_carpeta_doc:this.folio_carpeta_doc,
+                        cual_documento:this.cual_documento
                     })
                     .then(response => {
-                    this.fileconsult = response.data;
-                    //console.log(response.data);
-                    if(this.fileconsult.length>0){
-                        console.log(this.fileconsult.length + "Archivos encontrados.")
-                    }else{
-                        /*alert("Sin Documentos agregados.")*/
-                    }
-
+                   
+                    if(this.cual_documento=="sugerencia")
+                            {
+                                this.fileconsult = response.data
+                                if(this.fileconsult.length>0){
+                                    console.log(this.fileconsult.length + "Archivos encontrados.")
+                                }else{
+                                    /*alert("Sin Documentos agregados.")*/
+                                }
+                            }else{
+                                this.fileppt = response.data
+                            }
                     })
                     .catch(error => {
                         console.log(error);

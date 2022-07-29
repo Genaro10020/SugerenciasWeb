@@ -6,12 +6,13 @@ $files_arr = array();
 if(isset($_FILES['files']['name'])){
 
 ///////////////////////////header("Content-Type: application/json");
-$folio=$_POST['folio'];    
+$folio=$_POST['folio']; 
+$cual_documento=$_POST['cual_documento'];    
 // Contar archivos totales
 $countfiles = count($_FILES['files']['name']);
 
 //ruta
-$path = "documentos/".$folio."/";
+$path = "documentos/".$folio."/".$cual_documento."/";
 //verificar si existe directorio de$path = "sample/path/newfolder";
 if (!file_exists($path)) {
     mkdir($path, 0777, true);
@@ -30,7 +31,12 @@ if (!file_exists($path)) {
                             $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
 
                             // Validar extensiones permitidas
-                            $valid_ext = array("png","jpeg","jpg","pdf","txt","doc","docx");
+                            if($cual_documento=="sugerencia"){
+                                $valid_ext = array("png","jpeg","jpg","pdf");//entension valida para 
+                            }else{
+                                $valid_ext = array("docx","ppt","pptx");
+                            }
+                           
 
                             // Revisar extension
                             if(in_array($ext, $valid_ext)){
