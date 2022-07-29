@@ -46,7 +46,5 @@ include "conexionGhoner.php";
         }else{
                 $resultado ="No existe esa opción, nada más nuevo y actualizar.";
         }
-
-    
 echo json_encode($resultado);
 ?>

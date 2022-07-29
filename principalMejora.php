@@ -1009,7 +1009,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
             },
             modal_subir_ver_documentos(tipo,folio){
                 this.folio_carpeta_doc = folio
-                this.titulo_modal="Suber/Ver Documentos." //creando titulo modal
+                this.titulo_modal="Subir/Ver Documentos." //creando titulo modal
                 this.contenido_modal_agregar_eliminar=tipo // contenido a mostrar
                 this.buscarDocumentos()
             },

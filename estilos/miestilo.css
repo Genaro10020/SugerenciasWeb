@@ -90,7 +90,20 @@
 
         .input-nom-sugerencia{ width: 250px;}
         .text-area{resize: inline; }
+        
   /*Fin concentrado sugerencias*/
+  /*model no factibilidad */
+  .text-area-causa-no-factibilidad{
+    background: rgb(255, 255, 255);
+            border: 1px solid;
+            border-color: rgb(137, 0, 0);
+            border-radius: 5px;
+            height: 250px;
+            width: 95%;
+            min-height: 100px;
+            min-width: 100px;
+  }
+  /*fin modal no factibilidad */
  }
  /* Medium devices (tablets, 576 and up)***************************************/
 @media (min-width: 576px) {

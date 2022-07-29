@@ -191,11 +191,11 @@ if ($_SESSION["usuario"] ){
                                                                         </div>
                                                                 </div><!--Fin Vista Documentos--->
                                                                       <!--Formualario-->
-                                                                <div class="col-12" v-show="factible==true">
-                                                                   
+                                                                      <div class="col-12" v-show="factible==true"><span class="badge text-dark fs-1"><p>FACTIBLE<p></span></div>
+                                                                      <div class="col-12" v-show="no_factible==true"><span class="badge text-dark fs-1"><p>NO FACTIBLE<p></span></div>
+                                                                <div class="col-12" v-show="factible==true"><!--ESPACIO FACTIBLE-->
                                                                     <hr>
-                                                                     
-                                                                            <div class="text-center mt-3 ">
+                                                                            <div class=" mt-3 ">
                                                                                 <span class="badge bg-light text-dark">FORMULARIO IMPACTO</span>
                                                                             </div>
                                                                         <div class="col-12" style=" background-color:#e9f3e7">
@@ -242,7 +242,7 @@ if ($_SESSION["usuario"] ){
                                                                 <!--fin formulario-->
                                                                 <div class="col-12" v-show="factible==true" ><!--espacio Plan de trabajo-->
                                                                         <hr>
-                                                                        <div class="text-center">
+                                                                        <div class="">
                                                                             <span class="badge bg-light text-dark">PLAN DE TRABAJO</span>
                                                                         </div>
                                                                         <div class="col-12 text-center inline-block" >
@@ -268,7 +268,7 @@ if ($_SESSION["usuario"] ){
                                                                                     <tr class="align-middle bg-info" v-show="nueva_actividad"><!--Nueva Actividad Fila-->
                                                                                             <td class="sticky"> 
                                                                                                 <button type="button" class="btn btn-danger  me-2" title="Cancelar" @click="nueva_actividad=false"><i class="bi bi-x-circle" ></i></button>
-                                                                                                <button type="button" class="btn btn-primary" title="Guardar" @click="guardarActividad('nuevo','')"><i class="bi bi-check-circle"></i></button>
+                                                                                                <button type="button" class="btn btn-primary" title="Guardar" @click="guardarEditarActividad('nuevo','')"><i class="bi bi-check-circle"></i></button>
                                                                                             </td> 
                                                                                         <th scope="row">
                                                                                             <label>{{numero_nueva_actividad}}</label></th>
@@ -289,9 +289,10 @@ if ($_SESSION["usuario"] ){
                                                                                          <!--Consulta actividades-->
                                                                                     <tr class="align-middle" v-for="(actividades,index) in concentrado_actividades">
                                                                                         <td> 
-                                                                                            <button type="button" class="btn btn-danger me-2" title="Cancelar" @click="editarActividad('')" v-if="id_actualizar==index+1"><i class="bi bi-x-circle" ></i></button>
+                                                                                            <button type="button" class="btn btn-danger me-2"  @click="eliminarActividad(actividades.id)"><i class="bi bi-trash3-fill"></i></button>
+                                                                                            <button type="button" class="btn btn-danger " title="Cancelar" @click="editarActividad('')" v-if="id_actualizar==index+1"><i class="bi bi-x-circle" ></i></button>
                                                                                             <button type="button" class="btn btn-warning " title="Editar" @click="editarActividad(index+1)"><i class="bi bi-pen" ></i></button>
-                                                                                            <button type="button" class="btn btn-primary ms-2" title="Guardar" @click="guardarActividad('actualizar',actividades.id)" v-if="id_actualizar==index+1"><i class="bi bi-check-circle"></i></button>
+                                                                                            <button type="button" class="btn btn-primary ms-2" title="Guardar" @click="guardarEditarActividad('actualizar',actividades.id)" v-if="id_actualizar==index+1"><i class="bi bi-check-circle"></i></button>
                                                                                         </td> 
                                                                                             <th scope="row">
                                                                                             <label v-show="actualizar==true">{{numero_orden_en_select=index+1}}</label>
@@ -316,7 +317,7 @@ if ($_SESSION["usuario"] ){
                                                                                                 <option value="0">0</option>
                                                                                                 <option :value="numeros*5" v-for="numeros in 20">{{numeros*5}}</option>
                                                                                             </select>
-                                                                                            <label v-else>{{actividades.porcentaje}}<label>
+                                                                                            <label v-else>{{actividades.porcentaje}}%<label>
                                                                                         </td>
                                                                                     </tr><!--Fin consuta actividades-->    
                                                                                 </tbody>
@@ -324,11 +325,44 @@ if ($_SESSION["usuario"] ){
                                                                         </div>
                                                                     </div><!--scroll-->
                                                                     <div class="col-12 text-center"> <button type="button" class="btn btn-success mb-2" style="font-size:0.9em" v-show="numero_actividad>0 && bandera_btn_finalizar=='mostrar'" @click="checkPlanActividades">Finalizar Plan</button></div>
-                                                                    <div class="alert alert-warning fw-bold"  v-show="bandera_btn_finalizar!='mostrar'">Su plan de trabajo esta siendo revisado por Mejora Continua.</div>
+                                                                    <div class="alert alert-warning fw-bold"  v-show="numero_actividad>0 && bandera_btn_finalizar!='mostrar'">Su plan de trabajo esta siendo revisado por Mejora Continua.</div>
+                                                                    <hr>
+                                                                                    
+                                                                                    <div class="text-center">
+                                                                                        <span class="badge bg-light text-dark">FECHA COMPROMISO</span><br>
+                                                                                             <input class="mb-3 rounded-3 border border-1 border-success" type="date" v-model="fecha_compromiso" @change="guardarFechaCompromiso"></input>
+                                                                                    </div>
+                                                                    
                                                                 </div> <!--Fin espacio de Plana de trabajo -->  
-                                                    </div>
+                                                    </div><!--FIN ESPACIO FACTIBLE-->
+                                                    <hr>
+                                                    <div v-show="no_factible==true"><!--ESPACIO NO FACTIBLE-->
+                                                                <div class="text-center">
+                                                                    <span class="badge bg-light text-dark">TIPO DE CIERRE</span><br>
+                                                                            
+                                                                                        <select class="" v-model="tipo_de_cierre">
+                                                                                                <option value="" >Seleccione una opción..</option>
+                                                                                                <option  v-for=" lista in lista_impacto" :key="lista.id">{{lista.impacto}}</option>
+                                                                                        </select>
+                                                                                  
+                                                                </div>
+                                                                <hr>
+                                                                <div class=" mt-3 ">
+                                                                                <span class="badge bg-light text-dark mb-1">CAUSA DE NO FACTIBILIDAD</span>
+                                                                                <div class="col-12 text-center bg-warning">
+                                                                                    <textarea class="text-area-causa-no-factibilidad my-2" type="text" v-model="causa_no_factibilidad" style=" font-size:0.9em"></textarea>
+                                                                                </div>
+                                                                </div>
+                                                                <hr>
+                                                                <div class=" mt-3 ">
+                                                                                <span class="badge bg-light text-dark mb-1">ADJUNTAR EVIDENCIA DE NO FACTIBILIDAD (OPCIONAL)</span>
+                                                                                <div class="col-12">
+                                                                                        <button type="button" class="btn btn-primary m-2">Subir evidencia</button>
+                                                                                </div>
+                                                                </div>
+                                                    </div>   <!--FIN ESPACIO NO FACTIBLE-->
                                                     <div class="12 modal-footer " > 
-                                                        <div class="col-12 text-center mt-5">
+                                                        <div class="col-12 text-center">
                                                                 <button type="button" class="btn btn-success btn-lg me-2 fst-italic" @click="factible = true,  no_factible = false, repuestaFactibleNoFactible('Factible')">Factible</button> 
                                                                 <button type="button" class="btn btn-warning btn-lg fst-italic" @click="no_factible = true, factible = false, repuestaFactibleNoFactible('No Factible')">No factible</button> 
                                                                 <button type="button" class="btn btn-secondary btn-sm ms-5"  data-bs-dismiss="modal" >Salir</button>
@@ -387,7 +421,12 @@ if ($_SESSION["usuario"] ){
                 numero_actividad:0,
                 numero_nueva_actividad:0,
                 numero_orden_en_select:0,
-                bandera_btn_finalizar:''
+                fecha_compromiso:'',
+                bandera_btn_finalizar:'',
+                /*variables en modal no factible*/
+                tipo_de_cierre:'',
+                causa_no_factibilidad:''
+
             }
         },
         mounted(){
@@ -561,11 +600,12 @@ if ($_SESSION["usuario"] ){
                     })
 
                 },
-                guardarActividad(tipo,id){
+                guardarEditarActividad(tipo,id){
                
                 /*console.log(this.numero_actividad+this.actividad+this.var_responsable_plan+this.fecha_inicial_actividad+this.fecha_final_actividad)*/
                 if(this.actividad!='' && this.responsable_plan!='' && this.fecha_inicial_actividad!='' && this.fecha_final_actividad!=''){
-                        axios.post("guardar_actividad_plan.php",{
+
+                        axios.post("guardar_update_actividad_plan.php",{
                             tipo_nueva_actualizar:tipo,
                             id:id,
                             id_concentrado:this.id_concentrado_general,
@@ -587,11 +627,15 @@ if ($_SESSION["usuario"] ){
                                         alert('No se guardaron los datos.')
                                     }else if(response.data=="no update"){
                                         alert('No se actualizaron los datos')
+                                    }else if(response.data=="no delete"){
+                                        alert('No se elimino la actividad')
                                     }else if(response.data=="error create"){
                                         alert('Erro al crear.')
                                     }else if(response.data=="error update"){
                                         alert('Erro al actualizar.')
-                                    }else{
+                                    }else if(response.data=="error delete"){
+                                        alert('Erro al eliminar.')
+                                    }else {
 
                                     }
                             
@@ -646,6 +690,7 @@ if ($_SESSION["usuario"] ){
                     }else{
                         this.bandera_btn_finalizar = "mostrar"
                     }
+
                     //alert ("contar:"+contar+"numero_actividaddes:"+this.numero_actividad)
                 }).catch(error => {
                     console.log(error)
@@ -671,9 +716,28 @@ if ($_SESSION["usuario"] ){
                 console.log("ERROR EN GUARDAR NUEVO ORDEN :-)")
               })
             },
+            eliminarActividad(id){
+                axios.post("eliminar_actividad_plan.php",{
+                            id:id,
+                        }).then(response =>{
+                                console.log(response.data)
+                                    if(response.data=="si"){
+                                    this.id_actualizar='' // ocultando inputs de actualizar
+                                    this.nueva_actividad = false //guardando y ocultando fila nuevo
+                                    this.actualizar=false //guardando y ocultando fila nuevo
+                                    this.consultarActividades()
+                                    }else if(response.data=="error delete"){
+                                        alert('Erro al eliminar.')
+                                    }else {
+                                        alert('Erro en eliminar actividad')
+                                    }
+                            
+                        }).catch(error =>{
+                            console.log(error)
+                        })
+
+            },
             checkPlanActividades(){
- 
-               
                     axios.post("actualizar_check_plan_trabajo.php",{
                     id_concentrado:this.id_concentrado_general,
                     check: 'PENDIENTE'
@@ -687,9 +751,21 @@ if ($_SESSION["usuario"] ){
                     }).catch(error => {
                         console.log(error)
                     })
-                  
-
-            }
+            },
+            guardarFechaCompromiso(){
+                axios.post("guardar_fecha_compromiso.php",{
+                    fecha_compromiso:this.fecha_compromiso,
+                    id_concentrado:this.id_concentrado_general
+                     }).then(response =>{
+                        if(response.data == true){
+                            alert("Fecha compromiso guardada.")
+                        }else{
+                            alert("Algo salio mal.")
+                        }
+                    }).catch(error => {
+                        console.log(error)
+                    })
+            },
         }   
     }
     var mountedApp = Vue.createApp(vue3).mount('#app');
