@@ -116,8 +116,10 @@ if ($_SESSION["usuario"] ){
                                                         <td>{{concentrado.fecha_de_inicio}}</td>
                                                         <td>{{concentrado.fecha_limite}}</td>
                                                         <td class="text-center">
-                                                            <button v-if="concentrado.status_factibilidad=='Pendiente'" type="button" class="btn btn-warning" style=" font-size: 1em" data-bs-toggle="modal" data-bs-target="#modal" @click="datos_modal_factibilidad('factibilidad',concentrado.id,concentrado.folio,concentrado.respuesta_analista)"><i class="bi bi-eye"></i> {{concentrado.status}} </button>
-                                                            <button v-else="concentrado.status_factibilidad=='Vencida'" type="button" class="btn btn-danger" style=" font-size: 1em" data-bs-toggle="modal" data-bs-target="#modal" @click="datos_modal_factibilidad('factibilidad',concentrado.id,concentrado.folio,concentrado.respuesta_analista)"><i class="bi bi-eye"></i> {{concentrado.status}} </button>
+                                                            <button v-if="concentrado.status_factibilidad=='Pendiente'" type="button" class="btn btn-warning" style=" font-size: 1em" data-bs-toggle="modal" data-bs-target="#modal" 
+                                                            @click="datos_modal_factibilidad('factibilidad',concentrado.id,concentrado.folio,concentrado.respuesta_analista)"><i class="bi bi-eye"></i> {{concentrado.status}} </button>
+                                                            <button v-else="concentrado.status_factibilidad=='Vencida'" type="button" class="btn btn-danger" style=" font-size: 1em" data-bs-toggle="modal" data-bs-target="#modal" 
+                                                            @click="datos_modal_factibilidad('factibilidad',concentrado.id,concentrado.folio,concentrado.respuesta_analista)"><i class="bi bi-eye"></i> {{concentrado.status}} </button>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -185,8 +187,9 @@ if ($_SESSION["usuario"] ){
                                                                             <div class="col-12 text-center">
                                                                                 <span class="badge bg-secondary ">Documento {{index+1}}</span><br>
                                                                             </div>
-                                                                            <iframe :src="documentos[index]" style="width:100%;height:500px;"></iframe>
-                                                                            
+                                                                            <div>
+                                                                                <iframe :src="documentos[index]" style="width:100%;height:500px;"></iframe>
+                                                                            </div>
                                                                         <!-- <iframe src="https://vvnorth.com/Sugerencias/documentos/pdf.pdf" style="width:100%;height:500px;"></iframe>-->
                                                                         </div>
                                                                 </div><!--Fin Vista Documentos--->
@@ -337,22 +340,25 @@ if ($_SESSION["usuario"] ){
                                                     </div><!--FIN ESPACIO FACTIBLE-->
                                                     <hr>
                                                     <div v-show="no_factible==true"><!--ESPACIO NO FACTIBLE-->
+                                                    <div class=""></div>
+                                                        <form  @submit.prevent="guardarNofactibilidad()">
                                                                 <div class="text-center">
                                                                     <span class="badge bg-light text-dark">TIPO DE CIERRE</span><br>
                                                                             
-                                                                                        <select class="" v-model="tipo_de_cierre">
-                                                                                                <option value="" >Seleccione una opción..</option>
-                                                                                                <option  v-for=" lista in lista_impacto" :key="lista.id">{{lista.impacto}}</option>
+                                                                                        <select class="" v-model="var_tipo_de_cierre" required>
+                                                                                                <option value="" disabled>Seleccione una opción..</option>
+                                                                                                <option  v-for=" lista in tipo_de_cierre" :key="lista.id" >{{lista}}</option>
                                                                                         </select>
                                                                                   
                                                                 </div>
-                                                                <hr>
                                                                 <div class=" mt-3 ">
                                                                                 <span class="badge bg-light text-dark mb-1">CAUSA DE NO FACTIBILIDAD</span>
                                                                                 <div class="col-12 text-center bg-warning">
-                                                                                    <textarea class="text-area-causa-no-factibilidad my-2" type="text" v-model="causa_no_factibilidad" style=" font-size:0.9em"></textarea>
+                                                                                    <textarea class="text-area-causa-no-factibilidad my-2" type="text" v-model="causa_no_factibilidad" style=" font-size:0.9em" required></textarea>
                                                                                 </div>
                                                                 </div>
+                                                                <div class="col-12 text-center"> <button type="submit" class="btn btn-success mb-2" style="font-size:0.9em" data-bs-dismiss="modal">Guardar</button></div>
+                                                            <form>
                                                                 <hr>
                                                                 <div class=" mt-3 ">
                                                                                 <span class="badge bg-light text-dark mb-1">ADJUNTAR EVIDENCIA DE NO FACTIBILIDAD (OPCIONAL)</span>
@@ -360,6 +366,8 @@ if ($_SESSION["usuario"] ){
                                                                                         <button type="button" class="btn btn-primary m-2">Subir evidencia</button>
                                                                                 </div>
                                                                 </div>
+                                                               
+                                                    
                                                     </div>   <!--FIN ESPACIO NO FACTIBLE-->
                                                     <div class="12 modal-footer " > 
                                                         <div class="col-12 text-center">
@@ -423,8 +431,9 @@ if ($_SESSION["usuario"] ){
                 numero_orden_en_select:0,
                 fecha_compromiso:'',
                 bandera_btn_finalizar:'',
+                tipo_de_cierre:['Cerrada/Fast Response','Cerrada/No Factible'],
                 /*variables en modal no factible*/
-                tipo_de_cierre:'',
+                var_tipo_de_cierre:'',
                 causa_no_factibilidad:''
 
             }
@@ -454,7 +463,7 @@ if ($_SESSION["usuario"] ){
                 axios.post('consulta_concentrado_pendientes_factibilidad.php',{
                             }).then(response =>{
                                 this.concentrado_sugerencias_pendiente_factibilidad = response.data
-                                //console.log(this.concentrado_sugerencias_pendiente_factibilidad)
+                                console.log(this.concentrado_sugerencias_pendiente_factibilidad)
                             })
             },
             consultado_concentrado_pendiente_implementacion(){
@@ -524,11 +533,12 @@ if ($_SESSION["usuario"] ){
             buscarDocumentos_analista(){
                 this.documentos=[] //limpiado vista del documento subido en modal 
                     axios.post("buscar_documentos.php",{
-                        folio_carpeta_doc:this.folio
+                        folio_carpeta_doc:this.folio,
+                        cual_documento: 'sugerencia'
                     })
                     .then(response => {
                     this.documentos = response.data;
-                    //console.log(response.data);
+                    console.log(response.data);
                     if(this.documentos.length>0){
                         /*console.log(this.documentos.length + "Archivos encontrados.")*/
                     }else{
@@ -717,6 +727,7 @@ if ($_SESSION["usuario"] ){
               })
             },
             eliminarActividad(id){
+                if(!confirm("¿Desea eliminar la actividad?")) return;
                 axios.post("eliminar_actividad_plan.php",{
                             id:id,
                         }).then(response =>{
@@ -766,6 +777,18 @@ if ($_SESSION["usuario"] ){
                         console.log(error)
                     })
             },
+            guardarNofactibilidad(){
+                axios.post("guardar_actualizar_causa_no_factibilidad.php",{
+                    var_tipo_de_cierre: this.var_tipo_de_cierre,
+                    causa_no_factibilidad: this.causa_no_factibilidad, 
+                    id_concentrado: this.id_concentrado_general
+                }).then(response =>{
+                    console.log(response.data)
+
+                }).catch(error => {
+
+                })
+            }
         }   
     }
     var mountedApp = Vue.createApp(vue3).mount('#app');
