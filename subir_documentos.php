@@ -6,12 +6,17 @@ $files_arr = array();
 if(isset($_FILES['files']['name'])){
 
 ///////////////////////////header("Content-Type: application/json");
-$id_concentrado=$_POST['id_concentrado']; 
-$folio=$_POST['folio']; 
-$cual_documento=$_POST['cual_documento'];    
 $cantidad=0;
 $suma=0;
-$cantidad=$_POST['cantidad'];   
+    if(isset($_POST['id_concentrado'])){
+        $id_concentrado=$_POST['id_concentrado']; 
+    }
+    if(isset($_POST['cantidad'])){
+        $cantidad=$_POST['cantidad'];     
+    }
+$cual_documento=$_POST['cual_documento']; 
+$folio=$_POST['folio']; 
+
 // Contar archivos totales
 $countfiles = count($_FILES['files']['name']);
 $suma=$countfiles + $cantidad;
@@ -37,8 +42,12 @@ if (!file_exists($path)) {
                             // Validar extensiones permitidas
                             if($cual_documento=="sugerencia"){
                                 $valid_ext = array("png","jpeg","jpg","pdf");//entension valida para 
-                            }else{
+                            }
+                            if($cual_documento=="ppt"){
                                 $valid_ext = array("docx","ppt","pptx");
+                            }
+                            if($cual_documento=="nofactibleopcional"){
+                                $valid_ext = array("png","jpeg","jpg","pdf","doc","docx","ppt","pptx");
                             }
                            
 
@@ -55,7 +64,7 @@ if (!file_exists($path)) {
                                 $actualizar = "UPDATE concentrado_sugerencias SET cantidadPPT='$suma' WHERE id = '$id_concentrado'";
                                 $query = mysqli_query($conexion,$actualizar);
                             }
-
+                           
                             
                             // Ruta de archivo
                             //$newfilename = time()."_".$filename;

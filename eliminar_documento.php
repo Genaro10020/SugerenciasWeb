@@ -4,9 +4,14 @@ $respuesta ="";
 $variables = json_decode(file_get_contents('php://input'), true);
 include "conexionGhoner.php";  
 $ruta = $variables['ruta_eliminar']; //recibo la ruta completa
-$id_concentrado = $variables['id_concentrado']; 
 $cual_documento = $variables['cual_documento']; 
-$cantidad = $variables['cantidad'];
+if(isset($variables['id_concentrado'])){
+    $id_concentrado = $variables['id_concentrado']; 
+}
+if(isset($variables['cantidad'])){
+    $cantidad = $variables['cantidad'];
+}
+
 $ruta_eliminar_doc=str_replace("http://localhost/sugerencias/","",$ruta);//elimino datos de ruta que no son necesarias
 if(unlink($ruta_eliminar_doc)){
     if($cual_documento=="sugerencia"){

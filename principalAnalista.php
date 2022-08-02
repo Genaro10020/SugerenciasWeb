@@ -31,7 +31,7 @@ if ($_SESSION["usuario"] ){
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <title>Sugerencias</title>
 </head>
-<body>
+<body id="body">
 <style>
                 .titulo{
                         font-family: 'Luckiest Guy', cursive;
@@ -292,10 +292,10 @@ if ($_SESSION["usuario"] ){
                                                                                          <!--Consulta actividades-->
                                                                                     <tr class="align-middle" v-for="(actividades,index) in concentrado_actividades">
                                                                                         <td> 
-                                                                                            <button type="button" class="btn btn-danger me-2"  @click="eliminarActividad(actividades.id)"><i class="bi bi-trash3-fill"></i></button>
-                                                                                            <button type="button" class="btn btn-danger " title="Cancelar" @click="editarActividad('')" v-if="id_actualizar==index+1"><i class="bi bi-x-circle" ></i></button>
-                                                                                            <button type="button" class="btn btn-warning " title="Editar" @click="editarActividad(index+1)"><i class="bi bi-pen" ></i></button>
-                                                                                            <button type="button" class="btn btn-primary ms-2" title="Guardar" @click="guardarEditarActividad('actualizar',actividades.id)" v-if="id_actualizar==index+1"><i class="bi bi-check-circle"></i></button>
+                                                                                            <button type="button" class="btn btn-danger me-2" title="Eliminar" @click="eliminarActividad(actividades.id)"><i class="bi bi-trash3-fill"></i></button>
+                                                                                            <button type="button" class="btn btn-danger me-2" title="Cancelar" @click="editarActividad('')" v-if="id_actualizar==index+1"><i class="bi bi-x-circle" ></i></button>
+                                                                                            <button type="button" class="btn btn-warning me-2" title="Editar" @click="editarActividad(index+1)"><i class="bi bi-pen" ></i></button>
+                                                                                            <button type="button" class="btn btn-primary " title="Guardar" @click="guardarEditarActividad('actualizar',actividades.id)" v-if="id_actualizar==index+1"><i class="bi bi-check-circle"></i></button>
                                                                                         </td> 
                                                                                             <th scope="row">
                                                                                             <label v-show="actualizar==true">{{numero_orden_en_select=index+1}}</label>
@@ -340,8 +340,30 @@ if ($_SESSION["usuario"] ){
                                                     </div><!--FIN ESPACIO FACTIBLE-->
                                                     <hr>
                                                     <div v-show="no_factible==true"><!--ESPACIO NO FACTIBLE-->
-                                                    <div class=""></div>
+                                                    <span class="badge bg-light text-dark mb-1">ADJUNTAR EVIDENCIA DE NO FACTIBILIDAD (OPCIONAL)</span>
+                                                        <form @submit.prevent="uploadFile()">
+                                                                        <div class="row">
+                                                                            <div class="col-12">
+                                                                                <div class="custom-file my-2 ms-2"> 
+                                                                                    <input type="file" id="input_file_subir"  ref="docopcionalnofactibilidad" multiple/><br>
+                                                                                    <label style=" font-size:.7em;">(.png, .jpeg, .jpg, .pdf, .doc, .docx, .ppt, .pptx)</label>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-12 ms-2">
+                                                                                <button  type="submit" name="upload" class="btn btn-success" style=" font-size:.7em">Subir Archivos</button>
+                                                                            </div>
+                                                                        </div> 
+                                                        </form>
+
                                                         <form  @submit.prevent="guardarNofactibilidad()">
+                                                                
+                                                                <div class=" mt-3 ">
+                                                                    
+                                                                                <span class="badge bg-light text-dark mb-1">CAUSA DE NO FACTIBILIDAD</span>
+                                                                                <div class="col-12 text-center bg-warning">
+                                                                                    <textarea class="text-area-causa-no-factibilidad my-2" type="text" v-model="causa_no_factibilidad" style=" font-size:0.9em" required></textarea>
+                                                                                </div>
+                                                                </div>
                                                                 <div class="text-center">
                                                                     <span class="badge bg-light text-dark">TIPO DE CIERRE</span><br>
                                                                             
@@ -351,20 +373,31 @@ if ($_SESSION["usuario"] ){
                                                                                         </select>
                                                                                   
                                                                 </div>
-                                                                <div class=" mt-3 ">
-                                                                                <span class="badge bg-light text-dark mb-1">CAUSA DE NO FACTIBILIDAD</span>
-                                                                                <div class="col-12 text-center bg-warning">
-                                                                                    <textarea class="text-area-causa-no-factibilidad my-2" type="text" v-model="causa_no_factibilidad" style=" font-size:0.9em" required></textarea>
-                                                                                </div>
-                                                                </div>
-                                                                <div class="col-12 text-center"> <button type="submit" class="btn btn-success mb-2" style="font-size:0.9em" data-bs-dismiss="modal">Guardar</button></div>
-                                                            <form>
+                                                                <!--<div class="alert alert-warning ">Una vez presionado "GUARDAR", esta sugerencia ya no aparecerá en la tabla de PENDIENTES DE FACTIBILIDAD.</div>-->
+                                                                <div class="col-12 text-center"> <button type="submit" class="btn btn-success mt-4" style="font-size:0.9em" >Guardar</button></div>
+                                                        </form>
                                                                 <hr>
                                                                 <div class=" mt-3 ">
-                                                                                <span class="badge bg-light text-dark mb-1">ADJUNTAR EVIDENCIA DE NO FACTIBILIDAD (OPCIONAL)</span>
-                                                                                <div class="col-12">
-                                                                                        <button type="button" class="btn btn-primary m-2">Subir evidencia</button>
-                                                                                </div>
+                                                                <!--Adjuntar documento opcional-->
+                                                                    
+                                                                    <!-- Mostrando los archivos cargados -->
+                                                                    <div v-show="documento_opcional.length>0 " >
+                                                                    <hr>
+                                                                            <div class="col-12 text-center mb-5" v-for= "(ruta_documento,index) in documento_opcional">
+                                                                                    <div class="col-12 text-center">
+                                                                                    Descargar {{nombre_de_descarga=ruta_documento.slice((ruta_documento.lastIndexOf('/') - 1) + 2)}}<br><!--obtengo el nombre del documento con extension-->
+                                                                                        <a :href="ruta_documento" :download="nombre_de_descarga">
+                                                                                            <img src="img/descargar_archivo.png" style="width:100px; height:100px;"></img>
+                                                                                        </a>
+                                                                                    </div>
+                                                                                    <div class="col-12 ">
+                                                                                        <button type="button" class="btn btn-danger" @click="eliminarDocumento(ruta_documento)" >Eliminar</button>
+                                                                                    </div>
+                                                                                    <!--<iframe  :src="documento_opcional[index]" style="width:100%;height:500px;"></iframe>-->
+                                                                                        
+                                                                                    <!-- <iframe src="https://vvnorth.com/Sugerencias/documentos/pdf.pdf" style="width:100%;height:500px;"></iframe>-->
+                                                                            </div>
+                                                                    </div>
                                                                 </div>
                                                                
                                                     
@@ -434,7 +467,9 @@ if ($_SESSION["usuario"] ){
                 tipo_de_cierre:['Cerrada/Fast Response','Cerrada/No Factible'],
                 /*variables en modal no factible*/
                 var_tipo_de_cierre:'',
-                causa_no_factibilidad:''
+                causa_no_factibilidad:'',
+                documento_opcional:[],
+                nombre_de_descarga:''
 
             }
         },
@@ -488,6 +523,9 @@ if ($_SESSION["usuario"] ){
                 })
             },
             datos_modal_factibilidad(tipo,index,folio,respuesta){
+                const r = document.getElementsByClassName('modal-backdrop');
+                    r[0].style.display = "block";
+                    r[1].style.display="block";   
                 this.tipo_factibilida_o_implementacion=tipo
                 if(respuesta=="Factible"){
                     this.factible=true
@@ -495,6 +533,7 @@ if ($_SESSION["usuario"] ){
                 }else if(respuesta=="No Factible"){
                     this.factible=false
                     this.no_factible=true
+                    
                 }else{
 
                 }
@@ -504,6 +543,7 @@ if ($_SESSION["usuario"] ){
                     this.buscarDocumentos_analista()
                     this.consultarFormularioImpacto()
                     this.consultarActividades()
+                    this.buscarDocumentos()
                     
                 } else if (this.tipo_factibilida_o_implementacion=="implementacion"){
 
@@ -559,6 +599,7 @@ if ($_SESSION["usuario"] ){
                             console.log("BIEN")
                             this.consultado_concentrado_pendiente_factibilidad() /*es para refrescar el concentrado y el btn de En factibilidad, retome si es factible o no para mostra en la modal segun factible o no. 
                                                                                 cuando se vuelva a presionar se mantenga a la vista el plan de actividades o sinplement no se muestre.*/
+                            
                         }else{
                             alert("Algo salio mal.")
                         }
@@ -778,17 +819,96 @@ if ($_SESSION["usuario"] ){
                     })
             },
             guardarNofactibilidad(){
-                axios.post("guardar_actualizar_causa_no_factibilidad.php",{
+                if(this.documento_opcional.length>0){
+                    if(!confirm("Nota: esta sugerencia ya no aparecera en el tablero de Pendientes de Factibilidad.")) return
+                }else{
+                    if(!confirm("¿No subirá archivo opcional?\n \nNota: esta sugerencia ya no aparecera en el tablero de Pendientes de Factibilidad, si realmente no es factible.")) return
+                }
+            
+
+
+               axios.post("guardar_actualizar_causa_no_factibilidad.php",{
                     var_tipo_de_cierre: this.var_tipo_de_cierre,
                     causa_no_factibilidad: this.causa_no_factibilidad, 
                     id_concentrado: this.id_concentrado_general
                 }).then(response =>{
-                    console.log(response.data)
-
+                    if(response.data=="correcto"){
+                        window.location.reload()//recargo nuevamente pagina cuestion de MODAL
+                       // this.consultado_concentrado_pendiente_factibilidad()
+                       // this.consultado_concentrado_pendiente_implementacion()
+                        
+                    }else if(response.data=="mal"){
+                        alert("No se guarda NO FACTIBLE, pongase en contacto con Mejora Continua.")
+                    }else{
+                        aler("Error algo salio mal.")
+                    }
                 }).catch(error => {
 
                 })
-            }
+            },
+            buscarDocumentos(){
+                    axios.post("buscar_documentos.php",{
+                        folio_carpeta_doc:this.folio,
+                        cual_documento:"nofactibleopcional"
+                    })
+                    .then(response => {
+                                this.documento_opcional = response.data
+                                if(this.documento_opcional.length>0){
+                                    console.log(this.documento_opcional.length + "Archivos encontrados.")
+                                }else{
+                                    /*alert("Sin Documentos agregados.")*/
+                                }
+                        
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+                },
+            uploadFile(){
+                let formData = new FormData();
+                var files = this.$refs.docopcionalnofactibilidad.files;//guarda los archivos
+                var totalfiles = this.$refs.docopcionalnofactibilidad.files.length;// tamanio de archivos a subir
+                for (var index = 0; index < totalfiles; index++) {
+                 formData.append("files[]", files[index]);//arreglo de documentos
+                }
+                formData.append("folio", this.folio);
+                formData.append("cual_documento", "nofactibleopcional");
+                axios.post("subir_documentos.php", formData,
+                    {
+                    headers: {"Content-Type": "multipart/form-data"}
+                    })
+                    .then(response => {
+
+                        if(response.data.length>0){
+                            document.getElementById("input_file_subir").value=""
+                            this.buscarDocumentos()
+                        }else{
+                            alert("Verifique la extension del archivo o Intente nuevamente.")
+                        }
+                     
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+                },
+                eliminarDocumento(ruta){
+                    axios.post("eliminar_documento.php",{
+                            ruta_eliminar: ruta,
+                            cual_documento: "nofactibleopcional"
+                        }).then( response=>{
+                            console.log(response.data)
+                            if(response.data=="Archivo Eliminado"){
+                                this.buscarDocumentos()
+                                alert("Eliminado con Éxito")
+                            }else if(response.data=="No Eliminado"){
+                                alert("Algo no salio bien no se logro Eliminar.")
+                            }else{
+                                alert("Error al eliminar el Documento.")
+                            }
+                        }).catch(error =>{
+                            console.log(error)
+                        })
+                },  
         }   
     }
     var mountedApp = Vue.createApp(vue3).mount('#app');

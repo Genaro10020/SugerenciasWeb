@@ -11,9 +11,9 @@ include "conexionGhoner.php";
         $query = mysqli_query( $conexion, $actualizar);
         $resultado = $query;
         if($resultado){
-            $resultado = "Datos guardados/actualizados con exito.";
+            $resultado = "correcto";
         }else{
-            $resultado = "No se actualizaron los datos.";
+            $resultado = "mal";
         }
 echo json_encode($resultado);
 ?>
