@@ -20,10 +20,23 @@ $porcentaje=$variables['porcentaje'];
 $tipo=$variables['tipo_nueva_actualizar'];
 $id=$variables['id'];
 $id_concentrado=$variables['id_concentrado'];
+
+$check=$variables['check_mc_anterior'] ;
+
+if($check=="Pendiente"){
+        $check = "Pendiente";
+}else if($check=="Rechazado"){
+        $check = "Corregido";
+}else if($check=="Aceptado"){
+        $check = "Corregido";
+}else{
+        $check = "Pendiente";
+}
+
 include "conexionGhoner.php";
 
         if($tipo=="nuevo"){
-                $consulta = "INSERT INTO plan_trabajo_sugerencias (id_concentrado,num_actividad,folio,actividad,responsable,fecha_inicial,fecha_final,porcentaje,check_mejora_continua)  VALUES ('$id_concentrado','$numero_actividad','$folio','$actividad','$responsable_plan','$fecha_inicial','$fecha_final','0','')";
+                $consulta = "INSERT INTO plan_trabajo_sugerencias (id_concentrado,num_actividad,folio,actividad,responsable,fecha_inicial,fecha_final,porcentaje,enviado_o_no)  VALUES ('$id_concentrado','$numero_actividad','$folio','$actividad','$responsable_plan','$fecha_inicial','$fecha_final','0','')";
                 $query = mysqli_query( $conexion, $consulta);
                 if($query==true){
                         $resultado="si";
@@ -33,9 +46,13 @@ include "conexionGhoner.php";
                         $resultado="error create";
                 }
         }else if ($tipo=="actualizar"){
-                $actualizar = "UPDATE plan_trabajo_sugerencias SET actividad='$actividad', responsable='$responsable_plan',fecha_inicial='$fecha_inicial',fecha_final='$fecha_final',porcentaje='$porcentaje' WHERE id = '$id'";
+                $actualizar = "UPDATE plan_trabajo_sugerencias SET actividad='$actividad', responsable='$responsable_plan',fecha_inicial='$fecha_inicial',fecha_final='$fecha_final',porcentaje='$porcentaje', enviado_o_no = '' WHERE id = '$id'";
                 $query = mysqli_query( $conexion, $actualizar);
-                if($query==true){
+
+                $actualizar2 = "UPDATE concentrado_sugerencias SET check_mc='$check' WHERE id = '$id_concentrado'";//ACTUALIZADO CHECK  CONCENTRADO SUGERENCIAS
+                $query2 = mysqli_query( $conexion, $actualizar2);
+
+                if($query==true && $query2==true){
                         $resultado="si";
                 }else if($query==false) {
                         $resultado="no update";

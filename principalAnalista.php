@@ -117,9 +117,9 @@ if ($_SESSION["usuario"] ){
                                                         <td>{{concentrado.fecha_limite}}</td>
                                                         <td class="text-center">
                                                             <button v-if="concentrado.status_factibilidad=='Pendiente'" type="button" class="btn btn-warning" style=" font-size: 1em" data-bs-toggle="modal" data-bs-target="#modal" 
-                                                            @click="datos_modal_factibilidad('factibilidad',concentrado.id,concentrado.folio,concentrado.respuesta_analista)"><i class="bi bi-eye"></i> {{concentrado.status}} </button>
+                                                            @click="datos_modal_factibilidad('factibilidad',concentrado.id,concentrado.folio,concentrado.respuesta_analista,concentrado.check_mc)"><i class="bi bi-eye"></i> {{concentrado.status}} </button>
                                                             <button v-else="concentrado.status_factibilidad=='Vencida'" type="button" class="btn btn-danger" style=" font-size: 1em" data-bs-toggle="modal" data-bs-target="#modal" 
-                                                            @click="datos_modal_factibilidad('factibilidad',concentrado.id,concentrado.folio,concentrado.respuesta_analista)"><i class="bi bi-eye"></i> {{concentrado.status}} </button>
+                                                            @click="datos_modal_factibilidad('factibilidad',concentrado.id,concentrado.folio,concentrado.respuesta_analista,concentrado.check_mc)"><i class="bi bi-eye"></i> {{concentrado.status}} </button>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -436,6 +436,7 @@ if ($_SESSION["usuario"] ){
                 concentrado_sugerencias_pendiente_factibilidad:[],
                 concentrado_sugerencias_pendiente_implementacion:[],
                 /*varibles en modal factibilidad*/
+                check_mc_anterior:'',
                 factible: false,
                 no_factible: false,
                 tipo_factibilida_o_implementacion:'',
@@ -522,10 +523,8 @@ if ($_SESSION["usuario"] ){
                     console.log(this.lista_impacto);
                 })
             },
-            datos_modal_factibilidad(tipo,index,folio,respuesta){
-                const r = document.getElementsByClassName('modal-backdrop');
-                    r[0].style.display = "block";
-                    r[1].style.display="block";   
+            datos_modal_factibilidad(tipo,index,folio,respuesta,check_anterior){
+                this.check_mc_anterior = check_anterior;
                 this.tipo_factibilida_o_implementacion=tipo
                 if(respuesta=="Factible"){
                     this.factible=true
@@ -666,7 +665,8 @@ if ($_SESSION["usuario"] ){
                             responsable_plan: this.responsable_plan,
                             fecha_inicial_actividad: this.fecha_inicial_actividad,
                             fecha_final_actividad: this.fecha_final_actividad,
-                            porcentaje:this.porcentaje
+                            porcentaje:this.porcentaje,
+                            check_mc_anterior: this.check_mc_anterior
                         }).then(response =>{
                                 console.log(response.data)
                                     if(response.data=="si"){
@@ -726,15 +726,17 @@ if ($_SESSION["usuario"] ){
             },
             consultarActividades(){
                     axios.post("consultando_actividades.php",{
+                        id_concentrado:this.id_concentrado_general
                 }).then(response =>{
                     this.concentrado_actividades = response.data
                     this.numero_actividad = this.concentrado_actividades.length 
                     this.numero_nueva_actividad = this.numero_actividad + 1
                     var contar=0;
                     for(var i = 0; i < this.numero_actividad; i++){
-                        if(this.concentrado_actividades[i].check_mejora_continua == 'PENDIENTE'){
+                        if(this.concentrado_actividades[i].enviado_o_no == 'ENVIADO'){
                             contar++
                         }
+                        
                     }
                     if(this.numero_actividad==contar){
                         this.bandera_btn_finalizar = "no mostrar"
@@ -792,8 +794,10 @@ if ($_SESSION["usuario"] ){
             checkPlanActividades(){
                     axios.post("actualizar_check_plan_trabajo.php",{
                     id_concentrado:this.id_concentrado_general,
-                    check: 'PENDIENTE'
+                    enviado_o_no: 'ENVIADO',
+                    check_mc_anterior: this.check_mc_anterior
                      }).then(response =>{
+                        console.log(response.data)
                         if(response.data == true){
                             alert("Su plan de trabajo sera revisado por Mejora Continua")
                             this.bandera_btn_finalizar = "no mostrar"

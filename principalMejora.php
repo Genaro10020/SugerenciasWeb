@@ -104,6 +104,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                 <thead class="encabezado-tabla text-center text-light ">
                                     <tr >
                                     <th scope="col " class="sticky">#</th>
+                                    <th scope="col">Plan de Trabajo</th>
                                     <th scope="col">Folio</th>
                                     <th scope="col">Nombre de Sugerencia</th>
                                     <th scope="col">Fecha Compromiso</th>
@@ -115,12 +116,17 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                 <tbody>
                                     <tr v-for="(concentrado, index) in concentrado_sugerencias">
                                     <th scope="row" class="text-center">{{index+1}}</th>
+                                    <td><button class="btn btn-primary"><i class="bi bi-table"></i> {{concentrado.check_mc}}</button></td>
                                         <td>{{concentrado.folio}}</td>
                                         <td>{{concentrado.nombre_sugerencia}}</td>
                                         <td>{{concentrado.fecha_compromiso}}</td>
-                                        <td>{{concentrado.cumplimiento}}</td>
-                                        <td>PENDIENTE</td>
-                                        <td>PENDIENTE</td>
+                                        <td>{{concentrado.cumplimiento}}%</td>
+                                        <td>{{concentrado.status}}</td>
+                                        <td> 
+                                        <select v-model="var_impacto">
+                                          <option value="" disabled>Seleccione impacto...</option>
+                                          <option v-for="tipo_impacto in lista_validacion_de_impacto" :key="tipo_impacto" :value="tipo_impacto">{{tipo_impacto}}</option>
+                                        </select></td>
                                     </tr>
                                 </tbody>
                                 </table>
@@ -655,7 +661,12 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 pintarCuatro:false,
                 pintarCinco: false,
                 nueva_sugerencia:false,
-                contador: 0,
+                //*Varibales Concetrado*/
+                lista_validacion_de_impacto:['Cuantitativo','Cualitativo'],
+                var_impacto:'',
+                concentrado_actividades:[],
+                numero_actividad:0,
+                //*Varibales Concetrado*/
                 file: '',
                 filenames: [],
                 filedoc: [],
@@ -724,7 +735,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
             }
         },
         mounted(){
-            
+
             //Consultado concentrado de sugerencias.
             this.consultado_concentrado(),
             //consultado lista status
@@ -768,6 +779,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                    if(dato=='retos'){this.pintarCuatro=true}else{this.pintarCuatro=false}
                    if(dato=='configuracion'){this.pintarCinco=true}else{this.pintarCinco=false}
              },
+                                                                                                                                 /*METODOS PRINCIPAL MEJORA*/                                    
+
+                                                                                                                                        /*FIN METODOS PRINCIPAL MEJORA*/
+                                                                                                                                        /*METODOS CONCENTRADO SUGERENCIAS*/
             guardar_nueva_sugerencia_y_actualizar(nueva_o_actualizar,id_registro){
 
                 if(this.var_sindicalizado_empleado!='' && this.var_nombre_sugerencias!='' && this.var_folio!='' && this.var_causa_no_factibilidad!='' && this.var_situacion_actual!='' && 

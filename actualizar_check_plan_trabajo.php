@@ -2,16 +2,30 @@
 session_start();
 header("Content-Type: application/json");
 $variables = json_decode(file_get_contents('php://input'), true);
-
+$resultado="";
 $id_concentrado=$variables['id_concentrado'];
-$check=$variables['check'] ;
-
+$enviado_o_no=$variables['enviado_o_no'] ;
+$check=$variables['check_mc_anterior'] ;
+if($check=="Pendiente"){
+        $check = "Pendiente";
+}else if($check=="Rechazado"){
+        $check = "Corregido";
+}else if($check=="Aceptado"){
+        $check = "Corregido";
+}else{
+        $check = "Pendiente";
+}
 include "conexionGhoner.php";
 
-        $actualizar = "UPDATE plan_trabajo_sugerencias SET check_mejora_continua='$check' WHERE id_concentrado = '$id_concentrado'";
-        $query = mysqli_query( $conexion, $actualizar);
-        $resultado = $query;
- 
+        $actualizar1 = "UPDATE plan_trabajo_sugerencias SET enviado_o_no='$enviado_o_no' WHERE id_concentrado = '$id_concentrado'";
+        $query1 = mysqli_query( $conexion, $actualizar1);
+        
+        $resultado=$query1;
 
+        $actualizar2 = "UPDATE concentrado_sugerencias SET check_mc='$check' WHERE id = '$id_concentrado'";
+        $query2 = mysqli_query( $conexion, $actualizar2);
+
+        $resultado=$query2;
+      
 echo json_encode($resultado);
 ?>

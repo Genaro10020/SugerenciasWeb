@@ -18,10 +18,10 @@ for ($i=0; $i < $tamanio ; $i++) {
       $fecha_inicial=$arreglo_actividades[$i]['fecha_inicial'];
       $fecha_final=$arreglo_actividades[$i]['fecha_final'];
       $porcentaje=$arreglo_actividades[$i]['porcentaje'];
-      $check_mejora_continua=$arreglo_actividades[$i]['check_mejora_continua'];
+      $enviado_o_no=$arreglo_actividades[$i]['enviado_o_no'];
 
 
-        $actualizar = "UPDATE plan_trabajo_sugerencias SET num_actividad='$numero_actividad', folio='$folio', actividad='$actividad', responsable='$responsable', fecha_inicial='$fecha_inicial', fecha_final='$fecha_final', porcentaje='$porcentaje', check_mejora_continua='$check_mejora_continua' WHERE id = '$id'";
+        $actualizar = "UPDATE plan_trabajo_sugerencias SET num_actividad='$numero_actividad', folio='$folio', actividad='$actividad', responsable='$responsable', fecha_inicial='$fecha_inicial', fecha_final='$fecha_final', porcentaje='$porcentaje', enviado_o_no='$enviado_o_no' WHERE id = '$id'";
         $query = mysqli_query( $conexion, $actualizar);
         $resultado = $query;
 }       
