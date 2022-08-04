@@ -116,7 +116,12 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                 <tbody>
                                     <tr v-for="(concentrado, index) in concentrado_sugerencias">
                                     <th scope="row" class="text-center">{{index+1}}</th>
-                                    <td><button class="btn btn-primary"><i class="bi bi-table"></i> {{concentrado.check_mc}}</button></td>
+                                    <td>
+                                        <button v-show="concentrado.check_mc=='Pendiente'" class="btn btn-secondary" style="font-size:.9em"><i class="bi bi-table"></i> {{concentrado.check_mc}}</button>
+                                        <button v-show="concentrado.check_mc=='Rechazado'" class="btn btn-danger" style="font-size:.9em"><i class="bi bi-table"></i> {{concentrado.check_mc}}</button>
+                                        <button v-show="concentrado.check_mc=='Corregido'" class="btn btn-warning" style="font-size:.9em"><i class="bi bi-table"></i> {{concentrado.check_mc}}</button>
+                                        <button v-show="concentrado.check_mc=='Aceptado'" class="btn btn-success" style="font-size:.9em"><i class="bi bi-table"></i> {{concentrado.check_mc}}</button>
+                                    </td>
                                         <td>{{concentrado.folio}}</td>
                                         <td>{{concentrado.nombre_sugerencia}}</td>
                                         <td>{{concentrado.fecha_compromiso}}</td>
