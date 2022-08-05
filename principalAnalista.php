@@ -325,10 +325,17 @@ if ($_SESSION["usuario"] ){
                                                                                     </tr><!--Fin consuta actividades-->    
                                                                                 </tbody>
                                                                             </table>
-                                                                        </div>
-                                                                    </div><!--scroll-->
+                                                                        </div><!--scroll-->
+                                                                    </div>
                                                                     <div class="col-12 text-center"> <button type="button" class="btn btn-success mb-2" style="font-size:0.9em" v-show="numero_actividad>0 && bandera_btn_finalizar=='mostrar'" @click="checkPlanActividades">Finalizar Plan</button></div>
-                                                                    <div class="alert alert-warning fw-bold"  v-show="numero_actividad>0 && bandera_btn_finalizar!='mostrar'">Su plan de trabajo esta siendo revisado por Mejora Continua.</div>
+                                                                    <div class="alert alert-warning fw-bold"  v-if="numero_actividad>0 && bandera_btn_finalizar!='mostrar' && check_mc_anterior=='Pendiente' || 
+                                                                                                                     numero_actividad>0 && bandera_btn_finalizar!='mostrar' && check_mc_anterior=='Corregido'">
+                                                                                                                     Su plan de trabajo esta siendo revisado por Mejora Continua.</div>
+                                                                    <div class="alert alert-danger fw-bold"  v-if="numero_actividad>0 && bandera_btn_finalizar!='mostrar' && check_mc_anterior=='Rechazado'">
+                                                                                                                     Su plan fue rechazado por Mejora Continua.</div>
+                                                                    <div class="alert alert-success fw-bold"  v-if="numero_actividad>0 && bandera_btn_finalizar!='mostrar' && check_mc_anterior=='Aceptado'">
+                                                                                                                    Su plan fue aceptado, favor de ejecutar en tiempo y forma.</div>
+                                                                    
                                                                     <hr>
                                                                                     
                                                                                     <div class="text-center">
@@ -437,6 +444,7 @@ if ($_SESSION["usuario"] ){
                 concentrado_sugerencias_pendiente_implementacion:[],
                 /*varibles en modal factibilidad*/
                 check_mc_anterior:'',
+                mensaje_del_check_mc:'',
                 factible: false,
                 no_factible: false,
                 tipo_factibilida_o_implementacion:'',
@@ -465,6 +473,7 @@ if ($_SESSION["usuario"] ){
                 numero_orden_en_select:0,
                 fecha_compromiso:'',
                 bandera_btn_finalizar:'',
+
                 tipo_de_cierre:['Cerrada/Fast Response','Cerrada/No Factible'],
                 /*variables en modal no factible*/
                 var_tipo_de_cierre:'',
@@ -681,11 +690,11 @@ if ($_SESSION["usuario"] ){
                                     }else if(response.data=="no delete"){
                                         alert('No se elimino la actividad')
                                     }else if(response.data=="error create"){
-                                        alert('Erro al crear.')
+                                        alert('Error al crear.')
                                     }else if(response.data=="error update"){
-                                        alert('Erro al actualizar.')
+                                        alert('Error al actualizar.')
                                     }else if(response.data=="error delete"){
-                                        alert('Erro al eliminar.')
+                                        alert('Error al eliminar.')
                                     }else {
 
                                     }
@@ -798,9 +807,10 @@ if ($_SESSION["usuario"] ){
                     check_mc_anterior: this.check_mc_anterior
                      }).then(response =>{
                         console.log(response.data)
-                        if(response.data == true){
+                        if(response.data[1] == true || response.data[2] == true){
                             alert("Su plan de trabajo sera revisado por Mejora Continua")
                             this.bandera_btn_finalizar = "no mostrar"
+                            this.check_mc_anterior =  response.data[0]
                         }else{
                             alert("Algo salio mal.")
                         }

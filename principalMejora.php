@@ -116,11 +116,11 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                 <tbody>
                                     <tr v-for="(concentrado, index) in concentrado_sugerencias">
                                     <th scope="row" class="text-center">{{index+1}}</th>
-                                    <td>
-                                        <button v-show="concentrado.check_mc=='Pendiente'" class="btn btn-secondary" style="font-size:.9em"><i class="bi bi-table"></i> {{concentrado.check_mc}}</button>
-                                        <button v-show="concentrado.check_mc=='Rechazado'" class="btn btn-danger" style="font-size:.9em"><i class="bi bi-table"></i> {{concentrado.check_mc}}</button>
-                                        <button v-show="concentrado.check_mc=='Corregido'" class="btn btn-warning" style="font-size:.9em"><i class="bi bi-table"></i> {{concentrado.check_mc}}</button>
-                                        <button v-show="concentrado.check_mc=='Aceptado'" class="btn btn-success" style="font-size:.9em"><i class="bi bi-table"></i> {{concentrado.check_mc}}</button>
+                                    <td> 
+                                        <button  v-show="concentrado.check_mc=='Pendiente'" class="btn btn-secondary" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalTablaPlan" @click="consultarActividades(concentrado.id)"><i class="bi bi-table" ></i> {{concentrado.check_mc}}</button>
+                                        <button  v-show="concentrado.check_mc=='Rechazado'" class="btn btn-danger" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalTablaPlan" @click="consultarActividades(concentrado.id)"><i class="bi bi-table" ></i> {{concentrado.check_mc}}</button>
+                                        <button  v-show="concentrado.check_mc=='Corregido'" class="btn btn-warning" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalTablaPlan" @click="consultarActividades(concentrado.id)"><i class="bi bi-table"  ></i> {{concentrado.check_mc}}</button>
+                                        <button  v-show="concentrado.check_mc=='Aceptado'" class="btn btn-success" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalTablaPlan" @click="consultarActividades(concentrado.id)"><i class="bi bi-table" ></i> {{concentrado.check_mc}}</button>
                                     </td>
                                         <td>{{concentrado.folio}}</td>
                                         <td>{{concentrado.nombre_sugerencia}}</td>
@@ -128,16 +128,77 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                         <td>{{concentrado.cumplimiento}}%</td>
                                         <td>{{concentrado.status}}</td>
                                         <td> 
-                                        <select v-model="var_impacto">
-                                          <option value="" disabled>Seleccione impacto...</option>
-                                          <option v-for="tipo_impacto in lista_validacion_de_impacto" :key="tipo_impacto" :value="tipo_impacto">{{tipo_impacto}}</option>
-                                        </select></td>
+                                                <div class="d-flex justify-content-around">
+                                                    <div>
+                                                            <button type="button" class="btn btn-secondary" @click="" data-bs-dismiss="modal" style=" font-size:.9em">Impacto Cuantitativo</button>
+                                                    </div>
+                                                    <div>
+                                                            <button type="button" class="btn btn-secondary" @click="" data-bs-dismiss="modal" style=" font-size:.9em">Impacto Cualitativo</button>
+                                                     </div>
+                                                 </div>
+                                        </td>
                                     </tr>
                                 </tbody>
                                 </table>
                             </div>
-                             <!--fin contenido principal gonher-->
-                   </div>
+
+                      <div class="modal fade" id="modalTablaPlan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"><!--modal tabla actividades-->
+                                <div class="modal-dialog modal-xl">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Tabla de actividades</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                                        <div class="div-scroll"><!--Scroll-->
+                                                                <table class="tablaMonitoreo-sugerencias table table-striped table-bordered text-center" style=" font-size: 12px">
+                                                                    <thead class="encabezado-tabla text-center text-light ">
+                                                                        <tr>
+                                                                        <th scope="col">No. Actividad</th>
+                                                                        <th scope="col">Descripción Actividad</th>
+                                                                        <th scope="col">Responsable</th>
+                                                                        <th scope="col">Fecha de Inicio</th>
+                                                                        <th scope="col">Fecha de Cierre</th>
+                                                                        <th scope="col">% Porcentaje</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                                <!--Consulta actividades-->
+                                                                        <tr class="align-middle" v-for="(actividades,index) in concentrado_actividades">
+                                                                            <th scope="row">
+                                                                                <label>{{numero_orden_en_select=index+1}}</label>
+                                                                            </th>
+                                                                            <td>    
+                                                                                <label>{{actividades.actividad}}<label></td>
+                                                                            <td>
+                                                                                <label>{{actividades.responsable}}<label>
+                                                                            </td>
+                                                                            <td><label>{{actividades.fecha_inicial}}<label></td>
+                                                                            <td><label>{{actividades.fecha_final}}<label></td>
+                                                                            <td>
+                                                                                <label>{{actividades.porcentaje}}%<label>
+                                                                            </td>
+                                                                        </tr><!--Fin consuta actividades-->    
+                                                                    </tbody>
+                                                                </table>
+                                                         </div><!--scroll-->
+                                                <div class="d-flex justify-content-around">
+                                                    <div>
+                                                            <button type="button" class="btn btn-success" @click="actualizarVoBoPlan('Aceptado')" data-bs-dismiss="modal">Aceptado</button>
+                                                    </div>
+                                                    <div>
+                                                            <button type="button" class="btn btn-danger" @click="actualizarVoBoPlan('Rechazado')" data-bs-dismiss="modal">Rechazado</button>
+                                                     </div>
+                                                 </div>
+                                      
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                    </div>
+                                    </div>
+                                </div>
+                       </div><!--Fin Modal tabla actividades-->
+                   </div> <!--fin contenido principal gonher-->
                    <!--////////////////////////////////////////////////////////APARTADO CONCENTRADO DE SUGERENCIAS-->
                    <div v-else-if="ventana=='concentrado'">
                        <!--cinta apartado-->
@@ -427,14 +488,15 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                     </table>
                                 </div>
                             </div>
-                           
 
-                            <!-- Modal Eliminar/Actualizar Planta -->
+
+
+                            <!-- Modal Eliminar/Actualizar-->
                             <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                 <div class="modal-header">
-                                    <h6 class="modal-title" id="exampleModalLabel" >{{titulo_modal}} {{extensiones_valida}}</h6>
+                                    <h6 class="modal-title" id="exampleModalLabel" >{{titulo_modal}} </h6>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
@@ -501,11 +563,11 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                     <div class="row">
                                                         <div class="col-12">
                                                             <div class="custom-file my-5"> 
-                                                                <input type="file" id="input_file_subir"  ref="documentosugerencia" multiple required/>
+                                                                <input type="file" id="input_file_subir"  ref="documentosugerencia" multiple required/>{{extensiones_valida}}</input>
                                                             </div>
                                                         </div>
                                                         <div class="col-12">
-                                                            <button  type="submit" name="upload" class="btn btn-primary">Subir Archivos</button>
+                                                            <button  type="submit" name="upload" class="btn btn-primary">Subir Archivos </button>
                                                         </div>
                                                     </div> 
                                                        
@@ -668,9 +730,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 nueva_sugerencia:false,
                 //*Varibales Concetrado*/
                 lista_validacion_de_impacto:['Cuantitativo','Cualitativo'],
-                var_impacto:'',
                 concentrado_actividades:[],
-                numero_actividad:0,
                 //*Varibales Concetrado*/
                 file: '',
                 filenames: [],
@@ -784,10 +844,34 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                    if(dato=='retos'){this.pintarCuatro=true}else{this.pintarCuatro=false}
                    if(dato=='configuracion'){this.pintarCinco=true}else{this.pintarCinco=false}
              },
-                                                                                                                                 /*METODOS PRINCIPAL MEJORA*/                                    
+       /*METODOS PRINCIPAL MEJORA*/                                    
+    consultarActividades(id){
+                this.id_concentrado = id
+                axios.post("consultando_actividades.php",{
+                id_concentrado:this.id_concentrado
+                }).then(response =>{
+                    console.log(this.concentrado_actividades = response.data)
+                }).catch(error => {
+                    console.log(error)
+                })
+            },
+    actualizarVoBoPlan(aceptado_rechazado){
+            axios.post('actualizar_vobo_plan.php',{
+                id_concentrado:this.id_concentrado,
+                aceptado_rechazado:aceptado_rechazado
+            }).then(response =>{
+                if(response.data==true){
+                    this.consultado_concentrado();
+                }else{
+                    alert("Problemas para actualizar.")
+                }
+            }).catch(error => {
+                console.log(error)
+            })
+    },
 
-                                                                                                                                        /*FIN METODOS PRINCIPAL MEJORA*/
-                                                                                                                                        /*METODOS CONCENTRADO SUGERENCIAS*/
+      /*FIN METODOS PRINCIPAL MEJORA*/
+      /*METODOS CONCENTRADO SUGERENCIAS*/
             guardar_nueva_sugerencia_y_actualizar(nueva_o_actualizar,id_registro){
 
                 if(this.var_sindicalizado_empleado!='' && this.var_nombre_sugerencias!='' && this.var_folio!='' && this.var_causa_no_factibilidad!='' && this.var_situacion_actual!='' && 
