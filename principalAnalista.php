@@ -533,7 +533,6 @@ if ($_SESSION["usuario"] ){
                 })
             },
             datos_modal_factibilidad(tipo,index,folio,respuesta,check_anterior){
-                alert(check_anterior)
                 this.check_mc_anterior = check_anterior;
                 this.tipo_factibilida_o_implementacion=tipo
                 if(respuesta=="Factible"){
