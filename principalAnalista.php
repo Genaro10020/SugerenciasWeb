@@ -327,7 +327,7 @@ if ($_SESSION["usuario"] ){
                                                                             </table>
                                                                         </div><!--scroll-->
                                                                     </div>
-                                                                    <div class="col-12 text-center"> <button type="button" class="btn btn-success mb-2" style="font-size:0.9em" v-show="numero_actividad>0 && bandera_btn_finalizar=='mostrar'" @click="checkPlanActividades">Finalizar Plan</button></div>
+                                                                    <div class="col-12 text-center"> <button type="button" class="btn btn-success mb-2" style="font-size:0.9em" v-show="numero_actividad>0 && bandera_btn_finalizar=='mostrar' || numero_actividad>0 && check_mc_anterior==''" @click="checkPlanActividades">Finalizar Plan</button></div>
                                                                     <div class="alert alert-warning fw-bold"  v-if="numero_actividad>0 && bandera_btn_finalizar!='mostrar' && check_mc_anterior=='Pendiente' || 
                                                                                                                      numero_actividad>0 && bandera_btn_finalizar!='mostrar' && check_mc_anterior=='Corregido'">
                                                                                                                      Su plan de trabajo esta siendo revisado por Mejora Continua.</div>
@@ -533,6 +533,7 @@ if ($_SESSION["usuario"] ){
                 })
             },
             datos_modal_factibilidad(tipo,index,folio,respuesta,check_anterior){
+                alert(check_anterior)
                 this.check_mc_anterior = check_anterior;
                 this.tipo_factibilida_o_implementacion=tipo
                 if(respuesta=="Factible"){
@@ -839,8 +840,6 @@ if ($_SESSION["usuario"] ){
                     if(!confirm("¿No subirá archivo opcional?\n \nNota: esta sugerencia ya no aparecera en el tablero de Pendientes de Factibilidad, si realmente no es factible.")) return
                 }
             
-
-
                axios.post("guardar_actualizar_causa_no_factibilidad.php",{
                     var_tipo_de_cierre: this.var_tipo_de_cierre,
                     causa_no_factibilidad: this.causa_no_factibilidad, 

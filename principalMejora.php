@@ -116,17 +116,20 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                 <tbody>
                                     <tr v-for="(concentrado, index) in concentrado_sugerencias">
                                     <th scope="row" class="text-center">{{index+1}}</th>
-                                    <td> 
-                                        <button  v-show="concentrado.check_mc=='Pendiente'" class="btn btn-secondary" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalTablaPlan" @click="consultarActividades(concentrado.id)"><i class="bi bi-table" ></i> {{concentrado.check_mc}}</button>
-                                        <button  v-show="concentrado.check_mc=='Rechazado'" class="btn btn-danger" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalTablaPlan" @click="consultarActividades(concentrado.id)"><i class="bi bi-table" ></i> {{concentrado.check_mc}}</button>
-                                        <button  v-show="concentrado.check_mc=='Corregido'" class="btn btn-warning" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalTablaPlan" @click="consultarActividades(concentrado.id)"><i class="bi bi-table"  ></i> {{concentrado.check_mc}}</button>
-                                        <button  v-show="concentrado.check_mc=='Aceptado'" class="btn btn-success" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalTablaPlan" @click="consultarActividades(concentrado.id)"><i class="bi bi-table" ></i> {{concentrado.check_mc}}</button>
+                                    <td>
+                                        <button  v-show="concentrado.check_mc=='Pendiente' && concentrado.status!='Cerrada/Fast Response'  && concentrado.status!='Cerrada/No Factible'" class="btn btn-secondary" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalTablaPlan" @click="consultarActividades(concentrado.id)"><i class="bi bi-table" ></i> {{concentrado.check_mc}}</button>
+                                        <button  v-show="concentrado.check_mc=='Rechazado' && concentrado.status!='Cerrada/Fast Response'  && concentrado.status!='Cerrada/No Factible'" class="btn btn-danger" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalTablaPlan" @click="consultarActividades(concentrado.id)"><i class="bi bi-table" ></i> {{concentrado.check_mc}}</button>
+                                        <button  v-show="concentrado.check_mc=='Corregido' && concentrado.status!='Cerrada/Fast Response'  && concentrado.status!='Cerrada/No Factible'" class="btn btn-warning" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalTablaPlan" @click="consultarActividades(concentrado.id)"><i class="bi bi-table"  ></i> {{concentrado.check_mc}}</button>
+                                        <button  v-show="concentrado.check_mc=='Aceptado' && concentrado.status!='Cerrada/Fast Response' && concentrado.status!='Cerrada/No Factible'" class="btn btn-success" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalTablaPlan" @click="consultarActividades(concentrado.id)"><i class="bi bi-table" ></i> {{concentrado.check_mc}}</button>
                                     </td>
                                         <td>{{concentrado.folio}}</td>
                                         <td>{{concentrado.nombre_sugerencia}}</td>
                                         <td>{{concentrado.fecha_compromiso}}</td>
                                         <td>{{concentrado.cumplimiento}}%</td>
-                                        <td>{{concentrado.status}}</td>
+                                        <td>
+                                            <a v-if="concentrado.status=='Cerrada/Fast Response' || concentrado.status=='Cerrada/No Factible'" data-bs-toggle="modal" data-bs-target="#modalCambiaraEnFactibilidad" style="cursor: pointer; text-decoration: underline blue;" @click="modal_cambiara_en_factibilidad(concentrado.id)" ><p class="fw-bold text-primary">{{concentrado.status}}</p></a>
+                                            <a v-else> {{concentrado.status}}</a>
+                                        </td>
                                         <td> 
                                                 <div class="d-flex justify-content-around">
                                                     <div>
@@ -198,6 +201,27 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                     </div>
                                 </div>
                        </div><!--Fin Modal tabla actividades-->
+
+                       <div class="modal fade" id="modalCambiaraEnFactibilidad" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"><!--modal cambiar a enfactibilida-->
+                                <div class="modal-dialog modal-sm modal-dialog-centered">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Cambiar STATUS.</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                             <div class="d-flex justify-content-center">
+                                                            <button type="button" class="btn btn-success" @click="cambiaraEnFactibilidad" data-bs-dismiss="modal" style="font-size:.9em; font-weight:bold">cambiar a <b>"En Factibilidad"</b></button>
+                                             </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                    </div>
+                                    </div>
+                                </div>
+                       </div><!--Fin Modal cambiar a en factibilidad-->
+
+
                    </div> <!--fin contenido principal gonher-->
                    <!--////////////////////////////////////////////////////////APARTADO CONCENTRADO DE SUGERENCIAS-->
                    <div v-else-if="ventana=='concentrado'">
@@ -397,7 +421,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                 </td> 
                                                 <td><textarea class="inputs-concentrado text-area" type="text"  name="nombre_sugerencia" v-model="var_nombre_sugerencias" v-if="actualizar_sugerencia==index+1"></textarea> <label v-else>{{concentrado.nombre_sugerencia}}</label></td>
                                                 <td><input class="inputs-concentrado" type="text" v-model="var_folio" v-if="actualizar_sugerencia==index+1"></input> <label v-else>{{concentrado.folio}}</label></td>
-                                                <td><label>En Factibilidad</label></td>
+                                                <td><label>{{concentrado.status}}</label></td>
                                                 <td><textarea class="inputs-concentrado text-area" type="text"  v-model="var_causa_no_factibilidad" v-if="actualizar_sugerencia==index+1">{{var_causa_no_factibilidad}}</textarea><label v-else>{{concentrado.causa_no_factibilidad}}</label></td>
                                                 <td><textarea class="inputs-concentrado text-area" type="text" v-model="var_situacion_actual"  v-if="actualizar_sugerencia==index+1"></textarea><label v-else>{{concentrado.situacion_actual}}</label></td>
                                                 <td><textarea class="inputs-concentrado text-area" type="text"  v-model="var_idea_propuesta"  v-if="actualizar_sugerencia==index+1"></textarea><label v-else>{{concentrado.idea_propuesta}}</label></td>
@@ -869,7 +893,23 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 console.log(error)
             })
     },
-
+    modal_cambiara_en_factibilidad(id_concentrado){
+        this.id_concentrado = id_concentrado
+    },
+    cambiaraEnFactibilidad(){
+        if(!confirm('Desea usted cambiar el status de esta sugerencia a "En Factibilidad"')) return
+        axios.post('guardar_actualizar_cambiar_a_En_Factibilidad.php',{
+            id_concentrado: this.id_concentrado
+        }).then(response =>{
+            if(response.data=="correcto"){
+                this.consultado_concentrado()
+            }else{
+                alert('algo salio mal.')
+            }
+        }).catch(arror =>{
+            console.log(error)
+        })
+    },
       /*FIN METODOS PRINCIPAL MEJORA*/
       /*METODOS CONCENTRADO SUGERENCIAS*/
             guardar_nueva_sugerencia_y_actualizar(nueva_o_actualizar,id_registro){
