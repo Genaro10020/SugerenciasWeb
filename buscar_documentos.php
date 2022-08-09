@@ -6,6 +6,7 @@ header("Content-Type: application/json");
 $variables = json_decode(file_get_contents('php://input'), true);
 $respuesta = [];
 $folio="";
+$cual_documento="";
 
 $folio=$variables['folio_carpeta_doc'];
 $cual_documento=$variables['cual_documento'];

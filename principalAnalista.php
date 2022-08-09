@@ -845,9 +845,12 @@ if ($_SESSION["usuario"] ){
                     id_concentrado: this.id_concentrado_general
                 }).then(response =>{
                     if(response.data=="correcto"){
-                        window.location.reload()//recargo nuevamente pagina cuestion de MODAL
-                       // this.consultado_concentrado_pendiente_factibilidad()
-                       // this.consultado_concentrado_pendiente_implementacion()
+                       // window.location.reload()//recargo nuevamente pagina cuestion de MODAL
+                            bootstrap.Modal.getOrCreateInstance(document.getElementById('modalImpactoCuantitativo')).hide()//oculto contenido
+                           const items = document.getElementsByClassName("modal-backdrop fade show")// obtengo div con estas clases
+                           items[0].className = ""; // sustituyo y elimino a nada. 
+                        this.consultado_concentrado_pendiente_factibilidad()
+                        this.consultado_concentrado_pendiente_implementacion()
                         
                     }else if(response.data=="mal"){
                         alert("No se guarda NO FACTIBLE, pongase en contacto con Mejora Continua.")

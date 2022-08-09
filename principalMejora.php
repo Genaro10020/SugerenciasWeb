@@ -127,17 +127,29 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                         <td>{{concentrado.fecha_compromiso}}</td>
                                         <td>{{concentrado.cumplimiento}}%</td>
                                         <td>
-                                            <a v-if="concentrado.status=='Cerrada/Fast Response' || concentrado.status=='Cerrada/No Factible'" data-bs-toggle="modal" data-bs-target="#modalCambiaraEnFactibilidad" style="cursor: pointer; text-decoration: underline blue;" @click="datos_modal(concentrado.id)" ><p class="fw-bold text-primary">{{concentrado.status}}</p></a>
-                                            <a v-else> {{concentrado.status}}</a>
+                                            <!--<a v-if="concentrado.status=='Cerrada/Fast Response' || concentrado.status=='Cerrada/No Factible'" data-bs-toggle="modal" data-bs-target="#modalCambiaraEnFactibilidad" style="cursor: pointer; text-decoration: underline blue;" @click="datos_modal(concentrado.id)" ><p class="fw-bold text-primary">{{concentrado.status}}</p></a>
+                                            <a v-else> {{concentrado.status}}</a>-->
+                                            <a data-bs-toggle="modal" data-bs-target="#modalCambiaraEnFactibilidad" style="cursor: pointer; text-decoration: underline blue;" @click="datos_modal(concentrado.id)" ><p class="fw-bold text-primary">{{concentrado.status}}</p></a>
                                         </td>
                                         <td> 
                                                 <div class="d-flex justify-content-around">
                                                     <div>
-                                                            <button v-show="concentrado.status =='En Implementación' || concentrado.status=='Implementada'" type="button" class="btn btn-secondary" @click="datos_modal(concentrado.id, concentrado.folio,'Cauntitativo')" style=" font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalImpactoCuantitativo">Impacto Cuantitativo</button>
+                                                           <div v-if="concentrado.validacion_de_impacto =='Cuantitativo'"><!--BTN VERDE-->
+                                                                <button v-show="concentrado.status =='En Implementación' || concentrado.status=='Implementada'" type="button" class="btn btn-success" @click="datos_modal(concentrado.id, concentrado.folio,'Cuantitativo')" style=" font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalImpactoCuantitativo">Impacto Cuantitativo</button>
+                                                                <button v-show="concentrado.status =='En Implementación' || concentrado.status=='Implementada'" type="button" class="btn btn-danger ms-2" @click="vaciarValidaciondeImpacto(concentrado.id)" title="Limpiar impacto" style=" font-size:.9em">x</button>
+                                                           </div>
+                                                           <div v-else><!--BTN GRIS-->                                                           
+                                                                <button v-show="concentrado.status =='En Implementación' || concentrado.status=='Implementada'" type="button" class="btn btn-secondary" @click="datos_modal(concentrado.id, concentrado.folio,'Cuantitativo')" style=" font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalImpactoCuantitativo">Impacto Cuantitativo</button>
+                                                           </div> 
                                                     </div>
                                                     <div>
-                                                            <button v-show="concentrado.status =='En Implementación' || concentrado.status=='Implementada'" type="button" class="btn btn-secondary" @click="datos_modal(concentrado.id, concentrado.folio,'Cualitativo')" style=" font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalImpactoCualitativo">Impacto Cualitativo</button>
-                                                     </div>
+                                                            <div v-if="concentrado.validacion_de_impacto =='Cualitativo'"><!--BTN VERDE-->
+                                                                <button v-show="concentrado.status =='En Implementación' || concentrado.status=='Implementada'" type="button" class="btn btn-success" @click="datos_modal(concentrado.id, concentrado.folio,'Cualitativo')" style=" font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalImpactoCualitativo">Impacto Cualitativo</button>
+                                                            </div>
+                                                            <div v-else><!--BTN GRIS-->
+                                                                <button v-show="concentrado.status =='En Implementación' || concentrado.status=='Implementada'" type="button" class="btn btn-secondary" @click="datos_modal(concentrado.id, concentrado.folio,'Cualitativo')" style=" font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalImpactoCualitativo">Impacto Cualitativo</button>
+                                                            </div>  
+                                                    </div>
                                                  </div>
                                         </td>
                                     </tr>
@@ -146,7 +158,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                             </div>
 
                       <div class="modal fade" id="modalTablaPlan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"><!--modal tabla actividades-->
-                                <div class="modal-dialog modal-xl">
+                                <div class="modal-dialog modal-xl modal-dialog-centered">
                                     <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="exampleModalLabel">Tabla de actividades</h5>
@@ -203,7 +215,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                        </div><!--Fin Modal tabla actividades-->
 
                        <div class="modal fade" id="modalCambiaraEnFactibilidad" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"><!--modal cambiar a enfactibilida-->
-                                <div class="modal-dialog modal-sm modal-dialog-centered">
+                                <div class="modal-dialog modal-xl">
                                     <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="exampleModalLabel">Cambiar STATUS.</h5>
@@ -264,52 +276,52 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                                             </div>
                                                                             </div>
                                                                     </div>
-                                                            <div class="bg-light p-3 border rounded">
-                                                                <form @submit.prevent="guardarImpactoCuantitativo">
-                                                                        <div class="row">
-                                                                                <div class="col-12 col-sm-6">
-                                                                                    <label>Indicador:</label>
-                                                                                    <input v-model="indicador" type="text" class="form-control" style="font-size:.8em" required/>
+                                                                    <div class="bg-light p-3 border rounded">
+                                                                        <form @submit.prevent="guardarImpactoCuantitativo">
+                                                                                <div class="row">
+                                                                                        <div class="col-12 col-sm-6">
+                                                                                            <label>Indicador:</label>
+                                                                                            <input v-model="indicador" type="text" class="form-control" style="font-size:.8em" required/>
+                                                                                        </div>
                                                                                 </div>
-                                                                        </div>
-                                                                        <div class="row">
-                                                                                <div class="col-12 col-sm-6">
-                                                                                    <label>Línea Base:</label>
-                                                                                    <input  v-model="linea_base" type="text" class=" form-control" style="font-size:.8em" required/>
+                                                                                <div class="row">
+                                                                                        <div class="col-12 col-sm-6">
+                                                                                            <label>Línea Base:</label>
+                                                                                            <input  v-model="linea_base" type="text" class=" form-control" style="font-size:.8em" required/>
+                                                                                        </div>
+                                                                                        <div class="col-12 col-sm-6">
+                                                                                            <label>Resultado Esperado:</label>
+                                                                                            <input v-model="resultado_esperado" type="text" class=" form-control" style="font-size:.8em" required/>
+                                                                                        </div>
                                                                                 </div>
-                                                                                <div class="col-12 col-sm-6">
-                                                                                    <label>Resultado Esperado:</label>
-                                                                                    <input v-model="resultado_esperado" type="text" class=" form-control" style="font-size:.8em" required/>
+                                                                                <div class="row">
+                                                                                        <div class="col-12 col-sm-3">
+                                                                                            <label>% de Mejora</label>
+                                                                                            <input v-model="porcentaje_de_mejora" type="text" class=" form-control" style="font-size:.8em" required/>
+                                                                                        </div>
+                                                                                        <div class="col-12 col-sm-5">
+                                                                                            <label>Tipo de impacto:</label>
+                                                                                            <select v-model="tipo_de_impacto" class=" form-control" style="font-size:.8em" required>
+                                                                                                        <option value="" disabled>Seleccione una opción..</option>
+                                                                                                        <option value="Bajo">Bajo</option>
+                                                                                                        <option value="Medio">Medio</option>
+                                                                                                        <option value="Alto">Alto</option>
+                                                                                            </select>
+                                                                                        </div>
                                                                                 </div>
-                                                                        </div>
-                                                                        <div class="row">
-                                                                                <div class="col-12 col-sm-3">
-                                                                                    <label>% de Mejora</label>
-                                                                                    <input v-model="porcentaje_de_mejora" type="text" class=" form-control" style="font-size:.8em" required/>
+                                                                                <div class="row">
+                                                                                        <div class="col-12 col-sm-3">
+                                                                                            <label>Puntos Asignados</label>
+                                                                                            <input v-model="puntos_asignados" type="text" class=" form-control" style="font-size:.8em" required/>
+                                                                                        </div>
                                                                                 </div>
-                                                                                <div class="col-12 col-sm-5">
-                                                                                    <label>Tipo de impacto:</label>
-                                                                                    <select v-model="tipo_de_impacto" class=" form-control" style="font-size:.8em" required>
-                                                                                                <option value="" disabled>Seleccione una opción..</option>
-                                                                                                <option value="Bajo">Bajo</option>
-                                                                                                <option value="Medio">Medio</option>
-                                                                                                <option value="Alto">Alto</option>
-                                                                                    </select>
+                                                                                <div class="d-flex justify-content-center">
+                                                                                        <div class="col-12 col-sm-3 text-center">  
+                                                                                                <button class="btn btn-success" type="submit" style=" font-size:1em">Guardar</button>
+                                                                                        </div>
                                                                                 </div>
-                                                                        </div>
-                                                                        <div class="row">
-                                                                                <div class="col-12 col-sm-3">
-                                                                                    <label>Puntos Asignados</label>
-                                                                                    <input v-model="puntos_asignados" type="text" class=" form-control" style="font-size:.8em" required/>
-                                                                                </div>
-                                                                        </div>
-                                                                        <div class="d-flex justify-content-center">
-                                                                                <div class="col-12 col-sm-3 text-center">  
-                                                                                        <button class="btn btn-success" type="submit">Guardar</button>
-                                                                                </div>
-                                                                        </div>
-                                                                </form>
-                                                            </div>
+                                                                        </form>
+                                                                    </div>
                                                    </div>
                                         </div>
                                     </div>
@@ -322,13 +334,80 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
 
                        
                        <div class="modal fade" id="modalImpactoCualitativo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"><!--modal impacto cualitativo-->
-                                <div class="modal-dialog modal-sm modal-dialog-centered">
+                                <div class="modal-dialog modal-lg modal-dialog-centered">
                                     <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel"  style="font-size:.9em;">Formulario <b>(Impacto Caulitativo).</b></h5>
+                                        <h5 class="modal-title" id="exampleModalLabel"  style="font-size:.9em;">Formulario <b>(Impacto Cualitativo).</b></h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
+                                    <div class="row" v-for="concentrado in concentrado_sugerencias" >
+                                                  <div v-show="concentrado.id==id_concentrado" style=" font-size:.8em;">
+                                                                    <div class="row mb-2">
+                                                                        <span class="badge bg-secondary text-light"> Validación de Implementación de Sugerencia FOLIO: {{folio}}</span>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                            <div class="col-12 col-sm-6">
+                                                                                        <div>
+                                                                                                <label><b>Impacto Primario: </b> {{concentrado.impacto_primario}}</label><br>
+                                                                                                <label><b>Impacto Secundario: </b> {{concentrado.impacto_secundario}}</label><br>
+                                                                                                <label><b>Tipo de Desperdicio:</b> {{concentrado.tipo_de_desperdicio}}</label><br>
+                                                                                                <label><b>Objetivos de Calidad y M.A:</b> {{concentrado.objetivo_de_calidad_ma}}</label><br>
+                                                                                        </div>
+                                                                            </div>
+                                                                            <div class="col-12 col-sm-6 d-flex justify-content-center">
+                                                                                                <!-- Mostrando los archivos nuevos y cargados de PPT-->
+                                                                                            <div v-show="fileppt.length>0 && cual_documento=='ppt'" >
+                                                                                                    <div v-for= "(fileppts,index) in fileppt">
+                                                                                            
+                                                                                                            <span class="badge bg-secondary">Descargar Presentacion </span><br>
+                                                                                                                <!--<div class="col-12 col-md-12">
+                                                                                                                    <button type="button" class="btn btn-danger" @click="eliminarDocumento(fileppts)" >Eliminar</button>
+                                                                                                                </div>-->
+                                                                                                                <div class="mb-5">
+                                                                                                                    <a :href="fileppts" download="Presentacion.pptx">
+                                                                                                                        <img src="img/descargar_ppt.png" style="width:100px; height:100px;"></img>
+                                                                                                                    </a>
+                                                                                                                </div>
+                                                                                                        
+                                                                                                    </div>
+                                                                                            </div>
+                                                                            </div>
+                                                                    </div>
+                                                                    <div class="bg-light p-3 border rounded">
+                                                                        <form @submit.prevent="guardarImpactoCualitativo">
+                                                                                <div class="row">
+                                                                                        <div class="col-12">
+                                                                                            <label>Impacto cualitativo:</label>
+                                                                                            <textarea v-model="impacto_cualitativo" type="text" class="form-control" style="font-size:.8em;" required></textarea>
+                                                                                        </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                        <div class="col-12 col-sm-5">
+                                                                                            <label>Tipo de impacto:</label>
+                                                                                            <select v-model="tipo_impacto" class=" form-control" style="font-size:.8em" required>
+                                                                                                        <option value="" disabled>Seleccione una opción..</option>
+                                                                                                        <option value="Bajo">Bajo</option>
+                                                                                                        <option value="Medio">Medio</option>
+                                                                                                        <option value="Alto">Alto</option>
+                                                                                            </select>
+                                                                                        </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                        <div class="col-12 col-sm-3">
+                                                                                            <label>Puntos Asignados</label>
+                                                                                            <input v-model="puntos_asignados_cualitativos" type="text" class=" form-control" style="font-size:.8em" required/>
+                                                                                        </div>
+                                                                                </div>
+                                                                                <div class="d-flex justify-content-center">
+                                                                                        <div class="col-12 col-sm-3 text-center">  
+                                                                                                <button class="btn btn-success" type="submit" style=" font-size:1em">Guardar</button>
+                                                                                        </div>
+                                                                                </div>
+                                                                        </form>
+                                                                    </div>
+                                                   </div>
+                                        </div>
                                            
 
                                     </div>
@@ -873,6 +952,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 //*Varibales Concetrado*/
                 lista_validacion_de_impacto:['Cuantitativo','Cualitativo'],
                 concentrado_actividades:[],
+                
                 folio:'',
                 validacion_de_impacto:'',
                 /*formulario cuantitativo*/
@@ -882,7 +962,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 porcentaje_de_mejora:'',
                 tipo_de_impacto:'',
                 puntos_asignados:'',
+                /*formulario cualitativo*/
                 tipo_impacto:'',
+                impacto_cualitativo:'',
+                puntos_asignados_cualitativos:'',
                 //*Varibales Concetrado*/
                 file: '',
                 filenames: [],
@@ -1028,6 +1111,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
         this.validacion_de_impacto = validacion_de_impacto
         this.cual_documento = 'ppt'
         this.buscarDocumentos()
+        this.buscarDatosValidacionImpacto()
+        
+        
     },
     cambiaraEnFactibilidad(){
         if(!confirm('Desea usted cambiar el status de esta sugerencia a "En Factibilidad"')) return
@@ -1043,8 +1129,36 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
             console.log(error)
         })
     },
+    buscarDatosValidacionImpacto(){
+        console.log(this.validacion_de_impacto)
+        axios.post('buscar_formulario_validacion_de_impacto.php',{
+            id_concentrado: this.id_concentrado,
+            folio:this.folio,
+            cuantitativo_o_cualitativo: this.validacion_de_impacto
+        }).then(response =>{
+            if(this.validacion_de_impacto=="Cuantitativo")
+                    {
+                        this.indicador = response.data.indicador
+                        this.linea_base = response.data.linea_base
+                        this.resultado_esperado = response.data.resultado_esperado
+                        this.porcentaje_de_mejora = response.data.porcentaje_de_mejora
+                        this.tipo_de_impacto = response.data.tipo_de_impacto
+                        this.puntos_asignados = response.data.puntos_asignados
+                    }
+            if(this.validacion_de_impacto=="Cualitativo")
+                    {
+                        this.impacto_cualitativo = response.data.impacto
+                        this.tipo_impacto = response.data.tipo
+                        this.puntos_asignados_cualitativos = response.data.puntos
+                     
+                    }
+                
+        }).catch(arror =>{
+            console.log(error)
+        })
+    },
     guardarImpactoCuantitativo(){
-                axios.post('guardar_actualizar_validacion_de_impacto.php',{
+                axios.post('guardar_actualizar_validacion_de_impacto_cuantitativo.php',{
                 tipo_de_impacto:this.tipo_de_impacto,
                 id_concentrado:this.id_concentrado,
                 folio:this.folio,
@@ -1056,9 +1170,63 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 puntos_asignados:this.puntos_asignados
                 }).then(response =>{
                         console.log(response.data)
+                        if(response.data[0]== true && response.data[1]== true){
+                           alert("Los datos se guardaron/actualizaron correctamente.")
+                           bootstrap.Modal.getOrCreateInstance(document.getElementById('modalImpactoCuantitativo')).hide()//oculto contenido
+                           const items = document.getElementsByClassName("modal-backdrop fade show")// obtengo div con estas clases
+                           items[0].className = ""; // sustituyo y elimino a nada. 
+                            this.consultado_concentrado()
+                        }else{
+                            alert("Fallo al guardar en una tabla o ambas")
+                        }
                 }).catch(arror =>{
                     console.log(error)
                 })
+    },
+    guardarImpactoCualitativo(){
+        console.log(this.impacto_cualitativo + this.tipo_impacto + this.puntos_asignados_cualitativos)
+        axios.post('guardar_actualizar_validacion_de_impacto_cualitativo.php',{
+                tipo_de_impacto:this.tipo_de_impacto,
+                id_concentrado:this.id_concentrado,
+                folio:this.folio,
+                impacto_cualitativo:this.impacto_cualitativo,
+                tipo_impacto:this.tipo_impacto,
+                puntos_asignados_cualitativos:this. puntos_asignados_cualitativos,
+                validacion_de_impacto: this.validacion_de_impacto
+                }).then(response =>{
+                        console.log(response.data)
+                        if(response.data[0]== true && response.data[1]== true){
+                           alert("Los datos se guardaron/actualizaron correctamente.")
+                           bootstrap.Modal.getOrCreateInstance(document.getElementById('modalImpactoCuantitativo')).hide()//oculto contenido
+                           const items = document.getElementsByClassName("modal-backdrop fade show")// obtengo div con estas clases
+                           items[0].className = ""; // sustituyo y elimino a nada. 
+                            this.consultado_concentrado()
+                        }else{
+                            alert("Fallo al guardar en una tabla o ambas")
+                        }
+                }).catch(arror =>{
+                    console.log(error)
+                })
+
+    },
+    vaciarValidaciondeImpacto(id_concentrado){
+        if(!confirm('Vaciar impacto Cuantitativo.'))return
+
+        this.id_concentrado = id_concentrado
+        axios.post('vaciar_validacion_de_impacto.php',{
+                id_concentrado:this.id_concentrado,
+                }).then(response =>{
+                        console.log(response.data)
+                        if(response.data[0]== true && response.data[1]== true){
+                           alert("Se vaciaron los campos de validación de impacto")
+                            this.consultado_concentrado()
+                        }else{
+                            alert("Fallo al guardar en una tabla o ambas")
+                        }
+                }).catch(arror =>{
+                    console.log(error)
+                })
+       
     },
       /*FIN METODOS PRINCIPAL MEJORA*/
       /*METODOS CONCENTRADO SUGERENCIAS*/
@@ -1398,41 +1566,44 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     });
                 },
             buscarDocumentos(){
-                console.log(this.folio_carpeta_doc+this.cual_documento)
+                //alert(this.folio_carpeta_doc+this.cual_documento)
                 this.filenames=[] //limpiado vista del documento subido en modal 
                 this.filedoc=[]//limpiado vista del documento bajada en modal 
                 this.fileppt=[]//limpiado vista del documento bajada en modal 
-                    axios.post("buscar_documentos.php",{
-                        folio_carpeta_doc:this.folio_carpeta_doc,
-                        cual_documento:this.cual_documento
-                    })
-                    .then(response => {
-                   
-                    if(this.cual_documento=="sugerencia"){
-                                this.filedoc = response.data
-                                this.cantidadDOCPPT = this.filedoc.length
-                                if(this.filedoc.length>0){
-                                    console.log(this.filedoc.length + "Archivos encontrados.")
-                                }else{
-                                    /*alert("Sin Documentos agregados.")*/
+                if(this.folio_carpeta_doc!=undefined){
+                                axios.post("buscar_documentos.php",{
+                                    folio_carpeta_doc:this.folio_carpeta_doc,
+                                    cual_documento:this.cual_documento
+                                })
+                                .then(response => {
+                            
+                                if(this.cual_documento=="sugerencia"){
+                                            this.filedoc = response.data
+                                            this.cantidadDOCPPT = this.filedoc.length
+                                            if(this.filedoc.length>0){
+                                                console.log(this.filedoc.length + "Archivos encontrados.")
+                                            }else{
+                                                /*alert("Sin Documentos agregados.")*/
+                                            }
                                 }
+                                if(this.cual_documento=="ppt"){
+                                            this.fileppt = response.data
+                                            this.cantidadDOCPPT = this.fileppt.length
+                                            if(this.fileppt.length>0){
+                                                console.log(this.fileppt.length + "Archivos encontrados.")
+                                            }else{
+                                                /*alert("Sin Documentos agregados.")*/
+                                            }
+                                    }
+                                    this.consultado_concentrado()
+                                    
+                                })
+                                .catch(error => {
+                                    console.log(error);
+                                });
                     }
-                    if(this.cual_documento=="ppt"){
-                                this.fileppt = response.data
-                                this.cantidadDOCPPT = this.fileppt.length
-                                if(this.fileppt.length>0){
-                                    console.log(this.fileppt.length + "Archivos encontrados.")
-                                }else{
-                                    /*alert("Sin Documentos agregados.")*/
-                                }
-                        }
-                        this.consultado_concentrado()
-                        
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
                 },
+                
             eliminarDocumento(ruta){
                
                axios.post("eliminar_documento.php",{
