@@ -91,6 +91,7 @@ if ($_SESSION["usuario"] ){
                             <!--fin cinta apartado-->
                             <!-- contenido principal analista gonher-->
                           <div class="row">  
+                            
                                 <div class="col-6 col-"><!--tabla pediente factibilidad-->
                                             <div class="text-center mt-3 ">
                                                 <span class="badge bg-light text-dark">Sugerencias Pendientes de Factibilidad: <?php echo $_SESSION['nombre']; ?></span>
@@ -116,10 +117,10 @@ if ($_SESSION["usuario"] ){
                                                         <td>{{concentrado.fecha_de_inicio}}</td>
                                                         <td>{{concentrado.fecha_limite}}</td>
                                                         <td class="text-center">
-                                                            <button v-if="concentrado.status_factibilidad=='Pendiente'" type="button" class="btn btn-warning" style=" font-size: 1em" data-bs-toggle="modal" data-bs-target="#modal" 
-                                                            @click="datos_modal_factibilidad('factibilidad',concentrado.id,concentrado.folio,concentrado.respuesta_analista,concentrado.check_mc)"><i class="bi bi-eye"></i> {{concentrado.status}} </button>
-                                                            <button v-else="concentrado.status_factibilidad=='Vencida'" type="button" class="btn btn-danger" style=" font-size: 1em" data-bs-toggle="modal" data-bs-target="#modal" 
-                                                            @click="datos_modal_factibilidad('factibilidad',concentrado.id,concentrado.folio,concentrado.respuesta_analista,concentrado.check_mc)"><i class="bi bi-eye"></i> {{concentrado.status}} </button>
+                                                            <button v-if="concentrado.status_factibilidad=='Pendiente'" type="button" class="btn btn-warning" style=" font-size: 1em" title="Factible o No Factible" data-bs-toggle="modal" data-bs-target="#modal" 
+                                                            @click="datos_modal_factibilidad('factibilidad',concentrado.id,concentrado.folio,concentrado.status,concentrado.respuesta_analista,concentrado.check_mc)"><i class="bi bi-eye"></i> {{concentrado.status}} </button>
+                                                            <button v-else="concentrado.status_factibilidad=='Vencida'" type="button" class="btn btn-danger" style=" font-size: 1em" title="Factible o No Factible" data-bs-toggle="modal" data-bs-target="#modal" 
+                                                            @click="datos_modal_factibilidad('factibilidad',concentrado.id,concentrado.folio,concentrado.status,concentrado.respuesta_analista,concentrado.check_mc)"><i class="bi bi-eye"></i> {{concentrado.status}} </button>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -145,7 +146,10 @@ if ($_SESSION["usuario"] ){
                                                     <th scope="row" class="text-center">{{index+1}}</th>
                                                         <td>{{concentrado.folio}}</td>
                                                         <td>{{concentrado.nombre_sugerencia}}</td>
-                                                        <td>{{concentrado.cumplimiento}}</td>
+                                                        <td class="text-center"><label class="me-2"><b>{{concentrado.cumplimiento}}% </b></label> 
+                                                            <button  type="button" class="btn btn-primary" style="font-size: 1em" data-bs-toggle="modal" data-bs-target="#modal"  title="Ver Plan de Trabajo"
+                                                            @click="datos_modal_factibilidad('factibilidad',concentrado.id,concentrado.folio,concentrado.status,concentrado.respuesta_analista,concentrado.check_mc)"><i class="bi bi-pencil"></i></i> {{concentrado.status}} </button>
+                                                        </td>
                                                     </tr>
                                                 </tbody>
                                                 </table>
@@ -299,7 +303,7 @@ if ($_SESSION["usuario"] ){
                                                                                         </td> 
                                                                                             <th scope="row">
                                                                                             <label v-show="actualizar==true">{{numero_orden_en_select=index+1}}</label>
-                                                                                                    <select  v-model="numero_orden_en_select" v-show="actualizar==false">
+                                                                                                    <select  v-model="numero_orden_en_select" v-show="actualizar==false" title="Cambiar posición">
                                                                                                         <option v-for="numero in numero_actividad" @click="ordenarActividades(index,numero-1)">{{numero}}</option>
                                                                                                     </select>     
                                                                                             </th>
@@ -316,24 +320,25 @@ if ($_SESSION["usuario"] ){
                                                                                         <td><input v-if="id_actualizar==index+1" class="inputs-concentrado" v-model="fecha_inicial_actividad" type="date" ></input><label v-else>{{actividades.fecha_inicial}}<label></td>
                                                                                         <td><input v-if="id_actualizar==index+1" class="inputs-concentrado" v-model="fecha_final_actividad" type="date" ></input><label v-else>{{actividades.fecha_final}}<label></td>
                                                                                         <td>
-                                                                                            <select v-if="id_actualizar==index+1" class="" v-model="porcentaje" >
-                                                                                                <option value="0">0</option>
-                                                                                                <option :value="numeros*5" v-for="numeros in 20">{{numeros*5}}</option>
+                                                                                            <label style="display:none">{{porcentaje=actividades.porcentaje}}</label>
+                                                                                            <select v-show="actualizar==false && status=='En Implementación' && check_mc=='Aceptado'" class="form-control" v-model="porcentaje" >
+                                                                                                <option value="0" @click="actualizarPorcentajeEnActividad(actividades.id,0)">0%</option>
+                                                                                                <option :value="numeros*5" v-for="numeros in 20" @click="actualizarPorcentajeEnActividad(actividades.id,numeros*5)">{{numeros*5}}%</option>
                                                                                             </select>
-                                                                                            <label v-else>{{actividades.porcentaje}}%<label>
+                                                                                            <label  v-show="status!='En Implementación' && check_mc!='Aceptado'">{{actividades.porcentaje}}%<label>
                                                                                         </td>
                                                                                     </tr><!--Fin consuta actividades-->    
                                                                                 </tbody>
                                                                             </table>
                                                                         </div><!--scroll-->
                                                                     </div>
-                                                                    <div class="col-12 text-center"> <button type="button" class="btn btn-success mb-2" style="font-size:0.9em" v-show="numero_actividad>0 && bandera_btn_finalizar=='mostrar' || numero_actividad>0 && check_mc_anterior==''" @click="checkPlanActividades">Finalizar Plan</button></div>
-                                                                    <div class="alert alert-warning fw-bold"  v-if="numero_actividad>0 && bandera_btn_finalizar!='mostrar' && check_mc_anterior=='Pendiente' || 
-                                                                                                                     numero_actividad>0 && bandera_btn_finalizar!='mostrar' && check_mc_anterior=='Corregido'">
+                                                                    <div class="col-12 text-center"> <button type="button" class="btn btn-success mb-2" style="font-size:0.9em" v-show="numero_actividad>0 && bandera_btn_finalizar=='mostrar' || numero_actividad>0 && check_mc==''" @click="checkPlanActividades">Finalizar Plan</button></div>
+                                                                    <div class="alert alert-warning fw-bold"  v-if="numero_actividad>0 && bandera_btn_finalizar!='mostrar' && check_mc=='Pendiente' || 
+                                                                                                                     numero_actividad>0 && bandera_btn_finalizar!='mostrar' && check_mc=='Corregido'">
                                                                                                                      Su plan de trabajo esta siendo revisado por Mejora Continua.</div>
-                                                                    <div class="alert alert-danger fw-bold"  v-if="numero_actividad>0 && bandera_btn_finalizar!='mostrar' && check_mc_anterior=='Rechazado'">
+                                                                    <div class="alert alert-danger fw-bold"  v-if="numero_actividad>0 && bandera_btn_finalizar!='mostrar' && check_mc=='Rechazado'">
                                                                                                                      Su plan fue rechazado por Mejora Continua.</div>
-                                                                    <div class="alert alert-success fw-bold"  v-if="numero_actividad>0 && bandera_btn_finalizar!='mostrar' && check_mc_anterior=='Aceptado'">
+                                                                    <div class="alert alert-success fw-bold"  v-if="numero_actividad>0 && bandera_btn_finalizar!='mostrar' && check_mc=='Aceptado'">
                                                                                                                     Su plan fue aceptado, favor de ejecutar en tiempo y forma.</div>
                                                                     
                                                                     <hr>
@@ -411,8 +416,8 @@ if ($_SESSION["usuario"] ){
                                                     </div>   <!--FIN ESPACIO NO FACTIBLE-->
                                                     <div class="12 modal-footer " > 
                                                         <div class="col-12 text-center">
-                                                                <button type="button" class="btn btn-success btn-lg me-2 fst-italic" @click="factible = true,  no_factible = false, repuestaFactibleNoFactible('Factible')">Factible</button> 
-                                                                <button type="button" class="btn btn-warning btn-lg fst-italic" @click="no_factible = true, factible = false, repuestaFactibleNoFactible('No Factible')">No factible</button> 
+                                                                <button v-show="status!='En Implementación' && status!='Implementada'"  type="button" class="btn btn-success btn-lg me-2 fst-italic" @click="factible = true,  no_factible = false, repuestaFactibleNoFactible('Factible')">Factible</button> 
+                                                                <button v-show="status!='En Implementación' && status!='Implementada'" type="button" class="btn btn-warning btn-lg fst-italic" @click="no_factible = true, factible = false, repuestaFactibleNoFactible('No Factible')">No factible</button> 
                                                                 <button type="button" class="btn btn-secondary btn-sm ms-5"  data-bs-dismiss="modal" >Salir</button>
                                                         </div>              
                                                     </div>
@@ -442,8 +447,9 @@ if ($_SESSION["usuario"] ){
                 contador: 0,
                 concentrado_sugerencias_pendiente_factibilidad:[],
                 concentrado_sugerencias_pendiente_implementacion:[],
+                status:'',
                 /*varibles en modal factibilidad*/
-                check_mc_anterior:'',
+                check_mc:'',
                 mensaje_del_check_mc:'',
                 factible: false,
                 no_factible: false,
@@ -532,8 +538,10 @@ if ($_SESSION["usuario"] ){
                     console.log(this.lista_impacto);
                 })
             },
-            datos_modal_factibilidad(tipo,index,folio,respuesta,check_anterior){
-                this.check_mc_anterior = check_anterior;
+            datos_modal_factibilidad(tipo,index,folio,status,respuesta,check_mc){
+                this.id_actualizar = ''
+                this.status = status
+                this.check_mc = check_mc
                 this.tipo_factibilida_o_implementacion=tipo
                 if(respuesta=="Factible"){
                     this.factible=true
@@ -542,8 +550,6 @@ if ($_SESSION["usuario"] ){
                     this.factible=false
                     this.no_factible=true
                     
-                }else{
-
                 }
                 this.folio=folio
                 this.id_concentrado_general=index
@@ -622,6 +628,7 @@ if ($_SESSION["usuario"] ){
                         this.impacto_primario = response.data[0].impacto_primario
                         this.impacto_secundario = response.data[0].impacto_secundario
                         this.tipo_desperdicio = response.data[0].tipo_de_desperdicio
+                        this.fecha_compromiso = response.data[0].fecha_compromiso
                         var arr = response.data[0].objetivo_de_calidad_ma.split(',')
                         var longitud = arr.length
                         this.var_objetivo_de_calidadMA.splice(0,15);
@@ -675,7 +682,7 @@ if ($_SESSION["usuario"] ){
                             fecha_inicial_actividad: this.fecha_inicial_actividad,
                             fecha_final_actividad: this.fecha_final_actividad,
                             porcentaje:this.porcentaje,
-                            check_mc_anterior: this.check_mc_anterior
+                            check_mc: this.check_mc
                         }).then(response =>{
                                 console.log(response.data)
                                     if(response.data=="si"){
@@ -804,13 +811,15 @@ if ($_SESSION["usuario"] ){
                     axios.post("actualizar_check_plan_trabajo.php",{
                     id_concentrado:this.id_concentrado_general,
                     enviado_o_no: 'ENVIADO',
-                    check_mc_anterior: this.check_mc_anterior
+                    check_mc: this.check_mc
                      }).then(response =>{
                         console.log(response.data)
                         if(response.data[1] == true || response.data[2] == true){
                             alert("Su plan de trabajo sera revisado por Mejora Continua")
                             this.bandera_btn_finalizar = "no mostrar"
-                            this.check_mc_anterior =  response.data[0]
+                            this.check_mc =  response.data[0]
+                            this.consultado_concentrado_pendiente_factibilidad()
+                            this.consultado_concentrado_pendiente_implementacion()
                         }else{
                             alert("Algo salio mal.")
                         }
@@ -846,11 +855,12 @@ if ($_SESSION["usuario"] ){
                 }).then(response =>{
                     if(response.data=="correcto"){
                        // window.location.reload()//recargo nuevamente pagina cuestion de MODAL
-                            bootstrap.Modal.getOrCreateInstance(document.getElementById('modalImpactoCuantitativo')).hide()//oculto contenido
+                           /* bootstrap.Modal.getOrCreateInstance(document.getElementById('modalImpactoCuantitativo')).hide()//oculto contenido
                            const items = document.getElementsByClassName("modal-backdrop fade show")// obtengo div con estas clases
-                           items[0].className = ""; // sustituyo y elimino a nada. 
-                        this.consultado_concentrado_pendiente_factibilidad()
-                        this.consultado_concentrado_pendiente_implementacion()
+                           items[0].className = ""; // sustituyo y elimino a nada. */
+                        //this.consultado_concentrado_pendiente_factibilidad()
+                       // this.consultado_concentrado_pendiente_implementacion()
+                       window.location.reload()
                         
                     }else if(response.data=="mal"){
                         alert("No se guarda NO FACTIBLE, pongase en contacto con Mejora Continua.")
@@ -923,7 +933,30 @@ if ($_SESSION["usuario"] ){
                         }).catch(error =>{
                             console.log(error)
                         })
-                },  
+                },
+                actualizarPorcentajeEnActividad(id_actividad,porcentaje_actividad){
+                    axios.post("actualizar_porcentaje_en_actividad.php",{
+                            id_actividad: id_actividad,
+                            porcentaje_actividad: porcentaje_actividad,
+                            id_concentrado:this.id_concentrado_general
+                        }).then( response=>{
+                            console.log(response.data)
+                            if(response.data==true){
+                                this.consultarActividades()
+                                alert("Porcentaje guardado con Exito.")
+                                
+                            }
+                           /* if(response.data==""){
+
+                            }else if(response.data=="No Eliminado"){
+                                alert("Algo no salio bien no se logro Eliminar.")
+                            }else{
+                                alert("Error al eliminar el Documento.")
+                            }*/
+                        }).catch(error =>{
+                            console.log(error)
+                        })
+                }  
         }   
     }
     var mountedApp = Vue.createApp(vue3).mount('#app');

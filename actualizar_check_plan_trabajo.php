@@ -7,7 +7,7 @@ $consulta1 = "";
 $consulta2 = "";
 $id_concentrado=$variables['id_concentrado'];
 $enviado_o_no=$variables['enviado_o_no'] ;
-$check=$variables['check_mc_anterior'] ;
+$check=$variables['check_mc'] ;
 if($check=="Pendiente" || $check=="" || $check==" "){
         $check = "Pendiente";
 }else if($check=="Rechazado"){

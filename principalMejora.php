@@ -216,7 +216,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                        </div><!--Fin Modal tabla actividades-->
 
                        <div class="modal fade" id="modalCambiaraEnFactibilidad" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"><!--modal cambiar a enfactibilida-->
-                                <div class="modal-dialog modal-xl">
+                                <div class="modal-dialog modal-sm modal-dialog-centered">
                                     <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="exampleModalLabel">Cambiar STATUS.</h5>
@@ -386,7 +386,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                                 <div class="row">
                                                                                         <div class="col-12 col-sm-5">
                                                                                             <label>Tipo de impacto:</label>
-                                                                                            <select v-model="tipo_impacto" class="form-control" style="font-size:.8em" required>
+                                                                                            <select v-model="tipo_impacto" class=" form-control" style="font-size:.8em" required>
                                                                                                         <option value="" disabled>Seleccione una opción..</option>
                                                                                                         <option value="Bajo">Bajo</option>
                                                                                                         <option value="Medio">Medio</option>
@@ -1173,10 +1173,12 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                         console.log(response.data)
                         if(response.data[0]== true && response.data[1]== true){
                            alert("Los datos se guardaron/actualizaron correctamente.")
-                           bootstrap.Modal.getOrCreateInstance(document.getElementById('modalImpactoCuantitativo')).hide()//oculto contenido
-                           const items = document.getElementsByClassName("modal-backdrop fade show")// obtengo div con estas clases
+                           /*const items = document.getElementsByClassName("modal-backdrop fade show")// obtengo div con estas clases
                            items[0].className = ""; // sustituyo y elimino a nada. 
+                           bootstrap.Modal.getOrCreateInstance(document.getElementById('modalImpactoCuantitativo')).hide()//oculto contenido*/
                             this.consultado_concentrado()
+                            //window.location.reload();
+                            
                         }else{
                             alert("Fallo al guardar en una tabla o ambas")
                         }
@@ -1197,11 +1199,14 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 }).then(response =>{
                         console.log(response.data)
                         if(response.data[0]== true && response.data[1]== true){
+                            //window.location.reload();
                            alert("Los datos se guardaron/actualizaron correctamente.")
-                           bootstrap.Modal.getOrCreateInstance(document.getElementById('modalImpactoCuantitativo')).hide()//oculto contenido
-                           const items = document.getElementsByClassName("modal-backdrop fade show")// obtengo div con estas clases
+                           /*const items = document.getElementsByClassName("modal-backdrop fade show")// obtengo div con estas clases
                            items[0].className = ""; // sustituyo y elimino a nada. 
+                           bootstrap.Modal.getOrCreateInstance(document.getElementById('modalImpactoCualitativo')).hide()//oculto contenido*/
+                          
                             this.consultado_concentrado()
+                            
                         }else{
                             alert("Fallo al guardar en una tabla o ambas")
                         }
@@ -1210,13 +1215,13 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 })
 
     },
-    vaciarValidaciondeImpacto(id_concentrado,tipo_cuali_o_cuanti){
+    vaciarValidaciondeImpacto(id_concentrado,cuali_o_cuanti){
         if(!confirm('Vaciar impacto Cuantitativo.'))return
 
         this.id_concentrado = id_concentrado
         axios.post('vaciar_validacion_de_impacto.php',{
                 id_concentrado:this.id_concentrado,
-                cuali_o_cuanti:tipo_cuali_o_cuanti,
+                cuali_o_cuanti:cuali_o_cuanti
                 }).then(response =>{
                         console.log(response.data)
                         if(response.data[0]== true && response.data[1]== true){

@@ -15,13 +15,12 @@ $fecha_inicial = date("Y-m-d", strtotime($fecha_inicial));
 $fecha_final=$variables['fecha_final_actividad'];
 $fecha_final = date("Y-m-d", strtotime($fecha_final));
 
-$porcentaje=$variables['porcentaje'];
 
 $tipo=$variables['tipo_nueva_actualizar'];
 $id=$variables['id'];
 $id_concentrado=$variables['id_concentrado'];
 
-$check=$variables['check_mc_anterior'] ;
+$check=$variables['check_mc'] ;
 
 if($check=="Pendiente"){
         $check = "Pendiente";
@@ -46,7 +45,7 @@ include "conexionGhoner.php";
                         $resultado="error create";
                 }
         }else if ($tipo=="actualizar"){
-                $actualizar = "UPDATE plan_trabajo_sugerencias SET actividad='$actividad', responsable='$responsable_plan',fecha_inicial='$fecha_inicial',fecha_final='$fecha_final',porcentaje='$porcentaje', enviado_o_no = '' WHERE id = '$id'";
+                $actualizar = "UPDATE plan_trabajo_sugerencias SET actividad='$actividad', responsable='$responsable_plan',fecha_inicial='$fecha_inicial',fecha_final='$fecha_final', enviado_o_no = '' WHERE id = '$id'";
                 $query = mysqli_query( $conexion, $actualizar);
 
                 $actualizar2 = "UPDATE concentrado_sugerencias SET check_mc='$check' WHERE id = '$id_concentrado'";//ACTUALIZADO CHECK  CONCENTRADO SUGERENCIAS
