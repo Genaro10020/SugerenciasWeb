@@ -136,7 +136,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                     <div>
                                                            <div v-if="concentrado.validacion_de_impacto =='Cuantitativo'"><!--BTN VERDE-->
                                                                 <button v-show="concentrado.status =='En Implementación' || concentrado.status=='Implementada'" type="button" class="btn btn-success" @click="datos_modal(concentrado.id, concentrado.folio,'Cuantitativo')" style=" font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalImpactoCuantitativo">Impacto Cuantitativo</button>
-                                                                <button v-show="concentrado.status =='En Implementación' || concentrado.status=='Implementada'" type="button" class="btn btn-danger ms-2" @click="vaciarValidaciondeImpacto(concentrado.id)" title="Limpiar impacto" style=" font-size:.9em">x</button>
+                                                                <button v-show="concentrado.status =='En Implementación' || concentrado.status=='Implementada'" type="button" class="btn btn-danger ms-2" @click="vaciarValidaciondeImpacto(concentrado.id,'Cuantitativo')" title="Limpiar impacto" style=" font-size:.9em">x</button>
                                                            </div>
                                                            <div v-else><!--BTN GRIS-->                                                           
                                                                 <button v-show="concentrado.status =='En Implementación' || concentrado.status=='Implementada'" type="button" class="btn btn-secondary" @click="datos_modal(concentrado.id, concentrado.folio,'Cuantitativo')" style=" font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalImpactoCuantitativo">Impacto Cuantitativo</button>
@@ -145,6 +145,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                     <div>
                                                             <div v-if="concentrado.validacion_de_impacto =='Cualitativo'"><!--BTN VERDE-->
                                                                 <button v-show="concentrado.status =='En Implementación' || concentrado.status=='Implementada'" type="button" class="btn btn-success" @click="datos_modal(concentrado.id, concentrado.folio,'Cualitativo')" style=" font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalImpactoCualitativo">Impacto Cualitativo</button>
+                                                                <button v-show="concentrado.status =='En Implementación' || concentrado.status=='Implementada'" type="button" class="btn btn-danger ms-2" @click="vaciarValidaciondeImpacto(concentrado.id,'Cualitativo')" title="Limpiar impacto" style=" font-size:.9em">x</button>
                                                             </div>
                                                             <div v-else><!--BTN GRIS-->
                                                                 <button v-show="concentrado.status =='En Implementación' || concentrado.status=='Implementada'" type="button" class="btn btn-secondary" @click="datos_modal(concentrado.id, concentrado.folio,'Cualitativo')" style=" font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalImpactoCualitativo">Impacto Cualitativo</button>
@@ -385,7 +386,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                                 <div class="row">
                                                                                         <div class="col-12 col-sm-5">
                                                                                             <label>Tipo de impacto:</label>
-                                                                                            <select v-model="tipo_impacto" class=" form-control" style="font-size:.8em" required>
+                                                                                            <select v-model="tipo_impacto" class="form-control" style="font-size:.8em" required>
                                                                                                         <option value="" disabled>Seleccione una opción..</option>
                                                                                                         <option value="Bajo">Bajo</option>
                                                                                                         <option value="Medio">Medio</option>
@@ -1209,12 +1210,13 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 })
 
     },
-    vaciarValidaciondeImpacto(id_concentrado){
+    vaciarValidaciondeImpacto(id_concentrado,tipo_cuali_o_cuanti){
         if(!confirm('Vaciar impacto Cuantitativo.'))return
 
         this.id_concentrado = id_concentrado
         axios.post('vaciar_validacion_de_impacto.php',{
                 id_concentrado:this.id_concentrado,
+                cuali_o_cuanti:tipo_cuali_o_cuanti,
                 }).then(response =>{
                         console.log(response.data)
                         if(response.data[0]== true && response.data[1]== true){
