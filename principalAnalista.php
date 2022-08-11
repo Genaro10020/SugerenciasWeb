@@ -148,7 +148,7 @@ if ($_SESSION["usuario"] ){
                                                         <td>{{concentrado.nombre_sugerencia}}</td>
                                                         <td class="text-center"><label class="me-2"><b>{{concentrado.cumplimiento}}% </b></label> 
                                                             <button  type="button" class="btn btn-primary" style="font-size: 1em" data-bs-toggle="modal" data-bs-target="#modal"  title="Ver Plan de Trabajo"
-                                                            @click="datos_modal_factibilidad('factibilidad',concentrado.id,concentrado.folio,concentrado.status,concentrado.respuesta_analista,concentrado.check_mc)"><i class="bi bi-pencil"></i></i> {{concentrado.status}} </button>
+                                                            @click="datos_modal_factibilidad('En Implementación',concentrado.id,concentrado.folio,concentrado.status,concentrado.respuesta_analista,concentrado.check_mc)"><i class="bi bi-pencil"></i></i> {{concentrado.status}} </button>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -169,6 +169,19 @@ if ($_SESSION["usuario"] ){
                                                             </div>
                                                                 <div class="modal-body alert alert-secondary">
                                                                         <div class="">
+                                                                            <div class="" v-for="(concentrado,index) in concentrado_sugerencias_pendiente_implementacion">
+                                                                                        <div v-if="concentrado.id==id_concentrado_general">
+                                                                                        <label class=" fw-bold mt-1">Nombre de la sugerencias: </label> {{ concentrado.nombre_sugerencia}}<br>
+                                                                                        <label class=" fw-bold mt-1">Situacion Actual: </label> {{concentrado.situacion_actual}}<br>
+                                                                                        <label class=" fw-bold mt-1">Idea Propuesta: </label> {{concentrado.idea_propuesta}}<br>
+                                                                                        <label class=" fw-bold mt-1">Colaborador: </label> {{concentrado.colaborador}}<br>
+                                                                                        <label class=" fw-bold mt-1">No. de Nomina:</label> {{concentrado.colaborador}}<br>
+                                                                                        <label class=" fw-bold mt-1">Puesto: </label> {{concentrado.puesto}}<br>
+                                                                                        <label class=" fw-bold mt-1">Área: </label> {{concentrado.area}}<br>
+                                                                                        <label class=" fw-bold mt-1">Subárea: </label> {{concentrado.subarea}}<br>
+                                                                                        <label class=" fw-bold mt-1">Fecha de Sugerencia: </label> {{concentrado.fecha_de_sugerencia}}<br>
+                                                                                        </div>
+                                                                            </div>
                                                                             <div class="" v-for="(concentrado,index) in concentrado_sugerencias_pendiente_factibilidad">
                                                                                         <div v-if="concentrado.id==id_concentrado_general">
                                                                                         <label class=" fw-bold mt-1">Nombre de la sugerencias: </label> {{ concentrado.nombre_sugerencia}}<br>
@@ -485,7 +498,9 @@ if ($_SESSION["usuario"] ){
                 var_tipo_de_cierre:'',
                 causa_no_factibilidad:'',
                 documento_opcional:[],
-                nombre_de_descarga:''
+                nombre_de_descarga:'',
+                /*Variables en Implementación*/
+                suma_porcentaje_actividades:0,
 
             }
         },
@@ -549,7 +564,6 @@ if ($_SESSION["usuario"] ){
                 }else if(respuesta=="No Factible"){
                     this.factible=false
                     this.no_factible=true
-                    
                 }
                 this.folio=folio
                 this.id_concentrado_general=index
@@ -559,8 +573,13 @@ if ($_SESSION["usuario"] ){
                     this.consultarActividades()
                     this.buscarDocumentos()
                     
-                } else if (this.tipo_factibilida_o_implementacion=="implementacion"){
-
+                } else if (this.tipo_factibilida_o_implementacion=="En Implementación"){
+                    this.factible=true
+                    this.no_factible=false
+                    this.buscarDocumentos_analista()
+                    this.consultarFormularioImpacto()
+                    this.consultarActividades()
+                    this.buscarDocumentos()
                 }else{
 
                 }
@@ -941,18 +960,13 @@ if ($_SESSION["usuario"] ){
                             id_concentrado:this.id_concentrado_general
                         }).then( response=>{
                             console.log(response.data)
-                            if(response.data==true){
+                            if(response.data[0]==true && response.data[1]==true){
                                 this.consultarActividades()
                                 alert("Porcentaje guardado con Exito.")
-                                
-                            }
-                           /* if(response.data==""){
-
-                            }else if(response.data=="No Eliminado"){
-                                alert("Algo no salio bien no se logro Eliminar.")
+                                this.consultado_concentrado_pendiente_implementacion()
                             }else{
-                                alert("Error al eliminar el Documento.")
-                            }*/
+                                alert("No se actulizados datos en una o dos tablas")
+                            }
                         }).catch(error =>{
                             console.log(error)
                         })

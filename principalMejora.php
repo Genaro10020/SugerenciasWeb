@@ -117,10 +117,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                     <tr v-for="(concentrado, index) in concentrado_sugerencias">
                                     <th scope="row" class="text-center">{{index+1}}</th>
                                     <td>
-                                        <button  v-show="concentrado.check_mc=='Pendiente' && concentrado.status!='Cerrada/Fast Response'  && concentrado.status!='Cerrada/No Factible'" class="btn btn-secondary" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalTablaPlan" @click="consultarActividades(concentrado.id)"><i class="bi bi-table" ></i> {{concentrado.check_mc}}</button>
-                                        <button  v-show="concentrado.check_mc=='Rechazado' && concentrado.status!='Cerrada/Fast Response'  && concentrado.status!='Cerrada/No Factible'" class="btn btn-danger" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalTablaPlan" @click="consultarActividades(concentrado.id)"><i class="bi bi-table" ></i> {{concentrado.check_mc}}</button>
-                                        <button  v-show="concentrado.check_mc=='Corregido' && concentrado.status!='Cerrada/Fast Response'  && concentrado.status!='Cerrada/No Factible'" class="btn btn-warning" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalTablaPlan" @click="consultarActividades(concentrado.id)"><i class="bi bi-table"  ></i> {{concentrado.check_mc}}</button>
-                                        <button  v-show="concentrado.check_mc=='Aceptado' && concentrado.status!='Cerrada/Fast Response' && concentrado.status!='Cerrada/No Factible'" class="btn btn-success" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalTablaPlan" @click="consultarActividades(concentrado.id)"><i class="bi bi-table" ></i> {{concentrado.check_mc}}</button>
+                                        <button  v-show="concentrado.check_mc=='Pendiente' && concentrado.status!='Cerrada/Fast Response'  && concentrado.status!='Cerrada/No Factible'" class="btn btn-secondary" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalTablaPlan" @click="consultarActividades(concentrado.id,concentrado.status)"><i class="bi bi-table" ></i> {{concentrado.check_mc}}</button>
+                                        <button  v-show="concentrado.check_mc=='Rechazado' && concentrado.status!='Cerrada/Fast Response'  && concentrado.status!='Cerrada/No Factible'" class="btn btn-danger" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalTablaPlan" @click="consultarActividades(concentrado.id,concentrado.status)"><i class="bi bi-table" ></i> {{concentrado.check_mc}}</button>
+                                        <button  v-show="concentrado.check_mc=='Corregido' && concentrado.status!='Cerrada/Fast Response'  && concentrado.status!='Cerrada/No Factible'" class="btn btn-warning" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalTablaPlan" @click="consultarActividades(concentrado.id,concentrado.status)"><i class="bi bi-table"  ></i> {{concentrado.check_mc}}</button>
+                                        <button  v-show="concentrado.check_mc=='Aceptado' && concentrado.status!='Cerrada/Fast Response' && concentrado.status!='Cerrada/No Factible'" class="btn btn-success" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalTablaPlan" @click="consultarActividades(concentrado.id,concentrado.status)"><i class="bi bi-table" ></i> {{concentrado.check_mc}}</button>
                                     </td>
                                         <td>{{concentrado.folio}}</td>
                                         <td>{{concentrado.nombre_sugerencia}}</td>
@@ -135,20 +135,20 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                 <div class="d-flex justify-content-around">
                                                     <div>
                                                            <div v-if="concentrado.validacion_de_impacto =='Cuantitativo'"><!--BTN VERDE-->
-                                                                <button v-show="concentrado.status =='En Implementación' || concentrado.status=='Implementada'" type="button" class="btn btn-success" @click="datos_modal(concentrado.id, concentrado.folio,'Cuantitativo')" style=" font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalImpactoCuantitativo">Impacto Cuantitativo</button>
-                                                                <button v-show="concentrado.status =='En Implementación' || concentrado.status=='Implementada'" type="button" class="btn btn-danger ms-2" @click="vaciarValidaciondeImpacto(concentrado.id,'Cuantitativo')" title="Limpiar impacto" style=" font-size:.9em">x</button>
+                                                                <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-success" @click="datos_modal(concentrado.id, concentrado.folio,'Cuantitativo')" style=" font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalImpactoCuantitativo">Impacto Cuantitativo</button>
+                                                                <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-danger ms-2" @click="vaciarValidaciondeImpacto(concentrado.id,'Cuantitativo')" title="Limpiar impacto" style=" font-size:.9em">x</button>
                                                            </div>
                                                            <div v-else><!--BTN GRIS-->                                                           
-                                                                <button v-show="concentrado.status =='En Implementación' || concentrado.status=='Implementada'" type="button" class="btn btn-secondary" @click="datos_modal(concentrado.id, concentrado.folio,'Cuantitativo')" style=" font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalImpactoCuantitativo">Impacto Cuantitativo</button>
+                                                                <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-secondary" @click="datos_modal(concentrado.id, concentrado.folio,'Cuantitativo')" style=" font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalImpactoCuantitativo">Impacto Cuantitativo</button>
                                                            </div> 
                                                     </div>
                                                     <div>
                                                             <div v-if="concentrado.validacion_de_impacto =='Cualitativo'"><!--BTN VERDE-->
-                                                                <button v-show="concentrado.status =='En Implementación' || concentrado.status=='Implementada'" type="button" class="btn btn-success" @click="datos_modal(concentrado.id, concentrado.folio,'Cualitativo')" style=" font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalImpactoCualitativo">Impacto Cualitativo</button>
-                                                                <button v-show="concentrado.status =='En Implementación' || concentrado.status=='Implementada'" type="button" class="btn btn-danger ms-2" @click="vaciarValidaciondeImpacto(concentrado.id,'Cualitativo')" title="Limpiar impacto" style=" font-size:.9em">x</button>
+                                                                <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-success" @click="datos_modal(concentrado.id, concentrado.folio,'Cualitativo')" style=" font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalImpactoCualitativo">Impacto Cualitativo</button>
+                                                                <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-danger ms-2" @click="vaciarValidaciondeImpacto(concentrado.id,'Cualitativo')" title="Limpiar impacto" style=" font-size:.9em">x</button>
                                                             </div>
                                                             <div v-else><!--BTN GRIS-->
-                                                                <button v-show="concentrado.status =='En Implementación' || concentrado.status=='Implementada'" type="button" class="btn btn-secondary" @click="datos_modal(concentrado.id, concentrado.folio,'Cualitativo')" style=" font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalImpactoCualitativo">Impacto Cualitativo</button>
+                                                                <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-secondary" @click="datos_modal(concentrado.id, concentrado.folio,'Cualitativo')" style=" font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalImpactoCualitativo">Impacto Cualitativo</button>
                                                             </div>  
                                                     </div>
                                                  </div>
@@ -956,6 +956,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 
                 folio:'',
                 validacion_de_impacto:'',
+                //*Varibales modal acaptado o rechazado */
+                status:'',
                 /*formulario cuantitativo*/
                 indicador:'',
                 linea_base:'',
@@ -1081,8 +1083,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                    if(dato=='configuracion'){this.pintarCinco=true}else{this.pintarCinco=false}
              },
        /*METODOS PRINCIPAL MEJORA*/                                    
-    consultarActividades(id){
+    consultarActividades(id,status){
                 this.id_concentrado = id
+                this.status = status
                 axios.post("consultando_actividades.php",{
                 id_concentrado:this.id_concentrado
                 }).then(response =>{
@@ -1094,8 +1097,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
     actualizarVoBoPlan(aceptado_rechazado){
             axios.post('actualizar_vobo_plan.php',{
                 id_concentrado:this.id_concentrado,
-                aceptado_rechazado:aceptado_rechazado
+                aceptado_rechazado:aceptado_rechazado,
+                status:this.status
             }).then(response =>{
+                console.log(response.data)
                 if(response.data==true){
                     this.consultado_concentrado();
                 }else{

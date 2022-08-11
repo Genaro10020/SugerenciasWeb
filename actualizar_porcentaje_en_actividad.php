@@ -5,17 +5,30 @@ $variables = json_decode(file_get_contents('php://input'), true);
 $id_actividad=$variables['id_actividad'];
 $porcentaje_actividad=$variables['porcentaje_actividad'];
 $id_concentrado=$variables['id_concentrado'];
-$resultado=0;
+$suma=0;
+$cumplimiento=0;
+$resultado = [];
 include "conexionGhoner.php";
 
         $actualizar = "UPDATE plan_trabajo_sugerencias SET porcentaje='$porcentaje_actividad' WHERE id = '$id_actividad'";
-        $query = mysqli_query( $conexion, $actualizar);
+        $query1 = mysqli_query( $conexion, $actualizar);
+        $resultado[] = $query1;
 
-        $consulta = "SELECT * FROM plan_trabajo_sugerencias WHERE id_concentrado = $id_concentrado";
-        $query = mysqli_query( $conexion, $consulta);
-        while ($porcentajes=mysqli_fetch_array($query)){
-                $resultado=(int)$porcentajes['porcentaje']+(int)$resultado;
+        $consulta = "SELECT * FROM plan_trabajo_sugerencias WHERE id_concentrado = $id_concentrado ORDER BY num_actividad ASC " ;
+        $query2 = mysqli_query( $conexion, $consulta);
+        while ($datos=mysqli_fetch_array($query2)){
+                $suma=(int)$datos['porcentaje']+(int)$suma;
+                $cantidad_actividades = (int)$datos['num_actividad']; 
         }
         
+        $cumplimiento=$suma/$cantidad_actividades;
+        $cumplimiento=round($cumplimiento, 0, PHP_ROUND_HALF_DOWN);
+        if($cumplimiento==100){
+                $cumplimiento=99;
+        }
+        $actualizar = " UPDATE concentrado_sugerencias SET cumplimiento='$cumplimiento' WHERE id = '$id_concentrado'";
+        $query2 = mysqli_query( $conexion, $actualizar);
+        $resultado[] = $query2;
+        $resultado[] = $cumplimiento;
 echo json_encode($resultado);
 ?>
