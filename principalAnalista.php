@@ -293,7 +293,7 @@ if ($_SESSION["usuario"] ){
                                                                                         <th scope="row">
                                                                                             <label>{{numero_nueva_actividad}}</label></th>
                                                                                         <td>
-                                                                                            <textarea class="inputs-concentrado text-area" type="text"   v-model="actividad"></textarea></td>
+                                                                                            <textarea class="inputs-concentrado text-area" type="text"   v-model="descripcion_actividad"></textarea></td>
                                                                                         <td>
                                                                                         <select class="inputs-concentrado" v-model="responsable_plan" >
                                                                                             <option value="" disabled>Seleccione Analista..</option>
@@ -307,23 +307,28 @@ if ($_SESSION["usuario"] ){
                                                                                         <td>0</td>
                                                                                     </tr><!--Fin Nueva Actividad-->
                                                                                          <!--Consulta actividades-->
-                                                                                    <tr class="align-middle" v-for="(actividades,index) in concentrado_actividades">
+                                                                                        <tr class="align-middle" v-for="(actividades, index) in concentrado_actividades">
+                                                                                           
                                                                                         <td> 
-                                                                                            <button type="button" class="btn btn-danger me-2" title="Eliminar" @click="eliminarActividad(actividades.id)"><i class="bi bi-trash3-fill"></i></button>
+                                                                                            
+                                                                                            <button v-show="check_mc!='Aceptado'" type="button" class="btn btn-danger me-2" title="Eliminar" @click="eliminarActividad(actividades.id)"><i class="bi bi-trash3-fill"></i></button>
                                                                                             <button type="button" class="btn btn-danger me-2" title="Cancelar" @click="editarActividad('')" v-if="id_actualizar==index+1"><i class="bi bi-x-circle" ></i></button>
                                                                                             <button type="button" class="btn btn-warning me-2" title="Editar" @click="editarActividad(index+1)"><i class="bi bi-pen" ></i></button>
                                                                                             <button type="button" class="btn btn-primary " title="Guardar" @click="guardarEditarActividad('actualizar',actividades.id)" v-if="id_actualizar==index+1"><i class="bi bi-check-circle"></i></button>
                                                                                         </td> 
-                                                                                            <th scope="row">
-                                                                                            <label v-show="actualizar==true">{{numero_orden_en_select=index+1}}</label>
+                                                                                          <!--  <th scope="row">
+                                                                                                <label v-show="actualizar==true">{{numero_orden_en_select=index+1}}</label>
                                                                                                     <select  v-model="numero_orden_en_select" v-show="actualizar==false" title="Cambiar posición">
                                                                                                         <option v-for="numero in numero_actividad" @click="ordenarActividades(index,numero-1)">{{numero}}</option>
                                                                                                     </select>     
-                                                                                            </th>
-                                                                                        <td>    
-                                                                                            <textarea v-if="id_actualizar==index+1" class="inputs-concentrado text-area" type="text" v-model ="actividad" ></textarea> 
-                                                                                            <label v-else>{{actividades.actividad}}<label></td>
-                                                                                        <td>
+                                                                                            </th>-->
+                                                                                        <td>   
+                                                                                            <textarea v-model="descripcion_actividad" v-if="id_actualizar==index+1" class="inputs-concentrado text-area" type="text"  ></textarea> 
+                                                                                            <label v-else>{{actividades.actividad}}<label>
+                                                                                                
+                                                                                        </td>
+                                                                                        
+                                                                                       <td>
                                                                                         <select v-if="id_actualizar==index+1" class="inputs-concentrado" v-model="responsable_plan" >
                                                                                             <option value="" disabled>Seleccione Analista..</option>
                                                                                             <option v-for="responsable in lista_responsable_plan" :key="responsable.nombre" :value="responsable.nombre">{{responsable.nombre}}</option>
@@ -333,7 +338,7 @@ if ($_SESSION["usuario"] ){
                                                                                         <td><input v-if="id_actualizar==index+1" class="inputs-concentrado" v-model="fecha_inicial_actividad" type="date" ></input><label v-else>{{actividades.fecha_inicial}}<label></td>
                                                                                         <td><input v-if="id_actualizar==index+1" class="inputs-concentrado" v-model="fecha_final_actividad" type="date" ></input><label v-else>{{actividades.fecha_final}}<label></td>
                                                                                         <td>
-                                                                                            <label style="display:none">{{porcentaje=actividades.porcentaje}}</label>
+                                                                                            <!--<label style="display:none">{{porcentaje=actividades.porcentaje}}</label>AQUI EL PROBLEMA-->
                                                                                             <select v-show="actualizar==false && status=='En Implementación' && check_mc=='Aceptado'" class="form-control" v-model="porcentaje" >
                                                                                                 <option value="0" @click="actualizarPorcentajeEnActividad(actividades.id,0)">0%</option>
                                                                                                 <option :value="numeros*5" v-for="numeros in 20" @click="actualizarPorcentajeEnActividad(actividades.id,numeros*5)">{{numeros*5}}%</option>
@@ -476,7 +481,7 @@ if ($_SESSION["usuario"] ){
                 impacto_primario:'',
                 impacto_secundario:'',
                 tipo_desperdicio:'',
-                actividad:'',
+                descripcion_actividad:'',
                 fecha_inicial_actividad:'',
                 fecha_final_actividad:'',
                 lista_responsable_plan:[],
@@ -687,15 +692,15 @@ if ($_SESSION["usuario"] ){
                 },
                 guardarEditarActividad(tipo,id){
                
-                /*console.log(this.numero_actividad+this.actividad+this.var_responsable_plan+this.fecha_inicial_actividad+this.fecha_final_actividad)*/
-                if(this.actividad!='' && this.responsable_plan!='' && this.fecha_inicial_actividad!='' && this.fecha_final_actividad!=''){
+                /*console.log(this.numero_actividad+this.descripcion_actividad+this.var_responsable_plan+this.fecha_inicial_actividad+this.fecha_final_actividad)*/
+                if(this.descripcion_actividad!='' && this.responsable_plan!='' && this.fecha_inicial_actividad!='' && this.fecha_final_actividad!=''){
 
                         axios.post("guardar_update_actividad_plan.php",{
                             tipo_nueva_actualizar:tipo,
                             id:id,
                             id_concentrado:this.id_concentrado_general,
                             numero_actividad: this.numero_nueva_actividad,
-                            actividad: this.actividad,
+                            actividad: this.descripcion_actividad,
                             folio: this.folio,
                             responsable_plan: this.responsable_plan,
                             fecha_inicial_actividad: this.fecha_inicial_actividad,
@@ -738,7 +743,7 @@ if ($_SESSION["usuario"] ){
                     this.nueva_actividad=true //activando campos de nueva actividad
                     this.actualizar = false
                     this.id_actualizar = '' // ocultado edits en editar
-                    this.actividad = ''
+                    this.descripcion_actividad = ''
                     this.responsable_plan = ''
                     this.fecha_inicial_actividad = ''
                     this.fecha_final_actividad = ''
@@ -751,7 +756,7 @@ if ($_SESSION["usuario"] ){
                     this.actualizar = true
                     var posicion=id
                     this.id_actualizar = id
-                    this.actividad = this.concentrado_actividades[posicion-1].actividad
+                    this.descripcion_actividad = this.concentrado_actividades[posicion-1].actividad
                     this.responsable_plan = this.concentrado_actividades[posicion-1].responsable
                     this.fecha_inicial_actividad = this.concentrado_actividades[posicion-1].fecha_inicial
                     this.fecha_final_actividad = this.concentrado_actividades[posicion-1].fecha_final
