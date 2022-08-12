@@ -117,10 +117,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                     <tr v-for="(concentrado, index) in concentrado_sugerencias">
                                     <th scope="row" class="text-center">{{index+1}}</th>
                                     <td>
-                                        <button  v-show="concentrado.check_mc=='Pendiente' && concentrado.status!='Cerrada/Fast Response'  && concentrado.status!='Cerrada/No Factible'" class="btn btn-secondary" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalTablaPlan" @click="consultarActividades(concentrado.id,concentrado.status)"><i class="bi bi-table" ></i> {{concentrado.check_mc}}</button>
-                                        <button  v-show="concentrado.check_mc=='Rechazado' && concentrado.status!='Cerrada/Fast Response'  && concentrado.status!='Cerrada/No Factible'" class="btn btn-danger" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalTablaPlan" @click="consultarActividades(concentrado.id,concentrado.status)"><i class="bi bi-table" ></i> {{concentrado.check_mc}}</button>
-                                        <button  v-show="concentrado.check_mc=='Corregido' && concentrado.status!='Cerrada/Fast Response'  && concentrado.status!='Cerrada/No Factible'" class="btn btn-warning" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalTablaPlan" @click="consultarActividades(concentrado.id,concentrado.status)"><i class="bi bi-table"  ></i> {{concentrado.check_mc}}</button>
-                                        <button  v-show="concentrado.check_mc=='Aceptado' && concentrado.status!='Cerrada/Fast Response' && concentrado.status!='Cerrada/No Factible'" class="btn btn-success" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalTablaPlan" @click="consultarActividades(concentrado.id,concentrado.status)"><i class="bi bi-table" ></i> {{concentrado.check_mc}}</button>
+                                        <button  v-show="concentrado.check_mc=='Pendiente' && concentrado.status!='Cerrada/Fast Response'  && concentrado.status!='Cerrada/No Factible'" class="btn btn-secondary" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalTablaPlan" @click="consultarActividades(concentrado.id,concentrado.status),datosSugerencia(concentrado.id)"><i class="bi bi-table" ></i> {{concentrado.check_mc}}</button>
+                                        <button  v-show="concentrado.check_mc=='Rechazado' && concentrado.status!='Cerrada/Fast Response'  && concentrado.status!='Cerrada/No Factible'" class="btn btn-danger" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalTablaPlan" @click="consultarActividades(concentrado.id,concentrado.status),datosSugerencia(concentrado.id)"><i class="bi bi-table" ></i> {{concentrado.check_mc}}</button>
+                                        <button  v-show="concentrado.check_mc=='Corregido' && concentrado.status!='Cerrada/Fast Response'  && concentrado.status!='Cerrada/No Factible'" class="btn btn-warning" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalTablaPlan" @click="consultarActividades(concentrado.id,concentrado.status),datosSugerencia(concentrado.id)"><i class="bi bi-table"  ></i> {{concentrado.check_mc}}</button>
+                                        <button  v-show="concentrado.check_mc=='Aceptado' && concentrado.status!='Cerrada/Fast Response' && concentrado.status!='Cerrada/No Factible'" class="btn btn-success" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalTablaPlan" @click="consultarActividades(concentrado.id,concentrado.status),datosSugerencia(concentrado.id)"><i class="bi bi-table" ></i> {{concentrado.check_mc}}</button>
                                     </td>
                                         <td>{{concentrado.folio}}</td>
                                         <td>{{concentrado.nombre_sugerencia}}</td>
@@ -166,6 +166,18 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
+                                        <div class="row" style="font-size:0.7em;">
+
+                                                <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center" ><div><b>Impacto Primario:</b></div></div>
+                                                <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div>{{datos_sugerencia.impacto_primario}}</div></div>
+                                                <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div><b>Impacto Secundario:</b></div></div>
+                                                <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div>{{datos_sugerencia.impacto_secundario}}</div></div>
+                                                <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center" ><div><b>Tipo de Desperdicio:</b></div></div>
+                                                <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div>{{datos_sugerencia.tipo_de_desperdicio}}</div></div>
+                                                <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div><b>Objetivos de Calidad y M.A.</b></div></div>
+                                                <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div>{{datos_sugerencia.objetivo_de_calidad_ma}}</div></div>
+                                          
+                                        </div>
                                                         <div class="div-scroll"><!--Scroll-->
                                                                 <table class="tablaMonitoreo-sugerencias table table-striped table-bordered text-center" style=" font-size: 12px">
                                                                     <thead class="encabezado-tabla text-center text-light ">
@@ -957,6 +969,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 folio:'',
                 validacion_de_impacto:'',
                 //*Varibales modal acaptado o rechazado */
+                datos_sugerencia:[],
                 status:'',
                 /*formulario cuantitativo*/
                 indicador:'',
@@ -1082,7 +1095,16 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                    if(dato=='retos'){this.pintarCuatro=true}else{this.pintarCuatro=false}
                    if(dato=='configuracion'){this.pintarCinco=true}else{this.pintarCinco=false}
              },
-       /*METODOS PRINCIPAL MEJORA*/                                    
+       /*METODOS PRINCIPAL MEJORA*/   
+    datosSugerencia(id){
+                axios.post("cunsultar_datos_sugerencia.php",{
+                id_concentrado:id
+                }).then(response =>{
+                    console.log(this.datos_sugerencia = response.data)
+                }).catch(error => {
+                    console.log(error)
+                })
+            },                                 
     consultarActividades(id,status){
                 this.id_concentrado = id
                 this.status = status
