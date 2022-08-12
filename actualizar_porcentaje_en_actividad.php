@@ -7,6 +7,7 @@ $porcentaje_actividad=$variables['porcentaje_actividad'];
 $id_concentrado=$variables['id_concentrado'];
 $suma=0;
 $cumplimiento=0;
+$cantidad_actividades=0;
 $resultado = [];
 include "conexionGhoner.php";
 
@@ -18,17 +19,21 @@ include "conexionGhoner.php";
         $query2 = mysqli_query( $conexion, $consulta);
         while ($datos=mysqli_fetch_array($query2)){
                 $suma=(int)$datos['porcentaje']+(int)$suma;
-                $cantidad_actividades = (int)$datos['num_actividad']; 
+                $cantidad_actividades++;
         }
         
-        $cumplimiento=$suma/$cantidad_actividades;
+        $cumplimiento=$suma/(int)$cantidad_actividades;
         $cumplimiento=round($cumplimiento, 0, PHP_ROUND_HALF_DOWN);
-        if($cumplimiento==100){
+        if($cumplimiento>=100){
                 $cumplimiento=99;
         }
         $actualizar = " UPDATE concentrado_sugerencias SET cumplimiento='$cumplimiento' WHERE id = '$id_concentrado'";
         $query2 = mysqli_query( $conexion, $actualizar);
         $resultado[] = $query2;
-        $resultado[] = $cumplimiento;
+        //$resultado[] = $suma;
+        //$resultado[] = $cantidad_actividades;
+        //$resultado[] = $cumplimiento;
+       
+        
 echo json_encode($resultado);
 ?>

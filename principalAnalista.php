@@ -316,12 +316,13 @@ if ($_SESSION["usuario"] ){
                                                                                             <button type="button" class="btn btn-warning me-2" title="Editar" @click="editarActividad(index+1)"><i class="bi bi-pen" ></i></button>
                                                                                             <button type="button" class="btn btn-primary " title="Guardar" @click="guardarEditarActividad('actualizar',actividades.id)" v-if="id_actualizar==index+1"><i class="bi bi-check-circle"></i></button>
                                                                                         </td> 
-                                                                                          <!--  <th scope="row">
-                                                                                                <label v-show="actualizar==true">{{numero_orden_en_select=index+1}}</label>
+                                                                                            <th scope="row">
+                                                                                                <label v-show="actualizar==true">{{index+1}}</label>
                                                                                                     <select  v-model="numero_orden_en_select" v-show="actualizar==false" title="Cambiar posición">
-                                                                                                        <option v-for="numero in numero_actividad" @click="ordenarActividades(index,numero-1)">{{numero}}</option>
+                                                                                                        <option  value="0" disabled>{{index+1}}</option>
+                                                                                                        <option :value="index+1" v-for="numero in numero_actividad" @click="ordenarActividades(index,numero-1,numero_orden_en_select=0)">{{numero}}</option>
                                                                                                     </select>     
-                                                                                            </th>-->
+                                                                                            </th>
                                                                                         <td>   
                                                                                             <textarea v-model="descripcion_actividad" v-if="id_actualizar==index+1" class="inputs-concentrado text-area" type="text"  ></textarea> 
                                                                                             <label v-else>{{actividades.actividad}}<label>
@@ -338,10 +339,10 @@ if ($_SESSION["usuario"] ){
                                                                                         <td><input v-if="id_actualizar==index+1" class="inputs-concentrado" v-model="fecha_inicial_actividad" type="date" ></input><label v-else>{{actividades.fecha_inicial}}<label></td>
                                                                                         <td><input v-if="id_actualizar==index+1" class="inputs-concentrado" v-model="fecha_final_actividad" type="date" ></input><label v-else>{{actividades.fecha_final}}<label></td>
                                                                                         <td>
-                                                                                            <!--<label style="display:none">{{porcentaje=actividades.porcentaje}}</label>AQUI EL PROBLEMA-->
-                                                                                            <select v-show="actualizar==false && status=='En Implementación' && check_mc=='Aceptado'" class="form-control" v-model="porcentaje" >
-                                                                                                <option value="0" @click="actualizarPorcentajeEnActividad(actividades.id,0)">0%</option>
-                                                                                                <option :value="numeros*5" v-for="numeros in 20" @click="actualizarPorcentajeEnActividad(actividades.id,numeros*5)">{{numeros*5}}%</option>
+                                                                                            
+                                                                                            <select v-model="porcentaje" v-show="actualizar==false && status=='En Implementación' && check_mc=='Aceptado'" class="form-control"  >
+                                                                                                <option  value="0" @click="actualizarPorcentajeEnActividad(actividades.id,0)" disabled>{{actividades.porcentaje}}%</option>
+                                                                                                <option  v-for="numero in numeros" :value="numero" @click="actualizarPorcentajeEnActividad(actividades.id,numero)">{{numero}}%</option>
                                                                                             </select>
                                                                                             <label  v-show="status!='En Implementación' && check_mc!='Aceptado'">{{actividades.porcentaje}}%<label>
                                                                                         </td>
@@ -497,7 +498,7 @@ if ($_SESSION["usuario"] ){
                 numero_orden_en_select:0,
                 fecha_compromiso:'',
                 bandera_btn_finalizar:'',
-
+                numeros:[0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100],
                 tipo_de_cierre:['Cerrada/Fast Response','Cerrada/No Factible'],
                 /*variables en modal no factible*/
                 var_tipo_de_cierre:'',
@@ -768,6 +769,7 @@ if ($_SESSION["usuario"] ){
                     axios.post("consultando_actividades.php",{
                         id_concentrado:this.id_concentrado_general
                 }).then(response =>{
+                    
                     this.concentrado_actividades = response.data
                     this.numero_actividad = this.concentrado_actividades.length 
                     this.numero_nueva_actividad = this.numero_actividad + 1
@@ -784,7 +786,7 @@ if ($_SESSION["usuario"] ){
                         this.bandera_btn_finalizar = "mostrar"
                     }
 
-                    //alert ("contar:"+contar+"numero_actividaddes:"+this.numero_actividad)
+                console.log("contar:"+contar+"numero_actividaddes:"+this.numero_actividad)
                 }).catch(error => {
                     console.log(error)
                 })
@@ -959,16 +961,18 @@ if ($_SESSION["usuario"] ){
                         })
                 },
                 actualizarPorcentajeEnActividad(id_actividad,porcentaje_actividad){
+                    this.porcentaje=0//regresando valor original porcentaje para que no me de el mismo valor en todos las opciones
+                    //alert(id_actividad+"/"+porcentaje_actividad)
                     axios.post("actualizar_porcentaje_en_actividad.php",{
                             id_actividad: id_actividad,
                             porcentaje_actividad: porcentaje_actividad,
                             id_concentrado:this.id_concentrado_general
                         }).then( response=>{
-                            console.log(response.data)
                             if(response.data[0]==true && response.data[1]==true){
+                                console.log(response.data)
                                 this.consultarActividades()
-                                alert("Porcentaje guardado con Exito.")
                                 this.consultado_concentrado_pendiente_implementacion()
+                                //alert("Porcentaje guardado con Exito.")
                             }else{
                                 alert("No se actulizados datos en una o dos tablas")
                             }
