@@ -204,7 +204,19 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                             <td><label>{{actividades.fecha_inicial}}<label></td>
                                                                             <td><label>{{actividades.fecha_final}}<label></td>
                                                                             <td>
-                                                                                <label>{{actividades.porcentaje}}%<label>
+                                                                                <div v-show ="actividades.dias_restantes_actividad > 7 && actividades.porcentaje !=100" class="bg-warning"><!--En curso-->
+                                                                                    <label>{{actividades.porcentaje}}%<label>
+                                                                                </div>
+                                                                                <div v-show ="actividades.dias_restantes_actividad > 0 && actividades.dias_restantes_actividad <= 7 && actividades.porcentaje !=100"  style="background-color: #fd7e14;"><!--Menor Igual a 7-->
+                                                                                    <label>{{actividades.porcentaje}}%<label>
+                                                                                </div>
+                                                                                <div v-show ="actividades.porcentaje == 100" class="bg-success"><!--100% Completadas-->
+                                                                                    <label>{{actividades.porcentaje}}%<label>
+                                                                                </div>
+                                                                                <div v-show ="actividades.dias_restantes_actividad <= 0 && actividades.porcentaje !=100" class="bg-danger"><!--Vencida-->
+                                                                                    <label>{{actividades.porcentaje}}%<label>
+                                                                                </div>
+                                                                              
                                                                             </td>
                                                                         </tr><!--Fin consuta actividades-->    
                                                                     </tbody>

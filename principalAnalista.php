@@ -92,7 +92,7 @@ if ($_SESSION["usuario"] ){
                             <!-- contenido principal analista gonher-->
                           <div class="row">  
                             
-                                <div class="col-6 col-"><!--tabla pediente factibilidad-->
+                                <div class="col-12 col-lg-6"><!--tabla pediente factibilidad-->
                                             <div class="text-center mt-3 ">
                                                 <span class="badge bg-light text-dark">Sugerencias Pendientes de Factibilidad: <?php echo $_SESSION['nombre']; ?></span>
                                             </div>
@@ -131,7 +131,7 @@ if ($_SESSION["usuario"] ){
                                                 </table>
                                             </div>
                                  </div>
-                                 <div class="col-6"><!--tabla pendiente implementacion-->
+                                 <div class="col-12 col-lg-6"><!--tabla pendiente implementacion-->
                                             <div class="text-center mt-3 ">
                                                 <span class="badge bg-light text-dark">Sugerencias Pendientes de Implementación: <?php echo $_SESSION['nombre']; ?></span>
                                             </div>
@@ -147,22 +147,23 @@ if ($_SESSION["usuario"] ){
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr v-for="(concentrado, index) in concentrado_sugerencias_pendiente_implementacion">
+                                                    <tr  v-for="(concentrado, index) in concentrado_sugerencias_pendiente_implementacion">
                                                     <th scope="row" class="text-center">{{index+1}}</th>
                                                         <td>{{concentrado.folio}}</td>  
                                                         <td>{{concentrado.nombre_sugerencia}}</td>
                                                         <td class="text-center"><label class="me-2"><b>{{concentrado.cumplimiento}}% </b></label> 
                                                         <!--Amarillo-->
-                                                            <button  type="button" class="btn btn-warning" style="font-size: 1em; " data-bs-toggle="modal" data-bs-target="#modal"  title="Ver Plan de Trabajo"
+                                                            <button v-show="concentrado.dias_restantes>7" type="button" class="btn btn-warning" style="font-size: 1em; " data-bs-toggle="modal" data-bs-target="#modal"  title="Ver Plan de Trabajo"
                                                             @click="datos_modal_factibilidad('En Implementación',concentrado.id,concentrado.folio,concentrado.status,concentrado.respuesta_analista,concentrado.check_mc)"><i class="bi bi-pencil"></i></i> {{concentrado.status}} </button>
-                                                        <!--
-                                                            <button  type="button" class="btn"  style="font-size: 1em; background-color: #fd7e14; border: 1px solid #" data-bs-toggle="modal" data-bs-target="#modal"  title="Ver Plan de Trabajo"
+                                                       
+                                                            <button  v-show="concentrado.dias_restantes>=1 && concentrado.dias_restantes<=7 " type="button" class="btn"  style="font-size: 1em; background-color: #fd7e14; border: 1px solid #" data-bs-toggle="modal" data-bs-target="#modal"  title="Ver Plan de Trabajo"
                                                             @click="datos_modal_factibilidad('En Implementación',concentrado.id,concentrado.folio,concentrado.status,concentrado.respuesta_analista,concentrado.check_mc)"><i class="bi bi-pencil"></i></i> {{concentrado.status}} </button>
                                                      
-                                                            <button  type="button" class="btn btn-danger" style="font-size: 1em;" data-bs-toggle="modal" data-bs-target="#modal"  title="Ver Plan de Trabajo"
-                                                            @click="datos_modal_factibilidad('En Implementación',concentrado.id,concentrado.folio,concentrado.status,concentrado.respuesta_analista,concentrado.check_mc)"><i class="bi bi-pencil"></i></i> {{concentrado.status}} </button>-->
+                                                            <button v-show="concentrado.dias_restantes<=0"  type="button" class="btn btn-danger" style="font-size: 1em;" data-bs-toggle="modal" data-bs-target="#modal"  title="Ver Plan de Trabajo"
+                                                            @click="datos_modal_factibilidad('En Implementación',concentrado.id,concentrado.folio,concentrado.status,concentrado.respuesta_analista,concentrado.check_mc)"><i class="bi bi-pencil"></i></i> {{concentrado.status}} </button>
                                                         </td>
-                                                        <td>
+                                                        <td class="text-center " style="vertical-align:middle" >
+                                                            <label class=" my-around ">{{concentrado.dias_restantes}}</label>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -363,11 +364,12 @@ if ($_SESSION["usuario"] ){
                                                                                     </tr><!--Fin consuta actividades-->    
                                                                                 </tbody>
                                                                             </table>
-                                                                            <div class="text-center">
+                                                                                 
+                                                                        </div><!--scroll-->
+                                                                                    <div class="text-center">
                                                                                         <span class="badge bg-light text-dark">FECHA COMPROMISO</span><br>
                                                                                              <input class="mb-3 rounded-3 border border-1 border-success" type="date" v-model="fecha_compromiso" @change="guardarFechaCompromiso" :disabled="deshabilitar"></input>
                                                                                     </div>
-                                                                        </div><!--scroll-->
                                                                     </div>
                                                                     <div class="col-12 text-center">
                                                                         <button type="button" class="btn btn-success mb-2" style="font-size:0.9em" v-show="numero_actividad>0 && bandera_btn_finalizar=='mostrar' || numero_actividad>0 && check_mc==''" @click="checkPlanActividades">Finalizar Plan</button>
@@ -890,6 +892,9 @@ if ($_SESSION["usuario"] ){
                      }).then(response =>{
                         if(response.data == true){
                             alert("Fecha compromiso guardada.")
+                            if(this.status == 'En Implementación'){
+                                this.consultado_concentrado_pendiente_implementacion()
+                            }
                         }else{
                             alert("Algo salio mal.")
                         }
