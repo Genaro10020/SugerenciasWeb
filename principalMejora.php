@@ -633,7 +633,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                     <button v-show="concentrado.cantidadPPT != 0" type="button" class="btn btn-success  ms-2" title="Subir PPT" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_subir_ver_documentos('Subir',concentrado.id,concentrado.folio,'ppt',concentrado.cantidadPPT)"><i class="bi bi-paperclip">{{concentrado.cantidadPPT}}</i></button>
                                                 </td>
                                                 <th scope="row">{{index+1}}<br><!--{{concentrado.id}}--></th>
-                                                <td><label>0%</label></td>
+                                                <td><label>{{concentrado.cumplimiento}}%</label></td>
                                                 <td>
                                                     <select class="inputs-concentrado" v-model="var_sindicalizado_empleado"  v-if="actualizar_sugerencia==index+1">
                                                         <option>Sindicalizado</option>

@@ -72,7 +72,7 @@ if ($_SESSION["usuario"] ){
                             <button class="opciones mx-lg-2 rounded-3 " @click="mostrar('principalAnalista')"  v-bind:class="{pintarUno}" >
                                Seguimiento a Sugerencias
                             </button>  
-                            <button class="opciones  mx-lg-2 rounded-3" @click="mostrar('concentrado')" v-bind:class="{pintarDos}">
+                            <button class="opciones  mx-lg-2 rounded-3" @click="mostrar('impactoSugerencia')" v-bind:class="{pintarDos}">
                                 Impacto de Sugerencias
                             </button> 
 
@@ -325,7 +325,6 @@ if ($_SESSION["usuario"] ){
                                                                                         <tr class="align-middle" v-for="(actividades, index) in concentrado_actividades">
                                                                                            
                                                                                         <td> 
-                                                                                            
                                                                                             <button v-show="check_mc!='Aceptado'" type="button" class="btn btn-danger me-2" title="Eliminar" @click="eliminarActividad(actividades.id)"><i class="bi bi-trash3-fill"></i></button>
                                                                                             <button type="button" class="btn btn-danger me-2" title="Cancelar" @click="editarActividad('')" v-if="id_actualizar==index+1"><i class="bi bi-x-circle" ></i></button>
                                                                                             <button v-show="deshabilitar==false" type="button" class="btn btn-warning me-2" title="Editar" @click="editarActividad(index+1)"><i class="bi bi-pen" ></i></button>
@@ -464,7 +463,118 @@ if ($_SESSION["usuario"] ){
                         </div>
                              <!--fin modal-->
                    </div>
+                       <!--/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////VENTANA IMPACTO DE SUGERENCIAS-->
+                    <div v-if="ventana=='impactoSugerencia'">
+                                            <!--cinta apartado-->
+                                            <div class="row justify-content-center align-items-start ">
+                                                    <div class="cintilla col-12 text-center">
+                                                     <b> CONCENTRADO IMPACTO DE SUGERENCIAS</b>
+                                                    </div>
+                                            </div>
+                                            <!--fin cinta apartado-->
+                                        <div class="row mt-5">  <!-- contenido impacto de sugerencia-->
+                                                 <div class="div-scroll"><!--Scroll-->
+                                                                            <table class="tablaMonitoreo-sugerencias table table-striped table-bordered text-center">
+                                                                                <thead class="encabezado-tabla text-center text-light ">
+                                                                                    <tr >
+                                                                                    <th scope="col" class="sticky">Status</th>
+                                                                                    <th scope="col">Folio</th>
+                                                                                    <th scope="col">Nombre de Sugerencia</th>
+                                                                                    <th scope="col">Analista de Factibilidad</th>
+                                                                                    <th scope="col">Planta</th>
+                                                                                    <th scope="col">Área</th>
+                                                                                    <th scope="col">Subárea</th>
+                                                                                    <th scope="col">Fecha de Cierra</th>
+                                                                                    <th scope="col">Indicador</th>
+                                                                                    <th scope="col">Unidades</th>
+                                                                                    <th scope="col">Línea Base</th>
+                                                                                    <th scope="col">Periodo de Medición</th>
+                                                                                    <th scope="col">Mes 1</th>
+                                                                                    <th scope="col">Mes 2</th>
+                                                                                    <th scope="col">Mes 3</th>
+                                                                                    <th scope="col">Mes 4</th>
+                                                                                    <th scope="col">Mes 5</th>
+                                                                                    <th scope="col">Mes 6</th>
+                                                                                    <th scope="col">Mes 7</th>
+                                                                                    <th scope="col">Mes 8</th>
+                                                                                    <th scope="col">Mes 9</th>
+                                                                                    <th scope="col">Mes 10</th>
+                                                                                    <th scope="col">Mes 11</th>
+                                                                                    <th scope="col">Mes 12</th>
+                                                                                    <th scope="col">Acumulado</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    <tr class="align-middle bg-info" v-show="nueva_actividad"><!--Nueva Actividad Fila-->
+                                                                                            <td class="sticky"> 
+                                                                                                <button type="button" class="btn btn-danger  me-2" title="Cancelar" @click="nueva_actividad=false"><i class="bi bi-x-circle" ></i></button>
+                                                                                                <button type="button" class="btn btn-primary" title="Guardar" @click="guardarEditarActividad('nuevo','')"><i class="bi bi-check-circle"></i></button>
+                                                                                            </td> 
+                                                                                        <th scope="row">
+                                                                                            <label>{{numero_nueva_actividad}}</label></th>
+                                                                                        <td>
+                                                                                            <textarea class="inputs-concentrado text-area" type="text"   v-model="descripcion_actividad"></textarea></td>
+                                                                                        <td>
+                                                                                        <select class="inputs-concentrado" v-model="responsable_plan" >
+                                                                                            <option value="" disabled>Seleccione Analista..</option>
+                                                                                            <option v-for="responsable in lista_responsable_plan" :key="responsable.nombre" :value="responsable.nombre">{{responsable.nombre}}</option>
+                                                                                        </select>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input class="inputs-concentrado" type="date" v-model="fecha_inicial_actividad"></input></td>
+                                                                                        <td>
+                                                                                            <input class="inputs-concentrado" type="date" v-model="fecha_final_actividad"></input></td>
+                                                                                        <td>0</td>
+                                                                                    </tr><!--Fin Nueva Actividad-->
+                                                                                         <!--Consulta actividades-->
+                                                                                        <tr class="align-middle" v-for="(actividades, index) in concentrado_actividades">
+                                                                                           
+                                                                                        <td> 
+                                                                                            <button v-show="check_mc!='Aceptado'" type="button" class="btn btn-danger me-2" title="Eliminar" @click="eliminarActividad(actividades.id)"><i class="bi bi-trash3-fill"></i></button>
+                                                                                            <button type="button" class="btn btn-danger me-2" title="Cancelar" @click="editarActividad('')" v-if="id_actualizar==index+1"><i class="bi bi-x-circle" ></i></button>
+                                                                                            <button v-show="deshabilitar==false" type="button" class="btn btn-warning me-2" title="Editar" @click="editarActividad(index+1)"><i class="bi bi-pen" ></i></button>
+                                                                                            <button type="button" class="btn btn-primary " title="Guardar" @click="guardarEditarActividad('actualizar',actividades.id)" v-if="id_actualizar==index+1"><i class="bi bi-check-circle"></i></button>
+                                                                                        </td> 
+                                                                                            <th scope="row">
+                                                                                                <label v-show="actualizar==true || check_mc=='Aceptado'">{{index+1}}</label>
+                                                                                                    <select  v-model="numero_orden_en_select" v-show="actualizar==false && check_mc!='Aceptado'" title="Cambiar posición">
+                                                                                                        <option  value="0" disabled>{{index+1}}</option>
+                                                                                                        <option :value="index+1" v-for="numero in numero_actividad" @click="ordenarActividades(index,numero-1,numero_orden_en_select=0)">{{numero}}</option>
+                                                                                                    </select>     
+                                                                                            </th>
+                                                                                        <td>   
+                                                                                            <textarea v-model="descripcion_actividad" v-if="id_actualizar==index+1" class="inputs-concentrado text-area" type="text"  ></textarea> 
+                                                                                            <label v-else>{{actividades.actividad}}<label>
+                                                                                                
+                                                                                        </td>
+                                                                                        
+                                                                                       <td>
+                                                                                        <select v-if="id_actualizar==index+1" class="inputs-concentrado" v-model="responsable_plan" >
+                                                                                            <option value="" disabled>Seleccione Analista..</option>
+                                                                                            <option v-for="responsable in lista_responsable_plan" :key="responsable.nombre" :value="responsable.nombre">{{responsable.nombre}}</option>
+                                                                                        </select>
+                                                                                            <label v-else>{{actividades.responsable}}<label>
+                                                                                        </td>
+                                                                                        <td><input v-if="id_actualizar==index+1" class="inputs-concentrado" v-model="fecha_inicial_actividad" type="date" ></input><label v-else>{{actividades.fecha_inicial}}<label></td>
+                                                                                        <td><input v-if="id_actualizar==index+1" class="inputs-concentrado" v-model="fecha_final_actividad" type="date" ></input><label v-else>{{actividades.fecha_final}}<label></td>
+                                                                                        <td>
+                                                                                            
+                                                                                            <select v-show="actualizar==false && status=='En Implementación' && check_mc=='Aceptado' && bandera_btn_finalizar!='mostrar'" class="form-control"  >
+                                                                                                <option  value="0" @click="actualizarPorcentajeEnActividad(actividades.id,0)" disabled selected>{{actividades.porcentaje}}%</option>
+                                                                                                <option  v-for="numero in numeros" :value="numero" @click="actualizarPorcentajeEnActividad(actividades.id,numero)">{{numero}}%</option>
+                                                                                            </select>
+                                                                                            <label  v-show="status!='En Implementación' && check_mc!='Aceptado'">{{actividades.porcentaje}}%<label>
+                                                                                        </td>
+                                                                                    </tr><!--Fin consuta actividades-->    
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div><!--scroll-->
+                                        </div><!-- contenido impacto de sugerencia-->
+                                        
+                    </div>  
             </div>
+
+
                 <!--FOOTER-->
             <div class="row" style="height:10vh; background: url(img/pie.jpg); background-repeat: repeat-x; background-size: 8% 100%;">
 
@@ -549,7 +659,7 @@ if ($_SESSION["usuario"] ){
             mostrar(dato){
                    this.ventana=dato;
                    if(dato=='principalAnalista'){ this.pintarUno=true}else{this.pintarUno=false}
-                   if(dato=='concentrado'){this.pintarDos=true}else{this.pintarDos=false}
+                   if(dato=='impactoSugerencia'){this.pintarDos=true}else{this.pintarDos=false}
              },
             consultado_concentrado_pendiente_factibilidad(){
                 axios.post('consulta_concentrado_pendientes_factibilidad.php',{
