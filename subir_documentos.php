@@ -61,7 +61,8 @@ if (!file_exists($path)) {
                                 $query = mysqli_query($conexion,$actualizar);
                             }
                             if($cual_documento=="ppt"){
-                                $actualizar = "UPDATE concentrado_sugerencias SET cantidadPPT='$suma' WHERE id = '$id_concentrado'";
+                                $fecha_cierre = date("Y-m-d");
+                                $actualizar = "UPDATE concentrado_sugerencias SET cumplimiento ='100', status='Implementada', fecha_real_cierre='$fecha_cierre', cantidadPPT='$suma', status_impacto = 'Midiendo' WHERE id = '$id_concentrado'";//actauliando cantidad de documetos en BD.
                                 $query = mysqli_query($conexion,$actualizar);
                             }
                            

@@ -224,10 +224,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                          </div><!--scroll-->
                                                 <div class="d-flex justify-content-around">
                                                     <div>
-                                                            <button type="button" class="btn btn-success" @click="actualizarVoBoPlan('Aceptado')" data-bs-dismiss="modal">Aceptado</button>
+                                                            <button v-show ="status!='Implementada'" type="button" class="btn btn-success" @click="actualizarVoBoPlan('Aceptado')" data-bs-dismiss="modal">Aceptado</button>
                                                     </div>
                                                     <div>
-                                                            <button type="button" class="btn btn-danger" @click="actualizarVoBoPlan('Rechazado')" data-bs-dismiss="modal">Rechazado</button>
+                                                            <button v-show ="status!='Implementada'" type="button" class="btn btn-danger" @click="actualizarVoBoPlan('Rechazado')" data-bs-dismiss="modal">Rechazado</button>
                                                      </div>
                                                  </div>
                                       
@@ -472,7 +472,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                             <th scope="col">Nombre sugerencias <span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span></th>
                                             <th scope="col">Folio <span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span></th>
                                             <th scope="col">Status</th>
-                                            <th scope="col">Causa de No factibidad <span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span></th>
+                                            <th scope="col">Causa de No factibidad</th>
                                             <th scope="col">Situación Actual <span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span></th>
                                             <th scope="col">Idea Propuesta <span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span></th>
                                             <th scope="col">No. de Nomina <span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span></th>
@@ -542,8 +542,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                 <td><textarea class="inputs-concentrado text-area" type="text"  name="nombre_sugerencia" v-model="var_nombre_sugerencias"></textarea></td>
                                                 <td><input class="inputs-concentrado" type="text" v-model="var_folio"></input></td>
                                                 <td><label>En Factibilidad</label></td>
-                                                <td>
-                                                <textarea class="inputs-concentrado text-area" type="text"  v-model="var_causa_no_factibilidad" >{{var_causa_no_factibilidad}}</textarea></td>
+                                                <td><!--<textarea class="inputs-concentrado text-area" type="text"  v-model="var_causa_no_factibilidad" >{{var_causa_no_factibilidad}}</textarea>--></td>
                                                 <td><textarea class="inputs-concentrado text-area" type="text" v-model="var_situacion_actual" ></textarea></td>
                                                 <td><textarea class="inputs-concentrado text-area" type="text"  v-model="var_idea_propuesta" ></textarea></td>
                                                 <td><input class="inputs-concentrado" type="text"  v-model="var_nomina" ></input></td>
@@ -629,8 +628,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                     <button type="button" class="btn btn-warning" title="Actualizar" @click="mostrar_id(index+1)" v-else><i class="bi bi-pen" ></i></button>
                                                     <button v-show="concentrado.cantidadDOC == 0"type="button" class="btn btn-secondary  ms-2" title="Subir Sugerencia" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_subir_ver_documentos('Subir',concentrado.id,concentrado.folio,'sugerencia',concentrado.cantidadDOC)"><i class="bi bi-paperclip"></i>{{concentrado.cantidadDOC}}</button>
                                                     <button v-show="concentrado.cantidadDOC != 0" type="button" class="btn btn-success  ms-2" title="Subir Sugerencia" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_subir_ver_documentos('Subir',concentrado.id,concentrado.folio,'sugerencia',concentrado.cantidadDOC)"><i class="bi bi-paperclip"></i>{{concentrado.cantidadDOC}}</button>
-                                                    <button v-show="concentrado.cantidadPPT == 0" type="button" class="btn btn-secondary  ms-2" title="Subir PPT" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_subir_ver_documentos('Subir',concentrado.id,concentrado.folio,'ppt',concentrado.cantidadPPT)"><i class="bi bi-paperclip"></i>{{concentrado.cantidadPPT}}</button>
-                                                    <button v-show="concentrado.cantidadPPT != 0" type="button" class="btn btn-success  ms-2" title="Subir PPT" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_subir_ver_documentos('Subir',concentrado.id,concentrado.folio,'ppt',concentrado.cantidadPPT)"><i class="bi bi-paperclip">{{concentrado.cantidadPPT}}</i></button>
+                                                    <!--Deshabilitar btn si no esta al 99% el plan (100% actividades)-->
+                                                    <button v-show="concentrado.cumplimiento < 99 || concentrado.cumplimiento =='' || concentrado.status!='En Implementación' && concentrado.status!='Implementada'" type="button" class="btn btn-secondary  ms-2" title="Subir PPT(Deshabilitado)" disabled ><i class="bi bi-paperclip"></i>{{concentrado.cantidadPPT}}</button >
+                                                    <button v-show="concentrado.cantidadPPT == 0 && concentrado.cumplimiento >= 99 && concentrado.status=='En Implementación' || concentrado.cantidadPPT == 0 && concentrado.cumplimiento >= 99 && concentrado.status=='Implementada'"  type="button" class="btn btn-secondary  ms-2" title="Subir PPT" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_subir_ver_documentos('Subir',concentrado.id,concentrado.folio,'ppt',concentrado.cantidadPPT)"><i class="bi bi-paperclip"></i>{{concentrado.cantidadPPT}}</button>
+                                                    <button v-show="concentrado.cantidadPPT != 0 && concentrado.cumplimiento >= 99 && concentrado.status=='En Implementación' || concentrado.cantidadPPT != 0 && concentrado.cumplimiento >= 99 && concentrado.status=='Implementada'" type="button" class="btn btn-success  ms-2" title="Subir PPT" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_subir_ver_documentos('Subir',concentrado.id,concentrado.folio,'ppt',concentrado.cantidadPPT)"><i class="bi bi-paperclip">{{concentrado.cantidadPPT}}</i></button>
                                                 </td>
                                                 <th scope="row">{{index+1}}<br><!--{{concentrado.id}}--></th>
                                                 <td><label>{{concentrado.cumplimiento}}%</label></td>
@@ -644,7 +645,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                 <td><textarea class="inputs-concentrado text-area" type="text"  name="nombre_sugerencia" v-model="var_nombre_sugerencias" v-if="actualizar_sugerencia==index+1"></textarea> <label v-else>{{concentrado.nombre_sugerencia}}</label></td>
                                                 <td><input class="inputs-concentrado" type="text" v-model="var_folio" v-if="actualizar_sugerencia==index+1"></input> <label v-else>{{concentrado.folio}}</label></td>
                                                 <td><label>{{concentrado.status}}</label></td>
-                                                <td><textarea class="inputs-concentrado text-area" type="text"  v-model="var_causa_no_factibilidad" v-if="actualizar_sugerencia==index+1">{{var_causa_no_factibilidad}}</textarea><label v-else>{{concentrado.causa_no_factibilidad}}</label></td>
+                                                <td><label>{{concentrado.causa_no_factibilidad}}</label></td>
                                                 <td><textarea class="inputs-concentrado text-area" type="text" v-model="var_situacion_actual"  v-if="actualizar_sugerencia==index+1"></textarea><label v-else>{{concentrado.situacion_actual}}</label></td>
                                                 <td><textarea class="inputs-concentrado text-area" type="text"  v-model="var_idea_propuesta"  v-if="actualizar_sugerencia==index+1"></textarea><label v-else>{{concentrado.idea_propuesta}}</label></td>
                                                 <td><input class="inputs-concentrado" type="text"  v-model="var_nomina"  v-if="actualizar_sugerencia==index+1"></input><label v-else>{{concentrado.numero_nomina}}</label></td>
@@ -713,8 +714,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                 </td>
                                                 <td><input class="inputs-concentrado" type="date" v-model="var_fecha_sugerencia" v-if="actualizar_sugerencia==index+1"></input><label v-else>{{concentrado.fecha_de_sugerencia}}</label></td>
                                                 <td><input class="inputs-concentrado" type="date" v-model="var_fecha_inicio" v-if="actualizar_sugerencia==index+1"></input><label v-else>{{concentrado.fecha_de_inicio}}</label></td>
-                                                <td><!--<input class="inputs-concentrado" type="date" v-model="var_fecha_compromiso" v-if="actualizar_sugerencia==index+1"></input><label v-else>{{concentrado.fecha_compromiso}}</label></td>-->
-                                                <td><!--<input class="inputs-concentrado" type="date" v-model="var_fecha_real_de_cierre" v-if="actualizar_sugerencia==index+1"></input><label v-else>{{concentrado.fecha_real_cierre}}</label></td>-->
+                                                <td><label>{{concentrado.fecha_compromiso}}</label></td>
+                                                <td><label>{{concentrado.fecha_real_cierre}}</label></td>
                                                 <td>
                                                     <select class="inputs-concentrado" v-model="var_usuario_y_analista_de_factibilidad" v-if="actualizar_sugerencia==index+1">
                                                         <option value="" disabled>Seleccione analista..</option>
@@ -1144,6 +1145,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 console.log(error)
             })
     },
+    mensajeAlNueveNueve(){
+        alert("El %cumplimiento debe de estar al 99% para que se active. ")
+    },
     datos_modal(id_concentrado,folio,validacion_de_impacto){
         this.id_concentrado = id_concentrado
         this.folio = folio
@@ -1278,7 +1282,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
       /*METODOS CONCENTRADO SUGERENCIAS*/
             guardar_nueva_sugerencia_y_actualizar(nueva_o_actualizar,id_registro){
 
-                if(this.var_sindicalizado_empleado!='' && this.var_nombre_sugerencias!='' && this.var_folio!='' && this.var_causa_no_factibilidad!='' && this.var_situacion_actual!='' && 
+                if(this.var_sindicalizado_empleado!='' && this.var_nombre_sugerencias!='' && this.var_folio!='' && this.var_situacion_actual!='' && 
                     this.var_idea_propuesta!='' && this.var_nomina!='' && this.var_colaborador!='' && this.var_puesto!='' && this.var_planta!='' && 
                     this.var_area!='' && this.var_area_participante!='' && this.var_subarea!='' && this.var_fecha_sugerencia!='' && this.var_fecha_inicio!='' && this.var_usuario_y_analista_de_factibilidad!='' ){
                     this.actualizar_sugerencia="";//desactivar editar o actualizar
@@ -1291,7 +1295,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                             nombre_sugerencia: this.var_nombre_sugerencias,
                             folio: this.var_folio,
                             status: this.var_status,
-                            causa_no_factibilidad: this.var_causa_no_factibilidad,
+                            //causa_no_factibilidad: this.var_causa_no_factibilidad,
                             situacion_actual: this.var_situacion_actual,
                             idea_propuesta: this.var_idea_propuesta,
                             nomina: this.var_nomina,
@@ -1329,7 +1333,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     this.var_sindicalizado_empleado=''
                     this.var_nombre_sugerencias=''
                     this.var_folio=''
-                    this.var_causa_no_factibilidad=''
+                    //this.var_causa_no_factibilidad=''
                     this.var_situacion_actual = ''
                     this.var_idea_propuesta = ''
                     this.var_nomina = ''
@@ -1354,6 +1358,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     this.var_sindicalizado_empleado=this.concentrado_sugerencias[posicion-1].sindicalizado_empleado
                     this.var_nombre_sugerencias=this.concentrado_sugerencias[posicion-1].nombre_sugerencia
                     this.var_folio=this.concentrado_sugerencias[posicion-1].folio
+                    this.var_status=this.concentrado_sugerencias[posicion-1].status
                     this.var_causa_no_factibilidad=this.concentrado_sugerencias[posicion-1].causa_no_factibilidad
                     this.var_situacion_actual = this.concentrado_sugerencias[posicion-1].situacion_actual
                     this.var_idea_propuesta = this.concentrado_sugerencias[posicion-1].idea_propuesta
@@ -1364,12 +1369,12 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     this.var_area = this.concentrado_sugerencias[posicion-1].area
                     this.var_area_participante = this.concentrado_sugerencias[posicion-1].area_participante
                     this.var_subarea = this.concentrado_sugerencias[posicion-1].subarea
-                    this.var_usuario_y_analista_de_factibilidad = this.var_subarea = this.concentrado_sugerencias[posicion-1].analista_de_factibilidad
                     this.var_impacto_primario = this.concentrado_sugerencias[posicion-1].impacto_primario
                     this.var_impacto_secundario = this.concentrado_sugerencias[posicion-1].impacto_secundario
                     this.var_tipo_desperdicio = this.concentrado_sugerencias[posicion-1].tipo_de_desperdicio
                     this.var_fecha_sugerencia = this.concentrado_sugerencias[posicion-1].fecha_de_sugerencia
                     this.var_fecha_inicio = this.concentrado_sugerencias[posicion-1].fecha_de_inicio
+                    this.var_usuario_y_analista_de_factibilidad = this.concentrado_sugerencias[posicion-1].analista_de_factibilidad
                     var arr = this.concentrado_sugerencias[posicion-1].objetivo_de_calidad_ma.split(',')
                     var longitud = arr.length
                     this.var_objetivo_de_calidadMA.splice(0,15);
@@ -1580,7 +1585,6 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     })
                     .then(response => {
                         console.log(response.data);
-                        console.log("ARRIBA")
                      if(this.cual_documento=="ppt"){
                         this.fileppt = response.data;
                         if(this.fileppt.length>0){

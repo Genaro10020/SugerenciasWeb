@@ -472,12 +472,16 @@ if ($_SESSION["usuario"] ){
                                                     </div>
                                             </div>
                                             <!--fin cinta apartado-->
-                                        <div class="row mt-5">  <!-- contenido impacto de sugerencia-->
-                                                 <div class="div-scroll"><!--Scroll-->
+                                        <div class="row">  <!-- contenido impacto de sugerencia-->
+                                        <div class="text-center mt-3 ">
+                                                <span class="badge bg-light text-dark">Sugerencias Pendientes de Impacto: <?php echo $_SESSION['nombre']; ?></span>
+                                            </div>
+                                                 <div class="div-scroll mt-3"><!--Scroll-->
                                                                             <table class="tablaMonitoreo-sugerencias table table-striped table-bordered text-center">
                                                                                 <thead class="encabezado-tabla text-center text-light ">
                                                                                     <tr >
-                                                                                    <th scope="col" class="sticky">Status</th>
+                                                                                    <th scope="col" class="sticky">Editar/Guardar</th>
+                                                                                    <th scope="col">Status</th>
                                                                                     <th scope="col">Folio</th>
                                                                                     <th scope="col">Nombre de Sugerencia</th>
                                                                                     <th scope="col">Analista de Factibilidad</th>
@@ -505,36 +509,38 @@ if ($_SESSION["usuario"] ){
                                                                                     </tr>
                                                                                 </thead>
                                                                                 <tbody>
-                                                                                    <tr class="align-middle bg-info" v-show="nueva_actividad"><!--Nueva Actividad Fila-->
-                                                                                            <td class="sticky"> 
-                                                                                                <button type="button" class="btn btn-danger  me-2" title="Cancelar" @click="nueva_actividad=false"><i class="bi bi-x-circle" ></i></button>
-                                                                                                <button type="button" class="btn btn-primary" title="Guardar" @click="guardarEditarActividad('nuevo','')"><i class="bi bi-check-circle"></i></button>
-                                                                                            </td> 
-                                                                                        <th scope="row">
-                                                                                            <label>{{numero_nueva_actividad}}</label></th>
-                                                                                        <td>
-                                                                                            <textarea class="inputs-concentrado text-area" type="text"   v-model="descripcion_actividad"></textarea></td>
-                                                                                        <td>
-                                                                                        <select class="inputs-concentrado" v-model="responsable_plan" >
-                                                                                            <option value="" disabled>Seleccione Analista..</option>
-                                                                                            <option v-for="responsable in lista_responsable_plan" :key="responsable.nombre" :value="responsable.nombre">{{responsable.nombre}}</option>
-                                                                                        </select>
-                                                                                        </td>
-                                                                                        <td>
-                                                                                            <input class="inputs-concentrado" type="date" v-model="fecha_inicial_actividad"></input></td>
-                                                                                        <td>
-                                                                                            <input class="inputs-concentrado" type="date" v-model="fecha_final_actividad"></input></td>
-                                                                                        <td>0</td>
-                                                                                    </tr><!--Fin Nueva Actividad-->
-                                                                                         <!--Consulta actividades-->
-                                                                                        <tr class="align-middle" v-for="(actividades, index) in concentrado_actividades">
-                                                                                           
-                                                                                        <td> 
-                                                                                            <button v-show="check_mc!='Aceptado'" type="button" class="btn btn-danger me-2" title="Eliminar" @click="eliminarActividad(actividades.id)"><i class="bi bi-trash3-fill"></i></button>
+                                                                                <tr class="align-middle" v-for="(pendiente_impacto, index) in concentrado_sugerencias_pendiente_impacto">
+                                                                                         <td> 
                                                                                             <button type="button" class="btn btn-danger me-2" title="Cancelar" @click="editarActividad('')" v-if="id_actualizar==index+1"><i class="bi bi-x-circle" ></i></button>
                                                                                             <button v-show="deshabilitar==false" type="button" class="btn btn-warning me-2" title="Editar" @click="editarActividad(index+1)"><i class="bi bi-pen" ></i></button>
                                                                                             <button type="button" class="btn btn-primary " title="Guardar" @click="guardarEditarActividad('actualizar',actividades.id)" v-if="id_actualizar==index+1"><i class="bi bi-check-circle"></i></button>
                                                                                         </td> 
+                                                                                        <td><label>{{pendiente_impacto.status_impacto}}</label></td>
+                                                                                        <td></td>
+                                                                                        <td><label>{{pendiente_impacto.folio}}</label></td>
+                                                                                        <td><label>{{pendiente_impacto.nombre_sugerencia}}</label></td>
+                                                                                        <td><label>{{pendiente_impacto.analista_de_factibilidad}}</label></td>
+                                                                                        <td><label>{{pendiente_impacto.planta}}</label></td>
+                                                                                        <td><label>{{pendiente_impacto.area}}</label></td>
+                                                                                        <td><label>{{pendiente_impacto.subarea}}</label></td>
+                                                                                        <td><label>{{pendiente_impacto.fecha_real_cierre}}</label></td>
+                                                                                        <td style="background-color: #c9e7ff"><input class="rounded border-2" v-model="indicador" type="text" ></input></td>
+                                                                                        <td style="background-color: #c9e7ff"><input  class="rounded border-2" v-model="unidades" type="text" ></input></td>
+                                                                                        <td style="background-color: #c9e7ff"><input  class="rounded border-2" v-model="linea_base" type="text" ></input></td>
+                                                                                        <td style="background-color: #c9e7ff">
+                                                                                            <select  v-model="periodo_de_medicion" class="rounded border-2">
+                                                                                                <option value="" disabled>Seleccione Periodo..</option>
+                                                                                                <option v-for="mes in 12" :value="mes">{{mes}} Mes</option>
+                                                                                            </select>
+                                                                                        </td>
+                                                                                        <td style="background-color: #fffadf">
+                                                                                                <span class="d-block p-1 bg-primary text-white"><input  class="rounded border-2" type="date" :value="pendiente_impacto.fecha_real_cierre"></input></span>
+                                                                                                <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2"type="text"></input></span>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                   
+
+                                                                                        <!--
                                                                                             <th scope="row">
                                                                                                 <label v-show="actualizar==true || check_mc=='Aceptado'">{{index+1}}</label>
                                                                                                     <select  v-model="numero_orden_en_select" v-show="actualizar==false && check_mc!='Aceptado'" title="Cambiar posición">
@@ -565,7 +571,7 @@ if ($_SESSION["usuario"] ){
                                                                                             </select>
                                                                                             <label  v-show="status!='En Implementación' && check_mc!='Aceptado'">{{actividades.porcentaje}}%<label>
                                                                                         </td>
-                                                                                    </tr><!--Fin consuta actividades-->    
+                                                                                    </tr>--><!--Fin impacto de sugerencias-->    
                                                                                 </tbody>
                                                                             </table>
                                                                         </div><!--scroll-->
@@ -637,6 +643,8 @@ if ($_SESSION["usuario"] ){
                 /*Variables en Implementación*/
                 suma_porcentaje_actividades:0,
                 deshabilitar:false,//disable o enabled formulario impacto
+                /*Variables pendientes de Impacto */
+                concentrado_sugerencias_pendiente_impacto:[],
 
             }
         },
@@ -645,6 +653,8 @@ if ($_SESSION["usuario"] ){
             this.consultado_concentrado_pendiente_factibilidad(),
               //Consultado concentrado de sugerencias.
             this.consultado_concentrado_pendiente_implementacion(),
+            //Consultado concentrado pendientes impacto.
+            this.consultado_concentrado_pendiente_impacto(),
              //Consultado usuarios.
             this.consultando_usuarios(),
             //Consultado impacto
@@ -673,8 +683,14 @@ if ($_SESSION["usuario"] ){
                             }).then(response =>{
                                 this.concentrado_sugerencias_pendiente_implementacion = response.data
                                 console.log(this.concentrado_sugerencias_pendiente_implementacion)
+                            })
+            },
+            consultado_concentrado_pendiente_impacto(){
+                axios.post('consulta_concentrado_pendientes_impacto.php',{
+                            }).then(response =>{
+                                this.concentrado_sugerencias_pendiente_impacto = response.data
+                                console.log(this.concentrado_sugerencias_pendiente_impacto)
                                 console.log('Arriba')
-                                
                             })
             },
             consultando_usuarios(){
