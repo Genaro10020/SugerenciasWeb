@@ -505,51 +505,21 @@ if ($_SESSION["usuario"] ){
                                                                                     </tr>
                                                                                 </thead>
                                                                                 <tbody>
-                                                                                    <tr class="align-middle bg-info" v-show="nueva_actividad"><!--Nueva Actividad Fila-->
-                                                                                            <td class="sticky"> 
-                                                                                                <button type="button" class="btn btn-danger  me-2" title="Cancelar" @click="nueva_actividad=false"><i class="bi bi-x-circle" ></i></button>
-                                                                                                <button type="button" class="btn btn-primary" title="Guardar" @click="guardarEditarActividad('nuevo','')"><i class="bi bi-check-circle"></i></button>
-                                                                                            </td> 
-                                                                                        <th scope="row">
-                                                                                            <label>{{numero_nueva_actividad}}</label></th>
-                                                                                        <td>
-                                                                                            <textarea class="inputs-concentrado text-area" type="text"   v-model="descripcion_actividad"></textarea></td>
-                                                                                        <td>
-                                                                                        <select class="inputs-concentrado" v-model="responsable_plan" >
-                                                                                            <option value="" disabled>Seleccione Analista..</option>
-                                                                                            <option v-for="responsable in lista_responsable_plan" :key="responsable.nombre" :value="responsable.nombre">{{responsable.nombre}}</option>
-                                                                                        </select>
-                                                                                        </td>
-                                                                                        <td>
-                                                                                            <input class="inputs-concentrado" type="date" v-model="fecha_inicial_actividad"></input></td>
-                                                                                        <td>
-                                                                                            <input class="inputs-concentrado" type="date" v-model="fecha_final_actividad"></input></td>
-                                                                                        <td>0</td>
-                                                                                    </tr><!--Fin Nueva Actividad-->
-                                                                                         <!--Consulta actividades-->
-                                                                                        <tr class="align-middle" v-for="(actividades, index) in concentrado_actividades">
+                                                                                         <!--Condulta concentrado impacto de sugerecnias-->
+                                                                                        <tr class="align-middle" >
                                                                                            
                                                                                         <td> 
-                                                                                            <button v-show="check_mc!='Aceptado'" type="button" class="btn btn-danger me-2" title="Eliminar" @click="eliminarActividad(actividades.id)"><i class="bi bi-trash3-fill"></i></button>
-                                                                                            <button type="button" class="btn btn-danger me-2" title="Cancelar" @click="editarActividad('')" v-if="id_actualizar==index+1"><i class="bi bi-x-circle" ></i></button>
-                                                                                            <button v-show="deshabilitar==false" type="button" class="btn btn-warning me-2" title="Editar" @click="editarActividad(index+1)"><i class="bi bi-pen" ></i></button>
-                                                                                            <button type="button" class="btn btn-primary " title="Guardar" @click="guardarEditarActividad('actualizar',actividades.id)" v-if="id_actualizar==index+1"><i class="bi bi-check-circle"></i></button>
+                                                                                            1
                                                                                         </td> 
-                                                                                            <th scope="row">
-                                                                                                <label v-show="actualizar==true || check_mc=='Aceptado'">{{index+1}}</label>
-                                                                                                    <select  v-model="numero_orden_en_select" v-show="actualizar==false && check_mc!='Aceptado'" title="Cambiar posición">
-                                                                                                        <option  value="0" disabled>{{index+1}}</option>
-                                                                                                        <option :value="index+1" v-for="numero in numero_actividad" @click="ordenarActividades(index,numero-1,numero_orden_en_select=0)">{{numero}}</option>
-                                                                                                    </select>     
-                                                                                            </th>
+                                                                                        
                                                                                         <td>   
-                                                                                            <textarea v-model="descripcion_actividad" v-if="id_actualizar==index+1" class="inputs-concentrado text-area" type="text"  ></textarea> 
-                                                                                            <label v-else>{{actividades.actividad}}<label>
+                                                                                            2
                                                                                                 
                                                                                         </td>
                                                                                         
                                                                                        <td>
-                                                                                        <select v-if="id_actualizar==index+1" class="inputs-concentrado" v-model="responsable_plan" >
+                                                                                        3
+                                                                                        <!--<select v-if="id_actualizar==index+1" class="inputs-concentrado" v-model="responsable_plan" >
                                                                                             <option value="" disabled>Seleccione Analista..</option>
                                                                                             <option v-for="responsable in lista_responsable_plan" :key="responsable.nombre" :value="responsable.nombre">{{responsable.nombre}}</option>
                                                                                         </select>
@@ -557,13 +527,7 @@ if ($_SESSION["usuario"] ){
                                                                                         </td>
                                                                                         <td><input v-if="id_actualizar==index+1" class="inputs-concentrado" v-model="fecha_inicial_actividad" type="date" ></input><label v-else>{{actividades.fecha_inicial}}<label></td>
                                                                                         <td><input v-if="id_actualizar==index+1" class="inputs-concentrado" v-model="fecha_final_actividad" type="date" ></input><label v-else>{{actividades.fecha_final}}<label></td>
-                                                                                        <td>
-                                                                                            
-                                                                                            <select v-show="actualizar==false && status=='En Implementación' && check_mc=='Aceptado' && bandera_btn_finalizar!='mostrar'" class="form-control"  >
-                                                                                                <option  value="0" @click="actualizarPorcentajeEnActividad(actividades.id,0)" disabled selected>{{actividades.porcentaje}}%</option>
-                                                                                                <option  v-for="numero in numeros" :value="numero" @click="actualizarPorcentajeEnActividad(actividades.id,numero)">{{numero}}%</option>
-                                                                                            </select>
-                                                                                            <label  v-show="status!='En Implementación' && check_mc!='Aceptado'">{{actividades.porcentaje}}%<label>
+                                                                                        <td>-->
                                                                                         </td>
                                                                                     </tr><!--Fin consuta actividades-->    
                                                                                 </tbody>
@@ -643,8 +607,10 @@ if ($_SESSION["usuario"] ){
         mounted(){
             //Consultado concentrado de sugerencias.
             this.consultado_concentrado_pendiente_factibilidad(),
-              //Consultado concentrado de sugerencias.
+            //Consultado concentrado de sugerencias.
             this.consultado_concentrado_pendiente_implementacion(),
+             //Consultado concentrado impacto de sugerencia.
+             //this.consultado_concentrado_impacto_de_sugerencia(),
              //Consultado usuarios.
             this.consultando_usuarios(),
             //Consultado impacto
@@ -673,8 +639,6 @@ if ($_SESSION["usuario"] ){
                             }).then(response =>{
                                 this.concentrado_sugerencias_pendiente_implementacion = response.data
                                 console.log(this.concentrado_sugerencias_pendiente_implementacion)
-                                console.log('Arriba')
-                                
                             })
             },
             consultando_usuarios(){

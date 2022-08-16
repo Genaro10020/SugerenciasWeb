@@ -6,7 +6,7 @@
     $dias =0;
     $nombre= $_SESSION['nombre'];
     $pendiente_o_vencida="status_factibilidad";
-    $consulta = "SELECT * FROM concentrado_sugerencias WHERE status='En Implementación' AND analista_de_factibilidad='$nombre' ORDER BY id DESC";
+    $consulta = "SELECT * FROM concentrado_sugerencias WHERE status='Implementada' AND analista_de_factibilidad='$nombre' ORDER BY id DESC";
     $hoy = date("Y-m-d");
     $query = mysqli_query($conexion,$consulta);
     while ($fila=$query -> fetch_array()) {
