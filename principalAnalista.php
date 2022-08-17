@@ -505,7 +505,7 @@ if ($_SESSION["usuario"] ){
                                                                                     <th scope="col">Mes 10</th>
                                                                                     <th scope="col">Mes 11</th>
                                                                                     <th scope="col">Mes 12</th>
-                                                                                    <th scope="col">Acumulado</th>
+                                                                                    <!--<th scope="col">Acumulado</th>-->
                                                                                     </tr>
                                                                                 </thead>
                                                                                 <tbody>
@@ -516,7 +516,6 @@ if ($_SESSION["usuario"] ){
                                                                                             <button type="button" class="btn btn-primary " title="Guardar" @click="guardarEditarActividad('actualizar',actividades.id)" v-if="id_actualizar==index+1"><i class="bi bi-check-circle"></i></button>
                                                                                         </td> 
                                                                                         <td><label>{{pendiente_impacto.status_impacto}}</label></td>
-                                                                                        <td></td>
                                                                                         <td><label>{{pendiente_impacto.folio}}</label></td>
                                                                                         <td><label>{{pendiente_impacto.nombre_sugerencia}}</label></td>
                                                                                         <td><label>{{pendiente_impacto.analista_de_factibilidad}}</label></td>
@@ -534,7 +533,52 @@ if ($_SESSION["usuario"] ){
                                                                                             </select>
                                                                                         </td>
                                                                                         <td style="background-color: #fffadf">
-                                                                                                <span class="d-block p-1 bg-primary text-white"><input  class="rounded border-2" type="date" :value="pendiente_impacto.fecha_real_cierre"></input></span>
+                                                                                                <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.enero}}</span>
+                                                                                                <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2"type="text"></input></span>
+                                                                                                
+                                                                                        </td>
+                                                                                        <td style="background-color: #fffadf">
+                                                                                                <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.febrero}}</span>
+                                                                                                <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2"type="text"></input></span>
+                                                                                        </td>
+                                                                                        <td style="background-color: #fffadf">
+                                                                                                <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.marzo}}</span>
+                                                                                                <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2"type="text"></input></span>
+                                                                                        </td>
+                                                                                        <td style="background-color: #fffadf">
+                                                                                                <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.abril}}</span>
+                                                                                                <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2"type="text"></input></span>
+                                                                                        </td>
+                                                                                        <td style="background-color: #fffadf">
+                                                                                                <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.mayo}}</span>
+                                                                                                <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2"type="text"></input></span>
+                                                                                        </td>
+                                                                                        <td style="background-color: #fffadf">
+                                                                                                <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.junio}}</span>
+                                                                                                <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2"type="text"></input></span>
+                                                                                        </td>
+                                                                                        <td style="background-color: #fffadf">
+                                                                                                <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.julio}}</span>
+                                                                                                <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2"type="text"></input></span>
+                                                                                        </td>
+                                                                                        <td style="background-color: #fffadf">
+                                                                                                <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.agosto}}</span>
+                                                                                                <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2"type="text"></input></span>
+                                                                                        </td>
+                                                                                        <td style="background-color: #fffadf">
+                                                                                                <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.septiembre}}</span>
+                                                                                                <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2"type="text"></input></span>
+                                                                                        </td>
+                                                                                        <td style="background-color: #fffadf">
+                                                                                                <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.octubre}}</span>
+                                                                                                <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2"type="text"></input></span>
+                                                                                        </td>
+                                                                                        <td style="background-color: #fffadf">
+                                                                                        <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.noviembre}}</span>
+                                                                                                <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2"type="text"></input></span>
+                                                                                        </td>
+                                                                                        <td style="background-color: #fffadf">
+                                                                                                <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.diciembre}}</span>
                                                                                                 <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2"type="text"></input></span>
                                                                                         </td>
                                                                                     </tr>
