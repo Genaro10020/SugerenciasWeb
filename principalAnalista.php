@@ -473,14 +473,15 @@ if ($_SESSION["usuario"] ){
                                             </div>
                                             <!--fin cinta apartado-->
                                         <div class="row">  <!-- contenido impacto de sugerencia-->
-                                        <div class="text-center mt-3 ">
-                                                <span class="badge bg-light text-dark">Sugerencias Pendientes de Impacto: <?php echo $_SESSION['nombre']; ?></span>
-                                            </div>
-                                                 <div class="div-scroll mt-3"><!--Scroll-->
+                                                                <div class="col-12">                                
+                                                                        <div class="text-center mt-3 ">
+                                                                            <span class="badge bg-light text-dark">Sugerencias Pendientes de Impacto:<?php echo $_SESSION['nombre']; ?></span>
+                                                                        </div>
+                                                                            <div class="div-scroll mt-3 "><!--Scroll-->
                                                                             <table class="tablaMonitoreo-sugerencias table table-striped table-bordered text-center">
                                                                                 <thead class="encabezado-tabla text-center text-light ">
                                                                                     <tr >
-                                                                                    <th scope="col" class="sticky">Editar/Guardar</th>
+                                                                                    
                                                                                     <th scope="col">Status</th>
                                                                                     <th scope="col">Folio</th>
                                                                                     <th scope="col">Nombre de Sugerencia</th>
@@ -489,6 +490,7 @@ if ($_SESSION["usuario"] ){
                                                                                     <th scope="col">Área</th>
                                                                                     <th scope="col">Subárea</th>
                                                                                     <th scope="col">Fecha real de Cierra</th>
+                                                                                    <th scope="col" class="sticky">Editar/Guardar</th>
                                                                                     <th scope="col">Indicador</th>
                                                                                     <th scope="col">Unidades</th>
                                                                                     <th scope="col">Línea Base</th>
@@ -511,11 +513,10 @@ if ($_SESSION["usuario"] ){
                                                                                 <tbody>
                                                                                 <tr class="align-middle" v-for="(pendiente_impacto, index) in concentrado_sugerencias_pendiente_impacto">
                                                                                         
-                                                                                         <td> 
-                                                                                            <button v-show="btn_actualizar==true" v-if="id_actualiza==index+1" type="button" class="btn btn-danger me-2" title="Cancelar" @click="editarIndicador('')" ><i class="bi bi-x-circle" ></i></button>
-                                                                                            <button v-show="btn_actualizar==false" type="button" class="btn btn-warning me-2" title="Editar" @click="editarIndicador(index+1)"><i class="bi bi-pen" ></i></button>
+                                                                                         <td class="sticky" style=" background: rgb(94, 94, 94)"> 
+                                                                                            <button v-show="btn_actualizar==true" v-if="id_actualiza==index+1" type="button" class="btn btn-danger me-2" title="Cancelar" @click="editarIndicador('','')" ><i class="bi bi-x-circle" ></i></button>
+                                                                                            <button v-show="btn_actualizar==false" type="button" class="btn btn-warning me-2" title="Editar" @click="editarIndicador(pendiente_impacto.id,index+1)"><i class="bi bi-pen" ></i></button>
                                                                                             <button v-if="id_actualiza==index+1" type="button" class="btn btn-primary " title="Guardar" @click="guardarEditarIndicador(pendiente_impacto.id,pendiente_impacto.folio)" ><i class="bi bi-check-circle"></i></button>
-                                                                                            {{id_actualiza}}
                                                                                         </td> 
                                                                                         <td><label>{{pendiente_impacto.status_impacto}}</label></td>
                                                                                         <td><label>{{pendiente_impacto.folio}}</label></td>
@@ -528,19 +529,20 @@ if ($_SESSION["usuario"] ){
                                                                                         
                                                                                         </td>
                                                                                         <td style="background-color: #c9e7ff">
+                                                                                      
                                                                                                 <div v-if="id_actualiza==index+1" class="">
                                                                                                         <input class="rounded border-2" v-model="indicador" type="text" ></input> 
                                                                                                 </div>
                                                                                                 <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
                                                                                                      <!--<input class="rounded border-2" v-model="indicador" type="text" ></input> -->
-                                                                                                    <label v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id">{{concentrado_impacto_midiendo.indicador}}</label>
+                                                                                                     <input v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id" :value="concentrado_impacto_midiendo.indicador" class="rounded border-2" type="text" disabled></input> 
                                                                                                 </div>
                                                                                                     
                                                                                         </td>
                                                                                         <td style="background-color: #c9e7ff">
                                                                                                 <input v-if="id_actualiza==index+1" class="rounded border-2" v-model="unidades" type="text" ></input>
                                                                                                 <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo"> 
-                                                                                                            <!-- <input v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id" :value="concentrado_impacto_midiendo.unidades" class="rounded border-2" type="text" disabled></input>-->  
+                                                                                                            <input v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id" :value="concentrado_impacto_midiendo.unidades" class="rounded border-2" type="text" disabled></input> 
                                                                                                 </div>
                                                                                                
                                                                                                 
@@ -548,101 +550,186 @@ if ($_SESSION["usuario"] ){
                                                                                         <td style="background-color: #c9e7ff">
                                                                                                 <input v-if="id_actualiza==index+1" class="rounded border-2" v-model="linea_base" type="text" ></input>
                                                                                                 <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo"> 
-                                                                                                             <label v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id">{{concentrado_impacto_midiendo.linea_base}}</label>
+                                                                                                    <input v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id" :value="concentrado_impacto_midiendo.linea_base" class="rounded border-2" type="text" disabled></input> 
                                                                                                 </div>
                                                                                         </td>
                                                                                         <td style="background-color: #c9e7ff">
-                                                                                                <select v-if="id_actualiza==index+1" v-model="periodo_de_medicion" class="rounded border-2">
+                                                                                       
+                                                                                                <select v-if="id_actualiza==index+1" v-model="periodo_de_medicion" class="rounded border-2  bg-body">
                                                                                                     <option value="0" disabled selected>Seleccione Periodo..</option>
-                                                                                                    <option v-for="mes in 12" :value="mes">{{mes}} Mes/es</option>
+                                                                                                    <option v-for="mes in 12" :value="mes" @click="vaciarMeses(pendiente_impacto.id)">{{mes}} Mes/es</option>
                                                                                                 </select>
                                                                                                         <div v-else  v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo"> 
-                                                                                                            <label v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id">{{concentrado_impacto_midiendo.periodo}}</label>
+                                                                                                            <input v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id" :value="concentrado_impacto_midiendo.periodo" class="rounded border-2" type="text" disabled></input> 
                                                                                                         </div>   
                                                                                         </td>
-                                                                                        <td style="background-color: #fffadf">
-                                                                                                <div v-show="periodo_de_medicion >= 1">    
+                                                                                        <td style="background-color: #fffadf"><!--Mes1-->
+                                                                                                <div v-if="id_actualiza==index+1" v-show="periodo_de_medicion >= 1">    
                                                                                                             <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.mes1}}</span>
                                                                                                             <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2" type="text" v-model="mes1"></input></span>
                                                                                                 </div>   
-                                                                                                <div  v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo"><label v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id">{{concentrado_impacto_midiendo.mes1}}</label></div>   
+                                                                                                <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
+                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && concentrado_impacto_midiendo.periodo >=1">
+                                                                                                            <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes1}}</span>
+                                                                                                            <span class="d-block p-1 bg-secondary text-white ">
+                                                                                                                <input  :value="concentrado_impacto_midiendo.mes1" class="border-2  text-center" type="text" disabled></input>
+                                                                                                            </span> 
+                                                                                                        </div>    
+                                                                                                </div>   
                                                                                         </td>
                                                                                         <td style="background-color: #fffadf">
-                                                                                                <div v-show="periodo_de_medicion >= 2">
+                                                                                                <div v-if="id_actualiza==index+1" v-show="periodo_de_medicion >= 2">
                                                                                                             <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.mes2}}</span>
                                                                                                             <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2" type="text" v-model="mes2"></input></span>
                                                                                                 </div> 
-                                                                                                <div  v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo"><label v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id">{{concentrado_impacto_midiendo.mes2}}</label></div>      
+                                                                                                <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
+                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && concentrado_impacto_midiendo.periodo >=2">
+                                                                                                            <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes2}}</span>
+                                                                                                            <span class="d-block p-1 bg-secondary text-white ">
+                                                                                                                <input  :value="concentrado_impacto_midiendo.mes2" class="border-2  text-center" type="text" disabled></input>
+                                                                                                            </span> 
+                                                                                                        </div>     
+                                                                                                </div>      
                                                                                         </td>
                                                                                         <td style="background-color: #fffadf">
-                                                                                            <div v-show="periodo_de_medicion >= 3">
-                                                                                                        <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.mes3}}</span>
-                                                                                                        <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2" type="text" v-model="mes3"></input></span>
-                                                                                            </div> 
-                                                                                                <div  v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo"><label v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id">{{concentrado_impacto_midiendo.mes3}}</label></div>   
+                                                                                                <div v-if="id_actualiza==index+1" v-show="periodo_de_medicion >= 3">
+                                                                                                            <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.mes3}}</span>
+                                                                                                            <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2" type="text" v-model="mes3"></input></span>
+                                                                                                </div> 
+                                                                                                <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
+                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && concentrado_impacto_midiendo.periodo >=3">
+                                                                                                            <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes3}}</span>
+                                                                                                            <span class="d-block p-1 bg-secondary text-white ">
+                                                                                                                <input  :value="concentrado_impacto_midiendo.mes3" class="border-2  text-center" type="text" disabled></input>
+                                                                                                            </span> 
+                                                                                                        </div>     
+                                                                                                </div>      
                                                                                         </td>
                                                                                         <td style="background-color: #fffadf">
-                                                                                            <div v-show="periodo_de_medicion >= 4">
-                                                                                                    <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.mes4}}</span>
-                                                                                                    <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2" type="text" v-model="mes4"></input></span>
+                                                                                            <div v-if="id_actualiza==index+1" v-show="periodo_de_medicion >= 4">
+                                                                                                            <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.mes4}}</span>
+                                                                                                            <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2" type="text" v-model="mes4"></input></span>
                                                                                             </div>  
-                                                                                                 <div  v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo"><label v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id">{{concentrado_impacto_midiendo.mes4}}</label></div>   
+                                                                                            <div v-else  v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
+                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && concentrado_impacto_midiendo.periodo >=4">
+                                                                                                            <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes4}}</span>
+                                                                                                            <span class="d-block p-1 bg-secondary text-white ">
+                                                                                                                <input  :value="concentrado_impacto_midiendo.mes4" class="border-2  text-center" type="text" disabled></input>
+                                                                                                            </span> 
+                                                                                                        </div>     
+                                                                                            </div>    
                                                                                         </td>
                                                                                         <td style="background-color: #fffadf">
-                                                                                            <div v-show="periodo_de_medicion >= 5">
+                                                                                            <div v-if="id_actualiza==index+1" v-show="periodo_de_medicion >= 5">
                                                                                                     <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.mes5}}</span>
                                                                                                     <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2" type="text" v-model="mes5"></input></span>
                                                                                             </div>
-                                                                                                <div  v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo"><label v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id">{{concentrado_impacto_midiendo.mes5}}</label></div>   
+                                                                                            <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
+                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && concentrado_impacto_midiendo.periodo >=5">
+                                                                                                            <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes5}}</span>
+                                                                                                            <span class="d-block p-1 bg-secondary text-white ">
+                                                                                                                <input  :value="concentrado_impacto_midiendo.mes5" class="border-2  text-center" type="text" disabled></input>
+                                                                                                            </span> 
+                                                                                                        </div>     
+                                                                                            </div>   
                                                                                         </td>
                                                                                         <td style="background-color: #fffadf">
-                                                                                            <div v-show="periodo_de_medicion >= 6">
+                                                                                            <div v-if="id_actualiza==index+1" v-show="periodo_de_medicion >= 6">
                                                                                                     <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.mes6}}</span>
                                                                                                     <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2" type="text" v-model="mes6"></input></span>
                                                                                             </div>    
-                                                                                            <div  v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo"><label v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id">{{concentrado_impacto_midiendo.mes6}}</label></div>   
+                                                                                            <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
+                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && concentrado_impacto_midiendo.periodo >=6">
+                                                                                                            <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes6}}</span>
+                                                                                                            <span class="d-block p-1 bg-secondary text-white ">
+                                                                                                                <input  :value="concentrado_impacto_midiendo.mes6" class="border-2  text-center" type="text" disabled></input>
+                                                                                                            </span> 
+                                                                                                        </div>     
+                                                                                            </div>    
                                                                                         </td>
                                                                                         <td style="background-color: #fffadf">
-                                                                                            <div v-show="periodo_de_medicion >= 7">
-                                                                                            <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.mes7}}</span>
-                                                                                                    <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2"type="text" v-model="mes7"></input></span>
+                                                                                            <div v-if="id_actualiza==index+1" v-show="periodo_de_medicion >= 7">
+                                                                                                    <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.mes7}}</span>
+                                                                                                    <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2" type="text" v-model="mes7"></input></span>
                                                                                             </div>   
-                                                                                            <div  v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo"><label v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id">{{concentrado_impacto_midiendo.mes7}}</label></div>    
+                                                                                            <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
+                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && concentrado_impacto_midiendo.periodo >=7">
+                                                                                                            <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes7}}</span>
+                                                                                                            <span class="d-block p-1 bg-secondary text-white ">
+                                                                                                                <input  :value="concentrado_impacto_midiendo.mes7" class="border-2  text-center" type="text" disabled></input>
+                                                                                                            </span> 
+                                                                                                        </div>     
+                                                                                            </div>    
                                                                                         </td>
                                                                                         <td style="background-color: #fffadf">
-                                                                                            <div v-show="periodo_de_medicion >= 8">
+                                                                                            <div v-if="id_actualiza==index+1" v-show="periodo_de_medicion >= 8">
                                                                                                     <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.mes8}}</span>
                                                                                                     <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2"type="text" v-model="mes8"></input></span>
                                                                                             </div>    
-                                                                                            <div  v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo"><label v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id">{{concentrado_impacto_midiendo.mes8}}</label></div>   
+                                                                                            <div v-else  v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
+                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && concentrado_impacto_midiendo.periodo >=8">
+                                                                                                            <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes8}}</span>
+                                                                                                            <span class="d-block p-1 bg-secondary text-white ">
+                                                                                                                <input  :value="concentrado_impacto_midiendo.mes8" class="border-2  text-center" type="text" disabled></input>
+                                                                                                            </span> 
+                                                                                                        </div>       
+                                                                                            </div>   
                                                                                         </td>
                                                                                         <td style="background-color: #fffadf">
-                                                                                            <div v-show="periodo_de_medicion >= 9">
+                                                                                            <div v-if="id_actualiza==index+1" v-show="periodo_de_medicion >= 9">
                                                                                             <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.mes9}}</span>
                                                                                                     <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2"type="text" v-model="mes9"></input></span>
                                                                                             </div> 
-                                                                                            <div  v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo"><label v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id">{{concentrado_impacto_midiendo.mes9}}</label></div>   
+                                                                                            <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
+                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && concentrado_impacto_midiendo.periodo >=9">
+                                                                                                            <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes9}}</span>
+                                                                                                            <span class="d-block p-1 bg-secondary text-white ">
+                                                                                                                <input  :value="concentrado_impacto_midiendo.mes9" class="border-2  text-center" type="text" disabled></input>
+                                                                                                            </span> 
+                                                                                                        </div>    
+                                                                                            </div>   
                                                                                         </td>
                                                                                         <td style="background-color: #fffadf">
-                                                                                            <div v-show="periodo_de_medicion >= 10">
+                                                                                            <div v-if="id_actualiza==index+1" v-show="periodo_de_medicion >= 10">
                                                                                                     <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.mes10}}</span>
                                                                                                     <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2"type="text" v-model="mes10"></input></span>
                                                                                             </div>    
-                                                                                            <div  v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo"><label v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id">{{concentrado_impacto_midiendo.mes10}}</label></div>   
+                                                                                            <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
+                                                                                            <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && concentrado_impacto_midiendo.periodo >=10">
+                                                                                                            <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes10}}</span>
+                                                                                                            <span class="d-block p-1 bg-secondary text-white ">
+                                                                                                                <input  :value="concentrado_impacto_midiendo.mes10" class="border-2  text-center" type="text" disabled></input>
+                                                                                                            </span> 
+                                                                                                        </div>    
+                                                                                            </div>  
                                                                                         </td>
                                                                                         <td style="background-color: #fffadf">
-                                                                                            <div v-show="periodo_de_medicion >= 11">
+                                                                                            <div v-if="id_actualiza==index+1" v-show="periodo_de_medicion >= 11">
                                                                                                     <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.mes11}}</span>
                                                                                                     <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2"type="text" v-model="mes11"></input></span>
                                                                                             </div>  
-                                                                                            <div  v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo"><label v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id">{{concentrado_impacto_midiendo.mes11}}</label></div>     
+                                                                                            <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
+                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && concentrado_impacto_midiendo.periodo >=11">
+                                                                                                            <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes11}}</span>
+                                                                                                            <span class="d-block p-1 bg-secondary text-white ">
+                                                                                                                <input  :value="concentrado_impacto_midiendo.mes11" class="border-2  text-center" type="text" disabled></input>
+                                                                                                            </span> 
+                                                                                                        </div>    
+                                                                                            </div>       
                                                                                         </td>
                                                                                         <td style="background-color: #fffadf">
-                                                                                            <div v-show="periodo_de_medicion >= 12">
+                                                                                            <div v-if="id_actualiza==index+1" v-show="periodo_de_medicion >= 12">
                                                                                                     <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.mes12}}</span>
                                                                                                     <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2" type="text" v-model="mes12"></input></span>
                                                                                             </div>     
-                                                                                            <div  v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo"><label v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id">{{concentrado_impacto_midiendo.mes12}}</label></div>   
+                                                                                            <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
+                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && concentrado_impacto_midiendo.periodo >=12">
+                                                                                                            <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes12}}</span>
+                                                                                                            <span class="d-block p-1 bg-secondary text-white ">
+                                                                                                                <input  :value="concentrado_impacto_midiendo.mes12" class="border-2  text-center" type="text" disabled></input>
+                                                                                                            </span> 
+                                                                                                        </div>    
+                                                                                            </div>     
                                                                                         </td>
                                                                                     </tr>
                                                                                    
@@ -682,6 +769,7 @@ if ($_SESSION["usuario"] ){
                                                                                 </tbody>
                                                                             </table>
                                                                         </div><!--scroll-->
+                                                           </div>
                                         </div><!-- contenido impacto de sugerencia-->
                                         
                     </div>  
@@ -756,7 +844,7 @@ if ($_SESSION["usuario"] ){
                 indicador:'',
                 unidades:'',
                 linea_base:'',
-                periodo_de_medicion:0,
+                periodo_de_medicion:1,
                 mes1:'',
                 mes2:'',
                 mes3:'',
@@ -1274,27 +1362,61 @@ if ($_SESSION["usuario"] ){
                     }).then(response =>{
                         this.concentrado_impacto_sugerencias_midiendo = response.data
                         console.log(this.concentrado_impacto_sugerencias_midiendo)
-                        
-                         
                     }).catch(error =>{
 
                     })
                 },
-                editarIndicador(id){
-    
-                        if(id==""){ //accion del boton cancelar.
+                editarIndicador(id,index_actualizar){
+
+                        if(index_actualizar==""){ //accion del boton cancelar.
                             this.btn_actualizar = false
                             this.id_actualiza = '' // ocultar edits en editar
                         }else{  
-                            this.btn_actualizar = true
-                            var posicion=id
-                            this.id_actualiza = id
-                           /* this.descripcion_actividad = this.concentrado_actividades[posicion-1].actividad
-                            this.responsable_plan = this.concentrado_actividades[posicion-1].responsable
-                            this.fecha_inicial_actividad = this.concentrado_actividades[posicion-1].fecha_inicial
-                            this.fecha_final_actividad = this.concentrado_actividades[posicion-1].fecha_final*/
-                        // this.porcentaje = this.concentrado_actividades[posicion-1].porcentaje
-                        }
+                            for (let index = 0; index < this.concentrado_impacto_sugerencias_midiendo.length; index++) {// si existe un registro colocalo a las variables
+                                if(this.concentrado_impacto_sugerencias_midiendo[index].id_concentrado == id){
+                                    this.btn_actualizar = true
+                                    this.id_actualiza = index_actualizar
+
+                                    this.indicador = this.concentrado_impacto_sugerencias_midiendo[index].indicador
+                                    this.unidades = this.concentrado_impacto_sugerencias_midiendo[index].unidades
+                                    this.linea_base = this.concentrado_impacto_sugerencias_midiendo[index].linea_base
+                                    this.periodo_de_medicion = this.concentrado_impacto_sugerencias_midiendo[index].periodo
+                                    this.mes1 = this.concentrado_impacto_sugerencias_midiendo[index].mes1
+                                    this.mes2 = this.concentrado_impacto_sugerencias_midiendo[index].mes2
+                                    this.mes3 = this.concentrado_impacto_sugerencias_midiendo[index].mes3
+                                    this.mes4 = this.concentrado_impacto_sugerencias_midiendo[index].mes4
+                                    this.mes5 = this.concentrado_impacto_sugerencias_midiendo[index].mes5
+                                    this.mes6 = this.concentrado_impacto_sugerencias_midiendo[index].mes6
+                                    this.mes7 = this.concentrado_impacto_sugerencias_midiendo[index].mes7
+                                    this.mes8 = this.concentrado_impacto_sugerencias_midiendo[index].mes8
+                                    this.mes9 = this.concentrado_impacto_sugerencias_midiendo[index].mes9
+                                    this.mes10 = this.concentrado_impacto_sugerencias_midiendo[index].mes10
+                                    this.mes11 = this.concentrado_impacto_sugerencias_midiendo[index].mes11
+                                    this.mes12 = this.concentrado_impacto_sugerencias_midiendo[index].mes12
+                                    
+                                }else{// de lo contrario nadas activa los input
+                                    this.btn_actualizar = true
+                                    this.id_actualiza = index_actualizar
+
+                                    this.indicador = ''
+                                    this.unidades = ''
+                                    this.linea_base = ''
+                                    this.periodo_de_medicion = 1
+                                    this.mes1 = ''
+                                    this.mes2 = ''
+                                    this.mes3 = ''
+                                    this.mes4 = ''
+                                    this.mes5 = ''
+                                    this.mes6 = ''
+                                    this.mes7 = ''
+                                    this.mes8 = ''
+                                    this.mes9 = ''
+                                    this.mes10 = ''
+                                    this.mes11 = ''
+                                    this.mes12 = ''
+                                }
+                            }
+                    }
                 },
                 guardarEditarIndicador(id_concentrado,folio){
                     axios.post('guardar_actualizar_datos_impacto.php',{
@@ -1318,11 +1440,432 @@ if ($_SESSION["usuario"] ){
                     mes12:this.mes12
                     }).then(response =>{
                         console.log(response.data)
-                        console.log("arriba")
+                        if(response.data== true){
+                            this.btn_actualizar = false//oculta btn guardar
+                            this.id_actualiza = ''//ocular inpust 
+                            alert("Datos guardados con éxito.")
+                            this.consultado_concentrado_impacto_sugerencias()
+                        }else{
+                            alert("Los datos no se gardaron")
+                        }
+                        
                     }).catch(error =>{
 
                     })
                     
+                },
+                vaciarMeses(id){
+
+                    if(this.periodo_de_medicion==1){
+                                for (let index = 0; index < this.concentrado_impacto_sugerencias_midiendo.length; index++)
+                                    {
+                                        if(this.concentrado_impacto_sugerencias_midiendo[index].id_concentrado == id)
+                                            {
+                                            this.mes1 = this.concentrado_impacto_sugerencias_midiendo[index].mes1
+                                            this.mes2 = ''
+                                            this.mes3 = ''
+                                            this.mes4 = ''
+                                            this.mes5 = ''
+                                            this.mes6 = ''
+                                            this.mes7 = ''
+                                            this.mes8 = ''
+                                            this.mes9 = ''
+                                            this.mes10 = ''
+                                            this.mes11 = ''
+                                            this.mes12 = ''
+
+                                            }else{
+                                            this.mes1 =''
+                                            this.mes2 = ''
+                                            this.mes3 = ''
+                                            this.mes4 = ''
+                                            this.mes5 = ''
+                                            this.mes6 = ''
+                                            this.mes7 = ''
+                                            this.mes8 = ''
+                                            this.mes9 = ''
+                                            this.mes10 = ''
+                                            this.mes11 = ''
+                                            this.mes12 = ''
+                                            }
+                                    }
+                            }else if(this.periodo_de_medicion==2){
+                                for (let index = 0; index < this.concentrado_impacto_sugerencias_midiendo.length; index++)
+                                    {
+                                        if(this.concentrado_impacto_sugerencias_midiendo[index].id_concentrado == id)
+                                            {
+                                            this.mes1 = this.concentrado_impacto_sugerencias_midiendo[index].mes1
+                                            this.mes2 = this.concentrado_impacto_sugerencias_midiendo[index].mes2
+                                            this.mes3 = ''
+                                            this.mes4 = ''
+                                            this.mes5 = ''
+                                            this.mes6 = ''
+                                            this.mes7 = ''
+                                            this.mes8 = ''
+                                            this.mes9 = ''
+                                            this.mes10 = ''
+                                            this.mes11 = ''
+                                            this.mes12 = ''
+
+                                            }else{
+                                            this.mes1 =''
+                                            this.mes2 = ''
+                                            this.mes3 = ''
+                                            this.mes4 = ''
+                                            this.mes5 = ''
+                                            this.mes6 = ''
+                                            this.mes7 = ''
+                                            this.mes8 = ''
+                                            this.mes9 = ''
+                                            this.mes10 = ''
+                                            this.mes11 = ''
+                                            this.mes12 = ''
+                                            }
+                                    }
+                            }else if(this.periodo_de_medicion==3){
+                                for (let index = 0; index < this.concentrado_impacto_sugerencias_midiendo.length; index++)
+                                    {
+                                        if(this.concentrado_impacto_sugerencias_midiendo[index].id_concentrado == id)
+                                            {
+                                            this.mes1 = this.concentrado_impacto_sugerencias_midiendo[index].mes1
+                                            this.mes2 = this.concentrado_impacto_sugerencias_midiendo[index].mes2
+                                            this.mes3 = this.concentrado_impacto_sugerencias_midiendo[index].mes3
+                                            this.mes4 = ''
+                                            this.mes5 = ''
+                                            this.mes6 = ''
+                                            this.mes7 = ''
+                                            this.mes8 = ''
+                                            this.mes9 = ''
+                                            this.mes10 = ''
+                                            this.mes11 = ''
+                                            this.mes12 = ''
+
+                                            }else{
+                                            this.mes1 =''
+                                            this.mes2 = ''
+                                            this.mes3 = ''
+                                            this.mes4 = ''
+                                            this.mes5 = ''
+                                            this.mes6 = ''
+                                            this.mes7 = ''
+                                            this.mes8 = ''
+                                            this.mes9 = ''
+                                            this.mes10 = ''
+                                            this.mes11 = ''
+                                            this.mes12 = ''
+                                            }
+                                    }
+
+                            }else if(this.periodo_de_medicion==4){
+                                for (let index = 0; index < this.concentrado_impacto_sugerencias_midiendo.length; index++)
+                                    {
+                                        if(this.concentrado_impacto_sugerencias_midiendo[index].id_concentrado == id)
+                                            {
+                                            this.mes1 = this.concentrado_impacto_sugerencias_midiendo[index].mes1
+                                            this.mes2 = this.concentrado_impacto_sugerencias_midiendo[index].mes2
+                                            this.mes3 = this.concentrado_impacto_sugerencias_midiendo[index].mes3
+                                            this.mes4 = this.concentrado_impacto_sugerencias_midiendo[index].mes4
+                                            this.mes5 = ''
+                                            this.mes6 = ''
+                                            this.mes7 = ''
+                                            this.mes8 = ''
+                                            this.mes9 = ''
+                                            this.mes10 = ''
+                                            this.mes11 = ''
+                                            this.mes12 = ''
+
+                                            }else{
+                                            this.mes1 =''
+                                            this.mes2 = ''
+                                            this.mes3 = ''
+                                            this.mes4 = ''
+                                            this.mes5 = ''
+                                            this.mes6 = ''
+                                            this.mes7 = ''
+                                            this.mes8 = ''
+                                            this.mes9 = ''
+                                            this.mes10 = ''
+                                            this.mes11 = ''
+                                            this.mes12 = ''
+                                            }
+                                    }
+
+                            }else if(this.periodo_de_medicion==5){
+                                for (let index = 0; index < this.concentrado_impacto_sugerencias_midiendo.length; index++)
+                                    {
+                                        if(this.concentrado_impacto_sugerencias_midiendo[index].id_concentrado == id)
+                                            {
+                                            this.mes1 = this.concentrado_impacto_sugerencias_midiendo[index].mes1
+                                            this.mes2 = this.concentrado_impacto_sugerencias_midiendo[index].mes2
+                                            this.mes3 = this.concentrado_impacto_sugerencias_midiendo[index].mes3
+                                            this.mes4 = this.concentrado_impacto_sugerencias_midiendo[index].mes4
+                                            this.mes5 = this.concentrado_impacto_sugerencias_midiendo[index].mes5
+                                            this.mes6 = ''
+                                            this.mes7 = ''
+                                            this.mes8 = ''
+                                            this.mes9 = ''
+                                            this.mes10 = ''
+                                            this.mes11 = ''
+                                            this.mes12 = ''
+
+                                            }else{
+                                            this.mes1 =''
+                                            this.mes2 = ''
+                                            this.mes3 = ''
+                                            this.mes4 = ''
+                                            this.mes5 = ''
+                                            this.mes6 = ''
+                                            this.mes7 = ''
+                                            this.mes8 = ''
+                                            this.mes9 = ''
+                                            this.mes10 = ''
+                                            this.mes11 = ''
+                                            this.mes12 = ''
+                                            }
+                                    }
+
+                            }else if(this.periodo_de_medicion==6){
+                                    for (let index = 0; index < this.concentrado_impacto_sugerencias_midiendo.length; index++)
+                                        {
+                                            if(this.concentrado_impacto_sugerencias_midiendo[index].id_concentrado == id)
+                                                {
+                                                this.mes1 = this.concentrado_impacto_sugerencias_midiendo[index].mes1
+                                                this.mes2 = this.concentrado_impacto_sugerencias_midiendo[index].mes2
+                                                this.mes3 = this.concentrado_impacto_sugerencias_midiendo[index].mes3
+                                                this.mes4 = this.concentrado_impacto_sugerencias_midiendo[index].mes4
+                                                this.mes5 = this.concentrado_impacto_sugerencias_midiendo[index].mes5
+                                                this.mes6 = this.concentrado_impacto_sugerencias_midiendo[index].mes6
+                                                this.mes7 = ''
+                                                this.mes8 = ''
+                                                this.mes9 = ''
+                                                this.mes10 = ''
+                                                this.mes11 = ''
+                                                this.mes12 = ''
+
+                                                }else{
+                                                this.mes1 =''
+                                                this.mes2 = ''
+                                                this.mes3 = ''
+                                                this.mes4 = ''
+                                                this.mes5 = ''
+                                                this.mes6 = ''
+                                                this.mes7 = ''
+                                                this.mes8 = ''
+                                                this.mes9 = ''
+                                                this.mes10 = ''
+                                                this.mes11 = ''
+                                                this.mes12 = ''
+                                                }
+                                        }
+
+                            }else if(this.periodo_de_medicion==7){
+                                for (let index = 0; index < this.concentrado_impacto_sugerencias_midiendo.length; index++)
+                                        {
+                                            if(this.concentrado_impacto_sugerencias_midiendo[index].id_concentrado == id)
+                                                {
+                                                this.mes1 = this.concentrado_impacto_sugerencias_midiendo[index].mes1
+                                                this.mes2 = this.concentrado_impacto_sugerencias_midiendo[index].mes2
+                                                this.mes3 = this.concentrado_impacto_sugerencias_midiendo[index].mes3
+                                                this.mes4 = this.concentrado_impacto_sugerencias_midiendo[index].mes4
+                                                this.mes5 = this.concentrado_impacto_sugerencias_midiendo[index].mes5
+                                                this.mes6 = this.concentrado_impacto_sugerencias_midiendo[index].mes6
+                                                this.mes7 = this.concentrado_impacto_sugerencias_midiendo[index].mes7
+                                                this.mes8 = ''
+                                                this.mes9 = ''
+                                                this.mes10 = ''
+                                                this.mes11 = ''
+                                                this.mes12 = ''
+
+                                                }else{
+                                                this.mes1 =''
+                                                this.mes2 = ''
+                                                this.mes3 = ''
+                                                this.mes4 = ''
+                                                this.mes5 = ''
+                                                this.mes6 = ''
+                                                this.mes7 = ''
+                                                this.mes8 = ''
+                                                this.mes9 = ''
+                                                this.mes10 = ''
+                                                this.mes11 = ''
+                                                this.mes12 = ''
+                                                }
+                                        }
+
+
+                            }else if(this.periodo_de_medicion==8){
+                                for (let index = 0; index < this.concentrado_impacto_sugerencias_midiendo.length; index++)
+                                        {
+                                            if(this.concentrado_impacto_sugerencias_midiendo[index].id_concentrado == id)
+                                                {
+                                                this.mes1 = this.concentrado_impacto_sugerencias_midiendo[index].mes1
+                                                this.mes2 = this.concentrado_impacto_sugerencias_midiendo[index].mes2
+                                                this.mes3 = this.concentrado_impacto_sugerencias_midiendo[index].mes3
+                                                this.mes4 = this.concentrado_impacto_sugerencias_midiendo[index].mes4
+                                                this.mes5 = this.concentrado_impacto_sugerencias_midiendo[index].mes5
+                                                this.mes6 = this.concentrado_impacto_sugerencias_midiendo[index].mes6
+                                                this.mes7 = this.concentrado_impacto_sugerencias_midiendo[index].mes7
+                                                this.mes8 = this.concentrado_impacto_sugerencias_midiendo[index].mes8
+                                                this.mes9 = ''
+                                                this.mes10 = ''
+                                                this.mes11 = ''
+                                                this.mes12 = ''
+
+                                                }else{
+                                                this.mes1 =''
+                                                this.mes2 = ''
+                                                this.mes3 = ''
+                                                this.mes4 = ''
+                                                this.mes5 = ''
+                                                this.mes6 = ''
+                                                this.mes7 = ''
+                                                this.mes8 = ''
+                                                this.mes9 = ''
+                                                this.mes10 = ''
+                                                this.mes11 = ''
+                                                this.mes12 = ''
+                                                }
+                                        }
+
+                            }else if(this.periodo_de_medicion==9){
+                                    for (let index = 0; index < this.concentrado_impacto_sugerencias_midiendo.length; index++)
+                                            {
+                                                if(this.concentrado_impacto_sugerencias_midiendo[index].id_concentrado == id)
+                                                    {
+                                                    this.mes1 = this.concentrado_impacto_sugerencias_midiendo[index].mes1
+                                                    this.mes2 = this.concentrado_impacto_sugerencias_midiendo[index].mes2
+                                                    this.mes3 = this.concentrado_impacto_sugerencias_midiendo[index].mes3
+                                                    this.mes4 = this.concentrado_impacto_sugerencias_midiendo[index].mes4
+                                                    this.mes5 = this.concentrado_impacto_sugerencias_midiendo[index].mes5
+                                                    this.mes6 = this.concentrado_impacto_sugerencias_midiendo[index].mes6
+                                                    this.mes7 = this.concentrado_impacto_sugerencias_midiendo[index].mes7
+                                                    this.mes8 = this.concentrado_impacto_sugerencias_midiendo[index].mes8
+                                                    this.mes9 = this.concentrado_impacto_sugerencias_midiendo[index].mes9
+                                                    this.mes10 = ''
+                                                    this.mes11 = ''
+                                                    this.mes12 = ''
+
+                                                    }else{
+                                                    this.mes1 =''
+                                                    this.mes2 = ''
+                                                    this.mes3 = ''
+                                                    this.mes4 = ''
+                                                    this.mes5 = ''
+                                                    this.mes6 = ''
+                                                    this.mes7 = ''
+                                                    this.mes8 = ''
+                                                    this.mes9 = ''
+                                                    this.mes10 = ''
+                                                    this.mes11 = ''
+                                                    this.mes12 = ''
+                                                    }
+                                            }
+                            
+                            }else if(this.periodo_de_medicion==10){
+                                    for (let index = 0; index < this.concentrado_impacto_sugerencias_midiendo.length; index++)
+                                                {
+                                                    if(this.concentrado_impacto_sugerencias_midiendo[index].id_concentrado == id)
+                                                        {
+                                                        this.mes1 = this.concentrado_impacto_sugerencias_midiendo[index].mes1
+                                                        this.mes2 = this.concentrado_impacto_sugerencias_midiendo[index].mes2
+                                                        this.mes3 = this.concentrado_impacto_sugerencias_midiendo[index].mes3
+                                                        this.mes4 = this.concentrado_impacto_sugerencias_midiendo[index].mes4
+                                                        this.mes5 = this.concentrado_impacto_sugerencias_midiendo[index].mes5
+                                                        this.mes6 = this.concentrado_impacto_sugerencias_midiendo[index].mes6
+                                                        this.mes7 = this.concentrado_impacto_sugerencias_midiendo[index].mes7
+                                                        this.mes8 = this.concentrado_impacto_sugerencias_midiendo[index].mes8
+                                                        this.mes9 = this.concentrado_impacto_sugerencias_midiendo[index].mes9
+                                                        this.mes10 = this.concentrado_impacto_sugerencias_midiendo[index].mes10
+                                                        this.mes11 = ''
+                                                        this.mes12 = ''
+
+                                                        }else{
+                                                        this.mes1 =''
+                                                        this.mes2 = ''
+                                                        this.mes3 = ''
+                                                        this.mes4 = ''
+                                                        this.mes5 = ''
+                                                        this.mes6 = ''
+                                                        this.mes7 = ''
+                                                        this.mes8 = ''
+                                                        this.mes9 = ''
+                                                        this.mes10 = ''
+                                                        this.mes11 = ''
+                                                        this.mes12 = ''
+                                                        }
+                                                }
+
+                            }else if(this.periodo_de_medicion==11){
+                                            for (let index = 0; index < this.concentrado_impacto_sugerencias_midiendo.length; index++)
+                                                {
+                                                    if(this.concentrado_impacto_sugerencias_midiendo[index].id_concentrado == id)
+                                                        {
+                                                        this.mes1 = this.concentrado_impacto_sugerencias_midiendo[index].mes1
+                                                        this.mes2 = this.concentrado_impacto_sugerencias_midiendo[index].mes2
+                                                        this.mes3 = this.concentrado_impacto_sugerencias_midiendo[index].mes3
+                                                        this.mes4 = this.concentrado_impacto_sugerencias_midiendo[index].mes4
+                                                        this.mes5 = this.concentrado_impacto_sugerencias_midiendo[index].mes5
+                                                        this.mes6 = this.concentrado_impacto_sugerencias_midiendo[index].mes6
+                                                        this.mes7 = this.concentrado_impacto_sugerencias_midiendo[index].mes7
+                                                        this.mes8 = this.concentrado_impacto_sugerencias_midiendo[index].mes8
+                                                        this.mes9 = this.concentrado_impacto_sugerencias_midiendo[index].mes9
+                                                        this.mes10 = this.concentrado_impacto_sugerencias_midiendo[index].mes10
+                                                        this.mes11 = this.concentrado_impacto_sugerencias_midiendo[index].mes11
+                                                        this.mes12 = ''
+
+                                                        }else{
+                                                        this.mes1 =''
+                                                        this.mes2 = ''
+                                                        this.mes3 = ''
+                                                        this.mes4 = ''
+                                                        this.mes5 = ''
+                                                        this.mes6 = ''
+                                                        this.mes7 = ''
+                                                        this.mes8 = ''
+                                                        this.mes9 = ''
+                                                        this.mes10 = ''
+                                                        this.mes11 = ''
+                                                        this.mes12 = ''
+                                                        }
+                                                }
+
+                            }
+                            else if(this.periodo_de_medicion==12){
+                                 for (let index = 0; index < this.concentrado_impacto_sugerencias_midiendo.length; index++)
+                                                {
+                                                    if(this.concentrado_impacto_sugerencias_midiendo[index].id_concentrado == id)
+                                                        {
+                                                        this.mes1 = this.concentrado_impacto_sugerencias_midiendo[index].mes1
+                                                        this.mes2 = this.concentrado_impacto_sugerencias_midiendo[index].mes2
+                                                        this.mes3 = this.concentrado_impacto_sugerencias_midiendo[index].mes3
+                                                        this.mes4 = this.concentrado_impacto_sugerencias_midiendo[index].mes4
+                                                        this.mes5 = this.concentrado_impacto_sugerencias_midiendo[index].mes5
+                                                        this.mes6 = this.concentrado_impacto_sugerencias_midiendo[index].mes6
+                                                        this.mes7 = this.concentrado_impacto_sugerencias_midiendo[index].mes7
+                                                        this.mes8 = this.concentrado_impacto_sugerencias_midiendo[index].mes8
+                                                        this.mes9 = this.concentrado_impacto_sugerencias_midiendo[index].mes9
+                                                        this.mes10 = this.concentrado_impacto_sugerencias_midiendo[index].mes10
+                                                        this.mes11 = this.concentrado_impacto_sugerencias_midiendo[index].mes11
+                                                        this.mes12 = this.concentrado_impacto_sugerencias_midiendo[index].mes12
+
+                                                        }else{
+                                                        this.mes1 =''
+                                                        this.mes2 = ''
+                                                        this.mes3 = ''
+                                                        this.mes4 = ''
+                                                        this.mes5 = ''
+                                                        this.mes6 = ''
+                                                        this.mes7 = ''
+                                                        this.mes8 = ''
+                                                        this.mes9 = ''
+                                                        this.mes10 = ''
+                                                        this.mes11 = ''
+                                                        this.mes12 = ''
+                                                        }
+                                                }
+                       
+                            }
+
                 }
         }   
     }
