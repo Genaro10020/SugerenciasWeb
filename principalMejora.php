@@ -894,12 +894,152 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                             
                              <!--fin contenido principal gonher-->
                    </div>
+                   <!--//////////////////////////////////////////////////////APARTADO ADMINISTRACION DE RETOS-->
                    <div v-else-if="ventana=='retos'">
                             <div class="row justify-content-center align-items-start ">
                                 <div class="cintilla col-12 text-center">
                                    <b> ADMINISTRACIÓN DE RETOS</b>
                                 </div>
                             </div>
+                        
+                        <div class="row">
+                                <div class="col-12"><!--Agregar reto-->
+                                        <div class="text-center mt-3">
+                                            <span class="badge bg-secondary">Agregar Reto</span>
+                                        </div>
+                                        <div class="div-scroll">
+                                            <table class="tablaMonitoreo-sugerencias table table-striped table-bordered ">
+                                            <thead class="encabezado-tabla text-center text-light ">
+                                                <tr >
+                                                <th scope="col " class="sticky">Guardar / Imagen <span  class="badge bg-primary">*</span></th>
+                                                <th scope="col">Título de Reto <span class="badge bg-primary">*</span></th>
+                                                <th scope="col">Descripción del Reto <span  class="badge bg-primary">*</span></th>
+                                                <th scope="col">Responsable <span class="badge bg-primary">*</span></th>
+                                                <th scope="col">Planta <span class="badge bg-primary">*</span></th>
+                                                <th scope="col">Área <span class="badge bg-primary">*</span></th>
+                                                <th scope="col">Subárea <span  class="badge bg-primary">*</span></th>
+                                                <th scope="col">Folio</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class=" text-center">
+                                                
+                                                        <td class="align-middle">
+                                                                <button type="submit" class="btn btn-primary" title="Guardar Reto" @click="agregarReto"><i class="bi bi-check-circle"></i></button> 
+                                                                <button type="button" class="btn btn-primary  ms-2" title="Subir Imagen" data-bs-toggle="modal" data-bs-target="#modal"><i class="bi bi-paperclip"></i></button>  
+                                                            <!-- @click="modal_subir_ver_documentos('Subir',concentrado.id,concentrado.folio,'ppt',concentrado.cantidadPPT)"-->
+                                                        </td>
+                                                        <td>
+                                                            <textarea class="inputs-concentrado text-area" type="text"  v-model="titulo_del_reto" required></textarea>                   
+                                                        </td>
+                                                        <td>  
+                                                            <textarea class="inputs-concentrado text-area" type="text" v-model="descripcion_del_reto" required></textarea>                 
+                                                        </td>
+                                                        <td>
+                                                            <select class="inputs-concentrado" v-model="responsable_del_reto" required>
+                                                                <option value="" disabled>Seleccione analista..</option>
+                                                                <option v-for="analistas_factibilidad in lista_usuarios_y_analistas_factibilidad" :key="analistas_factibilidad.nombre" :value="analistas_factibilidad.nombre">{{analistas_factibilidad.nombre}}</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <select  class="inputs-concentrado" v-model="planta_en_reto" required>
+                                                                    <option value=""  disabled>Seleccione la planta...</option>
+                                                                    <option @click="generarFolio()" v-for="planta in lista_planta" :key="planta.planta" :value="planta.planta">{{planta.planta}}</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <select class="inputs-concentrado" v-model="area_en_reto" required> 
+                                                                    <option value="" disabled>Seleccione el área...</option>
+                                                                    <option @click="generarFolio()" v-for="area in lista_area" :key="area.area" :value="area.area">{{area.area}}</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                                    <select class="inputs-concentrado" v-model="subarea_en_reto" required>
+                                                                        <option value="" disabled>Seleccione Subárea...</option>
+                                                                        <option v-for="subarea in lista_subarea" :key="subarea.subarea" :value="subarea.subarea">{{subarea.subarea}}</option>
+                                                                    </select>         
+                                                        </td>
+                                                        <td>
+                                                                <input class="inputs-concentrado fw-bold" type="text"  v-model="folio_del_reto" disabled></input>                           
+                                                        </td>
+                                                    
+                                                </tr>
+                                            </tbody>
+                                            </table>
+                                        </div>
+                                </div><!--Fin Agregar reto-->
+                                <div class="col-12"><!--Reto Vigentes-->
+                                        <div class="text-center mt-3">
+                                                <span class="badge bg-secondary">Retos Vigentes</span>
+                                        </div>
+                                        <div class="div-scroll">
+                                                    <table class="tablaMonitoreo-sugerencias table table-striped table-bordered ">
+                                                    <thead class="encabezado-tabla text-center text-light ">
+                                                        <tr >
+                                                        <th scope="col " class="sticky">Guardar / Imagen </th>
+                                                        <th scope="col">Reto </th>
+                                                        <th scope="col">Descripción</th>
+                                                        <th scope="col">Responsable </th>
+                                                        <th scope="col">Planta </th>
+                                                        <th scope="col">Área </th>
+                                                        <th scope="col">Subárea </th>
+                                                        <th scope="col">Ingreso</th>
+                                                        <th scope="col">Folio</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr class=" text-center" v-for="(retos, index) in concentrado_retos">
+                                                     
+                                                                <td class="align-middle">
+                                                                        <button type="button" class="btn btn-warning me-2" title="Actualizar" @click="mostrar_id(index+1)" ><i class="bi bi-pen" ></i></button>
+                                                                        <button type="submit" class="btn btn-primary" title="Guardar Reto" @click="actualizarReto(index)"><i class="bi bi-check-circle"></i></button> 
+                                                                        <button type="button" class="btn btn-primary  ms-2" title="Subir Imagen" data-bs-toggle="modal" data-bs-target="#modal"><i class="bi bi-paperclip"></i></button>  
+                                                                    <!-- @click="modal_subir_ver_documentos('Subir',concentrado.id,concentrado.folio,'ppt',concentrado.cantidadPPT)"-->
+                                                                </td>
+                                                                <td>
+                                                                    <textarea class="inputs-concentrado text-area" type="text"  v-model="titulo_del_reto" required></textarea>                   
+                                                                </td>
+                                                                <td>  
+                                                                    <textarea class="inputs-concentrado text-area" type="text" v-model="descripcion_del_reto" required></textarea>                 
+                                                                </td>
+                                                                <td>
+                                                                    <select class="inputs-concentrado" v-model="responsable_del_reto" required>
+                                                                        <option value="" disabled>Seleccione analista..</option>
+                                                                        <option v-for="analistas_factibilidad in lista_usuarios_y_analistas_factibilidad" :key="analistas_factibilidad.nombre" :value="analistas_factibilidad.nombre">{{analistas_factibilidad.nombre}}</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td>
+                                                                    <select  class="inputs-concentrado" v-model="planta_en_reto" required>
+                                                                            <option value=""  disabled>Seleccione la planta...</option>
+                                                                            <option @click="generarFolio()" v-for="planta in lista_planta" :key="planta.planta" :value="planta.planta">{{planta.planta}}</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td>
+                                                                    <select class="inputs-concentrado" v-model="area_en_reto" required> 
+                                                                            <option value="" disabled>Seleccione el área...</option>
+                                                                            <option @click="generarFolio()" v-for="area in lista_area" :key="area.area" :value="area.area">{{area.area}}</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td>
+                                                                            <select class="inputs-concentrado" v-model="subarea_en_reto" required>
+                                                                                <option value="" disabled>Seleccione Subárea...</option>
+                                                                                <option v-for="subarea in lista_subarea" :key="subarea.subarea" :value="subarea.subarea">{{subarea.subarea}}</option>
+                                                                            </select>         
+                                                                </td>
+                                                                <td>
+                                                                
+                                                                </td>
+                                                                <td>
+                                                                        <input class="inputs-concentrado fw-bold" type="text"  v-model="folio_del_reto" disabled></input>                           
+                                                                </td>
+                                                            
+                                                        </tr>
+                                                    </tbody>
+                                                    </table>
+                                                </div>
+                            </div><!--Fin Reto Vigentes-->
+                        </div>
+                            
                    </div>
                    <div v-else-if="ventana=='configuracion'">
                     <!--//////////////////////////////////////////////////////////////////////////////APARTADO CONFIGURACIÓN-->
@@ -1053,6 +1193,16 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 folio_carpeta_doc:'',
                 cantidadDOCPPT:0,
                 cual_documento:'',
+                /*Variables administracion de retos*/
+                titulo_del_reto:'',
+                descripcion_del_reto:'',
+                responsable_del_reto:'',
+                planta_en_reto:'',
+                area_en_reto:'',
+                subarea_en_reto:'',
+                folio_del_reto:'',
+                concentrado_retos:[],
+                ultimo_folio_retos:[],
                 /*Variables Configuracion*/
                 nuevo_usuario:'',
                 nuevo_password:'',
@@ -1090,6 +1240,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
              //consultado lista analistas de factibilidad
              this.consulta_lista_analista_factibilidad(),
              this.consulta_lista_usuarios_y_analistas_factibilidad(),
+             this.consultaConcentradoRetos(),
                 axios.post('consulta_usuario.php',{
                     usuario: this.usuario
                 }).then(response =>{
@@ -1673,10 +1824,81 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     }
                     this.consultado_concentrado()
                 }).catch(error =>{
-
+                 
                 })
                    
                 },  
+            /*METOS ADMINISTRACION DE RETOS */
+            consultaConcentradoRetos(){
+                axios.post("consulta_concentrado_retos.php",{
+                }).then(response =>{
+                    this.concentrado_retos = response.data
+                }).catch(error =>{
+                   
+                })
+
+            },
+            agregarReto(){
+                if(this.titulo_del_reto!='' || this.descripcion_del_reto!='' || this.responsable_del_reto !=''
+                    || this.planta_en_reto!='' || this.area_en_reto!='' || this.subarea_en_reto!=''){
+
+                        axios.post("guardar_reto.php",{
+                            titulo_del_reto: this.titulo_del_reto,
+                            descripcion_del_reto: this.descripcion_del_reto,
+                            responsable_del_reto: this.responsable_del_reto,
+                            planta_en_reto: this.planta_en_reto,
+                            area_en_reto: this.area_en_reto,
+                            subarea_en_reto: this.subarea_en_reto,
+                            folio_del_reto: this.folio_del_reto
+                        }).then(response =>{
+                            console.log(response.data)
+                            this.consultaConcentradoRetos()
+                        }).catch(error =>{
+
+                        })
+                        
+                        console.log("guardar")
+                }else{
+                    alert("todos los campos con (*) son requeridos.")
+                }    
+            },    
+            generarFolio(){
+                if(this.planta_en_reto!='' && this.area_en_reto!=''){
+
+                        axios.post("consulta_ultimo_folio_concentrado_retos.php",{
+
+                        }).then(response =>{
+                            this.ultimo_folio_retos = response.data
+                            
+                        }).catch(error =>{
+
+                        })
+                       
+                        var nuevo_numero = 1
+                        
+                        if(this.ultimo_folio_retos.length>0){
+                           var ultimo_folio = this.ultimo_folio_retos[0].folio_reto
+                           var ultimo_numero_string=ultimo_folio.split("-").slice(-1) 
+                           var ultimo_numero = parseInt(ultimo_numero_string)
+                           var nuevo_numero = ultimo_numero+1
+
+                        }
+                        console.log(nuevo_numero)
+                        var anio = new Date().getFullYear()// tomando anio
+                        var acadena = anio.toString();// pasandolo a cadena
+                        var ultimos_dos_digitos=acadena.substr(-2)//tomando los ultimos dos digitos
+                        var limpiandoplanta = this.planta_en_reto.replace(".",'')//remplazando . si exite
+                        var limpiandoarea = this.area_en_reto.replace(".",'')//remplazando . si exite
+                        var planta=limpiandoplanta.substr(0,3)//tomando los primero 3
+                        var area=limpiandoarea.substr(0,3)//tomando los primero 3
+                        var prefolio = planta+"-"+area+"-"+ultimos_dos_digitos +"-"+nuevo_numero //concatenando para formar folio
+                        var mayus_folio = prefolio.toUpperCase() 
+                        this.folio_del_reto = mayus_folio 
+
+
+                }
+
+            },
             /*METODOS DE ADMINISTRACION*/
             guardar_admin_y_analista(){
                 axios.post('guardar_analista_o_admin.php',{

@@ -1361,11 +1361,14 @@ if ($_SESSION["usuario"] ){
                     }).then(response =>{
                         this.concentrado_impacto_sugerencias_midiendo = response.data
                         console.log(this.concentrado_impacto_sugerencias_midiendo)
+                        console.log("arriba")
                     }).catch(error =>{
 
                     })
                 },
                 editarIndicador(id,index_actualizar){
+                    console.log(this.concentrado_impacto_sugerencias_midiendo)
+                        console.log("arriba id_concentrado es igual a ="+id)
 
                         if(index_actualizar==""){ //accion del boton cancelar.
                             this.btn_actualizar = false
@@ -1392,7 +1395,7 @@ if ($_SESSION["usuario"] ){
                                     this.mes10 = this.concentrado_impacto_sugerencias_midiendo[index].mes10
                                     this.mes11 = this.concentrado_impacto_sugerencias_midiendo[index].mes11
                                     this.mes12 = this.concentrado_impacto_sugerencias_midiendo[index].mes12
-                                    
+                                    break;
                                 }else{// de lo contrario nadas activa los input
                                     this.btn_actualizar = true
                                     this.id_actualiza = index_actualizar
@@ -1472,7 +1475,7 @@ if ($_SESSION["usuario"] ){
                                             this.mes10 = ''
                                             this.mes11 = ''
                                             this.mes12 = ''
-
+                                            break
                                             }else{
                                             this.mes1 =''
                                             this.mes2 = ''
@@ -1505,7 +1508,7 @@ if ($_SESSION["usuario"] ){
                                             this.mes10 = ''
                                             this.mes11 = ''
                                             this.mes12 = ''
-
+                                            break
                                             }else{
                                             this.mes1 =''
                                             this.mes2 = ''
@@ -1538,7 +1541,7 @@ if ($_SESSION["usuario"] ){
                                             this.mes10 = ''
                                             this.mes11 = ''
                                             this.mes12 = ''
-
+                                            break    
                                             }else{
                                             this.mes1 =''
                                             this.mes2 = ''
@@ -1572,7 +1575,7 @@ if ($_SESSION["usuario"] ){
                                             this.mes10 = ''
                                             this.mes11 = ''
                                             this.mes12 = ''
-
+                                            break    
                                             }else{
                                             this.mes1 =''
                                             this.mes2 = ''
@@ -1606,7 +1609,7 @@ if ($_SESSION["usuario"] ){
                                             this.mes10 = ''
                                             this.mes11 = ''
                                             this.mes12 = ''
-
+                                            break    
                                             }else{
                                             this.mes1 =''
                                             this.mes2 = ''
@@ -1640,7 +1643,7 @@ if ($_SESSION["usuario"] ){
                                                 this.mes10 = ''
                                                 this.mes11 = ''
                                                 this.mes12 = ''
-
+                                                break    
                                                 }else{
                                                 this.mes1 =''
                                                 this.mes2 = ''
@@ -1674,7 +1677,7 @@ if ($_SESSION["usuario"] ){
                                                 this.mes10 = ''
                                                 this.mes11 = ''
                                                 this.mes12 = ''
-
+                                                break    
                                                 }else{
                                                 this.mes1 =''
                                                 this.mes2 = ''
@@ -1709,7 +1712,7 @@ if ($_SESSION["usuario"] ){
                                                 this.mes10 = ''
                                                 this.mes11 = ''
                                                 this.mes12 = ''
-
+                                                break    
                                                 }else{
                                                 this.mes1 =''
                                                 this.mes2 = ''
@@ -1743,7 +1746,7 @@ if ($_SESSION["usuario"] ){
                                                     this.mes10 = ''
                                                     this.mes11 = ''
                                                     this.mes12 = ''
-
+                                                    break    
                                                     }else{
                                                     this.mes1 =''
                                                     this.mes2 = ''
@@ -1777,7 +1780,7 @@ if ($_SESSION["usuario"] ){
                                                         this.mes10 = this.concentrado_impacto_sugerencias_midiendo[index].mes10
                                                         this.mes11 = ''
                                                         this.mes12 = ''
-
+                                                        break    
                                                         }else{
                                                         this.mes1 =''
                                                         this.mes2 = ''
@@ -1811,7 +1814,7 @@ if ($_SESSION["usuario"] ){
                                                         this.mes10 = this.concentrado_impacto_sugerencias_midiendo[index].mes10
                                                         this.mes11 = this.concentrado_impacto_sugerencias_midiendo[index].mes11
                                                         this.mes12 = ''
-
+                                                        break    
                                                         }else{
                                                         this.mes1 =''
                                                         this.mes2 = ''
@@ -1846,7 +1849,7 @@ if ($_SESSION["usuario"] ){
                                                         this.mes10 = this.concentrado_impacto_sugerencias_midiendo[index].mes10
                                                         this.mes11 = this.concentrado_impacto_sugerencias_midiendo[index].mes11
                                                         this.mes12 = this.concentrado_impacto_sugerencias_midiendo[index].mes12
-
+                                                        break    
                                                         }else{
                                                         this.mes1 =''
                                                         this.mes2 = ''
