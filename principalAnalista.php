@@ -481,7 +481,7 @@ if ($_SESSION["usuario"] ){
                                                                             <table class="tablaMonitoreo-sugerencias table table-striped table-bordered text-center">
                                                                                 <thead class="encabezado-tabla text-center text-light ">
                                                                                     <tr >
-                                                                                    
+                                                                                    <th scope="col" class="sticky">Editar/Guardar</th>
                                                                                     <th scope="col">Status</th>
                                                                                     <th scope="col">Folio</th>
                                                                                     <th scope="col">Nombre de Sugerencia</th>
@@ -490,7 +490,6 @@ if ($_SESSION["usuario"] ){
                                                                                     <th scope="col">Área</th>
                                                                                     <th scope="col">Subárea</th>
                                                                                     <th scope="col">Fecha real de Cierra</th>
-                                                                                    <th scope="col" class="sticky">Editar/Guardar</th>
                                                                                     <th scope="col">Indicador</th>
                                                                                     <th scope="col">Unidades</th>
                                                                                     <th scope="col">Línea Base</th>
