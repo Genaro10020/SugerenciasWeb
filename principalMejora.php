@@ -810,7 +810,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                     <div class="row">
                                                         <div class="col-12">
                                                             <div class="custom-file my-5"> 
-                                                                <input type="file" id="input_file_subir"  ref="documentosugerencia" multiple required/>{{extensiones_valida}}</input>
+                                                                <input type="file" id="input_file_subir"  ref="archivosydocumentos" multiple required/>{{extensiones_valida}}</input>
                                                             </div>
                                                         </div>
                                                         <div class="col-12">
@@ -911,7 +911,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                             <table class="tablaMonitoreo-sugerencias table table-striped table-bordered ">
                                             <thead class="encabezado-tabla text-center text-light ">
                                                 <tr >
-                                                <th scope="col " class="sticky">Guardar / Imagen <span  class="badge bg-primary">*</span></th>
+                                                <th scope="col " class="sticky">Guardar<span  class="badge bg-primary">*</span></th>
                                                 <th scope="col">Título de Reto <span class="badge bg-primary">*</span></th>
                                                 <th scope="col">Descripción del Reto <span  class="badge bg-primary">*</span></th>
                                                 <th scope="col">Responsable <span class="badge bg-primary">*</span></th>
@@ -922,12 +922,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr class=" text-center">
+                                                <tr v-show="bandera_editar==false" class=" text-center">
                                                 
                                                         <td class="align-middle">
-                                                                <button type="submit" class="btn btn-primary" title="Guardar Reto" @click="agregarReto"><i class="bi bi-check-circle"></i></button> 
-                                                                <button type="button" class="btn btn-primary  ms-2" title="Subir Imagen" data-bs-toggle="modal" data-bs-target="#modal"><i class="bi bi-paperclip"></i></button>  
-                                                            <!-- @click="modal_subir_ver_documentos('Subir',concentrado.id,concentrado.folio,'ppt',concentrado.cantidadPPT)"-->
+                                                                <button type="submit" class="btn btn-primary" title="Guardar Reto" @click="agregarReto('Insertar')"><i class="bi bi-check-circle"></i></button> 
                                                         </td>
                                                         <td>
                                                             <textarea class="inputs-concentrado text-area" type="text"  v-model="titulo_del_reto" required></textarea>                   
@@ -942,15 +940,15 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                             </select>
                                                         </td>
                                                         <td>
-                                                            <select  class="inputs-concentrado" v-model="planta_en_reto" required>
+                                                            <select  class="inputs-concentrado"  @change="generarFolio()" v-model="planta_en_reto" required>
                                                                     <option value=""  disabled>Seleccione la planta...</option>
-                                                                    <option @click="generarFolio()" v-for="planta in lista_planta" :key="planta.planta" :value="planta.planta">{{planta.planta}}</option>
+                                                                    <option v-for="planta in lista_planta" :key="planta.planta" :value="planta.planta">{{planta.planta}}</option>
                                                             </select>
                                                         </td>
                                                         <td>
-                                                            <select class="inputs-concentrado" v-model="area_en_reto" required> 
+                                                            <select class="inputs-concentrado" @change="generarFolio()" v-model="area_en_reto" required> 
                                                                     <option value="" disabled>Seleccione el área...</option>
-                                                                    <option @click="generarFolio()" v-for="area in lista_area" :key="area.area" :value="area.area">{{area.area}}</option>
+                                                                    <option  v-for="area in lista_area" :key="area.area" :value="area.area">{{area.area}}</option>
                                                             </select>
                                                         </td>
                                                         <td>
@@ -976,7 +974,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                     <table class="tablaMonitoreo-sugerencias table table-striped table-bordered ">
                                                     <thead class="encabezado-tabla text-center text-light ">
                                                         <tr >
-                                                        <th scope="col " class="sticky">Guardar / Imagen </th>
+                                                        <th scope="col" class="sticky">Guardar </th>
+                                                        <th scope="col">Status </th>
                                                         <th scope="col">Reto </th>
                                                         <th scope="col">Descripción</th>
                                                         <th scope="col">Responsable </th>
@@ -985,52 +984,70 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                         <th scope="col">Subárea </th>
                                                         <th scope="col">Ingreso</th>
                                                         <th scope="col">Folio</th>
+                                                        <th scope="col">Eliminar</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr class=" text-center" v-for="(retos, index) in concentrado_retos">
-                                                     
-                                                                <td class="align-middle">
-                                                                        <button type="button" class="btn btn-warning me-2" title="Actualizar" @click="mostrar_id(index+1)" ><i class="bi bi-pen" ></i></button>
-                                                                        <button type="submit" class="btn btn-primary" title="Guardar Reto" @click="actualizarReto(index)"><i class="bi bi-check-circle"></i></button> 
-                                                                        <button type="button" class="btn btn-primary  ms-2" title="Subir Imagen" data-bs-toggle="modal" data-bs-target="#modal"><i class="bi bi-paperclip"></i></button>  
-                                                                    <!-- @click="modal_subir_ver_documentos('Subir',concentrado.id,concentrado.folio,'ppt',concentrado.cantidadPPT)"-->
+                                                        <tr class=" text-center align-middle " v-for="(retos, index) in concentrado_retos">
+                                                                 
+                                                                <td class="sticky" style=" background: rgb(194, 194, 194)">
+                                                                            <label class="me-5"><b>{{index+1 }}</b></label>
+                                                                            <button v-if="actualizar_reto==index+1" type="button" class="btn btn-danger me-2" title="Cancelar" @click="editaReto(0)" ><i class="bi bi-x-circle" ></i></button>
+                                                                            <button v-show="bandera_editar==false" type="button" class="btn btn-warning me-2" title="Actualizar" @click="editaReto(index+1)"><i class="bi bi-pen" ></i></button>
+                                                                            <button v-show="bandera_editar==true" class="btn btn-primary me-2" title="Guardar Reto" @click="guardarActualizacionReto(0,retos.id,'Actualizar')"><i class="bi bi-check-circle"></i></button> 
+                                                                            <button v-if="retos.cantidad_img>0" type="button" class="btn btn-success  ms-2" title="Subir Imagen" data-bs-toggle="modal" @click="modal_subir_ver_documentos('Subir',retos.id,retos.folio_reto,'reto',retos.cantidad_img)" data-bs-target="#modal"><i class="bi bi-paperclip">{{retos.cantidad_img}}</i></button>
+                                                                            <button v-else type="button" class="btn btn-secondary " title="Subir Imagen" data-bs-toggle="modal" @click="modal_subir_ver_documentos('Subir',retos.id,retos.folio_reto,'reto',retos.cantidad_img)" data-bs-target="#modal"><i class="bi bi-paperclip">{{retos.cantidad_img}}</i></button>    
                                                                 </td>
                                                                 <td>
-                                                                    <textarea class="inputs-concentrado text-area" type="text"  v-model="titulo_del_reto" required></textarea>                   
+                                                                    <select v-if="actualizar_reto==index+1" class="inputs-concentrado" v-model="act_status_reto" required>
+                                                                        <option v-for="tipo_status in tipo_status_reto"  :value="tipo_status">{{tipo_status}}</option>
+                                                                    </select>
+                                                                    <label  v-else>{{retos.status_reto}}</label>
+                                                                </td>
+                                                                <td>
+                                                                    <textarea v-if="actualizar_reto==index+1" class="inputs-concentrado text-area" type="text"  v-model="act_titulo_del_reto" required></textarea> 
+                                                                    <label v-else>{{retos.titulo_reto}}</label>                  
                                                                 </td>
                                                                 <td>  
-                                                                    <textarea class="inputs-concentrado text-area" type="text" v-model="descripcion_del_reto" required></textarea>                 
+                                                                    <textarea v-if="actualizar_reto==index+1" class="inputs-concentrado text-area" type="text" v-model="act_descripcion_del_reto" required></textarea>  
+                                                                    <label  v-else>{{retos.descripcion_reto}}</label>               
                                                                 </td>
                                                                 <td>
-                                                                    <select class="inputs-concentrado" v-model="responsable_del_reto" required>
+                                                                    <select v-if="actualizar_reto==index+1" class="inputs-concentrado" v-model="act_responsable_del_reto" required>
                                                                         <option value="" disabled>Seleccione analista..</option>
                                                                         <option v-for="analistas_factibilidad in lista_usuarios_y_analistas_factibilidad" :key="analistas_factibilidad.nombre" :value="analistas_factibilidad.nombre">{{analistas_factibilidad.nombre}}</option>
                                                                     </select>
+                                                                    <label  v-else>{{retos.responsable_reto}}</label>
                                                                 </td>
                                                                 <td>
-                                                                    <select  class="inputs-concentrado" v-model="planta_en_reto" required>
+                                                                    <!--<select v-if="actualizar_reto==index+1"  class="inputs-concentrado" v-model="act_planta_en_reto" required>
                                                                             <option value=""  disabled>Seleccione la planta...</option>
                                                                             <option @click="generarFolio()" v-for="planta in lista_planta" :key="planta.planta" :value="planta.planta">{{planta.planta}}</option>
-                                                                    </select>
+                                                                    </select>-->
+                                                                    <label>{{retos.planta_reto}}</label>
                                                                 </td>
                                                                 <td>
-                                                                    <select class="inputs-concentrado" v-model="area_en_reto" required> 
+                                                                    <!--<select v-if="actualizar_reto==index+1" class="inputs-concentrado" v-model="act_area_en_reto" required> 
                                                                             <option value="" disabled>Seleccione el área...</option>
                                                                             <option @click="generarFolio()" v-for="area in lista_area" :key="area.area" :value="area.area">{{area.area}}</option>
-                                                                    </select>
+                                                                    </select>-->
+                                                                    <label>{{retos.area_reto}}</label> 
                                                                 </td>
                                                                 <td>
-                                                                            <select class="inputs-concentrado" v-model="subarea_en_reto" required>
-                                                                                <option value="" disabled>Seleccione Subárea...</option>
-                                                                                <option v-for="subarea in lista_subarea" :key="subarea.subarea" :value="subarea.subarea">{{subarea.subarea}}</option>
-                                                                            </select>         
+                                                                        <select v-if="actualizar_reto==index+1" class="inputs-concentrado" v-model="act_subarea_en_reto" required>
+                                                                            <option value="" disabled>Seleccione Subárea...</option>
+                                                                            <option v-for="subarea in lista_subarea" :key="subarea.subarea" :value="subarea.subarea">{{subarea.subarea}}</option>
+                                                                        </select>
+                                                                    <label  v-else>{{retos.subarea_reto}}</label>         
                                                                 </td>
                                                                 <td>
-                                                                
+                                                                    <label>{{retos.fecha}}</label>
                                                                 </td>
                                                                 <td>
-                                                                        <input class="inputs-concentrado fw-bold" type="text"  v-model="folio_del_reto" disabled></input>                           
+                                                                    <label>{{retos.folio_reto}}</label>                           
+                                                                </td>
+                                                                <td>
+                                                                    <button type="button" class="btn btn-danger" title="Eliminar" @click="eliminarReto(retos.id)"><i class="bi bi-trash"></button></i>
                                                                 </td>
                                                             
                                                         </tr>
@@ -1039,6 +1056,56 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                 </div>
                             </div><!--Fin Reto Vigentes-->
                         </div>
+
+                        <!--Inicio Modal subir imagen en retos-->
+                                                                                                <!-- Modal Eliminar/Actualizar-->
+                            <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h6 class="modal-title" id="exampleModalLabel" >{{titulo_modal}} </h6>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                        <div class="text-center" v-if="contenido_modal_agregar_eliminar=='Subir'">
+                                                <form @submit.prevent="uploadFile()">
+                                                    <!--Subir Documento Sugerencia-->
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <div class="custom-file my-5"> 
+                                                                <input type="file" id="input_file_subir"  ref="archivosydocumentos" multiple required/>{{extensiones_valida}}</input>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <button  type="submit" name="upload" class="btn btn-primary">Subir Archivos </button>
+                                                        </div>
+                                                    </div> 
+                                                       
+                                                          <!-- Mostrando los archivos cargados -->
+                                                        <div v-show="filereto.length>0 && cual_documento=='reto'" >
+                                                        <hr>
+                                                                <div class="col-12" v-for= "(fileimgreto,index) in filereto">
+                                                                    <div class="row">
+                                                                        <span class="badge bg-secondary">Documento {{index+1}}</span><br>
+                                                                            <div class="">
+                                                                                <button type="button" class="btn btn-danger" @click="eliminarDocumento(fileimgreto)" >Eliminar</button>
+                                                                            </div>
+                                                                    </div>
+                                                                    <iframe  :src="filereto[index]" style="width:100%;height:500px;"></iframe>
+                                                                    
+                                                                   <!-- <iframe src="https://vvnorth.com/Sugerencias/documentos/pdf.pdf" style="width:100%;height:500px;"></iframe>-->
+                                                                </div>
+                                                        </div>
+                                                </form>
+                                        </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                        <!--Fin Modal subir imagenes en retos-->
                             
                    </div>
                    <div v-else-if="ventana=='configuracion'">
@@ -1140,6 +1207,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 filenames: [],
                 filedoc: [],
                 fileppt: [],
+                filereto: [],
                 contar_DOC:0,
                 contar_PPT:0,
                 actualizar_sugerencia:'',
@@ -1191,7 +1259,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 correo_analista:'',
                 id_concentrado:'',
                 folio_carpeta_doc:'',
-                cantidadDOCPPT:0,
+                cantidadDOCFILE:0,
                 cual_documento:'',
                 /*Variables administracion de retos*/
                 titulo_del_reto:'',
@@ -1203,6 +1271,17 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 folio_del_reto:'',
                 concentrado_retos:[],
                 ultimo_folio_retos:[],
+                bandera_editar:false,
+                actualizar_reto:'',
+                tipo_status_reto:['Activo','Cerrado','Inactivo'],
+                act_status_reto:'',
+                act_titulo_del_reto:'',
+                act_descripcion_del_reto:'',
+                act_responsable_del_reto:'',
+                act_planta_en_reto:'',
+                act_area_en_reto:'',
+                act_subarea_en_reto:'',
+
                 /*Variables Configuracion*/
                 nuevo_usuario:'',
                 nuevo_password:'',
@@ -1703,14 +1782,16 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                })
             },
             modal_subir_ver_documentos(tipo,id_concentrado,folio,cual_documento,cantidad){
+               
                 this.id_concentrado = id_concentrado
                 this.cual_documento = cual_documento
-                this.cantidadDOCPPT = cantidad
+                this.cantidadDOCFILE = cantidad
                 if(this.cual_documento == 'sugerencia'){
-                    
                     this.extensiones_valida = '(.png, .jpeg, .jpg, .pdf)'
                 }else if(this.cual_documento == 'ppt'){
                     this.extensiones_valida = '(.docx, .ppt, .pptx)'
+                }else if(this.cual_documento == 'reto'){
+                    this.extensiones_valida = '(.png, .jpeg, .jpg, .pdf)'
                 }else{
                     this.extensiones_valida = ''
                 }
@@ -1721,15 +1802,15 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
             },
             uploadFile(){
                 let formData = new FormData();
-                var files = this.$refs.documentosugerencia.files;
-                var totalfiles = this.$refs.documentosugerencia.files.length;
+                var files = this.$refs.archivosydocumentos.files;
+                var totalfiles = this.$refs.archivosydocumentos.files.length;
                 for (var index = 0; index < totalfiles; index++) {
                  formData.append("files[]", files[index]);//arreglo de documentos
                 }
                 formData.append("folio", this.folio_carpeta_doc);
                 formData.append("cual_documento", this.cual_documento);
                 formData.append("id_concentrado", this.id_concentrado);
-                formData.append("cantidad", this.cantidadDOCPPT);
+                formData.append("cantidad", this.cantidadDOCFILE);
                 axios.post("subir_documentos.php", formData,
                     {
                     headers: {"Content-Type": "multipart/form-data"}
@@ -1739,7 +1820,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                      if(this.cual_documento=="ppt"){
                         this.fileppt = response.data;
                         if(this.fileppt.length>0){
-                            //this.cantidadDOCPPT = this.fileppt.length
+                            //this.cantidadDOCFILE = this.fileppt.length
                             document.getElementById("input_file_subir").value=""
                             alert(this.fileppt.length + " archivo/s se han subido.")
                             this.buscarDocumentos()
@@ -1751,9 +1832,20 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                      if(this.cual_documento=="sugerencia"){
                         this.filedoc = response.data;
                         if(this.filedoc.length>0){
-                           // this.cantidadDOCPPT = this.filedoc.length
+                           // this.cantidadDOCFILE = this.filedoc.length
                             document.getElementById("input_file_subir").value=""
                             alert(this.filedoc.length + " archivo/s se han subido.")
+                            this.buscarDocumentos()
+                        }else{
+                            alert("Verifique la extension del archivo o Intente nuevamente.")
+                        }
+                     }   
+                     if(this.cual_documento=="reto"){
+                        this.filereto = response.data;
+                        if(this.filereto.length>0){
+                           // this.cantidadDOCFILE = this.filedoc.length
+                            document.getElementById("input_file_subir").value=""
+                            alert(this.filereto.length + " archivo/s se han subido.")
                             this.buscarDocumentos()
                         }else{
                             alert("Verifique la extension del archivo o Intente nuevamente.")
@@ -1780,23 +1872,36 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                             
                                 if(this.cual_documento=="sugerencia"){
                                             this.filedoc = response.data
-                                            this.cantidadDOCPPT = this.filedoc.length
+                                            this.cantidadDOCFILE = this.filedoc.length
                                             if(this.filedoc.length>0){
                                                 console.log(this.filedoc.length + "Archivos encontrados.")
                                             }else{
                                                 /*alert("Sin Documentos agregados.")*/
                                             }
+                                            this.consultado_concentrado()
                                 }
                                 if(this.cual_documento=="ppt"){
                                             this.fileppt = response.data
-                                            this.cantidadDOCPPT = this.fileppt.length
+                                            this.cantidadDOCFILE = this.fileppt.length
                                             if(this.fileppt.length>0){
                                                 console.log(this.fileppt.length + "Archivos encontrados.")
                                             }else{
                                                 /*alert("Sin Documentos agregados.")*/
                                             }
+                                            this.consultado_concentrado()
                                     }
-                                    this.consultado_concentrado()
+                                if(this.cual_documento=="reto"){
+                                            this.filereto = response.data
+                                            this.cantidadDOCFILE = this.filereto.length
+                                            if(this.filereto.length>0){
+                                                console.log(this.filereto.length + "Archivos encontrados.")
+                                            }else{
+                                                /*alert("Sin Documentos agregados.")*/
+                                            }
+                                            this.consultaConcentradoRetos()
+                                    }
+
+                                   
                                     
                                 })
                                 .catch(error => {
@@ -1811,9 +1916,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     ruta_eliminar: ruta,
                     id_concentrado: this.id_concentrado,
                     cual_documento:this.cual_documento,
-                    cantidad: this.cantidadDOCPPT-1,
+                    cantidad: this.cantidadDOCFILE-1,
                 }).then( reponse=>{
-                    alert(this.cantidadDOCPPT)
                     if(reponse.data=="Archivo Eliminado"){
                         this.buscarDocumentos()
                         alert("Eliminado con Éxito")
@@ -1838,11 +1942,12 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 })
 
             },
-            agregarReto(){
+            agregarReto(guardar){
                 if(this.titulo_del_reto!='' || this.descripcion_del_reto!='' || this.responsable_del_reto !=''
                     || this.planta_en_reto!='' || this.area_en_reto!='' || this.subarea_en_reto!=''){
 
-                        axios.post("guardar_reto.php",{
+                        axios.post("guardar_actualizar_reto.php",{
+                            guardar_o_actualizar: guardar,
                             titulo_del_reto: this.titulo_del_reto,
                             descripcion_del_reto: this.descripcion_del_reto,
                             responsable_del_reto: this.responsable_del_reto,
@@ -1851,54 +1956,122 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                             subarea_en_reto: this.subarea_en_reto,
                             folio_del_reto: this.folio_del_reto
                         }).then(response =>{
-                            console.log(response.data)
-                            this.consultaConcentradoRetos()
+                            console.log()
+                            if(response.data==true){
+                                this.titulo_del_reto =''
+                                this.descripcion_del_reto=''
+                                this.responsable_del_reto=''
+                                this.planta_en_reto=''
+                                this.area_en_reto=''
+                                this.subarea_en_reto= ''
+                                this.folio_del_reto = ''
+                                this.consultaConcentradoRetos()
+                            }else{
+                                alert("Salio mal al insertar datos del reto en BD.")
+                            }
+                           
                         }).catch(error =>{
 
                         })
                         
-                        console.log("guardar")
+                        //console.log("guardar")
                 }else{
                     alert("todos los campos con (*) son requeridos.")
                 }    
             },    
             generarFolio(){
                 if(this.planta_en_reto!='' && this.area_en_reto!=''){
-
                         axios.post("consulta_ultimo_folio_concentrado_retos.php",{
-
+                            planta_en_reto: this.planta_en_reto,
+                            area_en_reto: this.area_en_reto
                         }).then(response =>{
                             this.ultimo_folio_retos = response.data
+                            var nuevo_numero = 1
+                            console.log(this.ultimo_folio_retos.length)
+                            console.log("arriba largo del arreglo")
+                            if(this.ultimo_folio_retos.length>0){
+                                var ultimo_folio = this.ultimo_folio_retos[0].folio_reto
+                                var ultimo_numero_string=ultimo_folio.split("-").slice(-1) 
+                                var ultimo_numero = parseInt(ultimo_numero_string)
+                                var nuevo_numero = ultimo_numero+1
+                            }
+                            var anio = new Date().getFullYear()// tomando anio
+                            var acadena = anio.toString();// pasandolo a cadena
+                            var ultimos_dos_digitos=acadena.substr(-2)//tomando los ultimos dos digitos
+                            var limpiandoplanta = this.planta_en_reto.replace(".",'')//remplazando . si exite
+                            var limpiandoarea = this.area_en_reto.replace(".",'')//remplazando . si exite
+                            var planta=limpiandoplanta.substr(0,3)//tomando los primero 3
+                            var area=limpiandoarea.substr(0,3)//tomando los primero 3
+                            var prefolio = planta+"-"+area+"-"+ultimos_dos_digitos +"-"+nuevo_numero //concatenando para formar folio
+                            var mayus_folio = prefolio.toUpperCase() 
+                            this.folio_del_reto = mayus_folio 
                             
                         }).catch(error =>{
 
                         })
-                       
-                        var nuevo_numero = 1
-                        
-                        if(this.ultimo_folio_retos.length>0){
-                           var ultimo_folio = this.ultimo_folio_retos[0].folio_reto
-                           var ultimo_numero_string=ultimo_folio.split("-").slice(-1) 
-                           var ultimo_numero = parseInt(ultimo_numero_string)
-                           var nuevo_numero = ultimo_numero+1
-
-                        }
-                        console.log(nuevo_numero)
-                        var anio = new Date().getFullYear()// tomando anio
-                        var acadena = anio.toString();// pasandolo a cadena
-                        var ultimos_dos_digitos=acadena.substr(-2)//tomando los ultimos dos digitos
-                        var limpiandoplanta = this.planta_en_reto.replace(".",'')//remplazando . si exite
-                        var limpiandoarea = this.area_en_reto.replace(".",'')//remplazando . si exite
-                        var planta=limpiandoplanta.substr(0,3)//tomando los primero 3
-                        var area=limpiandoarea.substr(0,3)//tomando los primero 3
-                        var prefolio = planta+"-"+area+"-"+ultimos_dos_digitos +"-"+nuevo_numero //concatenando para formar folio
-                        var mayus_folio = prefolio.toUpperCase() 
-                        this.folio_del_reto = mayus_folio 
-
-
                 }
-
             },
+            editaReto(index){
+                if(index==0){
+                    this.actualizar_reto = index
+                    this.bandera_editar = false
+                }else if(index!=0){
+                    this.actualizar_reto = index
+                    this.bandera_editar = true
+                    this.act_status_reto = this.concentrado_retos[index-1].status_reto
+                    this.act_titulo_del_reto=this.concentrado_retos[index-1].titulo_reto
+                    this.act_descripcion_del_reto = this.concentrado_retos[index-1].descripcion_reto
+                    this.act_responsable_del_reto = this.concentrado_retos[index-1].responsable_reto
+                    this.act_planta_en_reto = this.concentrado_retos[index-1].planta_reto
+                    this.act_area_en_reto = this.concentrado_retos[index-1].area_reto
+                    this.act_subarea_en_reto = this.concentrado_retos[index-1].subarea_reto
+                }
+                //alert(index)
+            },
+            guardarActualizacionReto(index,id_reto,actualizar){
+                axios.post("guardar_actualizar_reto.php",{
+                            guardar_o_actualizar: actualizar,
+                            status_reto: this.act_status_reto,
+                            titulo_del_reto: this.act_titulo_del_reto,
+                            descripcion_del_reto: this.act_descripcion_del_reto,
+                            responsable_del_reto: this.act_responsable_del_reto,
+                            planta_en_reto: this.act_planta_en_reto,
+                            area_en_reto: this.act_area_en_reto,
+                            subarea_en_reto: this.act_subarea_en_reto,
+                            id_reto: id_reto,
+                        }).then(response =>{
+                            console.log(response.data)
+                            if(response.data==true){
+                                this.actualizar_reto = 0
+                                this.bandera_editar = false
+                                this.consultaConcentradoRetos()
+                            }else{
+                                alert("Salio mal al insertar datos del reto en BD.")
+                            }
+                           
+                        }).catch(error =>{
+
+                        })
+            },
+            eliminarReto(id_reto){
+               if(!confirm('Esta seguro de eliminar este reto')) return 
+                axios.post("eliminar_reto.php",{
+                    id_reto:id_reto
+                }).then(response =>{
+                        if(response.data=="si"){
+                            this.consultaConcentradoRetos()
+                            alert("Reto Eliminado con Éxito")
+                        }else if(response.data=="No Eliminado"){
+                            alert("Algo no salio bien no se logro Eliminar.")
+                        }else{
+                            alert("Error al eliminar el Documento.")
+                        }
+                    
+                }).catch(error =>{
+
+                })
+            },
+        
             /*METODOS DE ADMINISTRACION*/
             guardar_admin_y_analista(){
                 axios.post('guardar_analista_o_admin.php',{

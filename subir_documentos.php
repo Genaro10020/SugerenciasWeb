@@ -35,12 +35,11 @@ if (!file_exists($path)) {
                             // Nombre del archivo
                             $filename = $_FILES['files']['name'][$index];
                             
-
                             // Obtener la extensión del archivo
                             $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
 
                             // Validar extensiones permitidas
-                            if($cual_documento=="sugerencia"){
+                            if($cual_documento=="sugerencia" || $cual_documento=="reto" ){
                                 $valid_ext = array("png","jpeg","jpg","pdf");//entension valida para 
                             }
                             if($cual_documento=="ppt"){
@@ -55,6 +54,11 @@ if (!file_exists($path)) {
                             if(in_array($ext, $valid_ext)){
 
                             //subir cantidad de documentos existentes en BD
+
+                            if($cual_documento=="reto"){
+                                $actualizar = "UPDATE concentrado_retos_segerencias SET cantidad_img='$suma' WHERE id = '$id_concentrado'";
+                                $query = mysqli_query($conexion,$actualizar);
+                            }
                            
                             if($cual_documento=="sugerencia"){
                                 $actualizar = "UPDATE concentrado_sugerencias SET cantidadDOC='$suma' WHERE id = '$id_concentrado'";
