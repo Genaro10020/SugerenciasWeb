@@ -15,6 +15,11 @@ if(isset($variables['cantidad'])){
 $ruta_eliminar_doc=str_replace("http://localhost/sugerencias/","",$ruta);//elimino datos de ruta que no son necesarias
 if(unlink($ruta_eliminar_doc)){
 
+    if($cual_documento=="premio"){
+        $actualizar = "UPDATE concentrado_premios_sugerencias SET cant_img='$cantidad', url_premio='' WHERE id = '$id_concentrado'";
+        $query = mysqli_query($conexion,$actualizar);
+    }
+
     if($cual_documento=="reto"){
         $actualizar = "UPDATE concentrado_retos_segerencias SET cantidad_img='$cantidad' WHERE id = '$id_concentrado'";
         $query = mysqli_query($conexion,$actualizar);

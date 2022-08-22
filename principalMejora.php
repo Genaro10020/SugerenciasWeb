@@ -889,6 +889,201 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                    <b> ADMINISTRACIÓN DE PREMIOS </b>
                                 </div>
                             </div>
+
+                            <div class="row">
+                                <div class="col-12"><!--Agregar Premios-->
+                                        <div class="text-center mt-3">
+                                            <span class="badge bg-secondary">Agregar Productos</span>
+                                        </div>
+                                        <div class="div-scroll">
+                                            <table class="tablaMonitoreo-sugerencias table table-striped table-bordered ">
+                                            <thead class="encabezado-tabla text-center text-light ">
+                                                <tr >
+                                                    <th scope="col " class="sticky">Agregar</th>
+                                                    <th scope="col">Código<span class="badge bg-primary">*</span></th>
+                                                    <th scope="col">Descripción <span  class="badge bg-primary">*</span></th>
+                                                    <th scope="col">Puntos para canjer<span class="badge bg-primary">*</span></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr v-show="bandera_editar==false" class=" text-center">
+                                                
+                                                        <td class="align-middle">
+                                                        <button  class="btn btn-primary" title="Guardar Reto" @click="guardarActualizarPremios('','','Insertar')"><i class="bi bi-check-circle"></i></button>       
+                                                        </td>
+                                                        <td>
+                                                            <input class="inputs-concentrado" type="text" v-model="codigo_premios" required></input>                  
+                                                        </td>
+                                                        <td>  
+                                                            <textarea class="inputs-concentrado text-area" type="text" v-model="descripcion_premios" required></textarea>                 
+                                                        </td>
+                                                        <td>
+                                                            <input class="inputs-concentrado" type="text" v-model="puntos_canjear_premios" required></input>   
+                                                        </td>
+                                                </tr>
+                                            </tbody>
+                                            </table>
+                                        </div>
+                                </div><!--Fin Agregar Primerios-->
+                                <div class="col-12"><!--Catalago de Premios-->
+                                        <div class="text-center mt-3">
+                                                <span class="badge bg-secondary">Catálogo de Premios</span>
+                                        </div>
+                                        <div class="div-scroll">
+                                                    <table class="tablaMonitoreo-sugerencias table table-striped table-bordered ">
+                                                    <thead class="encabezado-tabla text-center text-light ">
+                                                        <tr >
+                                                            <th scope="col" class="sticky">Editar/ Subir Imagen</th>
+                                                            <th scope="col">No.</th>
+                                                            <th scope="col">Imagen</th>
+                                                            <th scope="col">Código</th>
+                                                            <th scope="col">Descripción</th>
+                                                            <th scope="col">Puntos para canjer</th>
+                                                            <th scope="col">Eliminar</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr class=" text-center align-middle " v-for="(premios, index) in concentrado_premios">
+                                                                 
+                                                                <td class="sticky" style=" background: rgb(194, 194, 194)">
+                                                                            
+                                                                            <button v-if="actualizar_premios==index+1" type="button" class="btn btn-danger me-2" title="Cancelar" @click="editaPremio(0)" ><i class="bi bi-x-circle" ></i></button>
+                                                                            <button v-show="bandera_editar_premio==false" type="button" class="btn btn-warning me-2" title="Actualizar" @click="editaPremio(index+1)"><i class="bi bi-pen" ></i></button>
+                                                                            <button v-show="bandera_editar_premio==true" class="btn btn-primary me-2" title="Guardar Reto" @click="guardarActualizarPremios(0,premios.id,'Actualizar')"><i class="bi bi-check-circle"></i></button> 
+                                                                            <button v-if="premios.cant_img>0" type="button" class="btn btn-success" title="Subir Imagen" data-bs-toggle="modal" @click="modal_subir_ver_documentos('Subir',premios.id,premios.codigo_premio,'premio',premios.cant_img)" data-bs-target="#modal"><i class="bi bi-paperclip">{{premios.cantidad_img}}</i></button>
+                                                                            <button v-else type="button" class="btn btn-secondary " title="Subir Imagen" data-bs-toggle="modal" @click="modal_subir_ver_documentos('Subir',premios.id,premios.codigo_premio,'premio',premios.cant_img)" data-bs-target="#modal"><i class="bi bi-paperclip">{{premios.cantidad_img}}</i></button>    
+                                                                </td>
+                                                                <td>
+                                                                
+                                                                     <label><b>{{index+1}}</b></label>
+                                                                </td>
+                                                                <td>
+                                                                <img class="img-thumbnail min-w-25" style="max-width:100px" :src="'http://localhost/sugerencias/'+premios.url_premio" />
+                                                                </td>
+                                                                <td>
+                                                                    <input v-if="actualizar_premios==index+1"  class="inputs-concentrado" type="text" v-model="act_codigo_premio" required></input>
+                                                                    <label  v-else>{{premios.codigo_premio}}</label>
+                                                                </td>
+                                                                <td>
+                                                                    <input v-if="actualizar_premios==index+1"  class="inputs-concentrado" type="text" v-model="act_descripcion_premios" required></input>
+                                                                    <label v-else>{{premios.descripcion}}</label>                  
+                                                                </td>
+                                                                <td>
+                                                                    <input v-if="actualizar_premios==index+1"  class="inputs-concentrado" type="text" v-model="act_puntos_premios" required></input>
+                                                                    <label v-else >{{premios.puntos_para_canjear}}</label> 
+                                                                </td>    
+                                                                <td>
+                                                                    <button type="button" class="btn btn-danger" title="Eliminar" @click="eliminarPremio(premios.id,premios.url_premio,premios.cant_img)"><i class="bi bi-trash"></button></i>
+                                                                </td>
+                                                        </tr>
+                                                    </tbody>
+                                                    </table>
+                                                </div>
+                                            
+                            </div><!--Fin Premio Vigentes-->
+
+                        <!--Inicio Modal subir imagen en premio-->
+                        <!-- Modal Eliminar/Actualizar-->
+                        <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h6 class="modal-title" id="exampleModalLabel" >{{titulo_modal}} </h6>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                        <div class="text-center" v-if="contenido_modal_agregar_eliminar=='Subir'">
+                                                <form @submit.prevent="uploadFile()">
+                                                    <!--Subir Documento Sugerencia-->
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <div class="custom-file my-5"> 
+                                                                <input type="file" id="input_file_subir"  ref="ref_premio" multiple required/>{{extensiones_valida}}</input>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <button  type="submit" name="upload" class="btn btn-primary">Subir Archivos </button>
+                                                        </div>
+                                                    </div> 
+                                                       
+                                                          <!-- Mostrando los archivos cargados -->
+                                                        <div v-show="filepremio.length>0 && cual_documento=='premio'" >
+                                                        <hr>
+                                                                <div class="col-12" v-for= "(fileprem,index) in filepremio">
+                                                                    <div class="row">
+                                                                        <span class="badge bg-secondary">Documento {{index+1}}</span><br>
+                                                                            <div class="">
+                                                                                <button type="button" class="btn btn-danger" @click="eliminarDocumento(fileprem)" >Eliminar</button>
+                                                                            </div>
+                                                                    </div>
+                                                                    <iframe  :src="filepremio[index]" style="width:100%;height:500px;"></iframe>
+                                                                    
+                                                                   <!-- <iframe src="https://vvnorth.com/Sugerencias/documentos/pdf.pdf" style="width:100%;height:500px;"></iframe>-->
+                                                                </div>
+                                                        </div>
+                                                </form>
+                                        </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                        <!--Fin Modal subir imagenes en retos-->
+
+
+                        </div><!--Fin apartado premios-->
+
+                        <!--Inicio Modal subir imagen en retos-->
+                        <!-- Modal Eliminar/Actualizar-->
+                            <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h6 class="modal-title" id="exampleModalLabel" >{{titulo_modal}} </h6>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                        <div class="text-center" v-if="contenido_modal_agregar_eliminar=='Subir'">
+                                                <form @submit.prevent="uploadFile()">
+                                                    <!--Subir Documento Sugerencia-->
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <div class="custom-file my-5"> 
+                                                                <input type="file" id="input_file_subir"  ref="archivosydocumentos" multiple required/>{{extensiones_valida}}</input>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <button  type="submit" name="upload" class="btn btn-primary">Subir Archivos </button>
+                                                        </div>
+                                                    </div> 
+                                                       
+                                                          <!-- Mostrando los archivos cargados -->
+                                                        <div v-show="filereto.length>0 && cual_documento=='reto'" >
+                                                        <hr>
+                                                                <div class="col-12" v-for= "(fileimgreto,index) in filereto">
+                                                                    <div class="row">
+                                                                        <span class="badge bg-secondary">Documento {{index+1}}</span><br>
+                                                                            <div class="">
+                                                                                <button type="button" class="btn btn-danger" @click="eliminarDocumento(fileimgreto)" >Eliminar</button>
+                                                                            </div>
+                                                                    </div>
+                                                                    <iframe  :src="filereto[index]" style="width:100%;height:500px;"></iframe>
+                                                                    
+                                                                   <!-- <iframe src="https://vvnorth.com/Sugerencias/documentos/pdf.pdf" style="width:100%;height:500px;"></iframe>-->
+                                                                </div>
+                                                        </div>
+                                                </form>
+                                        </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                        <!--Fin Modal subir imagenes en retos-->
                              <!--fin cinta apartado-->
                             <!-- contenido principal gonher-->
                             
@@ -975,6 +1170,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                     <thead class="encabezado-tabla text-center text-light ">
                                                         <tr >
                                                         <th scope="col" class="sticky">Guardar </th>
+                                                        <th>No. #</th>
                                                         <th scope="col">Status </th>
                                                         <th scope="col">Reto </th>
                                                         <th scope="col">Descripción</th>
@@ -991,12 +1187,15 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                         <tr class=" text-center align-middle " v-for="(retos, index) in concentrado_retos">
                                                                  
                                                                 <td class="sticky" style=" background: rgb(194, 194, 194)">
-                                                                            <label class="me-5"><b>{{index+1 }}</b></label>
+                                                                            
                                                                             <button v-if="actualizar_reto==index+1" type="button" class="btn btn-danger me-2" title="Cancelar" @click="editaReto(0)" ><i class="bi bi-x-circle" ></i></button>
                                                                             <button v-show="bandera_editar==false" type="button" class="btn btn-warning me-2" title="Actualizar" @click="editaReto(index+1)"><i class="bi bi-pen" ></i></button>
                                                                             <button v-show="bandera_editar==true" class="btn btn-primary me-2" title="Guardar Reto" @click="guardarActualizacionReto(0,retos.id,'Actualizar')"><i class="bi bi-check-circle"></i></button> 
                                                                             <button v-if="retos.cantidad_img>0" type="button" class="btn btn-success  ms-2" title="Subir Imagen" data-bs-toggle="modal" @click="modal_subir_ver_documentos('Subir',retos.id,retos.folio_reto,'reto',retos.cantidad_img)" data-bs-target="#modal"><i class="bi bi-paperclip">{{retos.cantidad_img}}</i></button>
                                                                             <button v-else type="button" class="btn btn-secondary " title="Subir Imagen" data-bs-toggle="modal" @click="modal_subir_ver_documentos('Subir',retos.id,retos.folio_reto,'reto',retos.cantidad_img)" data-bs-target="#modal"><i class="bi bi-paperclip">{{retos.cantidad_img}}</i></button>    
+                                                                </td>
+                                                                <td >
+                                                                     <label><b>{{index+1 }}</b></label>
                                                                 </td>
                                                                 <td>
                                                                     <select v-if="actualizar_reto==index+1" class="inputs-concentrado" v-model="act_status_reto" required>
@@ -1058,7 +1257,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                         </div>
 
                         <!--Inicio Modal subir imagen en retos-->
-                                                                                                <!-- Modal Eliminar/Actualizar-->
+                        <!-- Modal Eliminar/Actualizar-->
                             <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
@@ -1207,6 +1406,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 filenames: [],
                 filedoc: [],
                 fileppt: [],
+                filepremio: [],
                 filereto: [],
                 contar_DOC:0,
                 contar_PPT:0,
@@ -1261,6 +1461,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 folio_carpeta_doc:'',
                 cantidadDOCFILE:0,
                 cual_documento:'',
+                /*Variables Premios*/
+                codigo_premios:'',
+                descripcion_premios:'',
+                puntos_canjear_premios:'',
                 /*Variables administracion de retos*/
                 titulo_del_reto:'',
                 descripcion_del_reto:'',
@@ -1281,7 +1485,17 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 act_planta_en_reto:'',
                 act_area_en_reto:'',
                 act_subarea_en_reto:'',
-
+                /*Variables administracion de premios*/
+                concentrado_premios:[],
+                codigo_premios:'',
+                descripcion_premios:'',
+                puntos_canjear_premios:'',
+                actualizar_premios:'',
+                bandera_editar_premio:'',
+                act_codigo_premio:'',
+                act_descripcion_premio:'',
+                act_puntos_premios:'',
+                url_img_premio:'',
                 /*Variables Configuracion*/
                 nuevo_usuario:'',
                 nuevo_password:'',
@@ -1319,7 +1533,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
              //consultado lista analistas de factibilidad
              this.consulta_lista_analista_factibilidad(),
              this.consulta_lista_usuarios_y_analistas_factibilidad(),
-             this.consultaConcentradoRetos(),
+            
+             
+             
                 axios.post('consulta_usuario.php',{
                     usuario: this.usuario
                 }).then(response =>{
@@ -1334,8 +1550,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                    this.ventana=dato;
                    if(dato=='principalMejora'){ this.pintarUno=true}else{this.pintarUno=false}
                    if(dato=='concentrado'){this.pintarDos=true}else{this.pintarDos=false}
-                   if(dato=='premios'){ this.pintarTres=true}else{this.pintarTres=false}
-                   if(dato=='retos'){this.pintarCuatro=true}else{this.pintarCuatro=false}
+                   if(dato=='premios'){ this.pintarTres=true;  this.consultar_concentrado_premios()}else{this.pintarTres=false}
+                   if(dato=='retos'){this.pintarCuatro=true; this.consultaConcentradoRetos()}else{this.pintarCuatro=false}
                    if(dato=='configuracion'){this.pintarCinco=true}else{this.pintarCinco=false}
              },
        /*METODOS PRINCIPAL MEJORA*/   
@@ -1782,7 +1998,6 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                })
             },
             modal_subir_ver_documentos(tipo,id_concentrado,folio,cual_documento,cantidad){
-               
                 this.id_concentrado = id_concentrado
                 this.cual_documento = cual_documento
                 this.cantidadDOCFILE = cantidad
@@ -1792,6 +2007,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     this.extensiones_valida = '(.docx, .ppt, .pptx)'
                 }else if(this.cual_documento == 'reto'){
                     this.extensiones_valida = '(.png, .jpeg, .jpg, .pdf)'
+                }else if(this.cual_documento == 'premio'){
+                    this.extensiones_valida = '(.png, .jpeg, .jpg)'
                 }else{
                     this.extensiones_valida = ''
                 }
@@ -1802,8 +2019,15 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
             },
             uploadFile(){
                 let formData = new FormData();
-                var files = this.$refs.archivosydocumentos.files;
-                var totalfiles = this.$refs.archivosydocumentos.files.length;
+               
+                if(this.cual_documento=="premio"){
+                    var files = this.$refs.ref_premio.files;
+                    var totalfiles = this.$refs.ref_premio.files.length;
+                }else{
+                    var files = this.$refs.archivosydocumentos.files;
+                    var totalfiles = this.$refs.archivosydocumentos.files.length;
+                } 
+               
                 for (var index = 0; index < totalfiles; index++) {
                  formData.append("files[]", files[index]);//arreglo de documentos
                 }
@@ -1846,6 +2070,17 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                            // this.cantidadDOCFILE = this.filedoc.length
                             document.getElementById("input_file_subir").value=""
                             alert(this.filereto.length + " archivo/s se han subido.")
+                            this.buscarDocumentos()
+                        }else{
+                            alert("Verifique la extension del archivo o Intente nuevamente.")
+                        }
+                     }  
+                     if(this.cual_documento=="premio"){
+                        this.filepremio = response.data;
+                        if(this.filepremio.length>0){
+                           // this.cantidadDOCFILE = this.filedoc.length
+                            document.getElementById("input_file_subir").value=""
+                            alert(this.filepremio.length + " archivo/s se han subido.")
                             this.buscarDocumentos()
                         }else{
                             alert("Verifique la extension del archivo o Intente nuevamente.")
@@ -1900,8 +2135,16 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                             }
                                             this.consultaConcentradoRetos()
                                     }
-
-                                   
+                                if(this.cual_documento=="premio"){
+                                            this.filepremio = response.data
+                                            this.cantidadDOCFILE = this.filepremio.length
+                                            if(this.filepremio.length>0){
+                                                console.log(this.filepremio.length + "Archivos encontrados.")
+                                            }else{
+                                                /*alert("Sin Documentos agregados.")*/
+                                            }
+                                            this.consultar_concentrado_premios()
+                                    }
                                     
                                 })
                                 .catch(error => {
@@ -1920,18 +2163,150 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 }).then( reponse=>{
                     if(reponse.data=="Archivo Eliminado"){
                         this.buscarDocumentos()
-                        alert("Eliminado con Éxito")
+                        alert("Archivo/Documento Eliminado con Éxito")
                     }else if(reponse.data=="No Eliminado"){
                         alert("Algo no salio bien no se logro Eliminar.")
                     }else{
                         alert("Error al eliminar el Documento.")
                     }
-                    this.consultado_concentrado()
+                    if(this.cual_documento=="reto"){
+                        this.consultaConcentradoRetos()
+                    }else if(this.cual_documento=="premio"){
+                        this.consultar_concentrado_premios()
+                    }else{
+                        this.consultado_concentrado()
+                    }
+                    
                 }).catch(error =>{
                  
                 })
                    
                 },  
+                /*METODOS DE PREMIOS*/
+                consultar_concentrado_premios(){
+                    axios.post("consulta_concentrado_premios.php",{
+                    }).then(response =>{
+                            this.concentrado_premios=response.data
+                    }).catch(arror =>{
+
+                    })
+                },
+                guardarActualizarPremios(index,id_premio,insertar_actualizar){
+
+                    if(insertar_actualizar=="Insertar"){
+
+                            if(this.codigo_premios!='' || this.descripcion_premios!='' || this.puntos_canjear_premios )
+                                {
+                                        axios.post("guardar_actualizar_premio.php",{
+                                            id_premio:id_premio,
+                                            insertar_actualizar: insertar_actualizar,
+                                            codigo_premios: this.codigo_premios,
+                                            descripcion_premios: this.descripcion_premios,
+                                            puntos_canjear_premios: this.puntos_canjear_premios
+
+                                        }).then(response =>{
+                                            if(response.data== true){
+                                                this.bandera_editar_premio = false
+                                                this.actualizar_premios=index
+
+                                                this.codigo_premios = ''
+                                                this.descripcion_premios = ''
+                                                this.puntos_canjear_premios = ''
+                                                this.consultar_concentrado_premios()
+                                            }else{
+                                                alert('Problemas para guardar premio en BD')
+                                            }
+                                            console.log(response.data)
+                                        }).catch(error =>{
+
+                                        })
+                                
+                                }else{
+                                    alert("Los campos (*) son requeridos")
+                                }
+                    }
+                    if(insertar_actualizar=="Actualizar"){
+                        
+                        if(this.act_codigo_premio!='' || this.act_descripcion_premios!='' || this.act_puntos_premios )
+                            {
+                                    axios.post("guardar_actualizar_premio.php",{
+                                        id_premio:id_premio,
+                                        insertar_actualizar: insertar_actualizar,
+                                        codigo_premios: this.act_codigo_premio,
+                                        descripcion_premios: this.act_descripcion_premios,
+                                        puntos_canjear_premios: this.act_puntos_premios
+
+                                    }).then(response =>{
+                                        if(response.data== true){
+                                            this.bandera_editar_premio = false
+                                            this.actualizar_premios=index
+
+                                            this.act_codigo_premio = ''
+                                            this.act_descripcion_premios = ''
+                                            this.act_puntos_premios = ''
+                                            this.consultar_concentrado_premios()
+
+                                        }else{
+                                            alert('Problemas para actualizar premio en BD')
+                                        }
+                                        console.log(response.data)
+                                    }).catch(error =>{
+
+                                    })
+                            
+                            }else{
+                                alert("Todos los campos son requeridos")
+                            }
+
+                    }
+                    
+                        
+                      
+                },
+                eliminarPremio(id_premio, ruta, cant_doc){
+               if(!confirm('Seguro de elimiar Premio del Catálogo')) return 
+                axios.post("eliminar_premio.php",{
+                    id_premio:id_premio
+                }).then(response =>{
+                        if(response.data=="si"){//eliminar registro de premios
+                            this.consultar_concentrado_premios()
+                            alert("Premio Eliminado con Éxito")//AQUI
+
+                            this.id_concentrado = id_premio
+                            this.cual_documento = 'premio'
+                            this.cantidadDOCFILE = cant_doc-1
+                            
+                            this.eliminarDocumento(ruta)//eliminar el documento.
+ 
+                            }else if(response.data=="No Eliminado"){
+                                alert("Algo no salio bien no se logro Eliminar.")
+                            }else{
+                                alert("Error al eliminar Premio.")
+                            }
+
+                    
+                }).catch(error =>{
+
+                })
+            },
+            editaPremio(index){
+                if(index==0){
+                    this.actualizar_premios = index
+                    this.bandera_editar_premio = false
+                }else if(index!=0){
+                    this.actualizar_premios = index
+                    this.bandera_editar_premio = true
+                    this.act_codigo_premio = this.concentrado_premios[index-1].codigo_premio
+                    this.act_descripcion_premios=this.concentrado_premios[index-1].descripcion
+                    this.act_puntos_premios = this.concentrado_premios[index-1].puntos_para_canjear
+                }
+                //alert(index)
+            },
+            buscarUrlImagen(index){
+                alert(index)
+                /*this.url_img_premio= this.concentrado_premios[index].url_premio*/
+                
+            },
             /*METOS ADMINISTRACION DE RETOS */
             consultaConcentradoRetos(){
                 axios.post("consulta_concentrado_retos.php",{
@@ -2028,6 +2403,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 }
                 //alert(index)
             },
+ 
             guardarActualizacionReto(index,id_reto,actualizar){
                 axios.post("guardar_actualizar_reto.php",{
                             guardar_o_actualizar: actualizar,

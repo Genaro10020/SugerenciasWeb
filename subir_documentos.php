@@ -42,6 +42,9 @@ if (!file_exists($path)) {
                             if($cual_documento=="sugerencia" || $cual_documento=="reto" ){
                                 $valid_ext = array("png","jpeg","jpg","pdf");//entension valida para 
                             }
+                            if($cual_documento=="premio"){
+                                $valid_ext = array("png","jpeg","jpg");//entension valida para 
+                            }
                             if($cual_documento=="ppt"){
                                 $valid_ext = array("docx","ppt","pptx");
                             }
@@ -54,6 +57,8 @@ if (!file_exists($path)) {
                             if(in_array($ext, $valid_ext)){
 
                             //subir cantidad de documentos existentes en BD
+
+                            
 
                             if($cual_documento=="reto"){
                                 $actualizar = "UPDATE concentrado_retos_segerencias SET cantidad_img='$suma' WHERE id = '$id_concentrado'";
@@ -95,6 +100,11 @@ if (!file_exists($path)) {
                             // Subir archivos
                             if(move_uploaded_file($_FILES['files']['tmp_name'][$index],$ruta_y_doc)){
                             $files_arr[] = "http://localhost/sugerencias/".$ruta_y_doc;
+
+                                    if($cual_documento=="premio"){
+                                        $actualizar = "UPDATE concentrado_premios_sugerencias SET cant_img='$suma', url_premio='$ruta_y_doc' WHERE id = '$id_concentrado'";
+                                        $query = mysqli_query($conexion,$actualizar);
+                                    }
                             }
                         }
                     }
