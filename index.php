@@ -60,7 +60,7 @@ session_destroy();
                 <div class=""><img class="img-fluid" src="img/logo_mejora_continua.png"></img></div>
             </div>
             <div class="row" style="height:80vh">
-                    <div class="col-12 col-sm-6 d-flex align-items-center justify-content-center rounded-3 " style="background:#f5f5f5">
+                    <div class="col-12 col-sm-6 d-flex align-items-center justify-content-center rounded-3 mt-2" style="background:#f5f5f5">
                     <form @submit.prevent="verificar" class="rounded-3 shadow"  style="background: rgb(181,0,0);">
                                 <div class="row rounded-3  d-flex align-items-center m-1 " style="background:#f9f9f9">
                                    
@@ -119,6 +119,8 @@ session_destroy();
                       window.location.href = "principalMejora.php"
                     }else if(response.data=='Analista') {
                         window.location.href = "principalAnalista.php"
+                    }else if(response.data=='Colaborador') {
+                        window.location.href = "principalColaborador.php"
                     }else{
                         alert("Usuario/Contraseña Incorrecta")
                     }
