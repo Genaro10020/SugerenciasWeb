@@ -3,7 +3,7 @@
 @media (min-width: 0px) {
     /*css pricipal colaboradoress*/
     .div-scroll-vertial{
-        max-height: 80vh;
+        max-height: 100vh;
         overflow-x: scroll;
     }
 
@@ -126,6 +126,10 @@
  }
 /* Large devices (desktops, 992px and up)****************************************/
 @media (min-width: 992px) { 
+    .div-scroll-vertial{
+        max-height: 100vh;
+        overflow-x: auto;
+    }
     .opciones{
         font-size: 0.9em;
     }

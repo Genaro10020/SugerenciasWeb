@@ -337,7 +337,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                                 <div class="row">
                                                                                         <div class="col-12 col-sm-3">
                                                                                             <label>Puntos Asignados</label>
-                                                                                            <input v-model="puntos_asignados" type="text" class=" form-control" style="font-size:.8em" required/>
+                                                                                            <input v-model="puntos_asignados" type="number" class=" form-control" style="font-size:.8em" required/>
                                                                                         </div>
                                                                                 </div>
                                                                                 <div class="d-flex justify-content-center">
@@ -421,7 +421,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                                 <div class="row">
                                                                                         <div class="col-12 col-sm-3">
                                                                                             <label>Puntos Asignados</label>
-                                                                                            <input v-model="puntos_asignados_cualitativos" type="text" class=" form-control" style="font-size:.8em" required/>
+                                                                                            <input v-model="puntos_asignados_cualitativos" type="number" class=" form-control" style="font-size:.8em" required/>
                                                                                         </div>
                                                                                 </div>
                                                                                 <div class="d-flex justify-content-center">

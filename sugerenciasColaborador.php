@@ -102,7 +102,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                 <div class="col-2 d-flex align-items-center rounded-end" style=" height:45.8833px;"><img class="img-fluid" src="img/logo_gonher.png"></img></div>
                                     <div class="col-8 d-flex align-items-center justify-content-center">
                                                 <div>
-                                                    <div class="titulo lh-1 mt-3 text-dark fs-1 fw-bold text-center">Mis sugerencias</div>
+                                                    <div class="titulo lh-1 mt-3 text-dark fs-2 fw-bold text-center">Mis sugerencias</div>
                                                     <div class="subtitulo fs-5 lh-1  text-center mt-1 text-secondary mb-3" >Genaro Villanueva Pérez</div>
                                                 </div>
                                     </div>
@@ -113,18 +113,18 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                     <div class="row justify-content-center" style="min-height:85vh">
                                 <div v-if="seguimiento==false">
                                         <div class="div-scroll-vertial"><!--scroll-->
-                                            <table class="table table-striped mt-3" style=" font-family :Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">
+                                            <table class="table table-striped mt-3" style=" font-family :Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; font-size: 0.8em;">
                                             <thead >
-                                                <tr style=" background:rgb(137, 0, 0); height:5px; color:white">
+                                                <tr style="background:rgb(137, 0, 0); height:5px; color:white; font-family :Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; font-size: 1em;">
                                                     <th scope="col">#</th>
                                                     <th scope="col">Folio</th>
-                                                    <th scope="col">Descripcion</th>
+                                                    <th scope="col">Descripción</th>
                                                 </tr>
                                             </thead>
                                                 <tbody>
-                                                    <tr v-for="(concentrado, index) in concentrado_sugerencias" style=" font-size: 0.8em;">
+                                                    <tr v-for="(concentrado, index) in concentrado_sugerencias">
                                                         <td>{{index+1}}</td>
-                                                        <td><label class="folio fst-italic" @click="seguimiento=true"><b>{{concentrado.folio}}</b></label></td>
+                                                        <td><label class="folio fst-italic" @click="consultar_sugerencia(concentrado.folio)"><b>{{concentrado.folio}}</b></label></td>
                                                         <td>{{concentrado.nombre_sugerencia}}</td>
                                                     </tr>
                                                 </tbody>
@@ -132,61 +132,72 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                         </div><!--scroll-->
                                 </div>    
                                 <!--Seguimiento-->
-                                 <div v-else>
-                                        <div class="div-scroll-vertial"><!--scroll-->
-                                                <div class=" d-flex flex-column mb-3 mt-3 text-center">
-                                                    <div class="col-12 col-lg-4 offset-lg-4  fw-bold" style=" background:#efefef">Folio</div>
-                                                    <div class="col-12 col-lg-4 offset-lg-4" style=" font-family :Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">Flex item 2</div>
-                                                    <div class="col-12 col-lg-4 offset-lg-4  fw-bold" style=" background:#efefef">Descripción</div>
-                                                    <div class="col-12 col-lg-4 offset-lg-4"  style=" font-family :Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">Flex item 3</div>
-                                                    <div class="col-12 col-lg-4 offset-lg-4  fw-bold" style=" background:#efefef">Analista de Factibilidad</div>
-                                                    <div class="col-12 col-lg-4 offset-lg-4"  style=" font-family :Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">Flex item 3</div>
-                                                    <div class="col-12 col-lg-4 offset-lg-4  p-1 fw-bold" style=" background:#053b78; color:white">Seguimiento</div>
-                                                            <div>
-                                                                    <div class="col-12 col-lg-4 offset-lg-4  p-1 bg-danger fw-bold" style="color:white">No Factible</div>
-                                                                    <div class="col-12 col-lg-4 offset-lg-4  mt-2 fw-bold">Causa de No Factibilidad:</div>
-                                                                    <div class="col-12 col-lg-4 offset-lg-4  p-1 ">
-                                                                            <textarea class="form-control"  style="height: 100%" disabled></textarea>
+                                 <div v-else class="d-flex align-items-center justify-content-center ">
+                                        <div class="div-scroll-vertial col-12 col-lg-10 col-xl-8"><!--scroll-->
+                                                <div class=" d-flex flex-column mb-3 mt-3 text-center " style="font-size:0.8em;">
+                                                    <div class="col-12 col-lg-12  p-2 fw-bold" style=" background:#efefef">Folio</div>
+                                                    <div class="col-12 col-lg-12" style=" font-family :Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;  ">{{sugerencia[0].folio}}</div>
+                                                    <div class="col-12 col-lg-12  p-2 fw-bold" style=" background:#efefef">Descripción</div>
+                                                    <div class="col-12 col-lg-12 mb-1"  style=" font-family :Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; line-height:15px;" >{{sugerencia[0].nombre_sugerencia}}</div>
+                                                    <div class="col-12 col-lg-12  p-2 fw-bold" style=" background:#efefef">Analista de Factibilidad</div>
+                                                    <div class="col-12 col-lg-12"  style=" font-family :Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">{{sugerencia[0].analista_de_factibilidad}}</div>
+                                                    <div class="col-12 col-lg-12  p-2 fw-bold" style=" background:#053b78; color:white">Seguimiento</div>
+                                                            <div v-if="sugerencia[0].status =='Cerrada/Fast Response' || sugerencia[0].status =='Cerrada/No Factible'">
+                                                                    <div class="col-12 col-lg-12  p-2 bg-danger fw-bold" style="color:white">{{sugerencia[0].status}}</div>
+                                                                    <div class="col-12 col-lg-12  mt-2 fw-bold">Causa de No Factibilidad:</div>
+                                                                    <div class="col-12 col-lg-12  p-1 ">
+                                                                            <textarea   style="height: 100px;  width: 100%; font-size 0.8em; line-height:15px" disabled>{{sugerencia[0].causa_no_factibilidad}}</textarea>
                                                                     </div>
                                                             </div>
-                                                            <div>
-                                                                    <div class=" d-flex justify-content-center mb-1">
+                                                            <div v-else>
+                                                                    <div class=" d-flex justify-content-center mt-1 ">
                                                                         <div class="col-4 col-sm-4 col-lg-1  d-flex justify-content-center">
-                                                                            <div class="rounded-pill  d-flex align-items-center justify-content-center" style=" height:50px; width: 50px; background: linear-gradient(to bottom, #b5bdc8 0%,#828c95 36%,#28343b 100%);"><img src="img/app_listo.png" style=" height:50px; width:50px"> </img></div>
+                                                                            <div class="rounded-pill  d-flex align-items-center justify-content-center" style=" height:50px; width: 50px; background: linear-gradient(to bottom, #b5bdc8 0%,#828c95 36%,#28343b 100%);">
+                                                                                <img v-show="sugerencia[0].status=='En Factibilidad' || sugerencia[0].status=='En Implementación' || sugerencia[0].status=='Implementada' || sugerencia[0].validacion_de_impacto!=''" src="img/app_listo.png" style=" height:50px; width:50px"> </img>
+                                                                            </div>
                                                                         </div>
-                                                                        <div class="col-8 col-sm-8 col-lg-3  d-flex">
-                                                                            <input type="text" class="form-control me-1" disabled>
+                                                                        <div class="col-8 col-sm-8 col-lg-3  mt-1 d-flex">
+                                                                            <input v-show="sugerencia[0].status=='En Factibilidad' || sugerencia[0].status=='En Implementación' || sugerencia[0].status=='Implementada' || sugerencia[0].validacion_de_impacto!=''" type="text" class="form-control me-1" value="En Factibilidad" disabled></input>
                                                                         </div>
                                                                     </div>
 
-                                                                    <div class=" d-flex justify-content-center  mb-1">
+                                                                    <div class=" d-flex justify-content-center mt-1 ">
                                                                         <div class="col-4 col-sm-4 col-lg-1  d-flex justify-content-center">
-                                                                            <div class="rounded-pill bg-secondary d-flex align-items-center justify-content-center" style=" height:50px; width: 50px;  background: linear-gradient(to bottom, #b5bdc8 0%,#828c95 36%,#28343b 100%);"><img src="img/app_listo.png" style=" height:50px; width:50px"> </img> </div>
+                                                                            <div  class="rounded-pill bg-secondary d-flex align-items-center justify-content-center" style=" height:50px; width: 50px;  background: linear-gradient(to bottom, #b5bdc8 0%,#828c95 36%,#28343b 100%);">
+                                                                                <img v-show="sugerencia[0].status=='En Implementación' || sugerencia[0].status=='Implementada' || sugerencia[0].validacion_de_impacto!=''" src="img/app_listo.png" style=" height:50px; width:50px"> </img> 
+                                                                            </div>
                                                                         </div>
                                                                         <div class="col-8 col-sm-8 col-lg-3  d-flex">
-                                                                            <input type="text" class="form-control me-1" disabled>
+                                                                            <input v-if="sugerencia[0].status=='En Implementación' || sugerencia[0].status=='Implementada' || sugerencia[0].validacion_de_impacto!=''" type="text" class="form-control me-1" value="En Implementación" disabled>
+                                                                            <input v-else type="text" class="form-control me-1"  disabled></input>
                                                                         </div>
                                                                     </div>
 
-                                                                     <div class=" d-flex justify-content-center  mb-1">
+                                                                     <div class=" d-flex justify-content-center mt-1  ">
                                                                         <div class="col-4 col-sm-4 col-lg-1  d-flex justify-content-center">
-                                                                            <div class="rounded-pill bg-secondary d-flex align-items-center justify-content-center" style=" height:50px; width: 50px;  background: linear-gradient(to bottom, #b5bdc8 0%,#828c95 36%,#28343b 100%);"><img src="img/app_listo.png" style=" height:50px; width:50px"> </img> </div>
+                                                                            <div class="rounded-pill bg-secondary d-flex align-items-center justify-content-center" style=" height:50px; width: 50px;  background: linear-gradient(to bottom, #b5bdc8 0%,#828c95 36%,#28343b 100%);">
+                                                                                    <img v-show="sugerencia[0].status=='Implementada' || sugerencia[0].validacion_de_impacto!=''" src="img/app_listo.png" style=" height:50px; width:50px"> </img> 
+                                                                            </div>
                                                                         </div>
                                                                         <div class="col-8 col-sm-8 col-lg-3  d-flex">
-                                                                            <input type="text" class="form-control me-1" disabled>
+                                                                            <input v-if="sugerencia[0].status=='Implementada' || sugerencia[0].validacion_de_impacto!=''" type="text" class="form-control me-1" value="Implementada" disabled>
+                                                                            <input v-else type="text" class="form-control me-1"  disabled></input>
                                                                         </div>
                                                                     </div>
 
-                                                                    <div class=" d-flex justify-content-center  mb-1">
+                                                                    <div class=" d-flex justify-content-center mt-1">
                                                                         <div class="col-4 col-sm-4 col-lg-1  d-flex justify-content-center">
-                                                                            <div class="rounded-pill bg-secondary d-flex align-items-center justify-content-center" style=" height:50px; width: 50px;  background: linear-gradient(to bottom, #b5bdc8 0%,#828c95 36%,#28343b 100%);"><img src="img/app_listo.png" style=" height:50px; width:50px"> </img> </div>
+                                                                            <div class="rounded-pill bg-secondary d-flex align-items-center justify-content-center" style=" height:50px; width: 50px;  background: linear-gradient(to bottom, #b5bdc8 0%,#828c95 36%,#28343b 100%);">
+                                                                                <img v-show="sugerencia[0].validacion_de_impacto!=''" src="img/app_listo.png" style=" height:50px; width:50px"> </img> 
+                                                                            </div>
                                                                         </div>
                                                                         <div class="col-8 col-sm-8 col-lg-3  d-flex">
-                                                                            <input type="text" class="form-control me-1" disabled>
+                                                                            <input v-if="sugerencia[0].validacion_de_impacto!=''" type="text" class="form-control me-1" value="Validación de Impacto" disabled>
+                                                                            <input v-else type="text" class="form-control me-1"  disabled></input>
                                                                         </div>
                                                                     </div>
 
-                                                                    <div class=" d-flex justify-content-center  mb-1 text-white">
+                                                                    <div class=" d-flex justify-content-center mt-1 text-white">
                                                                         <div class="col-6 col-sm-6 col-lg-2  d-flex justify-content-center p-3" style=" background:#053b78; color:white"> 
                                                                             <b>Status:</b>
                                                                         </div>
@@ -195,22 +206,19 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                                         </div>
                                                                     </div>
                                                             </div>
-
-
-                                                    <div class="col-12 col-lg-4 offset-lg-4  p-2 fw-bold">Puntos Asignados</div>
-                                                    <div class="col-12 col-lg-4 offset-lg-4  p-2 "><input type="text" class="form-control" disabled></div>      
-                                                            
-                                                    
+                                                
+                                                    <div class="col-12 offset-lg-5 col-lg-2  mt-2 fw-bold">Puntos Asignados</div>
+                                                    <div class="col-12 offset-lg-5 col-lg-2  "><input type="text" class="form-control text-center fw-bold"  :value="puntos_sugerencia" disabled ></div>      
                                                 </div>
                                         </div>
                                  </div>   
-                                 <div class="col-12 col-lg-4 d-flex align-items-end justify-content-center" >
+                                 <div class="col-12 col-lg-12 d-flex align-items-end justify-content-center" >
                                                     <div id="opciones" style="width: 18rem;" class=" d-flex align-items-center justify-content-center " >
                                                         <div class="row text-center mb-2 d-flex justify-content-center align-items-center">
-                                                                <div v-if="seguimiento==false" @click="redireccionar('Atras')" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center"> 
+                                                                <div v-if="seguimiento==false" @click="redireccionar('Atras')" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer"> 
                                                                     <div> <img src="img/app_atras.png" class="img-fluid" alt="..." style=" width: 50px;" ></div>
                                                                 </div>   
-                                                                <div v-else @click="seguimiento=false" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center"> 
+                                                                <div v-else @click="seguimiento=false" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer"> 
                                                                     <div> <img src="img/app_atras.png" class="img-fluid" alt="..." style=" width: 50px;" ></div>
                                                                 </div>        
                                                         </div>
@@ -229,7 +237,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
         data(){
             return {
                 concentrado_sugerencias:[],
-                seguimiento:false
+                seguimiento:false,
+                sugerencia:[],
+                puntos_sugerencia:'',
             }
         },
         mounted(){
@@ -240,8 +250,22 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
             concentrado_sugerencias_colaborador(){
                 axios.post('consulta_concentrado_sugerencias_colaborador.php',{
                             }).then(response =>{
-                                console.log(response.data)
                                 this.concentrado_sugerencias = response.data
+                            })
+            },
+            consultar_sugerencia(folio){
+            
+                axios.post('consulta_concentrado_sugerencias_colaborador.php',{
+                    folio_sugerencia: folio
+                            }).then(response =>{
+                                this.sugerencia = response.data
+                                if(this.sugerencia.length > 0){
+                                    this.seguimiento=true
+                                    this.consultadoPuntosSugerencia(this.sugerencia[0].id)
+                                }else{
+                                    alert("No logramos localizar ese folio, póngase en contacto con Mejora Continua")
+                                }
+                                
                             })
             },
             redireccionar(opciones){
@@ -252,6 +276,13 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                     window.location.href="principalColaborador.php"
                 }
                
+            },
+            consultadoPuntosSugerencia(id_concentrado){
+                axios.post('consultar_puntos_sugerencia.php',{
+                        id_concentrado:id_concentrado
+                            }).then(response =>{
+                                this.puntos_sugerencia = response.data
+                            })
             }
         }
     }
