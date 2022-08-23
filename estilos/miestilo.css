@@ -1,6 +1,13 @@
 /*PRINCIPAL MEJORA*/
 /* Small devices (landscape phones, 576px and up)***************************************/
 @media (min-width: 0px) {
+    /*css pricipal colaboradoress*/
+    .div-scroll-vertial{
+        max-height: 80vh;
+        overflow-x: scroll;
+    }
+
+    /*fin principal colaboradors*/
     .opciones{
         height:30px;
         background: rgb(255, 223, 223);
