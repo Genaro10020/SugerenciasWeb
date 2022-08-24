@@ -918,7 +918,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                             <textarea class="inputs-concentrado text-area" type="text" v-model="descripcion_premios" required></textarea>                 
                                                         </td>
                                                         <td>
-                                                            <input class="inputs-concentrado" type="text" v-model="puntos_canjear_premios" required></input>   
+                                                            <input class="inputs-concentrado" type="number" v-model="puntos_canjear_premios" required></input>   
                                                         </td>
                                                 </tr>
                                             </tbody>
@@ -949,7 +949,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                             
                                                                             <button v-if="actualizar_premios==index+1" type="button" class="btn btn-danger me-2" title="Cancelar" @click="editaPremio(0)" ><i class="bi bi-x-circle" ></i></button>
                                                                             <button v-show="bandera_editar_premio==false" type="button" class="btn btn-warning me-2" title="Actualizar" @click="editaPremio(index+1)"><i class="bi bi-pen" ></i></button>
-                                                                            <button v-show="bandera_editar_premio==true" class="btn btn-primary me-2" title="Guardar Reto" @click="guardarActualizarPremios(0,premios.id,'Actualizar')"><i class="bi bi-check-circle"></i></button> 
+                                                                            <button v-if="actualizar_premios==index+1" class="btn btn-primary me-2" title="Guardar Reto" @click="guardarActualizarPremios(0,premios.id,'Actualizar')"><i class="bi bi-check-circle"></i></button> 
                                                                             <button v-if="premios.cant_img>0" type="button" class="btn btn-success" title="Subir Imagen" data-bs-toggle="modal" @click="modal_subir_ver_documentos('Subir',premios.id,premios.codigo_premio,'premio',premios.cant_img)" data-bs-target="#modal"><i class="bi bi-paperclip">{{premios.cantidad_img}}</i></button>
                                                                             <button v-else type="button" class="btn btn-secondary " title="Subir Imagen" data-bs-toggle="modal" @click="modal_subir_ver_documentos('Subir',premios.id,premios.codigo_premio,'premio',premios.cant_img)" data-bs-target="#modal"><i class="bi bi-paperclip">{{premios.cantidad_img}}</i></button>    
                                                                 </td>
@@ -1497,6 +1497,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 act_descripcion_premio:'',
                 act_puntos_premios:'',
                 url_img_premio:'',
+                numberRule: [
+                            v => v.length > 0 || 'campo requerido',
+                            v => v > 0 || 'El valor debe ser mayor a cero'
+                        ],
                 /*Variables Configuracion*/
                 nuevo_usuario:'',
                 nuevo_password:'',
@@ -2201,30 +2205,35 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
 
                             if(this.codigo_premios!='' || this.descripcion_premios!='' || this.puntos_canjear_premios )
                                 {
-                                        axios.post("guardar_actualizar_premio.php",{
-                                            id_premio:id_premio,
-                                            insertar_actualizar: insertar_actualizar,
-                                            codigo_premios: this.codigo_premios,
-                                            descripcion_premios: this.descripcion_premios,
-                                            puntos_canjear_premios: this.puntos_canjear_premios
+                                    var validar= Number.isInteger(this.puntos_canjear_premios)
+                                        if(validar==true){
+                                                axios.post("guardar_actualizar_premio.php",{
+                                                    id_premio:id_premio,
+                                                    insertar_actualizar: insertar_actualizar,
+                                                    codigo_premios: this.codigo_premios,
+                                                    descripcion_premios: this.descripcion_premios,
+                                                    puntos_canjear_premios: this.puntos_canjear_premios
 
-                                        }).then(response =>{
-                                            if(response.data== true){
-                                                this.bandera_editar_premio = false
-                                                this.actualizar_premios=index
+                                                }).then(response =>{
+                                                    if(response.data== true){
+                                                        this.bandera_editar_premio = false
+                                                        this.actualizar_premios=index
 
-                                                this.codigo_premios = ''
-                                                this.descripcion_premios = ''
-                                                this.puntos_canjear_premios = ''
-                                                this.consultar_concentrado_premios()
-                                            }else{
-                                                alert('Problemas para guardar premio en BD')
+                                                        this.codigo_premios = ''
+                                                        this.descripcion_premios = ''
+                                                        this.puntos_canjear_premios = ''
+                                                        this.consultar_concentrado_premios()
+                                                    }else{
+                                                        alert('Problemas para guardar premio en BD')
+                                                    }
+                                                    console.log(response.data)
+                                                }).catch(error =>{
+
+                                                })
+
+                                        }else{
+                                                alert("el campo Puntos de canje deben ser números.")
                                             }
-                                            console.log(response.data)
-                                        }).catch(error =>{
-
-                                        })
-                                
                                 }else{
                                     alert("Los campos (*) son requeridos")
                                 }
