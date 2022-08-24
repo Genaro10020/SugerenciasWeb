@@ -3,7 +3,7 @@
 @media (min-width: 0px) {
     /*css pricipal colaboradoress*/
     .div-scroll-vertial{
-        max-height: 100vh;
+        max-height: 70vh;
         overflow-x: scroll;
     }
 
@@ -56,7 +56,7 @@
     /*tabla sugerencias*/
         .div-scroll{
             max-height: 70vh;
-            overflow: auto;
+             overflow-x: auto;
             white-space: nowrap;
         }
       

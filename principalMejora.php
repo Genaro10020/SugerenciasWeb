@@ -135,20 +135,20 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                 <div class="d-flex justify-content-around">
                                                     <div>
                                                            <div v-if="concentrado.validacion_de_impacto =='Cuantitativo'"><!--BTN VERDE-->
-                                                                <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-success" @click="datos_modal(concentrado.id, concentrado.folio,'Cuantitativo')" style=" font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalImpactoCuantitativo">Impacto Cuantitativo</button>
+                                                                <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-success" @click="datos_modal(concentrado.id, concentrado.folio,'Cuantitativo',concentrado.numero_nomina)" style=" font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalImpactoCuantitativo">Impacto Cuantitativo</button>
                                                                 <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-danger ms-2" @click="vaciarValidaciondeImpacto(concentrado.id,'Cuantitativo')" title="Limpiar impacto" style=" font-size:.9em">x</button>
                                                            </div>
                                                            <div v-else><!--BTN GRIS-->                                                           
-                                                                <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-secondary" @click="datos_modal(concentrado.id, concentrado.folio,'Cuantitativo')" style=" font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalImpactoCuantitativo">Impacto Cuantitativo</button>
+                                                                <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-secondary" @click="datos_modal(concentrado.id, concentrado.folio,'Cuantitativo',concentrado.numero_nomina)" style=" font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalImpactoCuantitativo">Impacto Cuantitativo</button>
                                                            </div> 
                                                     </div>
                                                     <div>
                                                             <div v-if="concentrado.validacion_de_impacto =='Cualitativo'"><!--BTN VERDE-->
-                                                                <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-success" @click="datos_modal(concentrado.id, concentrado.folio,'Cualitativo')" style=" font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalImpactoCualitativo">Impacto Cualitativo</button>
+                                                                <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-success" @click="datos_modal(concentrado.id, concentrado.folio,'Cualitativo',concentrado.numero_nomina)" style=" font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalImpactoCualitativo">Impacto Cualitativo</button>
                                                                 <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-danger ms-2" @click="vaciarValidaciondeImpacto(concentrado.id,'Cualitativo')" title="Limpiar impacto" style=" font-size:.9em">x</button>
                                                             </div>
                                                             <div v-else><!--BTN GRIS-->
-                                                                <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-secondary" @click="datos_modal(concentrado.id, concentrado.folio,'Cualitativo')" style=" font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalImpactoCualitativo">Impacto Cualitativo</button>
+                                                                <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-secondary" @click="datos_modal(concentrado.id, concentrado.folio,'Cualitativo',concentrado.numero_nomina)" style=" font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalImpactoCualitativo">Impacto Cualitativo</button>
                                                             </div>  
                                                     </div>
                                                  </div>
@@ -1397,6 +1397,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 porcentaje_de_mejora:'',
                 tipo_de_impacto:'',
                 puntos_asignados:'',
+                numero_nomina:'',
                 /*formulario cualitativo*/
                 tipo_impacto:'',
                 impacto_cualitativo:'',
@@ -1594,7 +1595,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
     mensajeAlNueveNueve(){
         alert("El %cumplimiento debe de estar al 99% para que se active. ")
     },
-    datos_modal(id_concentrado,folio,validacion_de_impacto){
+    datos_modal(id_concentrado,folio,validacion_de_impacto,nomina){
+        this.numero_nomina = nomina
         this.id_concentrado = id_concentrado
         this.folio = folio
         this.folio_carpeta_doc = folio
@@ -1657,7 +1659,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 resultado_esperado:this.resultado_esperado,
                 porcentaje_de_mejora:this.porcentaje_de_mejora,
                 validacion_de_impacto:this.validacion_de_impacto,
-                puntos_asignados:this.puntos_asignados
+                puntos_asignados:this.puntos_asignados,
+                numero_nomina:this.numero_nomina
                 }).then(response =>{
                         console.log(response.data)
                         if(response.data[0]== true && response.data[1]== true){
@@ -1684,7 +1687,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 impacto_cualitativo:this.impacto_cualitativo,
                 tipo_impacto:this.tipo_impacto,
                 puntos_asignados_cualitativos:this. puntos_asignados_cualitativos,
-                validacion_de_impacto: this.validacion_de_impacto
+                validacion_de_impacto: this.validacion_de_impacto,
+                numero_nomina:this.numero_nomina
                 }).then(response =>{
                         console.log(response.data)
                         if(response.data[0]== true && response.data[1]== true){

@@ -19,14 +19,14 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
      <script src="https://unpkg.com/vue@next"></script>
     <!--Axios--> 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <!--Titulo fuente-->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+     <!--Titulo fuente-->
+     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Patua+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet"> 
     <!--Subtitulos-->
     <link href="https://fonts.googleapis.com/css2?family=Stint+Ultra+Condensed&display=swap" rel="stylesheet" rel="stylesheet"> 
     <!--Contenido-->
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans+Condensed:wght@500&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=Andika&display=swap" rel="stylesheet"> 
     <!--Incluyendo Estilo-->
     <link rel="stylesheet" type="text/css"  href="estilos/miestilo.css">
     <!--Iconos boostrap-->
@@ -37,8 +37,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
     <style>
         
 
-            .container-fluid{
-                font-family: 'Fira Sans Condensed', sans-serif;
+            #app, .table_encabezado{
+                font-family: 'Andika', sans-serif;
+                
             }
             .titulo{
                     color: white; 
@@ -46,10 +47,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
 
                 }
             .subtitulo{
+                
                 font-family: 'Stint Ultra Condensed', cursive;
 
             }    
-
             .btn_principal_coloborador{
                 border-radius:100px;
                 height:50px;
@@ -95,21 +96,57 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                             </div>
                     </div>
                     <!--CUERPO-->
-                    <div class="row" style="min-height:85vh">
+                    <div class="row cuerpo" style="min-height:80vh">
                             
 
-                                    <div class="justify-content-center">
-                                        <div class="row justify-content-center align-items-start pt-3 mx-2">
-                                                <div class="col-8 col-sm-4 col-lg-2 rounded-start text-white" style=" background: #8B0000">
+                                    <div class="col-12  justify-content-center">
+                                        <div class="row justify-content-center align-items-start pt-3 mx-1">
+                                                <div class="col-8 col-sm-5 col-lg-2 rounded-start text-white" style=" background: #8B0000">
                                                     Puntos disponibles
                                                 </div>
-                                                <div class="col-4 col-sm-4 col-lg-2 rounded-end bg-primary text-white">
-                                                    10 Puntos
+                                                <div class="col-4 col-sm-5 col-lg-2 rounded-end bg-primary text-white">
+                                                    {{total_puntos}} Puntos
                                                 </div>
                                         </div>
                                     </div>
-                                    <div class="col align-self-center bg-warning">
-                                    One of three columns
+                                    <div class="col-12 ">
+                                            <div class="" style="max-height: 65vh; overflow-x: auto;"><!--scroll-->
+                                                    <table class="table table-striped mt-3" style=" font-size: 0.8em;">
+                                                    <thead >
+                                                        <tr class="table_encabezado align-middle" style="background:rgb(137, 0, 0); height:5px; color:white; font-size: 1em;">
+                                                            <th scope="col">#</th>
+                                                            <th scope="col">Imagen</th>
+                                                            <th scope="col">Descripción</th>
+                                                            <th scope="col">Cant.</th>
+                                                            <th scope="col">Puntos requeridos</th>
+                                                        </tr>
+                                                    </thead>
+                                                        <tbody>
+                                                            <tr class=" align-middle text-center" v-for="(premios, index) in concentrado_premios">
+                                                                <td>{{index+1}}</td>
+                                                                <td>
+                                                                    <img class="img-thumbnail min-w-25" style="max-width:100px" :src="'http://localhost/sugerencias/'+premios.url_premio" />
+                                                                </td>
+                                                                <td><label class="folio fst-italic" @click="consultar_sugerencia()">{{premios.descripcion}}</label></td>
+                                                                <td>
+                                                                    <select>
+                                                                        <option v-for= "numero in 6" :value="numero-1">{{numero-1}}</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td>{{premios.puntos_para_canjear}}</td>
+                                                               
+                                                            </tr>
+                                                        </tbody>
+                                                        </table>
+                                                </div><!--scroll-->
+                                                <div class="row justify-content-around text-white">
+                                                        <div class="col-3 rounded-pill mt-3 text-center p-2" style=" background:green; cursor: pointer">
+                                                        Aceptar
+                                                        </div>
+                                                        <div class="col-3 rounded-pill mt-3 text-center p-2" style=" background: red; cursor: pointer ">
+                                                        Cancelar
+                                                        </div>
+                                                </div>
                                     </div>
                                    
                                         <div class="col-12 col-lg-12 d-flex align-items-end justify-content-center" >
@@ -130,7 +167,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                             
                     </div><!--FIN CUERPO-->
                             <!--FOOTER-->
-                    <div class="row" style="height:5vh; background-color: rgba(181,0,0,1); box-shadow: 0px 0px 12px -2px black;">
+                    <div class="row" style="height:10vh; background-color: rgba(181,0,0,1); box-shadow: 0px 0px 12px -2px black;">
                     </div><!--FIN FOOTER-->
         </div>  <!--FIN DIV CONTENEDOR-->  
 </body>
@@ -140,26 +177,46 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
     {
         data(){
             return {
-              
+                concentrado_premios:[], 
+                total_puntos:0,
             }
         },
         mounted(){
-
+            this.consultar_concentrado_premios(),
+            this.consultar_total_punto()
             
         },
         methods:{
-            concentrado_sugerencias_colaborador(){
+            /*concentrado_sugerencias_colaborador(){
                 axios.post('consulta_concentrado_sugerencias_colaborador.php',{
                             }).then(response =>{
                                 this.concentrado_sugerencias = response.data
                             })
-            },
+            },*/
             redireccionar(opciones){
                 if(opciones=='Atras'){
                     window.location.href="principalColaborador.php"
                 }
                
             },
+            consultar_concentrado_premios(){
+                    axios.post("consulta_concentrado_premios.php",{
+                    }).then(response =>{
+                            this.concentrado_premios=response.data
+                    }).catch(arror =>{
+
+                    })
+                }, 
+            consultar_total_punto(){
+                    axios.post("consultar_total_puntos_colaborador.php",{
+                    }).then(response =>{
+                        console.log(response.data)
+                            this.total_puntos=response.data
+
+                    }).catch(arror =>{
+
+                    })
+                },
         }
     }
     var mountedApp = Vue.createApp(vue3).mount('#app');

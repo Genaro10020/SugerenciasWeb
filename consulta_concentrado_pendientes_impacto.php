@@ -5,7 +5,7 @@
     $resultado = [];
     $nombre= $_SESSION['nombre'];
 
-    $consulta = "SELECT * FROM concentrado_sugerencias WHERE status='Implementada' AND analista_de_factibilidad='$nombre' AND status_impacto='Midiendo' ORDER BY id DESC";
+    $consulta = "SELECT * FROM concentrado_sugerencias WHERE status='Implementada' AND fecha_real_cierre!='' AND analista_de_factibilidad='$nombre' AND status_impacto='Midiendo' ORDER BY id DESC";
     $query = mysqli_query($conexion,$consulta);
     while ($fila=$query -> fetch_array()) {
         $fecha_compromiso=$fila['fecha_real_cierre'];

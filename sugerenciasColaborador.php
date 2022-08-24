@@ -22,11 +22,11 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
     <!--Titulo fuente-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Patua+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet"> 
     <!--Subtitulos-->
     <link href="https://fonts.googleapis.com/css2?family=Stint+Ultra+Condensed&display=swap" rel="stylesheet" rel="stylesheet"> 
     <!--Contenido-->
-    <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=Andika&display=swap" rel="stylesheet">  
     <!--Incluyendo Estilo-->
     <link rel="stylesheet" type="text/css"  href="estilos/miestilo.css">
     <!--Iconos boostrap-->
@@ -37,7 +37,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
     <style>
         
 
-            
+             #app{
+                font-family: 'Andika', sans-serif;
+            }
             .titulo{
                     color: white; 
                     font-family: 'Fjalla One', sans-serif;
@@ -110,12 +112,12 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                             </div>
                     </div>
                     <!--CUERPO-->
-                    <div class="row justify-content-center" style="min-height:85vh">
+                    <div class="row justify-content-center" style="min-height:80vh">
                                 <div v-if="seguimiento==false">
                                         <div class="div-scroll-vertial"><!--scroll-->
-                                            <table class="table table-striped mt-3" style=" font-family :Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; font-size: 0.8em;">
+                                            <table class="table table-striped mt-3" style=" font-size: 0.8em;">
                                             <thead >
-                                                <tr style="background:rgb(137, 0, 0); height:5px; color:white; font-family :Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; font-size: 1em;">
+                                                <tr style="background:rgb(137, 0, 0); height:5px; color:white; font-size: 1em;">
                                                     <th scope="col">#</th>
                                                     <th scope="col">Folio</th>
                                                     <th scope="col">Descripción</th>
@@ -136,17 +138,17 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                         <div class="div-scroll-vertial col-12 col-lg-10 col-xl-8"><!--scroll-->
                                                 <div class=" d-flex flex-column mb-3 mt-3 text-center " style="font-size:0.8em;">
                                                     <div class="col-12 col-lg-12  p-2 fw-bold" style=" background:#efefef">Folio</div>
-                                                    <div class="col-12 col-lg-12" style=" font-family :Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;  ">{{sugerencia[0].folio}}</div>
+                                                    <div class="col-12 col-lg-12" >{{sugerencia[0].folio}}</div>
                                                     <div class="col-12 col-lg-12  p-2 fw-bold" style=" background:#efefef">Descripción</div>
-                                                    <div class="col-12 col-lg-12 mb-1"  style=" font-family :Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; line-height:15px;" >{{sugerencia[0].nombre_sugerencia}}</div>
+                                                    <div class="col-12 col-lg-12 mb-1"  style=" line-height:15px;" >{{sugerencia[0].nombre_sugerencia}}</div>
                                                     <div class="col-12 col-lg-12  p-2 fw-bold" style=" background:#efefef">Analista de Factibilidad</div>
-                                                    <div class="col-12 col-lg-12"  style=" font-family :Cambria, Cochin, Georgia, Times, 'Times New Roman', serif">{{sugerencia[0].analista_de_factibilidad}}</div>
+                                                    <div class="col-12 col-lg-12  mb-1"  >{{sugerencia[0].analista_de_factibilidad}}</div>
                                                     <div class="col-12 col-lg-12  p-2 fw-bold" style=" background:#053b78; color:white">Seguimiento</div>
                                                             <div v-if="sugerencia[0].status =='Cerrada/Fast Response' || sugerencia[0].status =='Cerrada/No Factible'">
                                                                     <div class="col-12 col-lg-12  p-2 bg-danger fw-bold" style="color:white">{{sugerencia[0].status}}</div>
                                                                     <div class="col-12 col-lg-12  mt-2 fw-bold">Causa de No Factibilidad:</div>
                                                                     <div class="col-12 col-lg-12  p-1 ">
-                                                                            <textarea   style="height: 100px;  width: 100%; font-size 0.8em; line-height:15px" disabled>{{sugerencia[0].causa_no_factibilidad}}</textarea>
+                                                                            <textarea   style="height: 100px;  width: 100%; font-size: 0.8em; line-height:15px" disabled>{{sugerencia[0].causa_no_factibilidad}}</textarea>
                                                                     </div>
                                                             </div>
                                                             <div v-else>
@@ -157,7 +159,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-8 col-sm-8 col-lg-3  mt-1 d-flex">
-                                                                            <input v-show="sugerencia[0].status=='En Factibilidad' || sugerencia[0].status=='En Implementación' || sugerencia[0].status=='Implementada' || sugerencia[0].validacion_de_impacto!=''" type="text" class="form-control me-1" value="En Factibilidad" disabled></input>
+                                                                            <input v-show="sugerencia[0].status=='En Factibilidad' || sugerencia[0].status=='En Implementación' || sugerencia[0].status=='Implementada' || sugerencia[0].validacion_de_impacto!='' || puntos_sugerencia>0" type="text" class="form-control me-1" value="En Factibilidad" disabled></input>
                                                                         </div>
                                                                     </div>
 
@@ -168,7 +170,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-8 col-sm-8 col-lg-3  d-flex">
-                                                                            <input v-if="sugerencia[0].status=='En Implementación' || sugerencia[0].status=='Implementada' || sugerencia[0].validacion_de_impacto!=''" type="text" class="form-control me-1" value="En Implementación" disabled>
+                                                                            <input v-if="sugerencia[0].status=='En Implementación' || sugerencia[0].status=='Implementada' || sugerencia[0].validacion_de_impacto!=''|| puntos_sugerencia>0" type="text" class="form-control me-1" value="En Implementación" disabled>
                                                                             <input v-else type="text" class="form-control me-1"  disabled></input>
                                                                         </div>
                                                                     </div>
@@ -180,7 +182,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-8 col-sm-8 col-lg-3  d-flex">
-                                                                            <input v-if="sugerencia[0].status=='Implementada' || sugerencia[0].validacion_de_impacto!=''" type="text" class="form-control me-1" value="Implementada" disabled>
+                                                                            <input v-if="sugerencia[0].status=='Implementada' || sugerencia[0].validacion_de_impacto!='' || puntos_sugerencia>0 " type="text" class="form-control me-1" value="Implementada" disabled>
                                                                             <input v-else type="text" class="form-control me-1"  disabled></input>
                                                                         </div>
                                                                     </div>
@@ -188,11 +190,23 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                                     <div class=" d-flex justify-content-center mt-1">
                                                                         <div class="col-4 col-sm-4 col-lg-1  d-flex justify-content-center">
                                                                             <div class="rounded-pill bg-secondary d-flex align-items-center justify-content-center" style=" height:50px; width: 50px;  background: linear-gradient(to bottom, #b5bdc8 0%,#828c95 36%,#28343b 100%);">
-                                                                                <img v-show="sugerencia[0].validacion_de_impacto!=''" src="img/app_listo.png" style=" height:50px; width:50px"> </img> 
+                                                                                <img v-show="sugerencia[0].validacion_de_impacto!='' || puntos_sugerencia>0" src="img/app_listo.png" style=" height:50px; width:50px"> </img> 
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-8 col-sm-8 col-lg-3  d-flex">
-                                                                            <input v-if="sugerencia[0].validacion_de_impacto!=''" type="text" class="form-control me-1" value="Validación de Impacto" disabled>
+                                                                            <input v-if="sugerencia[0].validacion_de_impacto!='' || puntos_sugerencia>0" type="text" class="form-control me-1" value="Validación de Impacto" disabled>
+                                                                            <input v-else type="text" class="form-control me-1"  disabled></input>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class=" d-flex justify-content-center mt-1">
+                                                                        <div class="col-4 col-sm-4 col-lg-1  d-flex justify-content-center">
+                                                                            <div class="rounded-pill bg-secondary d-flex align-items-center justify-content-center" style=" height:50px; width: 50px;  background: linear-gradient(to bottom, #b5bdc8 0%,#828c95 36%,#28343b 100%);">
+                                                                                <img v-show="puntos_sugerencia>0" src="img/app_listo.png" style=" height:50px; width:50px"> </img> 
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-8 col-sm-8 col-lg-3  d-flex">
+                                                                            <input v-if="puntos_sugerencia>0" type="text" class="form-control me-1" value="Asignación de Punto" disabled>
                                                                             <input v-else type="text" class="form-control me-1"  disabled></input>
                                                                         </div>
                                                                     </div>
@@ -226,7 +240,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                         </div> 
                     </div><!--FIN CUERPO-->
                             <!--FOOTER-->
-                    <div class="row" style="height:5vh; background-color: rgba(181,0,0,1); box-shadow: 0px 0px 12px -2px black;">
+                    <div class="row" style="height:10vh; background-color: rgba(181,0,0,1); box-shadow: 0px 0px 12px -2px black;">
                     </div><!--FIN FOOTER-->
         </div>  <!--FIN DIV CONTENEDOR-->  
 </body>
@@ -239,7 +253,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                 concentrado_sugerencias:[],
                 seguimiento:false,
                 sugerencia:[],
-                puntos_sugerencia:'',
+                puntos_sugerencia:0,
             }
         },
         mounted(){
@@ -282,6 +296,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                         id_concentrado:id_concentrado
                             }).then(response =>{
                                 this.puntos_sugerencia = response.data
+                                console.log(this.puntos_sugerencia)
                             })
             }
         }

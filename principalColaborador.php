@@ -22,11 +22,11 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
     <!--Titulo fuente-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Patua+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet"> 
     <!--Subtitulos-->
     <link href="https://fonts.googleapis.com/css2?family=Stint+Ultra+Condensed&display=swap" rel="stylesheet" rel="stylesheet"> 
     <!--Contenido-->
-    <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=Andika&display=swap" rel="stylesheet"> 
     <!--Incluyendo Estilo-->
     <link rel="stylesheet" type="text/css"  href="estilos/miestilo.css">
     <!--Iconos boostrap-->
@@ -38,7 +38,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
         
 
             #app{
-                font-family: 'Fjalla One', sans-serif;
+                font-family: 'Andika', sans-serif;
             }
             .titulo{
                     color: white; 
@@ -120,7 +120,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                             </div>
                     </div>
                     <!--CUERPO-->
-                    <div class="row justify-content-center" style="min-height:85vh">
+                    <div class="row justify-content-center" style="min-height:80vh">
                         <div class="col-6 col-lg-4 d-flex align-items-center justify-content-center" >
                                     <div id="opciones" style="width: 18rem;" class=" d-flex align-items-center justify-content-center ">
                                         <div class="row text-center mb-2 d-flex justify-content-center align-items-center" style="min-height: 132px;">
@@ -195,7 +195,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                         
                     </div><!--FIN CUERPO-->
                             <!--FOOTER-->
-                    <div class="row" style="height:5vh; background-color: rgba(181,0,0,1); box-shadow: 0px 0px 12px -2px black;">
+                    <div class="row" style="height:10vh; background-color: rgba(181,0,0,1); box-shadow: 0px 0px 12px -2px black;">
                     </div><!--FIN FOOTER-->
 
         </div>  <!--FIN DIV CONTENEDOR-->  
