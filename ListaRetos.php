@@ -35,7 +35,6 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
 </head>
     <body>
     <style>
-        
 
           /*  #app{
                  font-family: 'Andika', sans-serif;
@@ -141,6 +140,22 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                             <textarea class="text-area-causa-no-factibilidad my-2" type="text"  style=" font-size:0.9em" disabled>{{reto.descripcion_reto}}</textarea>
                                         </div>
                                     </div>
+                                     <!-- Mostrando los archivos cargados -->
+                                    <div v-show="filereto.length>0 " class="d-flex justify-content-center" >
+                                        <hr>
+                                
+                                                <div  v-for= "(fileimgreto,index) in filereto">
+                                                        <span class="badge bg-secondary">Documento {{index+1}}</span><br>
+                                                        <iframe  :src="filereto[index]" style="height:100%; width: 100%;"></iframe>
+                                                </div>
+                                    </div>
+                                  
+
+                                            
+                       
+
+
+
                        
                             </div>          
                                     <div class="col-12 col-lg-12 d-flex align-items-end justify-content-center" >
@@ -172,6 +187,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                 concentrado_retos:[], 
                 reto_folio:[], 
                 detalles_reto:false,
+                filereto:[],
+                folio_carpeta_doc:'',
+                cantidadDOCFILE:0, 
+                cual_documento:'',
             }
         },
         mounted(){
@@ -193,19 +212,53 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                     })
                 },
             consultar_reto(folio){
-                
+                this.folio_reto= folio
+                this.cual_documento="Reto"
                 axios.post('consulta_concentrado_retos.php',{
                 folio_reto: folio
                         }).then(response =>{
                             this.reto_folio = response.data
                             if(this.reto_folio.length > 0){
                                 this.detalles_reto=true
+                                this.buscarDocumentos()
                             }else{
                                 alert("No logramos localizar ese folio, póngase en contacto con Mejora Continua")
                             }
                             
                         })
                 }, 
+                buscarDocumentos(){
+                console.log(this.folio_reto,this.cual_documento)
+                
+                this.filereto=[]
+                if(this.folio_reto!=""){
+                                axios.post("buscar_documentos.php",{
+                                    folio_carpeta_doc:this.folio_reto,
+                                    cual_documento:this.cual_documento
+                                })
+                                .then(response => {
+                            
+                                 
+                                            this.filereto = response.data
+                                            console.log(response.data,this.filereto.length);
+                                            
+                                            
+                                            if(this.filereto.length>0){
+                                                console.log(this.filereto.length + "Archivos encontrados.")
+                                            }else{
+                                                alert("Sin Documentos agregados.")
+                                            }
+                                            
+                                    
+                                })
+                                .catch(error => {
+                                    console.log(error);
+                                });
+                    }else{
+
+                    }
+                },
+                
         }
     }
     var mountedApp = Vue.createApp(vue3).mount('#app');

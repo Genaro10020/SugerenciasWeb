@@ -41,6 +41,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                 font-family: 'Andika', sans-serif;
                 
             }*/
+            select{
+                font-size: 0.7em;
+            }
             .titulo{
                     color: white; 
                     font-family: 'Fjalla One', sans-serif;
@@ -170,12 +173,12 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                                      Confirmar (Inicia el proceso de entrega.)
                                                                 <br> Limpiar (Borra los artículos por confirmar.)</p></span>
                                                             </div>
-                                                            <div v-if="exceso_gasto==false" class="col-3 col-lg-2 col-xl-1 rounded-pill mt-3 text-center p-2"  @click="aceptarCanjerPremios('<?php echo $_SESSION["usuario"];?>')" style=" background:green; cursor: pointer; box-shadow: -5px 0px 5px 2px rgba(172,230,179,1);">
+                                                            <div v-if="exceso_gasto==false" class="col-3 col-lg-2 col-xl-1 rounded-pill mt-3 text-center p-2 btn_confirmar"  @click="aceptarCanjerPremios('<?php echo $_SESSION["usuario"];?>')">
                                                                 Confirmar <i class="bi bi-check-circle-fill"></i>
                                                                 
                                                             </div>
                                                             
-                                                            <div class="col-3 col-lg-2 col-xl-1 rounded-pill mt-3 text-center p-2" @click="vaciarCanasta('<?php echo $_SESSION["usuario"];?>')" style=" background: red; cursor: pointer; box-shadow: -5px 0px 5px 2px rgba(230,172,179,1); ">
+                                                            <div class="col-3 col-lg-2 col-xl-1 rounded-pill mt-3 text-center p-2 btn_cancelar" @click="vaciarCanasta('<?php echo $_SESSION["usuario"];?>')">
                                                                 Limpiar <i class="bi bi-eraser-fill"></i>
                                                             </div>
                                                 </div>
@@ -256,12 +259,6 @@ window.location.hash="no-back-button";
             
         },
         methods:{
-            /*concentrado_sugerencias_colaborador(){
-                axios.post('consulta_concentrado_sugerencias_colaborador.php',{
-                            }).then(response =>{
-                                this.concentrado_sugerencias = response.data
-                            })
-            },*/
             redireccionar(opciones){
                 if(opciones=='Atras'){
                     window.location.href="principalColaborador.php"

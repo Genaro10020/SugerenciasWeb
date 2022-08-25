@@ -26,7 +26,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
     <!--Subtitulos-->
     <link href="https://fonts.googleapis.com/css2?family=Stint+Ultra+Condensed&display=swap" rel="stylesheet" rel="stylesheet"> 
     <!--Contenido-->
-    <link href="https://fonts.googleapis.com/css2?family=Andika&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=Nunito&family=Urbanist:wght@400&display=swap" rel="stylesheet"> 
     <!--Incluyendo Estilo-->
     <link rel="stylesheet" type="text/css"  href="estilos/miestilo.css">
     <!--Iconos boostrap-->
@@ -47,10 +47,11 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
 
                 }
             .subtitulo{
-                
                 font-family: 'Stint Ultra Condensed', cursive;
-
-            }    
+            } 
+            input{
+                font-family: 'Urbanist', sans-serif;
+            }   
             .btn_principal_coloborador{
                 border-radius:100px;
                 height:50px;
@@ -98,36 +99,31 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                     <!--CUERPO-->
                     <div class="row"  style="min-height:80vh; font-size: 0.9em" >
 
-                   
-                            <form class=" text-center align-self-center" style=" background-color:#eaeaea;">
+                   <div class="d-flex align-items-center justify-content-center">
+                            <form @submit.prevent="cambiarContrasenia()" class="col-11 col-sm-6 col-lg-4 col-xl-3 text-center align-self-center rounded shadow " style=" background-color:#eaeaea;">
                                 
-                                <div class="mb-3">
+                                <div class="p-3">
                                     <label for="exampleInputPassword1" class="form-label"><b>Contraseña actual</b></label>
-                                    <input type="text" class="form-control" id="exampleInputPassword1">
+                                    <input type="text" v-model="contrasena_actual" class="form-control" id="exampleInputPassword1" required>
                                 </div>
-                                <div class="mb-3">
+                                <div class="p-3">
                                     <label for="exampleInputPassword1" class="form-label"><b> Nueva Contraseña</b></label>
-                                    <input type="password" class="form-control" id="exampleInputPassword1">
+                                    <input type="password"  v-model="nueva_contrasena" class="form-control" id="exampleInputPassword1" required>
                                 </div>
-                                <div class="mb-3">
+                                <div class="p-3">
                                     <label for="exampleInputPassword1" class="form-label"><b>Confirmar Contraseña Nueva</b></label>
-                                    <input type="password" class="form-control" id="exampleInputPassword1">
+                                    <input type="password" v-model="confirmar_contrasena" class="form-control" id="exampleInputPassword1" required>
                                 </div>
-                                        <div class="row">
-                                            <div class="col-2 col-sm-4 col-xl-5 align-self-start">
-                                            </div>
-                                                <div class="col-8 col-sm-4 col-xl-2 align-self-center">
+                                        <div class="d-flex justify-content-center">
+                                                <div class="col-8 col-sm-4 col-xl-4 align-self-center">
                                                         <div class="mb-4">
-                                                            <div  class="col-12 rounded-pill mt-3 text-center p-2 text-white"  
-                                                            style=" background:green; cursor: pointer; box-shadow: -5px 0px 5px 2px rgba(172,230,179,1);">
-                                                            Confirmar <i class="bi bi-check-circle-fill"></i>
-                                                            </div>
+                                                            <button type="submit" class="btn_confirmar  rounded-pill mt-3 text-center p-2 text-white  border-0"> Confirmar <i class="bi bi-check-circle-fill"></i></button>
+                                            
                                                         </div>
-                                                </div>
-                                                <div class="col-6 align-self-end">
                                             </div>
                                         </div>
                                 </form>
+                        </div>
 
                                         <div class="col-12 col-lg-12 d-flex align-items-end justify-content-center" >
                                             <div id="opciones" style="width: 18rem;" class=" d-flex align-items-center justify-content-center my-2" >
@@ -153,7 +149,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
         data(){
             return {
                 concentrado_premios_entregar:[], 
-                numero_nomina:<?php echo $_SESSION['usuario']; ?>
+                numero_nomina:<?php echo $_SESSION['usuario']; ?>,
+                contrasena_actual:'',
+                nueva_contrasena:'',
+                confirmar_contrasena:''
             }
         },
         mounted(){
@@ -165,8 +164,28 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                     window.location.href="principalColaborador.php"
                 }
                
+            },
+            cambiarContrasenia(){
+                if(this.nueva_contrasena==this.confirmar_contrasena){
+                   
+                    axios.post("cambiar_contrasena.php",{
+                        numero_nomina:this.numero_nomina,
+                        nueva_contrasena:this.nueva_contrasena,
+                        contrasena_actual:this.contrasena_actual
+                    }).then(response =>{
+                        if(response.data=='correcto'){
+                                alert('Contraseña actualizada con éxito')
+                        }else{
+                                alert('No se actualizo la contraseña.')
+                        }
+                    })  
+
+                }else{
+                    alert('La nueva contraseña y la confirmación no coinciden')
+                }
             }
-        }
+        },
+        
     }
     var mountedApp = Vue.createApp(vue3).mount('#app');
 </script>

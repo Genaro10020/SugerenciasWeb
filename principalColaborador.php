@@ -26,7 +26,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
     <!--Subtitulos-->
     <link href="https://fonts.googleapis.com/css2?family=Stint+Ultra+Condensed&display=swap" rel="stylesheet" rel="stylesheet"> 
     <!--Contenido-->
-    <link href="https://fonts.googleapis.com/css2?family=Andika&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet"> 
     <!--Incluyendo Estilo-->
     <link rel="stylesheet" type="text/css"  href="estilos/miestilo.css">
     <!--Iconos boostrap-->
@@ -38,7 +38,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
         
 
             #app{
-                font-family: 'Andika', sans-serif;
+                font-family: 'Nunito', sans-serif;;
+                font-size: 1.6vh;
             }
             .titulo{
                     color: white; 

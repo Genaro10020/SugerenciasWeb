@@ -7,6 +7,24 @@
         overflow-x: scroll;
     }
 
+    .btn_confirmar{
+        font-size:0.7em; background-color:green; cursor: pointer; box-shadow: -5px 0px 5px 2px rgba(172,230,179,1);
+        transition: background-color 0.5s ease 0s;
+    }
+    .btn_confirmar:hover{
+        box-shadow: -5px 0px 5px 2px rgba(172,230,179,1);
+        background-color:rgb(12, 174, 12);
+    }
+
+    .btn_cancelar{
+        font-size:0.7em; background: rgb(213, 8, 8); cursor: pointer; 
+        box-shadow: -5px 0px 5px 2px rgba(230,172,179,1); 
+        transition: background-color 0.5 ease 0s;
+    }
+
+    .btn_cancelar:hover{
+        background-color: rgb(255, 0, 0);
+    }
     /*fin principal colaboradors*/
     .opciones{
         height:30px;
