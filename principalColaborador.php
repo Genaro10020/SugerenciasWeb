@@ -113,7 +113,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                     <div class="col-8 d-flex align-items-center justify-content-center">
                                                 <div>
                                                     <div class="titulo lh-1 mt-3 text-dark fs-2 fw-bold text-center">Bienvenido</div>
-                                                    <div class="subtitulo fs-5 lh-1  text-center mt-1 text-secondary mb-3" >Genaro Villanueva Pérez</div>
+                                                    <div class="subtitulo fs-5 lh-1  text-center mt-1 text-secondary mb-3" ><?php echo $_SESSION['nombre']; ?></div>
                                                 </div>
                                     </div>
                                 <div class=" col-2 d-flex align-items-center rounded-start" style="height:45.8833px"><img class="img-fluid ms-2" src="img/logo_mejora_continua.png"></img></div>
@@ -145,7 +145,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                     <div id="opciones" style="width: 18rem; " class=" d-flex align-items-center justify-content-center " >
                                         <div class="row text-center mb-2 d-flex justify-content-center align-items-center" style="min-height: 132px;">
                                                 <div class="text-center col-12"> <label class="card-text mt-2 text-black">3.- Status Premio.</label></div>
-                                                <div class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer">
+                                                <div @click="redireccionar('Status Premio')" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer">
                                                     <img src="img/app_status.png" class="img-fluid" alt="..." style=" width: 50px;">
                                                 </div>        
                                         </div>
@@ -155,7 +155,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                     <div id="opciones" style="width: 18rem; " class=" d-flex align-items-center  justify-content-center rounded-3 " >
                                         <div class="row text-center mb-2 d-flex justify-content-center align-items-center" style="min-height: 132px;">
                                                 <div class="text-center col-12"> <label class="card-text mt-2 text-black">4.-Lista de Retos.</label></div>
-                                                <div class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer">
+                                                <div @click="redireccionar('Lista Retos')" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer">
                                                     <img src="img/app_retos.png" class="img-fluid" alt="..." style=" width: 50px;">
                                                 </div>        
                                         </div>
@@ -221,6 +221,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                     window.location.href="sugerenciasColaborador.php"
                 }else if(opciones=='Canjear Premio'){
                     window.location.href="canjearColaborador.php"
+                }else if(opciones=='Status Premio'){
+                    window.location.href="statusPremio.php"
+                }else if(opciones=='Lista Retos'){
+                    window.location.href="listaRetos.php"
                 }else if(opciones=='Salir'){
                     window.location.href="index.php"
                 }

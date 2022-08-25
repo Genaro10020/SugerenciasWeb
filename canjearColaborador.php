@@ -37,10 +37,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
     <style>
         
 
-            #app, .table_encabezado{
+            /* #app{
                 font-family: 'Andika', sans-serif;
                 
-            }
+            }*/
             .titulo{
                     color: white; 
                     font-family: 'Fjalla One', sans-serif;
@@ -100,7 +100,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                             
 
                                     <div class="col-12  justify-content-center">
-                                        <div class="row justify-content-center align-items-start pt-3 mx-1">
+                                        <div class="row justify-content-center align-items-start pt-1 mx-1 my-1">
                                                 <div class="col-8 col-sm-5 col-lg-2 rounded-start text-white" style=" background: #8B0000">
                                                     Puntos disponibles
                                                 </div>
@@ -110,10 +110,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                         </div>
                                     </div>
                                     <div class="col-12 ">
-                                            <div class="" style="max-height: 60vh; overflow-x: auto;"><!--scroll-->
-                                                    <table class="table table-striped mt-3" style=" font-size: 0.8em;">
+                                            <div  style="max-height: 60vh; overflow-x: auto;"><!--scroll-->
+                                                    <table class="table table-striped " style=" font-size: 0.9em;">
                                                     <thead >
-                                                        <tr class="table_encabezado align-middle" style="background:rgb(137, 0, 0); height:5px; color:white; font-size: 0.7em;">
+                                                        <tr class="table_encabezado align-middle" style="background:rgb(137, 0, 0); height:5px; color:white; font-size: 0.8em;">
                                                             <th scope="col">#</th>
                                                             <th scope="col">Imagen</th>
                                                             <th scope="col">Descripción</th>
@@ -122,16 +122,42 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                         </tr>
                                                     </thead>
                                                         <tbody>
-                                                            <tr class=" align-middle text-center" v-for="(premios, index) in concentrado_premios">
+                                                            <tr class=" align-middle text-center fw-normal " v-for="(premios, index) in concentrado_premios">
                                                                 <td>{{index+1}}</td>
                                                                 <td>
                                                                     <img class="img-thumbnail min-w-25" style="max-width:100px" :src="'http://localhost/sugerencias/'+premios.url_premio" />
                                                                 </td>
                                                                 <td><label class="folio fst-italic" style=" font-size:0.7em">{{premios.descripcion}}</label></td>
                                                                 <td>
-                                                                    <select >
-                                                                        <option id="options" v-for= "numero in 6" :value="numero-1"  @click="agregarCanasta(premios.id,premios.codigo_premio,premios.url_premio,premios.descripcion,numero-1,premios.puntos_para_canjear,'<?php echo $_SESSION["usuario"]; ?>')">{{numero-1}}</option>
-                                                                    </select>
+                                                                
+                                                                        <div v-if="arreglo_canasta.length>0">
+                                                                        <!--raiz-->{{bandera=''}}
+                                                                            <div   v-for="canasta in arreglo_canasta">
+                                                                            <!--otrodiv-->
+                                                                                <select v-if="bandera==''" id="selectconarreglo">  
+                                                                                        <option v-if="canasta.id_premio==premios.id"  :value="canasta.cantidad">{{canasta.cantidad }} {{ bandera='Art'}}</option>
+                                                                                        <option  else-if="bandera!='Art.'" v-for= "numero in numeros" :value="numero-1"  @click="agregarCanasta(premios.id,premios.codigo_premio,premios.url_premio,premios.descripcion,numero-1,premios.puntos_para_canjear,'<?php echo $_SESSION["usuario"]; ?>')">{{numero-1 }} {{bandera='Art.'}}</option>
+                                                                                </select>
+                                                                                
+                                                                            </div>
+                                                                        </div>
+                                                                        <div v-else>
+                                                                            
+                                                                            <select id="selectnoarreglo"> 
+                                                                                    <option else v-for= "numero in numeros" :value="numero-1"  @click="agregarCanasta(premios.id,premios.codigo_premio,premios.url_premio,premios.descripcion,numero-1,premios.puntos_para_canjear,'<?php echo $_SESSION["usuario"]; ?>')">{{numero-1}} {{bandera='Art.'}}</option>
+                                                                            <select>     
+                                                                        </div>
+                                                                            
+                                                                            
+                                                                       <!-- <div if=" arreglo_canasta.length>0">
+                                                                            <div v-for="canasta in arreglo_canasta">
+                                                                                    <span v-if="canasta.id_premio==premios.id" class="badge bg-dark">1 Art.<br>(x Confirmar)</span>
+                                                                            </div>
+                                                                        </div>-->
+
+                                                                        
+                                                                      
+                                                                        
                                                                 </td>
                                                                 <td>{{premios.puntos_para_canjear}}</td>
                                                                
@@ -139,12 +165,18 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                         </tbody>
                                                         </table>
                                                 </div><!--scroll-->
-                                                <div v-if="arreglo_canasta.length>0" class="row justify-content-around text-white p-2">
-                                                            <div class="col-3  col-lg-2  col-xl-1 rounded-pill mt-3 text-center p-2" style=" background:green; cursor: pointer; box-shadow: -5px 0px 5px 2px rgba(172,230,179,1);">
-                                                            Aceptar
+                                                <div v-if="arreglo_canasta.length>0" class="row justify-content-around align-items-start text-white mb-1">
+                                                            <div class="col-12 text-center lh-1" style=" height:16px;"><span class="text-dark" style=" font-size:0.7em">
+                                                                     Confirmar (Inicia el proceso de entrega.)
+                                                                <br> Limpiar (Borra los artículos por confirmar.)</p></span>
                                                             </div>
+                                                            <div v-if="exceso_gasto==false" class="col-3 col-lg-2 col-xl-1 rounded-pill mt-3 text-center p-2"  @click="aceptarCanjerPremios('<?php echo $_SESSION["usuario"];?>')" style=" background:green; cursor: pointer; box-shadow: -5px 0px 5px 2px rgba(172,230,179,1);">
+                                                                Confirmar <i class="bi bi-check-circle-fill"></i>
+                                                                
+                                                            </div>
+                                                            
                                                             <div class="col-3 col-lg-2 col-xl-1 rounded-pill mt-3 text-center p-2" @click="vaciarCanasta('<?php echo $_SESSION["usuario"];?>')" style=" background: red; cursor: pointer; box-shadow: -5px 0px 5px 2px rgba(230,172,179,1); ">
-                                                            Cancelar
+                                                                Limpiar <i class="bi bi-eraser-fill"></i>
                                                             </div>
                                                 </div>
                                     </div>
@@ -166,7 +198,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                         </div>
                                    
                                         <div class="col-12 col-lg-12 d-flex align-items-end justify-content-center" >
-                                            <div id="opciones" style="width: 18rem;" class=" d-flex align-items-center justify-content-center " >
+                                            <div id="opciones" style="width: 18rem;" class=" d-flex align-items-center justify-content-center my-2" >
                                                 <div class="row text-center mb-2 d-flex justify-content-center align-items-center">
                                                         <div  @click="redireccionar('Atras')" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer"> 
                                                             <div> <img src="img/app_atras.png" class="img-fluid" alt="..." style=" width: 50px;" ></div>
@@ -211,7 +243,9 @@ window.location.hash="no-back-button";
                 arreglo_canasta:[], 
                 puntos_seleccionado:0,
                 puntos_restantes:0,
-                
+                bandera:'',
+                exceso_gasto:false,
+                numeros:[1,2,3,4,5,6]
                 
             }
         },
@@ -246,67 +280,105 @@ window.location.hash="no-back-button";
                     axios.post("consultar_total_puntos_colaborador.php",{
                     }).then(response =>{
                             this.total_puntos=response.data
-
                     }).catch(error =>{
 
                     })
                 },
             agregarCanasta(id_premio,codigo,url,descripcion,cantidad,puntos,numero_nomina){
-                axios.post("canasta_canjear_premios.php",{
-                    id_premio:id_premio,
-                    codigo_premio:codigo,
-                    img_url:url,
-                    descripcion:descripcion,
-                    puntos:puntos,
-                    cantidad:cantidad,
-                    numero_nomina:numero_nomina
-                    }).then(response =>{
-                        if( response.data==true){
-                            this.consultarCanasta(numero_nomina)
-                        }else{
-                            alert("Algo salio mal al insertar su premio a canasta acuda a Mejora Continua para solucionar.")
-                        }
-                          //  this.arreglo_canasta=response.data
-                    }).catch(error =>{
+                var puntos_selec=this.puntos_seleccionado
+                var verificando_si_alcanza=Math.round(puntos_selec+(cantidad*puntos))
+                if(verificando_si_alcanza<=this.total_puntos){
+                    this.exceso_gasto=false
+                         axios.post("canasta_canjear_premios.php",{
+                            id_premio:id_premio,
+                                    codigo_premio:codigo,
+                                    img_url:url,
+                                    descripcion:descripcion,
+                                    puntos:puntos,
+                                    cantidad:cantidad,
+                                    numero_nomina:numero_nomina
+                                    }).then(response =>{
+                                        if( response.data==true){
+                                            this.consultarCanasta(numero_nomina)
+                                        }else{
+                                            alert("Algo salio mal al insertar su premio a canasta acuda a Mejora Continua para solucionar.")
+                                        }
+                                        //  this.arreglo_canasta=response.data
+                                    }).catch(error =>{
 
-                    })
+                                    })
+                        }else{ 
+                                alert("Esta excediendo los puntos, no tines: "+verificando_si_alcanza+" Puntos")
+                            }
+
                 },
                 consultarCanasta(numero_nomina){
-                    axios.post("canasta_consultar_premios.php",{
-                    numero_nomina:numero_nomina
-                    }).then(response =>{
-                        this.arreglo_canasta=response.data
-                        var sumando = 0
-                        if(this.arreglo_canasta.length>0){
-                            for (let i = 0; i < this.arreglo_canasta.length; i++) {
-                                sumando =  Math.round(this.arreglo_canasta[i].puntos_para_canjear*this.arreglo_canasta[i].cantidad)+sumando
+                    if(this.exceso_gasto==false){
+                        axios.post("canasta_consultar_premios.php",{
+                        numero_nomina:numero_nomina
+                        }).then(response =>{
+                            this.arreglo_canasta=response.data
+                            var sumando = 0
+                            if(this.arreglo_canasta.length>0){
+                                for (let i = 0; i < this.arreglo_canasta.length; i++) {
+                                    sumando =  Math.round(this.arreglo_canasta[i].puntos_para_canjear*this.arreglo_canasta[i].cantidad)+sumando
+                                }
+                            }else{
+                                this.puntos_seleccionado = 0
                             }
-                        }else{
-                            this.puntos_seleccionado = 0
-                        }
-                         this.puntos_restantes = Math.round(this.total_puntos-sumando)
-                       
-                    }).catch(error =>{
+                            this.puntos_seleccionado = sumando
+                            this.puntos_restantes = Math.round(this.total_puntos-sumando)
+                            if(Math.sign(this.puntos_restantes)==1 || Math.sign(this.puntos_restantes)==0){//1 es positivo 0 es 0 puntos
+                                this.exceso_gasto=false
+                            }else{ 
+                                this.exceso_gasto=true
+                                alert("Esta excediendo los puntos, elimine artículos.")
+                            }
+                        }).catch(error =>{
 
-                    })
+                        })
+                    }else{
+                        alert("Elimine artículos o presione en el Botón CANCELAR.")
+                    }
                 },
                 vaciarCanasta(numero_nomina){
                     axios.post("canasta_vaciar_premios.php",{
                         numero_nomina:numero_nomina
                     }).then(response =>{
                         if(response.data==true){
+                            this.exceso_gasto=false
                             alert('Cancelado con exito.')
                                 this.consultarCanasta(numero_nomina)
+                                this.bandera=0;
                                
-                                document.getElementById("mySelect").value = "0"; 
                         }else{
-                            alert('Hay problemas paso con Mejora Continua')
+                            alert('Hay problemas pase con Mejora Continua')
                         }
                             
                     }).catch(error =>{
 
                     })
                 }, 
+                aceptarCanjerPremios(numero_nomina){
+                    axios.post("canasta_aceptar_premios.php",{
+                        numero_nomina:numero_nomina
+                    }).then(response =>{
+                        console.log(response.data)
+                        if(response.data==true){
+                            alert('Premios solicitado con éxito.')
+                            this.consultar_total_punto()
+                            this.consultarCanasta(numero_nomina)
+                                
+                                document.getElementById("options").value = "0"; 
+                        }else{
+                            alert('Hay problemas al pedir los premios, pase con Mejora Continua')
+                        }
+                            
+                    }).catch(error =>{
+
+                    })
+
+                }
         }
     }
     var mountedApp = Vue.createApp(vue3).mount('#app');

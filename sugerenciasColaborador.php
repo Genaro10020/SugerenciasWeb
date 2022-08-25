@@ -37,9 +37,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
     <style>
         
 
-             #app{
+            /* #app{
                 font-family: 'Andika', sans-serif;
-            }
+            }*/
             .titulo{
                     color: white; 
                     font-family: 'Fjalla One', sans-serif;
@@ -105,7 +105,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                     <div class="col-8 d-flex align-items-center justify-content-center">
                                                 <div>
                                                     <div class="titulo lh-1 mt-3 text-dark fs-2 fw-bold text-center">Mis sugerencias</div>
-                                                    <div class="subtitulo fs-5 lh-1  text-center mt-1 text-secondary mb-3" >Genaro Villanueva Pérez</div>
+                                                    <div class="subtitulo fs-5 lh-1  text-center mt-1 text-secondary mb-3" ><?php echo $_SESSION['nombre']; ?></div>
                                                 </div>
                                     </div>
                                 <div class=" col-2 d-flex align-items-center rounded-start" style="height:45.8833px"><img class="img-fluid ms-2" src="img/logo_mejora_continua.png"></img></div>
