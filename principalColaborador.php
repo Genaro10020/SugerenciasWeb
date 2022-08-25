@@ -165,7 +165,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                     <div id="opciones" style="width: 18rem; " class="d-flex align-items-center justify-content-center   " >
                                         <div class="row text-center mb-2 d-flex justify-content-center align-items-center" style="min-height: 132px;">
                                                 <div class="text-center col-12"> <label class="card-text mt-2 text-black">5.- Cambio Contraseña.</label></div>
-                                                <div class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer">
+                                                <div @click="redireccionar('Cambiar Password')" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer">
                                                     <img src="img/app_passwor.png" class="img-fluid" alt="..." style=" width: 50px;" >
                                                 </div>        
                                         </div>
@@ -175,7 +175,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                     <div id="opciones" style="width: 18rem;   " class=" d-flex align-items-center justify-content-center " >
                                         <div class="row text-center mb-2 d-flex justify-content-center align-items-center" style="min-height: 132px;">
                                                 <div class="text-center col-12"> <label class="card-text mt-2 text-black">6.- Encuesta de App.</label></div>
-                                               <div class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer">
+                                               <div @click="redireccionar('Encuesta')" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer">
                                                 <img src="img/app_encuesta.png" class="img-fluid" alt="..."  style=" width: 50px;">
                                             </div>       
                                         </div>
@@ -225,6 +225,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                     window.location.href="statusPremio.php"
                 }else if(opciones=='Lista Retos'){
                     window.location.href="listaRetos.php"
+                }else if(opciones=='Cambiar Password'){
+                    window.location.href="cambiarContrasena.php"
+                }else if(opciones=='Encuesta'){
+                    window.location.href="encuestaApp.php"
                 }else if(opciones=='Salir'){
                     window.location.href="index.php"
                 }

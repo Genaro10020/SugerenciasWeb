@@ -97,14 +97,15 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                     </div>
                     <!--CUERPO-->
                     <div class="row "  style="min-height:80vh; font-size: 0.9em" >
-                                    <div class="col-12 mt-3" style=" background:#e7e7e7">
+                            <div v-if="detalles_reto==false">
+                                    <div class="col-12 mt-3  d-flex" style=" background:#e7e7e7;">
                                         <p>NOTA: Anota el folio del reto en el apartado “Reto” del Formato de Sugerencia. 
                                             Recuerda que las sugerencias que tengan un impacto en los retos definidos serán 
                                             acreedoras a un puntaje más alto.  
                                         </p>
                                     </div>    
  
-                                    <div class="col-12 ">
+                                    <div class="col-12">
                                             <div  style="max-height: 75vh; overflow-x: auto;"><!--scroll-->
                                                     <table class="table table-striped " style=" font-size: 0.9em;">
                                                     <thead >
@@ -117,24 +118,43 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                         <tbody>
                                                             <tr class=" align-middle text-center fw-normal " v-for="(retos, index) in concentrado_retos">
                                                                 <td>{{index+1}}</td>
-                                                                <td>{{retos.folio_reto}}</td>
+                                                                <td><label class="folio fst-italic text-primary" style="cursor:pointer" @click="consultar_reto(retos.folio_reto)"><b>{{retos.folio_reto}}</b></label></td>
                                                                 <td>{{retos.descripcion_reto}}</td>
                                                             </tr>
                                                         </tbody>
                                                         </table>
                                                 </div><!--scroll-->
-
                                     </div>
-                                      
-                                        <div class="col-12 col-lg-12 d-flex align-items-end justify-content-center" >
-                                            <div id="opciones" style="width: 18rem;" class=" d-flex align-items-center justify-content-center my-2" >
-                                                <div class="row text-center mb-2 d-flex justify-content-center align-items-center">
-                                                        <div  @click="redireccionar('Atras')" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer"> 
-                                                            <div> <img src="img/app_atras.png" class="img-fluid" alt="..." style=" width: 50px;" ></div>
-                                                        </div>        
-                                                </div>
-                                            </div>
+                            </div> 
+                            <div v-else>
+                                    <div class="row justify-content-center">
+                                        <div v-for="reto in reto_folio"class="row row-cols-1 text-center mt-3 justify-content-center">
+                                            <div class="col-10 col-sm-8 col-lg-6  col-xl-4" style=" background-color:#eaeaea"><b>Folio</b></div>
+                                            <div class="col">{{reto.folio_reto}}</div>
+                                            <div class="col-10 col-sm-8 col-lg-6  col-xl-4" style=" background-color:#eaeaea"><b>Responsable</b></div>
+                                            <div class="col">{{reto.responsable_reto}}</div>
+                                            <div class="col-10 col-sm-8 col-lg-6  col-xl-4" style=" background-color:#eaeaea"><b>Planta</b></div>
+                                            <div class="col">{{reto.planta_reto}}</div>
+                                            <div class="col-10 col-sm-8 col-lg-6  col-xl-4" style=" background-color:#eaeaea"><b>Área</b></div>
+                                            <div class="col">{{reto.area_reto}}</div>
+                                            <div class="col"><b>Descripción del Reto</b></div>
+                                            <textarea class="text-area-causa-no-factibilidad my-2" type="text"  style=" font-size:0.9em" disabled>{{reto.descripcion_reto}}</textarea>
                                         </div>
+                                    </div>
+                       
+                            </div>          
+                                    <div class="col-12 col-lg-12 d-flex align-items-end justify-content-center" >
+                                                    <div id="opciones" style="width: 18rem;" class=" d-flex align-items-center justify-content-center " >
+                                                        <div class="row text-center mb-2 d-flex justify-content-center align-items-center">
+                                                                <div v-if="detalles_reto==false" @click="redireccionar('Atras')" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer"> 
+                                                                    <div> <img src="img/app_atras.png" class="img-fluid" alt="..." style=" width: 50px;" ></div>
+                                                                </div>   
+                                                                <div v-else @click="detalles_reto=false" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer"> 
+                                                                    <div> <img src="img/app_atras.png" class="img-fluid" alt="..." style=" width: 50px;" ></div>
+                                                                </div>        
+                                                        </div>
+                                                    </div>
+                                        </div> 
                                  
                     </div><!--FIN CUERPO-->
                             <!--FOOTER-->
@@ -150,6 +170,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
         data(){
             return {
                 concentrado_retos:[], 
+                reto_folio:[], 
+                detalles_reto:false,
             }
         },
         mounted(){
@@ -169,7 +191,21 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                     }).catch(error =>{
 
                     })
-                } 
+                },
+            consultar_reto(folio){
+                
+                axios.post('consulta_concentrado_retos.php',{
+                folio_reto: folio
+                        }).then(response =>{
+                            this.reto_folio = response.data
+                            if(this.reto_folio.length > 0){
+                                this.detalles_reto=true
+                            }else{
+                                alert("No logramos localizar ese folio, póngase en contacto con Mejora Continua")
+                            }
+                            
+                        })
+                }, 
         }
     }
     var mountedApp = Vue.createApp(vue3).mount('#app');
