@@ -96,84 +96,94 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                             </div>
                     </div>
                     <!--CUERPO-->
-                    <div class="row"  style="min-height:80vh; font-size: 0.9em" >
+                    <div class="row justify-content-center"  style="min-height:80vh; font-size: 0.9em" >
 
 
-                    <div class="row justify-content-center">
-                                        <div class="row row-cols-1 text-center mt-2 justify-content-center ">
-                                            <div class="col-10 col-sm-8 col-lg-6  col-xl-4" style=" background-color:#eaeaea"><b>NOTA: Selecciona los números del 1 al 5, donde el 1 es Malo y el 5 es Excelente.</b></div>
-                                            <div class="col h-25"> 
-                                                        <form class="mt-5">
-                                                            <fieldset>
-                                                                <legend><h6>1. ¿La navegación en la App te pareció sencilla?</h6></legend>
-                                                                <label>
-                                                                    <input type="radio" name="numero" value="1" class=" m-2"> 1
-                                                                </label>
-                                                                <label>
-                                                                    <input type="radio" name="numero" value="2" class=" m-2"> 2
-                                                                </label>
-                                                                <label>
-                                                                    <input type="radio" name="numero" value="3" class=" m-2"> 3
-                                                                </label>
-                                                                <label>
-                                                                    <input type="radio" name="numero" value="3" class=" m-2"> 4
-                                                                </label>
-                                                            </fieldset>
-                                                        </form>
-                                            </div>
-                                            <div class="col h-25"> 
-                                                        <form class="mt-5">
-                                                            <fieldset>
-                                                                <legend><h6>2. ¿El uso de la App para el seguimiento de las sugerencias te resulto útil?</h6></legend>
-                                                                <label>
-                                                                    <input type="radio" name="numero" value="1" class=" m-2"> 1
-                                                                </label>
-                                                                <label>
-                                                                    <input type="radio" name="numero" value="2" class=" m-2"> 2
-                                                                </label>
-                                                                <label>
-                                                                    <input type="radio" name="numero" value="3" class=" m-2"> 3
-                                                                </label>
-                                                                <label>
-                                                                    <input type="radio" name="numero" value="3" class=" m-2"> 4
-                                                                </label>
-                                                            </fieldset>
-                                                        </form>
-                                            </div>
-                                            <div class="col h-25"> 
-                                                        <form class="mt-5">
-                                                            <fieldset>
-                                                                <legend><h6>3. ¿El apartado de “Canjear Premios” fue sencillo de entender?</h6></legend>
-                                                                <label>
-                                                                    <input type="radio" name="numero" value="1" class=" m-2"> 1
-                                                                </label>
-                                                                <label>
-                                                                    <input type="radio" name="numero" value="2" class=" m-2"> 2
-                                                                </label>
-                                                                <label>
-                                                                    <input type="radio" name="numero" value="3" class=" m-2"> 3
-                                                                </label>
-                                                                <label>
-                                                                    <input type="radio" name="numero" value="3" class=" m-2"> 4
-                                                                </label>
-                                                            </fieldset>
-                                                        </form>
-                                            </div>  
-                                        </div>
-                                    </div>
-                                    <div class="d-flex justify-content-center">
-                                        <div class="col-6 col-sm-4  col-lg-3 col-xl-2 mt-3">
-                                                <div class="">
-                                                        <div class="mb-4">
-                                                            <div  class="col-12 rounded-pill mt-3 text-center p-2 text-white"  
-                                                            style=" background:green; cursor: pointer; box-shadow: -5px 0px 5px 2px rgba(172,230,179,1);">
-                                                            Confirmar <i class="bi bi-check-circle-fill"></i>
-                                                            </div>
-                                                        </div>
-                                                </div>
-                                        </div>
-                                    </div>
-
+            
+                                    
+                                            <form @submit.prevent="contestarEncuesta()" class="col-10 col-sm-6 col-lg-4 col-xl-3 text-center align-self-center rounded shadow" style=" background-color:#eaeaea;">
+                                                            <div class="col-12 p-3 " style=" background-color:#eaeaea"><b>NOTA: Selecciona los números del 1 al 5, donde el 1 es Malo y el 5 es Excelente.</b></div>
+                                                                        <div class="col h-25 p-3"> 
+                                                                                    
+                                                                                        <fieldset>
+                                                                                            <legend><h6>{{pregunta1}}</h6></legend>
+                                                                                            <label>
+                                                                                                <input type="radio" name="numero" value="1" class=" m-2" v-model="respuesta1" required> 1
+                                                                                            </label>
+                                                                                            <label>
+                                                                                                <input type="radio" name="numero" value="2" class=" m-2" v-model="respuesta1" required> 2
+                                                                                            </label>
+                                                                                            <label>
+                                                                                                <input type="radio" name="numero" value="3" class=" m-2" v-model="respuesta1" required> 3
+                                                                                            </label>
+                                                                                            <label>
+                                                                                                <input type="radio" name="numero" value="4" class=" m-2" v-model="respuesta1" required> 4
+                                                                                            </label>
+                                                                                            <label>
+                                                                                                <input type="radio" name="numero" value="5" class=" m-2" v-model="respuesta1" required> 5
+                                                                                            </label>
+                                                                                        </fieldset>
+                                                                                
+                                                                        </div>
+                                                                        <div class="col h-25 p-3"> 
+                                                                            
+                                                                                        <fieldset>
+                                                                                            <legend><h6>{{pregunta2}}</h6></legend>
+                                                                                            <label>
+                                                                                                <input type="radio" name="numerodos" value="1" class=" m-2" v-model="respuesta2" required> 1
+                                                                                            </label>
+                                                                                            <label>
+                                                                                                <input type="radio" name="numerodos" value="2" class=" m-2" v-model="respuesta2" required> 2
+                                                                                            </label>
+                                                                                            <label>
+                                                                                                <input type="radio" name="numerodos" value="3" class=" m-2" v-model="respuesta2" required> 3
+                                                                                            </label>
+                                                                                            <label>
+                                                                                                <input type="radio" name="numerodos" value="4" class=" m-2" v-model="respuesta2" required> 4
+                                                                                            </label>
+                                                                                            <label>
+                                                                                                <input type="radio" name="numerodos" value="5" class=" m-2" v-model="respuesta2" required> 5
+                                                                                            </label>
+                                                                                        </fieldset>
+                                                                                
+                                                                        </div>
+                                                                        <div class="col h-25 p-3"> 
+                                                                                
+                                                                                        <fieldset>
+                                                                                            <legend><h6>{{pregunta3}}</h6></legend>
+                                                                                            <label>
+                                                                                                <input type="radio" name="numerotres" value="1" class=" m-2" v-model="respuesta3" required> 1
+                                                                                            </label>
+                                                                                            <label>
+                                                                                                <input type="radio" name="numerotres" value="2" class=" m-2" v-model="respuesta3" required> 2
+                                                                                            </label>
+                                                                                            <label>
+                                                                                                <input type="radio" name="numerotres" value="3" class=" m-2" v-model="respuesta3" required> 3
+                                                                                            </label>
+                                                                                            <label>
+                                                                                                <input type="radio" name="numerotres" value="4" class=" m-2" v-model="respuesta3" required> 4
+                                                                                            </label>
+                                                                                            <label>
+                                                                                                <input type="radio" name="numerotres" value="5" class=" m-2" v-model="respuesta3" required> 5
+                                                                                            </label>
+                                                                                        </fieldset>
+                                                                                
+                                                                        </div> 
+                                                                                    
+                                    
+                                                                            <div class="d-flex justify-content-center">
+                                                                                <div class="mt-3">
+                                                                                        <div class="">
+                                                                                                <div class="mb-4">
+                                                                                                    <button type=" submit" class="col-12 rounded-pill mt-3 text-center p-2 text-white border-0"  
+                                                                                                    style=" background:green; cursor: pointer; box-shadow: -5px 0px 5px 2px rgba(172,230,179,1);">
+                                                                                                    Confirmar <i class="bi bi-check-circle-fill"></i>
+                                                                                                    </button>
+                                                                                                </div>
+                                                                                        </div>
+                                                                                </div>
+                                                                            </div>
+                                                    </form> 
 
                                         <div class="col-12 col-lg-12 d-flex align-items-end justify-content-center" >
                                             <div id="opciones" style="width: 18rem;" class=" d-flex align-items-center justify-content-center my-2" >
@@ -198,8 +208,13 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
     {
         data(){
             return {
-                concentrado_premios_entregar:[], 
-                numero_nomina:<?php echo $_SESSION['usuario']; ?>
+                numero_nomina:<?php echo $_SESSION['usuario']; ?>,
+                pregunta1: '1. ¿La navegación en la App te pareció sencilla?',
+                pregunta2: '2. ¿El uso de la App para el seguimiento de las sugerencias te resulto útil?',
+                pregunta3: '3. ¿El apartado de “Canjear Premios” fue sencillo de entender?',
+                respuesta1: '', 
+                respuesta2: '', 
+                respuesta3: '',
             }
         },
         mounted(){
@@ -211,7 +226,23 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                     window.location.href="principalColaborador.php"
                 }
                
-            }
+            },
+            contestarEncuesta(){
+              
+                axios.post("guardar_encuesta.php",{
+                    numero_nomina:this.numero_nomina,
+                    pregunta1: this.pregunta1,
+                    pregunta2: this.pregunta2,
+                    pregunta3: this.pregunta3,
+                    respuesta1: this.respuesta1, 
+                    respuesta2: this.respuesta2, 
+                    respuesta3: this.respuesta3
+                }).then(response=>{
+                    console.log(response.data)
+                }).catch(error =>{
+                    console.log(error)
+                })
+            },
         }
     }
     var mountedApp = Vue.createApp(vue3).mount('#app');

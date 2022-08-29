@@ -174,14 +174,17 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                         contrasena_actual:this.contrasena_actual
                     }).then(response =>{
                         if(response.data=='correcto'){
+                            this.contrasena_actual='',
+                            this.nueva_contrasena='',
+                            this.confirmar_contrasena=''
                                 alert('Contraseña actualizada con éxito')
                         }else{
-                                alert('No se actualizo la contraseña.')
+                                alert('No se actualizo la contraseña reporte a Mejora Continua.')
                         }
                     })  
 
                 }else{
-                    alert('La nueva contraseña y la confirmación no coinciden')
+                    alert('La nueva contraseña y la confirmación no coinciden.')
                 }
             }
         },
