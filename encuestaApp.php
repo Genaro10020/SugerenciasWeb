@@ -238,7 +238,12 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                     respuesta2: this.respuesta2, 
                     respuesta3: this.respuesta3
                 }).then(response=>{
-                    console.log(response.data)
+                    if(response.data=='correcto'){
+                        alert("Encuesta guardada Correctamente.")
+                         window.location.href="principalColaborador.php"
+                    }else{
+                        alert("Algo salio mal al contestar encuesta.")
+                    }
                 }).catch(error =>{
                     console.log(error)
                 })
