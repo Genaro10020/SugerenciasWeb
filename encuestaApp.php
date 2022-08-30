@@ -108,19 +108,19 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                                                         <fieldset>
                                                                                             <legend><h6>{{pregunta1}}</h6></legend>
                                                                                             <label>
-                                                                                                <input type="radio" name="numero" value="1" class=" m-2" v-model="respuesta1" required> 1
+                                                                                                <input type="radio" name="numero" value="1" class=" m-2" v-model="respuesta1" required :disabled="disabled == 1"> 1
                                                                                             </label>
                                                                                             <label>
-                                                                                                <input type="radio" name="numero" value="2" class=" m-2" v-model="respuesta1" required> 2
+                                                                                                <input type="radio" name="numero" value="2" class=" m-2" v-model="respuesta1" required :disabled="disabled == 1"> 2
                                                                                             </label>
                                                                                             <label>
-                                                                                                <input type="radio" name="numero" value="3" class=" m-2" v-model="respuesta1" required> 3
+                                                                                                <input type="radio" name="numero" value="3" class=" m-2" v-model="respuesta1" required :disabled="disabled == 1"> 3
                                                                                             </label>
                                                                                             <label>
-                                                                                                <input type="radio" name="numero" value="4" class=" m-2" v-model="respuesta1" required> 4
+                                                                                                <input type="radio" name="numero" value="4" class=" m-2" v-model="respuesta1" required :disabled="disabled == 1"> 4
                                                                                             </label>
                                                                                             <label>
-                                                                                                <input type="radio" name="numero" value="5" class=" m-2" v-model="respuesta1" required> 5
+                                                                                                <input type="radio" name="numero" value="5" class=" m-2" v-model="respuesta1" required :disabled="disabled == 1"> 5
                                                                                             </label>
                                                                                         </fieldset>
                                                                                 
@@ -130,19 +130,19 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                                                         <fieldset>
                                                                                             <legend><h6>{{pregunta2}}</h6></legend>
                                                                                             <label>
-                                                                                                <input type="radio" name="numerodos" value="1" class=" m-2" v-model="respuesta2" required> 1
+                                                                                                <input type="radio" name="numerodos" value="1" class=" m-2" v-model="respuesta2" required :disabled="disabled == 1"> 1
                                                                                             </label>
                                                                                             <label>
-                                                                                                <input type="radio" name="numerodos" value="2" class=" m-2" v-model="respuesta2" required> 2
+                                                                                                <input type="radio" name="numerodos" value="2" class=" m-2" v-model="respuesta2" required :disabled="disabled == 1"> 2
                                                                                             </label>
                                                                                             <label>
-                                                                                                <input type="radio" name="numerodos" value="3" class=" m-2" v-model="respuesta2" required> 3
+                                                                                                <input type="radio" name="numerodos" value="3" class=" m-2" v-model="respuesta2" required :disabled="disabled == 1"> 3
                                                                                             </label>
                                                                                             <label>
-                                                                                                <input type="radio" name="numerodos" value="4" class=" m-2" v-model="respuesta2" required> 4
+                                                                                                <input type="radio" name="numerodos" value="4" class=" m-2" v-model="respuesta2" required :disabled="disabled == 1"> 4
                                                                                             </label>
                                                                                             <label>
-                                                                                                <input type="radio" name="numerodos" value="5" class=" m-2" v-model="respuesta2" required> 5
+                                                                                                <input type="radio" name="numerodos" value="5" class=" m-2" v-model="respuesta2" required :disabled="disabled == 1"> 5
                                                                                             </label>
                                                                                         </fieldset>
                                                                                 
@@ -152,19 +152,19 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                                                         <fieldset>
                                                                                             <legend><h6>{{pregunta3}}</h6></legend>
                                                                                             <label>
-                                                                                                <input type="radio" name="numerotres" value="1" class=" m-2" v-model="respuesta3" required> 1
+                                                                                                <input type="radio" name="numerotres" value="1" class=" m-2" v-model="respuesta3" required :disabled="disabled == 1"> 1
                                                                                             </label>
                                                                                             <label>
-                                                                                                <input type="radio" name="numerotres" value="2" class=" m-2" v-model="respuesta3" required> 2
+                                                                                                <input type="radio" name="numerotres" value="2" class=" m-2" v-model="respuesta3" required :disabled="disabled == 1"> 2
                                                                                             </label>
                                                                                             <label>
-                                                                                                <input type="radio" name="numerotres" value="3" class=" m-2" v-model="respuesta3" required> 3
+                                                                                                <input type="radio" name="numerotres" value="3" class=" m-2" v-model="respuesta3" required :disabled="disabled == 1"> 3
                                                                                             </label>
                                                                                             <label>
-                                                                                                <input type="radio" name="numerotres" value="4" class=" m-2" v-model="respuesta3" required> 4
+                                                                                                <input type="radio" name="numerotres" value="4" class=" m-2" v-model="respuesta3" required :disabled="disabled == 1"> 4
                                                                                             </label>
                                                                                             <label>
-                                                                                                <input type="radio" name="numerotres" value="5" class=" m-2" v-model="respuesta3" required> 5
+                                                                                                <input type="radio" name="numerotres" value="5" class=" m-2" v-model="respuesta3" required :disabled="disabled == 1"> 5
                                                                                             </label>
                                                                                         </fieldset>
                                                                                 
@@ -175,8 +175,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                                                 <div class="mt-3">
                                                                                         <div class="">
                                                                                                 <div class="mb-4">
-                                                                                                    <button type=" submit" class="col-12 rounded-pill mt-3 text-center p-2 text-white border-0"  
-                                                                                                    style=" background:green; cursor: pointer; box-shadow: -5px 0px 5px 2px rgba(172,230,179,1);">
+                                                                                                    <button v-if="disabled == 0" type=" submit" class="btn_confirmar col-12 rounded-pill mt-3 text-center p-2 text-white border-0">
                                                                                                     Confirmar <i class="bi bi-check-circle-fill"></i>
                                                                                                     </button>
                                                                                                 </div>
@@ -215,10 +214,12 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                 respuesta1: '', 
                 respuesta2: '', 
                 respuesta3: '',
+                respuestas: [],
+                disabled:1,
             }
         },
         mounted(){
-            
+            this.consutarResputasEncuesta()
         },
         methods:{
             redireccionar(opciones){
@@ -227,8 +228,25 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                 }
                
             },
+            consutarResputasEncuesta(){
+                axios.post("consultar_respuestas_encuesta.php",{
+                    numero_nomina:this.numero_nomina,
+                }).then(response=>{
+                       this.respuestas =response.data
+                       if(this.respuestas.length>0){
+                        console.log(this.respuestas)
+                            this.respuesta1 = this.respuestas[0].respuesta
+                            this.respuesta2 = this.respuestas[1].respuesta
+                            this.respuesta3 = this.respuestas[2].respuesta
+                            this.disabled=1
+                       }else{
+                            this.disabled=0
+                       }
+                }).catch(error =>{
+                    console.log(error)
+                })
+            },
             contestarEncuesta(){
-              
                 axios.post("guardar_encuesta.php",{
                     numero_nomina:this.numero_nomina,
                     pregunta1: this.pregunta1,
@@ -240,7 +258,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                 }).then(response=>{
                     if(response.data=='correcto'){
                         alert("Encuesta guardada Correctamente.")
-                         window.location.href="principalColaborador.php"
+                         this.consutarResputasEncuesta()
                     }else{
                         alert("Algo salio mal al contestar encuesta.")
                     }

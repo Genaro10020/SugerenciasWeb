@@ -111,6 +111,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                     <th scope="col">% Avance</th>
                                     <th scope="col">Implementación</th>
                                     <th scope="col">Val. Impactos</th>
+                                    <th scope="col">Impacto de sugerencias</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -152,6 +153,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                             </div>  
                                                     </div>
                                                  </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalImpactoSugerencia" @click="modalImpacto"><i class="bi bi-table"></i></button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -439,6 +443,278 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                                     </div>
+                                    </div>
+                                </div>
+                       </div><!--Fin Modal cualitativo-->
+
+                       <div class="modal fade" id="modalImpactoSugerencia" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"><!--modal impacto cualitativo-->
+                                <div class="modal-dialog modal-fullscreen modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel"  style="font-size:.9em;">Concentrado <b>Impacto Sugerencias.</b></h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                                        <div class="row">  <!-- contenido impacto de sugerencia-->
+                                                                                <div class="col-12">                                
+                                                                                        <div class="text-center mt-3 ">
+                                                                                            <span class="badge bg-light text-dark">Concentrado Impacto Sugerencias</span>
+                                                                                        </div>
+                                                                                            <div class="div-scroll mt-3 "><!--Scroll-->
+                                                                                            <table class="tablaMonitoreo-sugerencias table table-striped table-bordered text-center">
+                                                                                                <thead class="encabezado-tabla text-center text-light ">
+                                                                                                    <tr >
+                                                                                                    <th scope="col">Status</th>
+                                                                                                    <th scope="col">Folio</th>
+                                                                                                    <th scope="col">Nombre de Sugerencia</th>
+                                                                                                    <th scope="col">Analista de Factibilidad</th>
+                                                                                                    <th scope="col">Planta</th>
+                                                                                                    <th scope="col">Área</th>
+                                                                                                    <th scope="col">Subárea</th>
+                                                                                                    <th scope="col">Fecha real de Cierra</th>
+                                                                                                    <th scope="col">Indicador</th>
+                                                                                                    <th scope="col">Unidades</th>
+                                                                                                    <th scope="col">Línea Base</th>
+                                                                                                    <th scope="col">Periodo de Medición</th>
+                                                                                                    <th scope="col">Mes 1</th>
+                                                                                                    <th scope="col">Mes 2</th>
+                                                                                                    <th scope="col">Mes 3</th>
+                                                                                                    <th scope="col">Mes 4</th>
+                                                                                                    <th scope="col">Mes 5</th>
+                                                                                                    <th scope="col">Mes 6</th>
+                                                                                                    <th scope="col">Mes 7</th>
+                                                                                                    <th scope="col">Mes 8</th>
+                                                                                                    <th scope="col">Mes 9</th>
+                                                                                                    <th scope="col">Mes 10</th>
+                                                                                                    <th scope="col">Mes 11</th>
+                                                                                                    <th scope="col">Mes 12</th>
+                                                                                                    <!--<th scope="col">Acumulado</th>-->
+                                                                                                    </tr>
+                                                                                                </thead>
+                                                                                                <tbody>
+                                                                                                <tr class="align-middle" v-for="(pendiente_impacto, index) in concentrado_sugerencias_pendiente_impacto">
+                                                                                                        <td><label>{{pendiente_impacto.status_impacto}}</label></td>
+                                                                                                        <td><label>{{pendiente_impacto.folio}}</label></td>
+                                                                                                        <td><label>{{pendiente_impacto.nombre_sugerencia}}</label></td>
+                                                                                                        <td><label>{{pendiente_impacto.analista_de_factibilidad}}</label></td>
+                                                                                                        <td><label>{{pendiente_impacto.planta}}</label></td>
+                                                                                                        <td><label>{{pendiente_impacto.area}}</label></td>
+                                                                                                        <td><label>{{pendiente_impacto.subarea}}</label></td>
+                                                                                                        <td><label>{{pendiente_impacto.fecha_real_cierre}}</label>
+                                                                                                        
+                                                                                                        </td>
+                                                                                                        <td style="background-color: #c9e7ff">
+                                                                                                    
+                                                                                                                <div v-if="id_actualiza==index+1" class="">
+                                                                                                                        <input class="rounded border-2" v-model="indicador" type="text" ></input> 
+                                                                                                                </div>
+                                                                                                                <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
+                                                                                                                    <!--<input class="rounded border-2" v-model="indicador" type="text" ></input> -->
+                                                                                                                    <input v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id" :value="concentrado_impacto_midiendo.indicador" class="rounded border-2" type="text" disabled></input> 
+                                                                                                                </div>
+                                                                                                                    
+                                                                                                        </td>
+                                                                                                        <td style="background-color: #c9e7ff">
+                                                                                                                <input v-if="id_actualiza==index+1" class="rounded border-2" v-model="unidades" type="text" ></input>
+                                                                                                                <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo"> 
+                                                                                                                            <input v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id" :value="concentrado_impacto_midiendo.unidades" class="rounded border-2" type="text" disabled></input> 
+                                                                                                                </div>
+                                                                                                        </td>
+                                                                                                        <td style="background-color: #c9e7ff">
+                                                                                                                <input v-if="id_actualiza==index+1" class="rounded border-2" v-model="linea_base" type="text" ></input>
+                                                                                                                <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo"> 
+                                                                                                                    <input v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id" :value="concentrado_impacto_midiendo.linea_base" class="rounded border-2" type="text" disabled></input> 
+                                                                                                                </div>
+                                                                                                        </td>
+                                                                                                        <td style="background-color: #c9e7ff">
+                                                                                                    
+                                                                                                                <select v-if="id_actualiza==index+1" v-model="periodo_de_medicion" class="rounded border-2  bg-body">
+                                                                                                                    <option value="0" disabled selected>Seleccione Periodo..</option>
+                                                                                                                    <option v-for="mes in 12" :value="mes" @click="vaciarMeses(pendiente_impacto.id)">{{mes}} Mes/es</option>
+                                                                                                                </select>
+                                                                                                                        <div v-else  v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo"> 
+                                                                                                                            <input v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id" :value="concentrado_impacto_midiendo.periodo" class="rounded border-2" type="text" disabled></input> 
+                                                                                                                        </div>   
+                                                                                                        </td>
+                                                                                                        <td style="background-color: #fffadf"><!--Mes1-->
+                                                                                                                <div v-if="id_actualiza==index+1" v-show="periodo_de_medicion >= 1">    
+                                                                                                                            <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.mes1}}</span>
+                                                                                                                            <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2" type="text" v-model="mes1"></input></span>
+                                                                                                                </div>   
+                                                                                                                <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
+                                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && concentrado_impacto_midiendo.periodo >=1">
+                                                                                                                            <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes1}}</span>
+                                                                                                                            <span class="d-block p-1 bg-secondary text-white ">
+                                                                                                                                <input  :value="concentrado_impacto_midiendo.mes1" class="border-2  text-center" type="text" disabled></input>
+                                                                                                                            </span> 
+                                                                                                                        </div>    
+                                                                                                                </div>   
+                                                                                                        </td>
+                                                                                                        <td style="background-color: #fffadf">
+                                                                                                                <div v-if="id_actualiza==index+1" v-show="periodo_de_medicion >= 2">
+                                                                                                                            <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.mes2}}</span>
+                                                                                                                            <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2" type="text" v-model="mes2"></input></span>
+                                                                                                                </div> 
+                                                                                                                <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
+                                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && concentrado_impacto_midiendo.periodo >=2">
+                                                                                                                            <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes2}}</span>
+                                                                                                                            <span class="d-block p-1 bg-secondary text-white ">
+                                                                                                                                <input  :value="concentrado_impacto_midiendo.mes2" class="border-2  text-center" type="text" disabled></input>
+                                                                                                                            </span> 
+                                                                                                                        </div>     
+                                                                                                                </div>      
+                                                                                                        </td>
+                                                                                                        <td style="background-color: #fffadf">
+                                                                                                                <div v-if="id_actualiza==index+1" v-show="periodo_de_medicion >= 3">
+                                                                                                                            <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.mes3}}</span>
+                                                                                                                            <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2" type="text" v-model="mes3"></input></span>
+                                                                                                                </div> 
+                                                                                                                <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
+                                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && concentrado_impacto_midiendo.periodo >=3">
+                                                                                                                            <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes3}}</span>
+                                                                                                                            <span class="d-block p-1 bg-secondary text-white ">
+                                                                                                                                <input  :value="concentrado_impacto_midiendo.mes3" class="border-2  text-center" type="text" disabled></input>
+                                                                                                                            </span> 
+                                                                                                                        </div>     
+                                                                                                                </div>      
+                                                                                                        </td>
+                                                                                                        <td style="background-color: #fffadf">
+                                                                                                            <div v-if="id_actualiza==index+1" v-show="periodo_de_medicion >= 4">
+                                                                                                                            <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.mes4}}</span>
+                                                                                                                            <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2" type="text" v-model="mes4"></input></span>
+                                                                                                            </div>  
+                                                                                                            <div v-else  v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
+                                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && concentrado_impacto_midiendo.periodo >=4">
+                                                                                                                            <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes4}}</span>
+                                                                                                                            <span class="d-block p-1 bg-secondary text-white ">
+                                                                                                                                <input  :value="concentrado_impacto_midiendo.mes4" class="border-2  text-center" type="text" disabled></input>
+                                                                                                                            </span> 
+                                                                                                                        </div>     
+                                                                                                            </div>    
+                                                                                                        </td>
+                                                                                                        <td style="background-color: #fffadf">
+                                                                                                            <div v-if="id_actualiza==index+1" v-show="periodo_de_medicion >= 5">
+                                                                                                                    <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.mes5}}</span>
+                                                                                                                    <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2" type="text" v-model="mes5"></input></span>
+                                                                                                            </div>
+                                                                                                            <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
+                                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && concentrado_impacto_midiendo.periodo >=5">
+                                                                                                                            <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes5}}</span>
+                                                                                                                            <span class="d-block p-1 bg-secondary text-white ">
+                                                                                                                                <input  :value="concentrado_impacto_midiendo.mes5" class="border-2  text-center" type="text" disabled></input>
+                                                                                                                            </span> 
+                                                                                                                        </div>     
+                                                                                                            </div>   
+                                                                                                        </td>
+                                                                                                        <td style="background-color: #fffadf">
+                                                                                                            <div v-if="id_actualiza==index+1" v-show="periodo_de_medicion >= 6">
+                                                                                                                    <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.mes6}}</span>
+                                                                                                                    <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2" type="text" v-model="mes6"></input></span>
+                                                                                                            </div>    
+                                                                                                            <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
+                                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && concentrado_impacto_midiendo.periodo >=6">
+                                                                                                                            <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes6}}</span>
+                                                                                                                            <span class="d-block p-1 bg-secondary text-white ">
+                                                                                                                                <input  :value="concentrado_impacto_midiendo.mes6" class="border-2  text-center" type="text" disabled></input>
+                                                                                                                            </span> 
+                                                                                                                        </div>     
+                                                                                                            </div>    
+                                                                                                        </td>
+                                                                                                        <td style="background-color: #fffadf">
+                                                                                                            <div v-if="id_actualiza==index+1" v-show="periodo_de_medicion >= 7">
+                                                                                                                    <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.mes7}}</span>
+                                                                                                                    <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2" type="text" v-model="mes7"></input></span>
+                                                                                                            </div>   
+                                                                                                            <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
+                                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && concentrado_impacto_midiendo.periodo >=7">
+                                                                                                                            <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes7}}</span>
+                                                                                                                            <span class="d-block p-1 bg-secondary text-white ">
+                                                                                                                                <input  :value="concentrado_impacto_midiendo.mes7" class="border-2  text-center" type="text" disabled></input>
+                                                                                                                            </span> 
+                                                                                                                        </div>     
+                                                                                                            </div>    
+                                                                                                        </td>
+                                                                                                        <td style="background-color: #fffadf">
+                                                                                                            <div v-if="id_actualiza==index+1" v-show="periodo_de_medicion >= 8">
+                                                                                                                    <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.mes8}}</span>
+                                                                                                                    <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2"type="text" v-model="mes8"></input></span>
+                                                                                                            </div>    
+                                                                                                            <div v-else  v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
+                                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && concentrado_impacto_midiendo.periodo >=8">
+                                                                                                                            <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes8}}</span>
+                                                                                                                            <span class="d-block p-1 bg-secondary text-white ">
+                                                                                                                                <input  :value="concentrado_impacto_midiendo.mes8" class="border-2  text-center" type="text" disabled></input>
+                                                                                                                            </span> 
+                                                                                                                        </div>       
+                                                                                                            </div>   
+                                                                                                        </td>
+                                                                                                        <td style="background-color: #fffadf">
+                                                                                                            <div v-if="id_actualiza==index+1" v-show="periodo_de_medicion >= 9">
+                                                                                                            <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.mes9}}</span>
+                                                                                                                    <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2"type="text" v-model="mes9"></input></span>
+                                                                                                            </div> 
+                                                                                                            <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
+                                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && concentrado_impacto_midiendo.periodo >=9">
+                                                                                                                            <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes9}}</span>
+                                                                                                                            <span class="d-block p-1 bg-secondary text-white ">
+                                                                                                                                <input  :value="concentrado_impacto_midiendo.mes9" class="border-2  text-center" type="text" disabled></input>
+                                                                                                                            </span> 
+                                                                                                                        </div>    
+                                                                                                            </div>   
+                                                                                                        </td>
+                                                                                                        <td style="background-color: #fffadf">
+                                                                                                            <div v-if="id_actualiza==index+1" v-show="periodo_de_medicion >= 10">
+                                                                                                                    <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.mes10}}</span>
+                                                                                                                    <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2"type="text" v-model="mes10"></input></span>
+                                                                                                            </div>    
+                                                                                                            <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
+                                                                                                            <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && concentrado_impacto_midiendo.periodo >=10">
+                                                                                                                            <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes10}}</span>
+                                                                                                                            <span class="d-block p-1 bg-secondary text-white ">
+                                                                                                                                <input  :value="concentrado_impacto_midiendo.mes10" class="border-2  text-center" type="text" disabled></input>
+                                                                                                                            </span> 
+                                                                                                                        </div>    
+                                                                                                            </div>  
+                                                                                                        </td>
+                                                                                                        <td style="background-color: #fffadf">
+                                                                                                            <div v-if="id_actualiza==index+1" v-show="periodo_de_medicion >= 11">
+                                                                                                                    <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.mes11}}</span>
+                                                                                                                    <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2"type="text" v-model="mes11"></input></span>
+                                                                                                            </div>  
+                                                                                                            <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
+                                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && concentrado_impacto_midiendo.periodo >=11">
+                                                                                                                            <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes11}}</span>
+                                                                                                                            <span class="d-block p-1 bg-secondary text-white ">
+                                                                                                                                <input  :value="concentrado_impacto_midiendo.mes11" class="border-2  text-center" type="text" disabled></input>
+                                                                                                                            </span> 
+                                                                                                                        </div>    
+                                                                                                            </div>       
+                                                                                                        </td>
+                                                                                                        <td style="background-color: #fffadf">
+                                                                                                            <div v-if="id_actualiza==index+1" v-show="periodo_de_medicion >= 12">
+                                                                                                                    <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.mes12}}</span>
+                                                                                                                    <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2" type="text" v-model="mes12"></input></span>
+                                                                                                            </div>     
+                                                                                                            <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
+                                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && concentrado_impacto_midiendo.periodo >=12">
+                                                                                                                            <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes12}}</span>
+                                                                                                                            <span class="d-block p-1 bg-secondary text-white ">
+                                                                                                                                <input  :value="concentrado_impacto_midiendo.mes12" class="border-2  text-center" type="text" disabled></input>
+                                                                                                                            </span> 
+                                                                                                                        </div>    
+                                                                                                            </div>     
+                                                                                                        </td>
+                                                                                                    </tr>
+                
+                                                                                                </tbody>
+                                                                                            </table>
+                                                                                        </div><!--scroll-->
+                                                                        </div>
+                                                        </div><!-- contenido impacto de sugerencia-->
+                                        </div>  
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                        </div>
                                     </div>
                                 </div>
                        </div><!--Fin Modal cualitativo-->
@@ -1316,46 +1592,70 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                         </div>
                                 </div>
                                 <div class="row h-100">
-                               
-                                    <div class="d-flex justify-content-center align-items-center">
-                                        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 col-xxl-2 bg-light  border bordered-2 border-secondary rounded-2">
-                                            <form @submit.prevent="guardar_admin_y_analista" class="m-2">
-                                            <div class="text-center"><span class="badge text-dark ">ALTA DE USUARIOS/ANALISTAS.</span></div>
-                                                <div class="mb-3">
-                                                <div><span class="badge text-dark">Usuario (No. de Control):</span></div>
-                                                    <input type="text" class="form-control" v-model="nuevo_usuario"  required>
-                                                </div>
-                                                <div class="mb-3">
-                                                <div><span class="badge text-dark">Password:</span></div>
-                                                    <input type="text" class="form-control" v-model="nuevo_password" required>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <div><span class="badge text-dark">Nombre Completo:</span></div>
-                                                    <input type="text"   class="form-control" v-model="nuevo_nombre" required>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <div><span class="badge text-dark">Correo:</span></div>
-                                                    <input type="email" class="form-control" v-model="nuevo_correo" required>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <div><span class="badge text-dark">Departamente:</span></div>
-                                                    <input type="text"   class="form-control" v-model="nuevo_departamento" required>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <div><span class="badge text-dark">Tipo:</span></div>
-                                                    <select class="form-control" v-model="var_tipo_usuario" required>
-                                                        <option value="" disabled>Seleccione tipo...</option>
-                                                        <option v-for="array_tipo in array_tipo_usuario" :value="array_tipo">{{array_tipo}}</option>
-                                                    </select> 
+                                    <div class="row d-flex justify-content-center align-items-center">
+                                                <div class="col-12 col-sm-6  col-lg-4 col-xl-3 bg-light  border bordered-2 border-secondary rounded-2">
+                                                    <form @submit.prevent="guardar_admin_y_analista" class="m-2 ">
+                                                    <div class="text-center"><span class="badge text-dark ">ALTA DE ADMIN/ANALISTAS.</span></div>
+                                                        <div class="mb-3">
+                                                        <div><span class="badge text-dark">Usuario (No. de Control):</span></div>
+                                                            <input type="text" class="form-control" v-model="nuevo_usuario"  required>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                        <div><span class="badge text-dark">Password:</span></div>
+                                                            <input type="text" class="form-control" v-model="nuevo_password" required>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <div><span class="badge text-dark">Nombre Completo:</span></div>
+                                                            <input type="text"   class="form-control" v-model="nuevo_nombre" required>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <div><span class="badge text-dark">Correo:</span></div>
+                                                            <input type="email" class="form-control" v-model="nuevo_correo" required>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <div><span class="badge text-dark">Departamente:</span></div>
+                                                            <input type="text"   class="form-control" v-model="nuevo_departamento" required>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <div><span class="badge text-dark">Tipo:</span></div>
+                                                            <select class="form-control" v-model="var_tipo_usuario" required>
+                                                                <option value="" disabled>Seleccione tipo...</option>
+                                                                <option v-for="array_tipo in array_tipo_usuario" :value="array_tipo">{{array_tipo}}</option>
+                                                            </select> 
 
+                                                        </div>
+                                                    
+                                                        <div class="text-center">
+                                                            <button class="boton-nuevo" > Aceptar</button>
+                                                        </div>
+                                                    </form>
                                                 </div>
-                                               
-                                                <div class="text-center">
-                                                    <button class="boton-nuevo" > Aceptar</button>
-                                                </div>
-                                            </form>
+                                                <!--<div class="col-12  col-sm-6 col-lg-8  col-xl-9  ">
+                                                            <div class="text-center mt-3 ">
+                                                                <span class="badge bg-light text-dark">Sugerencias Pendientes de Factibilidad: <?php echo $_SESSION['nombre']; ?></span>
+                                                            </div>
+                                                            <div class="div-scroll mt-3">
+                                                                <table class="tablaMonitoreo-sugerencias table table-striped table-bordered ">
+                                                                <thead class="encabezado-tabla text-center text-light ">
+                                                                    <tr >
+                                                                        <th scope="col " class="sticky">#</th>
+                                                                        <th scope="col">Folio</th>
+                                                                        <th scope="col">Nombre de Sugerencia</th>
+                                                                        <th scope="col">Fecha de Inicio </th>
+                                                                        <th scope="col">Fecha Limite </th>
+                                                                        <th scope="col">Status de Factibilidad</th>
+                                                                        <th scope="col">Status Plan de Trabajo</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr v-for="(admis_usuarios, index) in array_usuarios">
+                                                                    
+                                                                    </tr>
+                                                                </tbody>
+                                                                </table>
+                                                            </div>          
+                                                </div>-->
                                         </div>
-                                    </div>
                                 </div>
                    </div>
             </div>
@@ -1381,6 +1681,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 pintarCuatro:false,
                 pintarCinco: false,
                 nueva_sugerencia:false,
+                concentrado_sugerencias_pendiente_impacto: [],
+                concentrado_impacto_sugerencias_midiendo:[],
                 //*Varibales Concetrado*/
                 lista_validacion_de_impacto:['Cuantitativo','Cualitativo'],
                 concentrado_actividades:[],
@@ -1509,6 +1811,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 nuevo_departamento:'',
                 array_tipo_usuario: ['Admin','Analista'],
                 var_tipo_usuario:'',
+                array_usuarios:[],
             }
         },
         mounted(){
@@ -1732,6 +2035,27 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 })
        
     },
+    modalImpacto(){
+        this.consultado_concentrado_pendiente_impacto()
+        this.consultado_concentrado_impacto_sugerencias()
+       
+    },
+    consultado_concentrado_pendiente_impacto(){//consulto datos del concentrado de sugerencias midiendo
+                axios.post('consulta_concentrado_pendientes_impacto.php',{
+                            }).then(response =>{
+                                this.concentrado_sugerencias_pendiente_impacto = response.data
+                                console.log(this.concentrado_sugerencias_pendiente_impacto,'CONCENTRADO')
+                            })
+                },
+    consultado_concentrado_impacto_sugerencias(){//consulto datos del concentrado impacto midiendo
+                    axios.post('consulta_concentrado_impacto_midiendo.php',{
+                    }).then(response =>{
+                        this.concentrado_impacto_sugerencias_midiendo = response.data
+                        console.log(this.concentrado_impacto_sugerencias_midiendo)
+                    }).catch(error =>{
+
+                    })
+                },
       /*FIN METODOS PRINCIPAL MEJORA*/
       /*METODOS CONCENTRADO SUGERENCIAS*/
             guardar_nueva_sugerencia_y_actualizar(nueva_o_actualizar,id_registro){

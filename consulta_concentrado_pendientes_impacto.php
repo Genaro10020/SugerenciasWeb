@@ -5,7 +5,15 @@
     $resultado = [];
     $nombre= $_SESSION['nombre'];
 
-    $consulta = "SELECT * FROM concentrado_sugerencias WHERE status='Implementada' AND fecha_real_cierre!='' AND analista_de_factibilidad='$nombre' AND status_impacto='Midiendo' ORDER BY id DESC";
+    if($_SESSION['tipo']=="Admin"){
+        $consulta = "SELECT * FROM concentrado_sugerencias WHERE status='Implementada' AND fecha_real_cierre!='' ORDER BY id DESC";
+
+    }else{
+        $consulta = "SELECT * FROM concentrado_sugerencias WHERE status='Implementada' AND fecha_real_cierre!='' AND analista_de_factibilidad='$nombre' AND status_impacto='Midiendo' ORDER BY id DESC";
+        
+    }
+
+   
     $query = mysqli_query($conexion,$consulta);
     while ($fila=$query -> fetch_array()) {
         $fecha_compromiso=$fila['fecha_real_cierre'];

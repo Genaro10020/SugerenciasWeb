@@ -166,7 +166,13 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                     axios.post("consultar_status_premios.php",{
                         numero_nomina,
                     }).then(response =>{
-                            this.concentrado_premios_entregar=response.data
+                        this.concentrado_premios_entregar=response.data
+                        if(this.concentrado_premios_entregar>0){
+                            
+                        }else{
+                            alert("0 Artículos pendientes.")
+                        }
+                           
                     }).catch(error =>{
 
                     })
