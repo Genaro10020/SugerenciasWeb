@@ -118,7 +118,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                             <tr class=" align-middle text-center fw-normal " v-for="(retos, index) in concentrado_retos">
                                                                 <td>{{index+1}}</td>
                                                                 <td><label class="folio fst-italic text-primary" style="cursor:pointer" @click="consultar_reto(retos.folio_reto)"><b>{{retos.folio_reto}}</b></label></td>
-                                                                <td>{{retos.descripcion_reto}}</td>
+                                                                <td>{{retos.titulo_reto}}</td>
                                                             </tr>
                                                         </tbody>
                                                         </table>

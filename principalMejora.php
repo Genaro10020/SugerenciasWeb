@@ -1395,7 +1395,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                             <tbody>
                                                 <tr v-show="bandera_editar==false" class=" text-center">
                                                 
-                                                        <td class="align-middle">
+                                                        <td class="align-middle sticky" style="  background: rgb(94, 94, 94);">
                                                                 <button type="submit" class="btn btn-primary" title="Guardar Reto" @click="agregarReto('Insertar')"><i class="bi bi-check-circle"></i></button> 
                                                         </td>
                                                         <td>
@@ -1591,13 +1591,13 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                         <b> CONFIGURACIÓN</b>
                                         </div>
                                 </div>
-                                <div class="row h-100">
-                                    <div class="row d-flex justify-content-center align-items-center">
-                                                <div class="col-12 col-sm-6  col-lg-4 col-xl-3 bg-light  border bordered-2 border-secondary rounded-2">
+                                <div class="row  justify-content-center align-items-center">
+                                   
+                                                <div class="col-12 col-sm-6  col-lg-4 col-xl-3 bg-light ms-3  ms-sm-0 mt-2   border bordered-2 border-secondary rounded-2">
                                                     <form @submit.prevent="guardar_admin_y_analista" class="m-2 ">
                                                     <div class="text-center"><span class="badge text-dark ">ALTA DE ADMIN/ANALISTAS.</span></div>
                                                         <div class="mb-3">
-                                                        <div><span class="badge text-dark">Usuario (No. de Control):</span></div>
+                                                        <div><span class="badge text-dark">Usuario (No. de Nómina):</span></div>
                                                             <input type="text" class="form-control" v-model="nuevo_usuario"  required>
                                                         </div>
                                                         <div class="mb-3">
@@ -1613,8 +1613,12 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                             <input type="email" class="form-control" v-model="nuevo_correo" required>
                                                         </div>
                                                         <div class="mb-3">
-                                                            <div><span class="badge text-dark">Departamente:</span></div>
-                                                            <input type="text"   class="form-control" v-model="nuevo_departamento" required>
+                                                            <div><span class="badge text-dark">Departamento:</span></div>
+                                                            <select class="form-control" v-model="nuevo_departamento" required>
+                                                                <option value="" disabled>Seleccione departamento...</option>
+                                                                <option v-for="area_part in lista_area_participante" :value="area_part.area_participante">{{area_part.area_participante}}</option>
+                                                            </select> 
+
                                                         </div>
                                                         <div class="mb-3">
                                                             <div><span class="badge text-dark">Tipo:</span></div>
@@ -1622,7 +1626,6 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                 <option value="" disabled>Seleccione tipo...</option>
                                                                 <option v-for="array_tipo in array_tipo_usuario" :value="array_tipo">{{array_tipo}}</option>
                                                             </select> 
-
                                                         </div>
                                                     
                                                         <div class="text-center">
@@ -1630,32 +1633,41 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                         </div>
                                                     </form>
                                                 </div>
-                                                <!--<div class="col-12  col-sm-6 col-lg-8  col-xl-9  ">
-                                                            <div class="text-center mt-3 ">
-                                                                <span class="badge bg-light text-dark">Sugerencias Pendientes de Factibilidad: <?php echo $_SESSION['nombre']; ?></span>
+                                                <div class="col-12 ">
+                                                            <div class="text-center pt-3 ">
+                                                                <span class="badge bg-light text-dark" style="font-size:0.7em;">Administradores / Analistas / Responsables</span>
                                                             </div>
-                                                            <div class="div-scroll mt-3">
+                                                            <div class="" style=" height:20vh; overflow-x: scroll;">
                                                                 <table class="tablaMonitoreo-sugerencias table table-striped table-bordered ">
                                                                 <thead class="encabezado-tabla text-center text-light ">
                                                                     <tr >
-                                                                        <th scope="col " class="sticky">#</th>
-                                                                        <th scope="col">Folio</th>
-                                                                        <th scope="col">Nombre de Sugerencia</th>
-                                                                        <th scope="col">Fecha de Inicio </th>
-                                                                        <th scope="col">Fecha Limite </th>
-                                                                        <th scope="col">Status de Factibilidad</th>
-                                                                        <th scope="col">Status Plan de Trabajo</th>
+                                                                        <th scope="col" class="sticky">Editar</th>
+                                                                        <th scope="col">Usuario</th>
+                                                                        <th scope="col">Password</th>
+                                                                        <th scope="col">Email </th>
+                                                                        <th scope="col">Nombre</th>
+                                                                        <th scope="col">Departamento</th>
+                                                                        <th scope="col">Tipo</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr v-for="(admis_usuarios, index) in array_usuarios">
-                                                                    
+                                                                        <td>
+                                                                            <button type="button" class="btn btn-danger me-2" title="Cancelar" @click="editarUsuario(0)" ><i class="bi bi-x-circle" ></i></button>
+                                                                            <button type="button" class="btn btn-warning me-2" title="Actualizar" @click="editaUsuario(index+1)"><i class="bi bi-pen" ></i></button>
+                                                                            <button  class="btn btn-primary me-2" title="Guardar" @click="guardarActualizarUsuario(0,admis_usuarios.id,'Actualizar')"><i class="bi bi-check-circle"></i></button> 
+                                                                        </td>
+                                                                        <td>{{admis_usuarios.user}}</td>
+                                                                        <td>{{admis_usuarios.password}}</td>
+                                                                        <td>{{admis_usuarios.email}}</td>
+                                                                        <td>{{admis_usuarios.nombre}}</td>
+                                                                        <td>{{admis_usuarios.departamento}}</td>
+                                                                        <td>{{admis_usuarios.tipo}}</td>
                                                                     </tr>
                                                                 </tbody>
                                                                 </table>
                                                             </div>          
-                                                </div>-->
-                                        </div>
+                                                </div>
                                 </div>
                    </div>
             </div>
@@ -1809,7 +1821,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 nuevo_nombre:'',
                 nuevo_correo:'',
                 nuevo_departamento:'',
-                array_tipo_usuario: ['Admin','Analista'],
+                array_tipo_usuario: ['Admin','Analista','Responsable'],
                 var_tipo_usuario:'',
                 array_usuarios:[],
             }
@@ -1860,9 +1872,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                    if(dato=='concentrado'){this.pintarDos=true}else{this.pintarDos=false}
                    if(dato=='premios'){ this.pintarTres=true;  this.consultar_concentrado_premios()}else{this.pintarTres=false}
                    if(dato=='retos'){this.pintarCuatro=true; this.consultaConcentradoRetos()}else{this.pintarCuatro=false}
-                   if(dato=='configuracion'){this.pintarCinco=true}else{this.pintarCinco=false}
+                   if(dato=='configuracion'){this.pintarCinco=true; this. consultar_usuarios()}else{this.pintarCinco=false}
              },
-       /*METODOS PRINCIPAL MEJORA*/   
+       /*METODOS PRINCIPAL MEJORA*/      
     datosSugerencia(id){
                 axios.post("cunsultar_datos_sugerencia.php",{
                 id_concentrado:id
@@ -2785,7 +2797,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 })
             },
         
-            /*METODOS DE ADMINISTRACION*/
+            /*METODOS DE CONFIGURACION*/
             guardar_admin_y_analista(){
                 axios.post('guardar_analista_o_admin.php',{
                     nuevo_usuario: this.nuevo_usuario,
@@ -2805,16 +2817,22 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                         this.var_tipo_usuario=''
                         alert("Usuario dado de alta con Éxito.")
                         this.consulta_lista_usuarios_y_analistas_factibilidad()
+                        this.consultar_usuarios()
                    }else{
                     alert("Algo salio mal.")
                    }
+                })
+            },
+            consultar_usuarios(){
+                axios.post('consulta_usuarios.php',{
+                }).then(response =>{
+                    this.array_usuarios=response.data
+                    console.log(this.array_usuarios)
                 })
             }
         }   
     }
     var mountedApp = Vue.createApp(vue3).mount('#app');
-
-
 </script>
 </body>
 </html>  

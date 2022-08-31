@@ -30,7 +30,7 @@
             $query = mysqli_query($conexion,$consulta);
             if(mysqli_num_rows($query)>0){
                 while ($fila=$query -> fetch_array()){
-                    $puntos_usados = (int)$fila['puntos_para_canjear']+$puntos_usados;
+                    $puntos_usados = (int)$fila['cantidad']*(int)$fila['puntos_para_canjear']+$puntos_usados;
                 }
             }
             

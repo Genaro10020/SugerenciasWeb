@@ -152,11 +152,11 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                                         </div>
                                                                             
                                                                             
-                                                                       <!-- <div if=" arreglo_canasta.length>0">
+                                                                      <div if="arreglo_canasta.length>0">
                                                                             <div v-for="canasta in arreglo_canasta">
-                                                                                    <span v-if="canasta.id_premio==premios.id" class="badge bg-dark">1 Art.<br>(x Confirmar)</span>
+                                                                                    <span v-if="canasta.id_premio==premios.id" class="badge bg-dark">{{canasta.cantidad}}<br>(x Confirmar)</span>
                                                                             </div>
-                                                                        </div>-->
+                                                                        </div>
 
                                                                         
                                                                       
@@ -191,7 +191,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                     {{puntos_seleccionado}} Puntos
                                                 </div>
                                         </div>
-                                        <div class="row justify-content-center align-items-start mx-1" >
+                                        <div v-if="arreglo_canasta.length>0"  class="row justify-content-center align-items-start mx-1" >
                                                 <div class="col-8 col-sm-5 col-lg-2 rounded-lg-start text-white" style=" background: #8B0000; ">
                                                     Puntos Restantes
                                                 </div>
@@ -282,8 +282,9 @@ window.location.hash="no-back-button";
                     })
                 },
             agregarCanasta(id_premio,codigo,url,descripcion,cantidad,puntos,numero_nomina){
-                var puntos_selec=this.puntos_seleccionado
-                var verificando_si_alcanza=Math.round(puntos_selec+(cantidad*puntos))
+                //var puntos_selec=this.puntos_seleccionado
+                var verificando_si_alcanza=Math.round(cantidad*puntos)
+                //alert("Cantidad: "+cantidad+"Puntos: "+puntos+"Suma: "+verificando_si_alcanza+"Total de puntos:"+this.total_puntos)
                 if(verificando_si_alcanza<=this.total_puntos){
                     this.exceso_gasto=false
                          axios.post("canasta_canjear_premios.php",{
@@ -305,7 +306,7 @@ window.location.hash="no-back-button";
 
                                     })
                         }else{ 
-                                alert("Esta excediendo los puntos, no tines: "+verificando_si_alcanza+" Puntos")
+                                alert("Esta excediendo los puntos, no tienes: "+verificando_si_alcanza+" Puntos")
                             }
 
                 },
