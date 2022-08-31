@@ -1331,57 +1331,61 @@ if ($_SESSION["usuario"] ){
                     })
                 },
                 editarIndicador(id,index_actualizar){
-                    console.log(this.concentrado_impacto_sugerencias_midiendo)
-                        console.log("arriba id_concentrado es igual a ="+id)
+                   // console.log(this.concentrado_impacto_sugerencias_midiendo)
+                        console.log("arriba id_concentrado es igual a ="+id,"TAMANIO:",this.concentrado_impacto_sugerencias_midiendo.length)
 
                         if(index_actualizar==""){ //accion del boton cancelar.
                             this.btn_actualizar = false
                             this.id_actualiza = '' // ocultar edits en editar
                         }else{  
-                            for (let index = 0; index < this.concentrado_impacto_sugerencias_midiendo.length; index++) {// si existe un registro colocalo a las variables
-                                if(this.concentrado_impacto_sugerencias_midiendo[index].id_concentrado == id){
-                                    this.btn_actualizar = true
-                                    this.id_actualiza = index_actualizar
 
-                                    this.indicador = this.concentrado_impacto_sugerencias_midiendo[index].indicador
-                                    this.unidades = this.concentrado_impacto_sugerencias_midiendo[index].unidades
-                                    this.linea_base = this.concentrado_impacto_sugerencias_midiendo[index].linea_base
-                                    this.periodo_de_medicion = this.concentrado_impacto_sugerencias_midiendo[index].periodo
-                                    this.mes1 = this.concentrado_impacto_sugerencias_midiendo[index].mes1
-                                    this.mes2 = this.concentrado_impacto_sugerencias_midiendo[index].mes2
-                                    this.mes3 = this.concentrado_impacto_sugerencias_midiendo[index].mes3
-                                    this.mes4 = this.concentrado_impacto_sugerencias_midiendo[index].mes4
-                                    this.mes5 = this.concentrado_impacto_sugerencias_midiendo[index].mes5
-                                    this.mes6 = this.concentrado_impacto_sugerencias_midiendo[index].mes6
-                                    this.mes7 = this.concentrado_impacto_sugerencias_midiendo[index].mes7
-                                    this.mes8 = this.concentrado_impacto_sugerencias_midiendo[index].mes8
-                                    this.mes9 = this.concentrado_impacto_sugerencias_midiendo[index].mes9
-                                    this.mes10 = this.concentrado_impacto_sugerencias_midiendo[index].mes10
-                                    this.mes11 = this.concentrado_impacto_sugerencias_midiendo[index].mes11
-                                    this.mes12 = this.concentrado_impacto_sugerencias_midiendo[index].mes12
-                                    break;
-                                }else{// de lo contrario nadas activa los input
-                                    this.btn_actualizar = true
-                                    this.id_actualiza = index_actualizar
+                            if(this.concentrado_impacto_sugerencias_midiendo.length>0)
+                            {
+                                for (let index = 0; index < this.concentrado_impacto_sugerencias_midiendo.length; index++) 
+                                        {// si existe un registro colocalo a las variables
+                                            if(this.concentrado_impacto_sugerencias_midiendo[index].id_concentrado == id){
+                                                this.btn_actualizar = true
+                                                this.id_actualiza = index_actualizar
 
-                                    this.indicador = ''
-                                    this.unidades = ''
-                                    this.linea_base = ''
-                                    this.periodo_de_medicion = 1
-                                    this.mes1 = ''
-                                    this.mes2 = ''
-                                    this.mes3 = ''
-                                    this.mes4 = ''
-                                    this.mes5 = ''
-                                    this.mes6 = ''
-                                    this.mes7 = ''
-                                    this.mes8 = ''
-                                    this.mes9 = ''
-                                    this.mes10 = ''
-                                    this.mes11 = ''
-                                    this.mes12 = ''
-                                }
-                            }
+                                                this.indicador = this.concentrado_impacto_sugerencias_midiendo[index].indicador
+                                                this.unidades = this.concentrado_impacto_sugerencias_midiendo[index].unidades
+                                                this.linea_base = this.concentrado_impacto_sugerencias_midiendo[index].linea_base
+                                                this.periodo_de_medicion = this.concentrado_impacto_sugerencias_midiendo[index].periodo
+                                                this.mes1 = this.concentrado_impacto_sugerencias_midiendo[index].mes1
+                                                this.mes2 = this.concentrado_impacto_sugerencias_midiendo[index].mes2
+                                                this.mes3 = this.concentrado_impacto_sugerencias_midiendo[index].mes3
+                                                this.mes4 = this.concentrado_impacto_sugerencias_midiendo[index].mes4
+                                                this.mes5 = this.concentrado_impacto_sugerencias_midiendo[index].mes5
+                                                this.mes6 = this.concentrado_impacto_sugerencias_midiendo[index].mes6
+                                                this.mes7 = this.concentrado_impacto_sugerencias_midiendo[index].mes7
+                                                this.mes8 = this.concentrado_impacto_sugerencias_midiendo[index].mes8
+                                                this.mes9 = this.concentrado_impacto_sugerencias_midiendo[index].mes9
+                                                this.mes10 = this.concentrado_impacto_sugerencias_midiendo[index].mes10
+                                                this.mes11 = this.concentrado_impacto_sugerencias_midiendo[index].mes11
+                                                this.mes12 = this.concentrado_impacto_sugerencias_midiendo[index].mes12
+                                                break;
+                                            }
+                                    }
+                            }else{// de lo contrario nadas activa los input
+                                                this.btn_actualizar = true
+                                                this.id_actualiza = index_actualizar
+                                                this.indicador = ''
+                                                this.unidades = ''
+                                                this.linea_base = ''
+                                                this.periodo_de_medicion = 1
+                                                this.mes1 = ''
+                                                this.mes2 = ''
+                                                this.mes3 = ''
+                                                this.mes4 = ''
+                                                this.mes5 = ''
+                                                this.mes6 = ''
+                                                this.mes7 = ''
+                                                this.mes8 = ''
+                                                this.mes9 = ''
+                                                this.mes10 = ''
+                                                this.mes11 = ''
+                                                this.mes12 = ''
+                                            }
                     }
                 },
                 guardarEditarIndicador(id_concentrado,folio){
