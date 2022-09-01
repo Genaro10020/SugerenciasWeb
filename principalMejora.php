@@ -1184,7 +1184,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                             <tbody>
                                                 <tr v-show="bandera_editar==false" class=" text-center">
                                                 
-                                                        <td class="align-middle">
+                                                        <td class="align-middle sticky" style="  background: #f8f9fa;">
                                                         <button  class="btn btn-primary" title="Guardar Reto" @click="guardarActualizarPremios('','','Insertar')"><i class="bi bi-check-circle"></i></button>       
                                                         </td>
                                                         <td>
@@ -1641,28 +1641,49 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                 <table class="tablaMonitoreo-sugerencias table table-striped table-bordered ">
                                                                 <thead class="encabezado-tabla text-center text-light ">
                                                                     <tr >
-                                                                        <!--<th scope="col" class="sticky">Editar</th>-->
+                                                                        <th scope="col" class="sticky">Editar</th>
                                                                         <th scope="col">Usuario</th>
                                                                         <th scope="col">Password</th>
                                                                         <th scope="col">Email </th>
                                                                         <th scope="col">Nombre</th>
                                                                         <th scope="col">Departamento</th>
-                                                                        <th scope="col">Tipo</th>
+                                                                        <th scope="col">Tipo {{}}</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr v-for="(admis_usuarios, index) in array_usuarios">
-                                                                       <!-- <td>
-                                                                            <button type="button" class="btn btn-danger me-2" title="Cancelar" @click="editarUsuario(0)" ><i class="bi bi-x-circle" ></i></button>
-                                                                            <button type="button" class="btn btn-warning me-2" title="Actualizar" @click="editaUsuario(index+1)"><i class="bi bi-pen" ></i></button>
-                                                                            <button  class="btn btn-primary me-2" title="Guardar" @click="guardarActualizarUsuario(0,admis_usuarios.id,'Actualizar')"><i class="bi bi-check-circle"></i></button> 
-                                                                        </td>-->
-                                                                        <td>{{admis_usuarios.user}}</td>
-                                                                        <td>{{admis_usuarios.password}}</td>
-                                                                        <td>{{admis_usuarios.email}}</td>
-                                                                        <td>{{admis_usuarios.nombre}}</td>
-                                                                        <td>{{admis_usuarios.departamento}}</td>
-                                                                        <td>{{admis_usuarios.tipo}}</td>
+                                                                        <td>
+                                                                            <button v-if="id_update==index+1" type="button" class="btn btn-danger me-2" title="Cancelar" @click="editarUsuarios(0,0)" ><i class="bi bi-x-circle" ></i></button>
+                                                                            <button v-if="bandera_editar_user == false" type="button" class="btn btn-warning me-2" title="Actualizar" @click="editarUsuarios(1,index+1)"><i class="bi bi-pen" ></i></button>
+                                                                            <button v-if="id_update==index+1" class="btn btn-primary me-2" title="Guardar" @click="actualizar_admin_y_analista(admis_usuarios.id)"><i class="bi bi-check-circle"></i></button> 
+                                                                        </td>
+                                                                        <td> 
+                                                                            <input v-if="id_update==index+1" class="inputs-concentrado" type="text" v-model="u_user"/> 
+                                                                            <label v-else>{{admis_usuarios.user}}</label>
+                                                                        </td>
+                                                                        <td><input v-if="id_update==index+1" class="inputs-concentrado" type="text" v-model="u_password"/> 
+                                                                            <label v-else>{{admis_usuarios.password}}<label>
+                                                                        </td>
+                                                                        <td><input v-if="id_update==index+1" class="inputs-concentrado" type="text" v-model="u_email"/> 
+                                                                            <label v-else>{{admis_usuarios.email}}<label>
+                                                                        </td>
+                                                                        <td><input v-if="id_update==index+1" class="inputs-concentrado" type="text" v-model="u_nombre"/> 
+                                                                            <label v-else>{{admis_usuarios.nombre}}<label>
+                                                                        </td>    
+                                                                        <td>
+                                                                            <select v-if="id_update==index+1" class="inputs-concentrado" v-model="u_departamento" required>
+                                                                                <option value="" disabled>Seleccione departamento...</option>
+                                                                                <option v-for="area_part in lista_area_participante" :value="area_part.area_participante">{{area_part.area_participante}}</option>
+                                                                            </select> 
+                                                                            <label v-else>{{admis_usuarios.departamento}}<label>
+                                                                        </td>    
+                                                                        <td>
+                                                                            <select  v-if="id_update==index+1" class="inputs-concentrado" v-model="u_tipo" required>
+                                                                                <option value="" disabled>Seleccione tipo...</option>
+                                                                                <option v-for="array_tipo in array_tipo_usuario" :value="array_tipo">{{array_tipo}}</option>
+                                                                            </select> 
+                                                                            <label v-else>{{admis_usuarios.tipo}}<label>
+                                                                        </td>    
                                                                     </tr>
                                                                 </tbody>
                                                                 </table>
@@ -1824,6 +1845,14 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 array_tipo_usuario: ['Admin','Analista','Responsable'],
                 var_tipo_usuario:'',
                 array_usuarios:[],
+                bandera_editar_user:false,
+                id_update:0,
+                u_user: '', 
+                u_password:'', 
+                u_email: '',
+                u_nombre:'', 
+                u_departamento:'', 
+                u_tipo:''
             }
         },
         mounted(){
@@ -2805,7 +2834,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     nuevo_nombre: this.nuevo_nombre,
                     nuevo_correo: this.nuevo_correo,
                     nuevo_departamento: this.nuevo_departamento,
-                    var_tipo_usuario: this.var_tipo_usuario
+                    var_tipo_usuario: this.var_tipo_usuario,
+                    accion: 'guardar'
                 }).then(response =>{
                     console.log(response.data);
                    if(response.data=='Bien'){
@@ -2829,7 +2859,46 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     this.array_usuarios=response.data
                     console.log(this.array_usuarios)
                 })
-            }
+            },
+            editarUsuarios(bandera,index){
+              
+                this.id_update = index
+                if(bandera==1){
+                    this.bandera_editar_user = true
+                    this.u_user=this.array_usuarios[index-1].user
+                    this.u_password=this.array_usuarios[index-1].password
+                    this.u_email=this.array_usuarios[index-1].email
+                    this.u_nombre=this.array_usuarios[index-1].nombre
+                    this.u_departamento=this.array_usuarios[index-1].departamento
+                    this.u_tipo=this.array_usuarios[index-1].tipo
+
+                }
+                if(bandera==0){
+                    this.bandera_editar_user = false
+                }
+            },
+            actualizar_admin_y_analista(id){
+                axios.post('guardar_analista_o_admin.php',{
+                    nuevo_usuario:  this.u_user,
+                    nuevo_password: this.u_password,
+                    nuevo_nombre:  this.u_nombre,
+                    nuevo_correo: this.u_email,
+                    nuevo_departamento: this.u_departamento,
+                    var_tipo_usuario: this.u_tipo,
+                    id: id,
+                    accion: 'actualizar',
+                    }).then(response =>{
+                    console.log(response.data);
+                   if(response.data=='Bien'){
+                        this.bandera_editar_user = false
+                        this.id_update = 0
+                        this.consulta_lista_usuarios_y_analistas_factibilidad()
+                        this.consultar_usuarios()
+                   }else{
+                    alert("Algo salio mal.")
+                   }
+                })
+            },
         }   
     }
     var mountedApp = Vue.createApp(vue3).mount('#app');
