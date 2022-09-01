@@ -167,7 +167,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                         numero_nomina,
                     }).then(response =>{
                         this.concentrado_premios_entregar=response.data
-                        if(this.concentrado_premios_entregar>0){
+                        if(this.concentrado_premios_entregar.length>0){
                             
                         }else{
                             alert("0 Artículos pendientes.")

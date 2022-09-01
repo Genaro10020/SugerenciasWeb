@@ -203,7 +203,7 @@ if ($_SESSION["usuario"] ){
                                                                                         <label class=" fw-bold mt-1">Situacion Actual: </label> {{concentrado.situacion_actual}}<br>
                                                                                         <label class=" fw-bold mt-1">Idea Propuesta: </label> {{concentrado.idea_propuesta}}<br>
                                                                                         <label class=" fw-bold mt-1">Colaborador: </label> {{concentrado.colaborador}}<br>
-                                                                                        <label class=" fw-bold mt-1">No. de Nomina:</label> {{concentrado.colaborador}}<br>
+                                                                                        <label class=" fw-bold mt-1">No. de Nomina:</label> {{concentrado.numero_nomina}}<br>
                                                                                         <label class=" fw-bold mt-1">Puesto: </label> {{concentrado.puesto}}<br>
                                                                                         <label class=" fw-bold mt-1">Área: </label> {{concentrado.area}}<br>
                                                                                         <label class=" fw-bold mt-1">Subárea: </label> {{concentrado.subarea}}<br>
