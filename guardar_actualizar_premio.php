@@ -21,14 +21,25 @@ include "conexionGhoner.php";
 
        if($insertar_actualizar=='Insertar'){
 
-                $consulta = "INSERT INTO concentrado_premios_sugerencias (codigo_premio, descripcion, puntos_para_canjear)  VALUES ('$codigo_premios','$descripcion_premios','$puntos_canjear_premios')";
-                $query = mysqli_query( $conexion, $consulta);
-
+                $consulta = "SELECT * FROM concentrado_premios_sugerencias WHERE codigo_premio='$codigo_premios'";
+                $query=mysqli_query( $conexion, $consulta);
+                if(mysqli_num_rows($query)>0){
+                        $query = "Existe";
+                }else{
+                        $consulta = "INSERT INTO concentrado_premios_sugerencias (codigo_premio, descripcion, puntos_para_canjear)  VALUES ('$codigo_premios','$descripcion_premios','$puntos_canjear_premios')";
+                        $query = mysqli_query( $conexion, $consulta);
+                }
        }
        if($insertar_actualizar=='Actualizar'){
-        
+
+        $consulta = "SELECT * FROM concentrado_premios_sugerencias WHERE codigo_premio='$codigo_premios'";
+        $query=mysqli_query( $conexion, $consulta);
+                if(mysqli_num_rows($query)>0){
+                        $query = "Existe";
+                }else{
                 $consulta = "UPDATE concentrado_premios_sugerencias SET codigo_premio='$codigo_premios', descripcion='$descripcion_premios', puntos_para_canjear='$puntos_canjear_premios' WHERE id = '$id_premio'";
                 $query = mysqli_query( $conexion, $consulta);
+                }
 
         } 
 

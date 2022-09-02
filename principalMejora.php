@@ -20,6 +20,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
     <!--Axios--> 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <!--Titulo fuente-->
+
+    <!---->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet"> 
@@ -87,7 +89,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 </div>
             </div>
                  <!--CUERPO-->
-            <div class="row" style="min-height:76vh">
+            <div class="row cuerpo_principal" style="min-height:76vh">
             <!--////////////////////////////////////////////////////////PRINCIPAL MEJORA-->
                    <div v-if="ventana=='principalMejora'">
                             <!--cinta apartado-->
@@ -136,20 +138,20 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                 <div class="d-flex justify-content-around">
                                                     <div>
                                                            <div v-if="concentrado.validacion_de_impacto =='Cuantitativo'"><!--BTN VERDE-->
-                                                                <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-success" @click="datos_modal(concentrado.id, concentrado.folio,'Cuantitativo',concentrado.numero_nomina)" style=" font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalImpactoCuantitativo">Impacto Cuantitativo</button>
+                                                                <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-success" @click="datos_modal(concentrado.id, concentrado.folio,'Cuantitativo',concentrado.numero_nomina)" style=" font-size:.9em">Impacto Cuantitativo</button>
                                                                 <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-danger ms-2" @click="vaciarValidaciondeImpacto(concentrado.id,'Cuantitativo')" title="Limpiar impacto" style=" font-size:.9em">x</button>
                                                            </div>
                                                            <div v-else><!--BTN GRIS-->                                                           
-                                                                <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-secondary" @click="datos_modal(concentrado.id, concentrado.folio,'Cuantitativo',concentrado.numero_nomina)" style=" font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalImpactoCuantitativo">Impacto Cuantitativo</button>
+                                                                <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-secondary" @click="datos_modal(concentrado.id, concentrado.folio,'Cuantitativo',concentrado.numero_nomina)" style=" font-size:.9em" >Impacto Cuantitativo</button>
                                                            </div> 
                                                     </div>
                                                     <div>
                                                             <div v-if="concentrado.validacion_de_impacto =='Cualitativo'"><!--BTN VERDE-->
-                                                                <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-success" @click="datos_modal(concentrado.id, concentrado.folio,'Cualitativo',concentrado.numero_nomina)" style=" font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalImpactoCualitativo">Impacto Cualitativo</button>
+                                                                <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-success" @click="datos_modal(concentrado.id, concentrado.folio,'Cualitativo',concentrado.numero_nomina)" style=" font-size:.9em" >Impacto Cualitativo</button>
                                                                 <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-danger ms-2" @click="vaciarValidaciondeImpacto(concentrado.id,'Cualitativo')" title="Limpiar impacto" style=" font-size:.9em">x</button>
                                                             </div>
                                                             <div v-else><!--BTN GRIS-->
-                                                                <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-secondary" @click="datos_modal(concentrado.id, concentrado.folio,'Cualitativo',concentrado.numero_nomina)" style=" font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalImpactoCualitativo">Impacto Cualitativo</button>
+                                                                <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-secondary" @click="datos_modal(concentrado.id, concentrado.folio,'Cualitativo',concentrado.numero_nomina)" style=" font-size:.9em" >Impacto Cualitativo</button>
                                                             </div>  
                                                     </div>
                                                  </div>
@@ -902,12 +904,12 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                     <button type="button" class="btn btn-danger me-2" title="Cancelar" @click="mostrar_id('')" v-if="actualizar_sugerencia==index+1"><i class="bi bi-x-circle" ></i></button>
                                                     <button type="button" class="btn btn-primary" title="Guardar" @click="guardar_nueva_sugerencia_y_actualizar('actualizar',concentrado.id)" v-if="actualizar_sugerencia==index+1"><i class="bi bi-check-circle"></i></button>
                                                     <button type="button" class="btn btn-warning" title="Actualizar" @click="mostrar_id(index+1)" v-else><i class="bi bi-pen" ></i></button>
-                                                    <button v-show="concentrado.cantidadDOC == 0" type="button" class="btn btn-secondary  ms-2" title="Subir Sugerencia" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_subir_ver_documentos('Subir',concentrado.id,concentrado.folio,'sugerencia',concentrado.cantidadDOC)"><i class="bi bi-paperclip"></i>{{concentrado.cantidadDOC}}</button>
-                                                    <button v-show="concentrado.cantidadDOC != 0" type="button" class="btn btn-success  ms-2" title="Subir Sugerencia" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_subir_ver_documentos('Subir',concentrado.id,concentrado.folio,'sugerencia',concentrado.cantidadDOC)"><i class="bi bi-paperclip"></i>{{concentrado.cantidadDOC}}</button>
+                                                    <button v-show="concentrado.cantidadDOC == 0" type="button" class="btn btn-secondary  ms-2" title="Subir Sugerencia"  @click="modal_subir_ver_documentos('Subir',concentrado.id,concentrado.folio,'sugerencia',concentrado.cantidadDOC)"><i class="bi bi-paperclip"></i>{{concentrado.cantidadDOC}}</button>
+                                                    <button v-show="concentrado.cantidadDOC != 0" type="button" class="btn btn-success  ms-2" title="Subir Sugerencia"  @click="modal_subir_ver_documentos('Subir',concentrado.id,concentrado.folio,'sugerencia',concentrado.cantidadDOC)"><i class="bi bi-paperclip"></i>{{concentrado.cantidadDOC}}</button>
                                                     <!--Deshabilitar btn si no esta al 99% el plan (100% actividades)-->
                                                     <button v-show="concentrado.cumplimiento < 99 || concentrado.cumplimiento =='' || concentrado.status!='En Implementación' && concentrado.status!='Implementada'" type="button" class="btn btn-secondary  ms-2" title="Subir PPT(Deshabilitado)" disabled ><i class="bi bi-paperclip"></i>{{concentrado.cantidadPPT}}</button >
-                                                    <button v-show="concentrado.cantidadPPT == 0 && concentrado.cumplimiento >= 99 && concentrado.status=='En Implementación' || concentrado.cantidadPPT == 0 && concentrado.cumplimiento >= 99 && concentrado.status=='Implementada'"  type="button" class="btn btn-secondary  ms-2" title="Subir PPT" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_subir_ver_documentos('Subir',concentrado.id,concentrado.folio,'ppt',concentrado.cantidadPPT)"><i class="bi bi-paperclip"></i>{{concentrado.cantidadPPT}}</button>
-                                                    <button v-show="concentrado.cantidadPPT != 0 && concentrado.cumplimiento >= 99 && concentrado.status=='En Implementación' || concentrado.cantidadPPT != 0 && concentrado.cumplimiento >= 99 && concentrado.status=='Implementada'" type="button" class="btn btn-success  ms-2" title="Subir PPT" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_subir_ver_documentos('Subir',concentrado.id,concentrado.folio,'ppt',concentrado.cantidadPPT)"><i class="bi bi-paperclip"></i>{{concentrado.cantidadPPT}}</button>
+                                                    <button v-show="concentrado.cantidadPPT == 0 && concentrado.cumplimiento >= 99 && concentrado.status=='En Implementación' || concentrado.cantidadPPT == 0 && concentrado.cumplimiento >= 99 && concentrado.status=='Implementada'"  type="button" class="btn btn-secondary  ms-2" title="Subir PPT"  @click="modal_subir_ver_documentos('Subir',concentrado.id,concentrado.folio,'ppt',concentrado.cantidadPPT)"><i class="bi bi-paperclip"></i>{{concentrado.cantidadPPT}}</button>
+                                                    <button v-show="concentrado.cantidadPPT != 0 && concentrado.cumplimiento >= 99 && concentrado.status=='En Implementación' || concentrado.cantidadPPT != 0 && concentrado.cumplimiento >= 99 && concentrado.status=='Implementada'" type="button" class="btn btn-success  ms-2" title="Subir PPT"  @click="modal_subir_ver_documentos('Subir',concentrado.id,concentrado.folio,'ppt',concentrado.cantidadPPT)"><i class="bi bi-paperclip"></i>{{concentrado.cantidadPPT}}</button>
                                                 </td>
                                                 <th scope="row">{{index+1}}<br><!--{{concentrado.id}}--></th>
                                                 <td><label>{{concentrado.cumplimiento}}%</label></td>
@@ -1226,8 +1228,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                             <button v-if="actualizar_premios==index+1" type="button" class="btn btn-danger me-2" title="Cancelar" @click="editaPremio(0)" ><i class="bi bi-x-circle" ></i></button>
                                                                             <button v-show="bandera_editar_premio==false" type="button" class="btn btn-warning me-2" title="Actualizar" @click="editaPremio(index+1)"><i class="bi bi-pen" ></i></button>
                                                                             <button v-if="actualizar_premios==index+1" class="btn btn-primary me-2" title="Guardar Reto" @click="guardarActualizarPremios(0,premios.id,'Actualizar')"><i class="bi bi-check-circle"></i></button> 
-                                                                            <button v-if="premios.cant_img>0" type="button" class="btn btn-success" title="Subir Imagen" data-bs-toggle="modal" @click="modal_subir_ver_documentos('Subir',premios.id,premios.codigo_premio,'premio',premios.cant_img)" data-bs-target="#modal"><i class="bi bi-paperclip">{{premios.cantidad_img}}</i></button>
-                                                                            <button v-else type="button" class="btn btn-secondary " title="Subir Imagen" data-bs-toggle="modal" @click="modal_subir_ver_documentos('Subir',premios.id,premios.codigo_premio,'premio',premios.cant_img)" data-bs-target="#modal"><i class="bi bi-paperclip">{{premios.cantidad_img}}</i></button>    
+                                                                            <button v-if="premios.cant_img>0" type="button" class="btn btn-success" title="Subir Imagen"  @click="modal_subir_ver_documentos('Subir',premios.id,premios.codigo_premio,'premio',premios.cant_img)" ><i class="bi bi-paperclip">{{premios.cantidad_img}}</i></button>
+                                                                            <button v-else type="button" class="btn btn-secondary " title="Subir Imagen"  @click="modal_subir_ver_documentos('Subir',premios.id,premios.codigo_premio,'premio',premios.cant_img)" ><i class="bi bi-paperclip">{{premios.cantidad_img}}</i></button>    
                                                                 </td>
                                                                 <td>
                                                                 
@@ -1467,8 +1469,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                             <button v-if="actualizar_reto==index+1" type="button" class="btn btn-danger me-2" title="Cancelar" @click="editaReto(0)" ><i class="bi bi-x-circle" ></i></button>
                                                                             <button v-show="bandera_editar==false" type="button" class="btn btn-warning me-2" title="Actualizar" @click="editaReto(index+1)"><i class="bi bi-pen" ></i></button>
                                                                             <button v-show="bandera_editar==true" class="btn btn-primary me-2" title="Guardar Reto" @click="guardarActualizacionReto(0,retos.id,'Actualizar')"><i class="bi bi-check-circle"></i></button> 
-                                                                            <button v-if="retos.cantidad_img>0" type="button" class="btn btn-success  ms-2" title="Subir Imagen" data-bs-toggle="modal" @click="modal_subir_ver_documentos('Subir',retos.id,retos.folio_reto,'reto',retos.cantidad_img)" data-bs-target="#modal"><i class="bi bi-paperclip">{{retos.cantidad_img}}</i></button>
-                                                                            <button v-else type="button" class="btn btn-secondary " title="Subir Imagen" data-bs-toggle="modal" @click="modal_subir_ver_documentos('Subir',retos.id,retos.folio_reto,'reto',retos.cantidad_img)" data-bs-target="#modal"><i class="bi bi-paperclip">{{retos.cantidad_img}}</i></button>    
+                                                                            <button v-if="retos.cantidad_img>0" type="button" class="btn btn-success  ms-2" title="Subir Imagen" @click="modal_subir_ver_documentos('Subir',retos.id,retos.folio_reto,'reto',retos.cantidad_img)"><i class="bi bi-paperclip">{{retos.cantidad_img}}</i></button>
+                                                                            <button v-else type="button" class="btn btn-secondary " title="Subir Imagen" @click="modal_subir_ver_documentos('Subir',retos.id,retos.folio_reto,'reto',retos.cantidad_img)" ><i class="bi bi-paperclip">{{retos.cantidad_img}}</i></button>    
                                                                 </td>
                                                                 <td >
                                                                      <label><b>{{index+1 }}</b></label>
@@ -1716,6 +1718,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 nueva_sugerencia:false,
                 concentrado_sugerencias_pendiente_impacto: [],
                 concentrado_impacto_sugerencias_midiendo:[],
+                myModal:'',
                 //*Varibales Concetrado*/
                 lista_validacion_de_impacto:['Cuantitativo','Cualitativo'],
                 concentrado_actividades:[],
@@ -1944,12 +1947,23 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
         alert("El %cumplimiento debe de estar al 99% para que se active. ")
     },
     datos_modal(id_concentrado,folio,validacion_de_impacto,nomina){
+        
         this.numero_nomina = nomina
         this.id_concentrado = id_concentrado
         this.folio = folio
         this.folio_carpeta_doc = folio
         this.validacion_de_impacto = validacion_de_impacto
         this.cual_documento = 'ppt'
+        
+            if(this.validacion_de_impacto=="Cuantitativo"){
+              this.myModal = new bootstrap.Modal(document.getElementById('modalImpactoCuantitativo'))
+              this.myModal.show()
+             
+            }
+            if(this.validacion_de_impacto=="Cualitativo"){
+             this.myModal = new bootstrap.Modal(document.getElementById('modalImpactoCualitativo'))
+             this.myModal.show()
+            }
         this.buscarDocumentos()
         this.buscarDatosValidacionImpacto()
         
@@ -2013,12 +2027,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                         console.log(response.data)
                         if(response.data[0]== true && response.data[1]== true){
                            alert("Los datos se guardaron/actualizaron correctamente.")
-                           /*const items = document.getElementsByClassName("modal-backdrop fade show")// obtengo div con estas clases
-                           items[0].className = ""; // sustituyo y elimino a nada. 
-                           bootstrap.Modal.getOrCreateInstance(document.getElementById('modalImpactoCuantitativo')).hide()//oculto contenido*/
-                            this.consultado_concentrado()
-                            //window.location.reload();
-                            
+                           this.consultado_concentrado()
+                           this.myModal.hide()
                         }else{
                             alert("Fallo al guardar en una tabla o ambas")
                         }
@@ -2040,14 +2050,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 }).then(response =>{
                         console.log(response.data)
                         if(response.data[0]== true && response.data[1]== true){
-                            //window.location.reload();
-                           alert("Los datos se guardaron/actualizaron correctamente.")
-                           /*const items = document.getElementsByClassName("modal-backdrop fade show")// obtengo div con estas clases
-                           items[0].className = ""; // sustituyo y elimino a nada. 
-                           bootstrap.Modal.getOrCreateInstance(document.getElementById('modalImpactoCualitativo')).hide()//oculto contenido*/
-                          
+                            alert("Los datos se guardaron/actualizaron correctamente.")
                             this.consultado_concentrado()
-                            
+                            this.myModal.hide()
                         }else{
                             alert("Fallo al guardar en una tabla o ambas")
                         }
@@ -2375,12 +2380,20 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 this.cual_documento = cual_documento
                 this.cantidadDOCFILE = cantidad
                 if(this.cual_documento == 'sugerencia'){
+                    this.myModal = new bootstrap.Modal(document.getElementById('modal'))
+                    this.myModal.show()
                     this.extensiones_valida = '(.png, .jpeg, .jpg, .pdf)'
                 }else if(this.cual_documento == 'ppt'){
+                    this.myModal = new bootstrap.Modal(document.getElementById('modal'))
+                    this.myModal.show()
                     this.extensiones_valida = '(.docx, .ppt, .pptx)'
                 }else if(this.cual_documento == 'reto'){
+                    this.myModal = new bootstrap.Modal(document.getElementById('modal'))
+                    this.myModal.show()
                     this.extensiones_valida = '(.png, .jpeg, .jpg, .pdf)'
                 }else if(this.cual_documento == 'premio'){
+                    this.myModal = new bootstrap.Modal(document.getElementById('modal'))
+                    this.myModal.show()
                     this.extensiones_valida = '(.png, .jpeg, .jpg)'
                 }else{
                     this.extensiones_valida = ''
@@ -2417,7 +2430,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                      if(this.cual_documento=="ppt"){
                         this.fileppt = response.data;
                         if(this.fileppt.length>0){
-                            //this.cantidadDOCFILE = this.fileppt.length
+                            this.myModal.hide()
                             document.getElementById("input_file_subir").value=""
                             alert(this.fileppt.length + " archivo/s se han subido.")
                             this.buscarDocumentos()
@@ -2429,7 +2442,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                      if(this.cual_documento=="sugerencia"){
                         this.filedoc = response.data;
                         if(this.filedoc.length>0){
-                           // this.cantidadDOCFILE = this.filedoc.length
+                            this.myModal.hide()
                             document.getElementById("input_file_subir").value=""
                             alert(this.filedoc.length + " archivo/s se han subido.")
                             this.buscarDocumentos()
@@ -2440,7 +2453,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                      if(this.cual_documento=="reto"){
                         this.filereto = response.data;
                         if(this.filereto.length>0){
-                           // this.cantidadDOCFILE = this.filedoc.length
+                            this.myModal.hide()
                             document.getElementById("input_file_subir").value=""
                             alert(this.filereto.length + " archivo/s se han subido.")
                             this.buscarDocumentos()
@@ -2451,7 +2464,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                      if(this.cual_documento=="premio"){
                         this.filepremio = response.data;
                         if(this.filepremio.length>0){
-                           // this.cantidadDOCFILE = this.filedoc.length
+                            this.myModal.hide()
                             document.getElementById("input_file_subir").value=""
                             alert(this.filepremio.length + " archivo/s se han subido.")
                             this.buscarDocumentos()
@@ -2580,14 +2593,16 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                     puntos_canjear_premios: this.puntos_canjear_premios
 
                                                 }).then(response =>{
+                                                    console.log(response.data,'VERIFICANDO SI YA EXISTE EL DATO.')
                                                     if(response.data== true){
                                                         this.bandera_editar_premio = false
                                                         this.actualizar_premios=index
-
                                                         this.codigo_premios = ''
                                                         this.descripcion_premios = ''
                                                         this.puntos_canjear_premios = ''
                                                         this.consultar_concentrado_premios()
+                                                    }else if(response.data=="Existe"){
+                                                          alert('El código esta DUPLICADO, verifique y vuelva a guardar.')  
                                                     }else{
                                                         alert('Problemas para guardar premio en BD')
                                                     }
@@ -2613,17 +2628,16 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                         codigo_premios: this.act_codigo_premio,
                                         descripcion_premios: this.act_descripcion_premios,
                                         puntos_canjear_premios: this.act_puntos_premios
-
                                     }).then(response =>{
                                         if(response.data== true){
                                             this.bandera_editar_premio = false
                                             this.actualizar_premios=index
-
                                             this.act_codigo_premio = ''
                                             this.act_descripcion_premios = ''
                                             this.act_puntos_premios = ''
                                             this.consultar_concentrado_premios()
-
+                                        }else if(response.data=="Existe"){
+                                            alert('El código esta DUPLICADO, verifique y vuelva a guardar.')  
                                         }else{
                                             alert('Problemas para actualizar premio en BD')
                                         }

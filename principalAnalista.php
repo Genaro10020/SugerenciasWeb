@@ -475,7 +475,8 @@ if ($_SESSION["usuario"] ){
                                         <div class="row">  <!-- contenido impacto de sugerencia-->
                                                                 <div class="col-12">                                
                                                                         <div class="text-center mt-3 ">
-                                                                            <span class="badge bg-light text-dark">Sugerencias Pendientes de Impacto:<?php echo $_SESSION['nombre']; ?></span>
+                                                                            <span class="badge bg-light text-dark">Sugerencias Pendientes de Impacto:<?php echo $_SESSION['nombre']; ?></span><br>
+                                                                            {{concentrado_sugerencias_pendiente_impacto}}
                                                                         </div>
                                                                             <div class="div-scroll mt-3 "><!--Scroll-->
                                                                             <table class="tablaMonitoreo-sugerencias table table-striped table-bordered text-center">
@@ -507,9 +508,11 @@ if ($_SESSION["usuario"] ){
                                                                                     <th scope="col">Mes 11</th>
                                                                                     <th scope="col">Mes 12</th>
                                                                                     <!--<th scope="col">Acumulado</th>-->
+                                                                                    
                                                                                     </tr>
                                                                                 </thead>
                                                                                 <tbody>
+                                                                                    
                                                                                 <tr class="align-middle" v-for="(pendiente_impacto, index) in concentrado_sugerencias_pendiente_impacto">
                                                                                         
                                                                                          <td class="sticky" style=" background: rgb(94, 94, 94)"> 
@@ -1318,7 +1321,11 @@ if ($_SESSION["usuario"] ){
                 axios.post('consulta_concentrado_pendientes_impacto.php',{
                             }).then(response =>{
                                 this.concentrado_sugerencias_pendiente_impacto = response.data
-                                console.log(this.concentrado_sugerencias_pendiente_impacto)
+                                   /* for (let i = 0; i <= paresalerta; i++) {
+                                        if (i % 2 == 0) {
+                                            console.log(i);
+                                            }
+                                        }*/
                             })
                 },
                 consultado_concentrado_impacto_sugerencias(){//consulto datos del concentrado impacto midiendo
