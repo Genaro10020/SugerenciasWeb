@@ -99,7 +99,8 @@ if (!file_exists($path)) {
 
                             // Subir archivos
                             if(move_uploaded_file($_FILES['files']['tmp_name'][$index],$ruta_y_doc)){
-                            $files_arr[] = "http://localhost/sugerencias/".$ruta_y_doc;
+                           // $files_arr[] = "http://localhost/sugerencias/".$ruta_y_doc;
+                           $files_arr[] = $ruta_y_doc;
 
                                     if($cual_documento=="premio"){
                                         $actualizar = "UPDATE concentrado_premios_sugerencias SET cant_img='$suma', url_premio='$ruta_y_doc' WHERE id = '$id_concentrado'";

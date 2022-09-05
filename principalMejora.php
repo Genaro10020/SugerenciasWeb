@@ -1236,7 +1236,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                      <label><b>{{index+1}}</b></label>
                                                                 </td>
                                                                 <td>
-                                                                <img class="img-thumbnail min-w-25" style="max-width:100px" :src="'http://localhost/sugerencias/'+premios.url_premio" />
+                                                               <!-- <img class="img-thumbnail min-w-25" style="max-width:100px" :src="'http://localhost/sugerencias/'+premios.url_premio" />-->
+                                                                <img class="img-thumbnail min-w-25" style="max-width:100px" :src="premios.url_premio" />
                                                                 </td>
                                                                 <td>
                                                                     <input v-if="actualizar_premios==index+1"  class="inputs-concentrado" type="text" v-model="act_codigo_premio" required></input>

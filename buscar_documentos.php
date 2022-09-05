@@ -23,7 +23,8 @@ if (is_dir($ruta)){
         // Solo buscamos archivos sin entrar en subdirectorios
         if (is_file($ruta."/".$archivo)) {
             if($cual_documento!="ppt"){
-                $respuesta [] =  "http://localhost/sugerencias/".$ruta."/".$archivo;
+                //$respuesta [] =  "http://localhost/sugerencias/".$ruta."/".$archivo;
+                $respuesta [] =  $ruta."/".$archivo;
             }else{
                 $respuesta [] =  $ruta."/".$archivo;
             }
