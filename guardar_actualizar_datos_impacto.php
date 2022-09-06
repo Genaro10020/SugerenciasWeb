@@ -21,6 +21,7 @@ $mes9=$variables['mes9'];
 $mes10=$variables['mes10'];
 $mes11=$variables['mes11'];
 $mes12=$variables['mes12'];
+$orden=$variables['orden'];
 
 include "conexionGhoner.php";
 $consulta = "SELECT * FROM concentrado_impacto_sugerencias WHERE id_concentrado='$id_concentrado'";
@@ -35,9 +36,9 @@ if(mysqli_num_rows($query)>0){
 }else{
 
     $insertar = "INSERT INTO concentrado_impacto_sugerencias (id_concentrado, folio, indicador, unidades, linea_base, 
-    periodo, mes1, mes2, mes3, 	mes4, 	mes5, 	mes6, 	mes7, 	mes8, 	mes9, 	mes10, 	mes11, 	mes12, 	acumulado,	status) 
+    periodo, mes1, mes2, mes3, 	mes4, 	mes5, 	mes6, 	mes7, 	mes8, 	mes9, 	mes10, 	mes11, 	mes12, 	acumulado,	status, orden) 
     VALUES ('$id_concentrado','$folio','$indicador','$unidades','$linea_base','$periodo_de_medicion','$mes1','$mes2','$mes3','$mes4',
-    '$mes5','$mes6','$mes7','$mes8','$mes9','$mes10','$mes11','$mes12','','Midiendo')";
+    '$mes5','$mes6','$mes7','$mes8','$mes9','$mes10','$mes11','$mes12','','Midiendo','$orden')";
     $query = mysqli_query( $conexion, $insertar);
     $resultado=$query;
 

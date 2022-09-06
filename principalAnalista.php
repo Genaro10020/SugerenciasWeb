@@ -475,8 +475,8 @@ if ($_SESSION["usuario"] ){
                                         <div class="row">  <!-- contenido impacto de sugerencia-->
                                                                 <div class="col-12">                                
                                                                         <div class="text-center mt-3 ">
-                                                                            <span class="badge bg-light text-dark">Sugerencias Pendientes de Impacto:<?php echo $_SESSION['nombre']; ?></span><br>
-                                                                            {{concentrado_sugerencias_pendiente_impacto}}
+                                                                            <span class="badge bg-light text-dark">Sugerencias Pendientes de Impacto: <?php echo $_SESSION['nombre']; ?></span><br>
+                                                                           <!-- {{concentrado_sugerencias_pendiente_impacto}}-->
                                                                         </div>
                                                                             <div class="div-scroll mt-3 "><!--Scroll-->
                                                                             <table class="tablaMonitoreo-sugerencias table table-striped table-bordered text-center">
@@ -515,10 +515,11 @@ if ($_SESSION["usuario"] ){
                                                                                     
                                                                                 <tr class="align-middle" v-for="(pendiente_impacto, index) in concentrado_sugerencias_pendiente_impacto">
                                                                                         
-                                                                                         <td class="sticky" style=" background: rgb(94, 94, 94)"> 
+                                                                                         <td class="sticky" style=" background: rgb(94, 94, 94); color: white;"> 
+                                                                                         {{index}}
                                                                                             <button v-show="btn_actualizar==true" v-if="id_actualiza==index+1" type="button" class="btn btn-danger me-2" title="Cancelar" @click="editarIndicador('','')" ><i class="bi bi-x-circle" ></i></button>
-                                                                                            <button v-show="btn_actualizar==false" type="button" class="btn btn-warning me-2" title="Editar" @click="editarIndicador(pendiente_impacto.id,index+1)"><i class="bi bi-pen" ></i></button>
-                                                                                            <button v-if="id_actualiza==index+1" type="button" class="btn btn-primary " title="Guardar" @click="guardarEditarIndicador(pendiente_impacto.id,pendiente_impacto.folio)" ><i class="bi bi-check-circle"></i></button>
+                                                                                            <button v-show="btn_actualizar==false" type="button" class="btn btn-warning me-2" title="Editar" @click="editarIndicador(pendiente_impacto.id,index+1,pendiente_impacto.orden)"><i class="bi bi-pen" ></i></button>
+                                                                                            <button v-if="id_actualiza==index+1" type="button" class="btn btn-primary " title="Guardar" @click="guardarEditarIndicador(pendiente_impacto.id,pendiente_impacto.folio,pendiente_impacto.orden)" ><i class="bi bi-check-circle"></i></button>
                                                                                         </td> 
                                                                                         <td><label>{{pendiente_impacto.status_impacto}}</label></td>
                                                                                         <td><label>{{pendiente_impacto.folio}}</label></td>
@@ -764,6 +765,7 @@ if ($_SESSION["usuario"] ){
                 concentrado_sugerencias_pendiente_factibilidad:[],
                 concentrado_sugerencias_pendiente_implementacion:[],
                 status:'',
+                usuario:'<?php echo $_SESSION['usuario']; ?>',
                 /*varibles en modal factibilidad*/
                 check_mc:'',
                 mensaje_del_check_mc:'',
@@ -1321,11 +1323,7 @@ if ($_SESSION["usuario"] ){
                 axios.post('consulta_concentrado_pendientes_impacto.php',{
                             }).then(response =>{
                                 this.concentrado_sugerencias_pendiente_impacto = response.data
-                                   /* for (let i = 0; i <= paresalerta; i++) {
-                                        if (i % 2 == 0) {
-                                            console.log(i);
-                                            }
-                                        }*/
+                                console.log(this.concentrado_sugerencias_pendiente_impacto,'ARREGLO FINAL')
                             })
                 },
                 consultado_concentrado_impacto_sugerencias(){//consulto datos del concentrado impacto midiendo
@@ -1337,9 +1335,9 @@ if ($_SESSION["usuario"] ){
 
                     })
                 },
-                editarIndicador(id,index_actualizar){
+                editarIndicador(id,index_actualizar,ordenar){
                    // console.log(this.concentrado_impacto_sugerencias_midiendo)
-                        console.log("arriba id_concentrado es igual a ="+id,"TAMANIO:",this.concentrado_impacto_sugerencias_midiendo.length)
+                        console.log(index_actualizar)
 
                         if(index_actualizar==""){ //accion del boton cancelar.
                             this.btn_actualizar = false
@@ -1348,9 +1346,10 @@ if ($_SESSION["usuario"] ){
 
                             if(this.concentrado_impacto_sugerencias_midiendo.length>0)
                             {
+
                                 for (let index = 0; index < this.concentrado_impacto_sugerencias_midiendo.length; index++) 
                                         {// si existe un registro colocalo a las variables
-                                            if(this.concentrado_impacto_sugerencias_midiendo[index].id_concentrado == id){
+                                            if(this.concentrado_impacto_sugerencias_midiendo[index].id_concentrado == id && this.concentrado_impacto_sugerencias_midiendo[index].orden == ordenar){
                                                 this.btn_actualizar = true
                                                 this.id_actualiza = index_actualizar
 
@@ -1371,6 +1370,26 @@ if ($_SESSION["usuario"] ){
                                                 this.mes11 = this.concentrado_impacto_sugerencias_midiendo[index].mes11
                                                 this.mes12 = this.concentrado_impacto_sugerencias_midiendo[index].mes12
                                                 break;
+                                            }else{
+                                                this.btn_actualizar = true
+                                                this.id_actualiza = index_actualizar
+                                                this.indicador = ''
+                                                this.unidades = ''
+                                                this.linea_base = ''
+                                                this.periodo_de_medicion = 1
+                                                this.mes1 = ''
+                                                this.mes2 = ''
+                                                this.mes3 = ''
+                                                this.mes4 = ''
+                                                this.mes5 = ''
+                                                this.mes6 = ''
+                                                this.mes7 = ''
+                                                this.mes8 = ''
+                                                this.mes9 = ''
+                                                this.mes10 = ''
+                                                this.mes11 = ''
+                                                this.mes12 = ''
+
                                             }
                                     }
                             }else{// de lo contrario nadas activa los input
@@ -1395,7 +1414,7 @@ if ($_SESSION["usuario"] ){
                                             }
                     }
                 },
-                guardarEditarIndicador(id_concentrado,folio){
+                guardarEditarIndicador(id_concentrado,folio,orden){
                     axios.post('guardar_actualizar_datos_impacto.php',{
                     id_concentrado: id_concentrado,
                     indicador: this.indicador,
@@ -1414,7 +1433,8 @@ if ($_SESSION["usuario"] ){
                     mes9:this.mes9,
                     mes10:this.mes10,
                     mes11:this.mes11,
-                    mes12:this.mes12
+                    mes12:this.mes12,
+                    orden:orden
                     }).then(response =>{
                         console.log(response.data)
                         if(response.data== true){
