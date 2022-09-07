@@ -24,12 +24,13 @@ $mes12=$variables['mes12'];
 $orden=$variables['orden'];
 
 include "conexionGhoner.php";
-$consulta = "SELECT * FROM concentrado_impacto_sugerencias WHERE id_concentrado='$id_concentrado'";
+$consulta = "SELECT * FROM concentrado_impacto_sugerencias WHERE id_concentrado='$id_concentrado' AND orden='$orden'";
 $query= mysqli_query( $conexion, $consulta);
 if(mysqli_num_rows($query)>0){
         
         $actualizando = "UPDATE concentrado_impacto_sugerencias SET indicador='$indicador', unidades='$unidades', linea_base='$linea_base', 
-        periodo='$periodo_de_medicion', mes1='$mes1', mes2='$mes2', mes3='$mes3', mes4='$mes4',	mes5='$mes5', 	mes6='$mes6',	mes7='$mes7', mes8='$mes8',	mes9='$mes9', 	mes10='$mes10', mes11='$mes11', mes12='$mes12' WHERE id_concentrado = '$id_concentrado'";
+        periodo='$periodo_de_medicion', mes1='$mes1', mes2='$mes2', mes3='$mes3', mes4='$mes4',	mes5='$mes5', 	mes6='$mes6',	mes7='$mes7', mes8='$mes8',	mes9='$mes9', 	mes10='$mes10', mes11='$mes11', mes12='$mes12' 
+        WHERE id_concentrado = '$id_concentrado' AND orden='$orden'";
         $query= mysqli_query( $conexion, $actualizando);
         $resultado=$query;
 

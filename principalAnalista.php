@@ -1,6 +1,7 @@
 <?php
 session_start();
 if ($_SESSION["usuario"] ){ 
+$incrementar=1;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -353,10 +354,19 @@ if ($_SESSION["usuario"] ){
                                                                                         <td><input v-if="id_actualizar==index+1" class="inputs-concentrado" v-model="fecha_inicial_actividad" type="date" ></input><label v-else>{{actividades.fecha_inicial}}<label></td>
                                                                                         <td><input v-if="id_actualizar==index+1" class="inputs-concentrado" v-model="fecha_final_actividad" type="date" ></input><label v-else>{{actividades.fecha_final}}<label></td>
                                                                                         <td>
-                                                                                            
-                                                                                            <select v-show="actualizar==false && status=='En Implementación' && check_mc=='Aceptado' && bandera_btn_finalizar!='mostrar'" class="form-control"  >
-                                                                                                <option  value="0" @click="actualizarPorcentajeEnActividad(actividades.id,0)" disabled selected>{{actividades.porcentaje}}%</option>
-                                                                                                <option  v-for="numero in numeros" :value="numero" @click="actualizarPorcentajeEnActividad(actividades.id,numero)">{{numero}}%</option>
+                                                                                            <select :id="'select'+actividades.id" @change="actualizarPorcentajeEnActividad(actividades.id)" v-show="actualizar==false && status=='En Implementación' && check_mc=='Aceptado' && bandera_btn_finalizar!='mostrar'" class="form-control"  >
+                                                                                                <option disabled selected>{{actividades.porcentaje}}%</option>
+                                                                                                <option value="0">0%</option>
+                                                                                                <option value="10">10%</option>
+                                                                                                <option value="20">20%</option>
+                                                                                                <option value="30">30%</option>
+                                                                                                <option value="40">40%</option>
+                                                                                                <option value="50">50%</option> 
+                                                                                                <option value="60">60%</option>
+                                                                                                <option value="70">70%</option>
+                                                                                                <option value="80">80%</option>
+                                                                                                <option value="90">90%</option>
+                                                                                                <option value="100">100%</option>
                                                                                             </select>
                                                                                             <label  v-show="status!='En Implementación' && check_mc!='Aceptado'">{{actividades.porcentaje}}%<label>
                                                                                         </td>
@@ -532,26 +542,23 @@ if ($_SESSION["usuario"] ){
                                                                                         
                                                                                         </td>
                                                                                         <td style="background-color: #c9e7ff">
-                                                                                      
-                                                                                                <div v-if="id_actualiza==index+1" class="">
-                                                                                                        <input class="rounded border-2" v-model="indicador" type="text" ></input> 
-                                                                                                </div>
+                                                                                                <input v-if="id_actualiza==index+1" class="rounded border-2" v-model="indicador" type="text" ></input> 
                                                                                                 <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
-                                                                                                     <!--<input class="rounded border-2" v-model="indicador" type="text" ></input> -->
-                                                                                                     <input v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id" :value="concentrado_impacto_midiendo.indicador" class="rounded border-2" type="text" disabled></input> 
+                                                                                                <!--{{pendiente_impacto.orden}}{{ "=="+concentrado_impacto_midiendo.orden}}-->
+                                                                                                     <input v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && pendiente_impacto.orden == concentrado_impacto_midiendo.orden" :value="concentrado_impacto_midiendo.indicador" class="rounded border-2" type="text" disabled></input>
                                                                                                 </div>
                                                                                                     
                                                                                         </td>
                                                                                         <td style="background-color: #c9e7ff">
                                                                                                 <input v-if="id_actualiza==index+1" class="rounded border-2" v-model="unidades" type="text" ></input>
                                                                                                 <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo"> 
-                                                                                                            <input v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id" :value="concentrado_impacto_midiendo.unidades" class="rounded border-2" type="text" disabled></input> 
+                                                                                                            <input v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && pendiente_impacto.orden == concentrado_impacto_midiendo.orden" :value="concentrado_impacto_midiendo.unidades" class="rounded border-2" type="text" disabled></input> 
                                                                                                 </div>
                                                                                         </td>
                                                                                         <td style="background-color: #c9e7ff">
                                                                                                 <input v-if="id_actualiza==index+1" class="rounded border-2" v-model="linea_base" type="text" ></input>
                                                                                                 <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo"> 
-                                                                                                    <input v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id" :value="concentrado_impacto_midiendo.linea_base" class="rounded border-2" type="text" disabled></input> 
+                                                                                                    <input v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && pendiente_impacto.orden == concentrado_impacto_midiendo.orden" :value="concentrado_impacto_midiendo.linea_base" class="rounded border-2" type="text" disabled></input> 
                                                                                                 </div>
                                                                                         </td>
                                                                                         <td style="background-color: #c9e7ff">
@@ -561,7 +568,7 @@ if ($_SESSION["usuario"] ){
                                                                                                     <option v-for="mes in 12" :value="mes" @click="vaciarMeses(pendiente_impacto.id)">{{mes}} Mes/es</option>
                                                                                                 </select>
                                                                                                         <div v-else  v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo"> 
-                                                                                                            <input v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id" :value="concentrado_impacto_midiendo.periodo" class="rounded border-2" type="text" disabled></input> 
+                                                                                                            <input v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && pendiente_impacto.orden == concentrado_impacto_midiendo.orden" :value="concentrado_impacto_midiendo.periodo" class="rounded border-2" type="text" disabled></input> 
                                                                                                         </div>   
                                                                                         </td>
                                                                                         <td style="background-color: #fffadf"><!--Mes1-->
@@ -570,7 +577,7 @@ if ($_SESSION["usuario"] ){
                                                                                                             <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2" type="text" v-model="mes1"></input></span>
                                                                                                 </div>   
                                                                                                 <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
-                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && concentrado_impacto_midiendo.periodo >=1">
+                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && pendiente_impacto.orden == concentrado_impacto_midiendo.orden  && concentrado_impacto_midiendo.periodo >=1">
                                                                                                             <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes1}}</span>
                                                                                                             <span class="d-block p-1 bg-secondary text-white ">
                                                                                                                 <input  :value="concentrado_impacto_midiendo.mes1" class="border-2  text-center" type="text" disabled></input>
@@ -584,7 +591,7 @@ if ($_SESSION["usuario"] ){
                                                                                                             <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2" type="text" v-model="mes2"></input></span>
                                                                                                 </div> 
                                                                                                 <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
-                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && concentrado_impacto_midiendo.periodo >=2">
+                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && pendiente_impacto.orden == concentrado_impacto_midiendo.orden  && concentrado_impacto_midiendo.periodo >=2">
                                                                                                             <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes2}}</span>
                                                                                                             <span class="d-block p-1 bg-secondary text-white ">
                                                                                                                 <input  :value="concentrado_impacto_midiendo.mes2" class="border-2  text-center" type="text" disabled></input>
@@ -598,7 +605,7 @@ if ($_SESSION["usuario"] ){
                                                                                                             <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2" type="text" v-model="mes3"></input></span>
                                                                                                 </div> 
                                                                                                 <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
-                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && concentrado_impacto_midiendo.periodo >=3">
+                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && pendiente_impacto.orden == concentrado_impacto_midiendo.orden  && concentrado_impacto_midiendo.periodo >=3">
                                                                                                             <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes3}}</span>
                                                                                                             <span class="d-block p-1 bg-secondary text-white ">
                                                                                                                 <input  :value="concentrado_impacto_midiendo.mes3" class="border-2  text-center" type="text" disabled></input>
@@ -612,7 +619,7 @@ if ($_SESSION["usuario"] ){
                                                                                                             <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2" type="text" v-model="mes4"></input></span>
                                                                                             </div>  
                                                                                             <div v-else  v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
-                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && concentrado_impacto_midiendo.periodo >=4">
+                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && pendiente_impacto.orden == concentrado_impacto_midiendo.orden  && concentrado_impacto_midiendo.periodo >=4">
                                                                                                             <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes4}}</span>
                                                                                                             <span class="d-block p-1 bg-secondary text-white ">
                                                                                                                 <input  :value="concentrado_impacto_midiendo.mes4" class="border-2  text-center" type="text" disabled></input>
@@ -626,7 +633,7 @@ if ($_SESSION["usuario"] ){
                                                                                                     <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2" type="text" v-model="mes5"></input></span>
                                                                                             </div>
                                                                                             <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
-                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && concentrado_impacto_midiendo.periodo >=5">
+                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && pendiente_impacto.orden == concentrado_impacto_midiendo.orden  && concentrado_impacto_midiendo.periodo >=5">
                                                                                                             <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes5}}</span>
                                                                                                             <span class="d-block p-1 bg-secondary text-white ">
                                                                                                                 <input  :value="concentrado_impacto_midiendo.mes5" class="border-2  text-center" type="text" disabled></input>
@@ -640,7 +647,7 @@ if ($_SESSION["usuario"] ){
                                                                                                     <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2" type="text" v-model="mes6"></input></span>
                                                                                             </div>    
                                                                                             <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
-                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && concentrado_impacto_midiendo.periodo >=6">
+                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && pendiente_impacto.orden == concentrado_impacto_midiendo.orden  && concentrado_impacto_midiendo.periodo >=6">
                                                                                                             <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes6}}</span>
                                                                                                             <span class="d-block p-1 bg-secondary text-white ">
                                                                                                                 <input  :value="concentrado_impacto_midiendo.mes6" class="border-2  text-center" type="text" disabled></input>
@@ -654,7 +661,7 @@ if ($_SESSION["usuario"] ){
                                                                                                     <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2" type="text" v-model="mes7"></input></span>
                                                                                             </div>   
                                                                                             <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
-                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && concentrado_impacto_midiendo.periodo >=7">
+                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && pendiente_impacto.orden == concentrado_impacto_midiendo.orden  && concentrado_impacto_midiendo.periodo >=7">
                                                                                                             <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes7}}</span>
                                                                                                             <span class="d-block p-1 bg-secondary text-white ">
                                                                                                                 <input  :value="concentrado_impacto_midiendo.mes7" class="border-2  text-center" type="text" disabled></input>
@@ -668,7 +675,7 @@ if ($_SESSION["usuario"] ){
                                                                                                     <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2"type="text" v-model="mes8"></input></span>
                                                                                             </div>    
                                                                                             <div v-else  v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
-                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && concentrado_impacto_midiendo.periodo >=8">
+                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && pendiente_impacto.orden == concentrado_impacto_midiendo.orden  && concentrado_impacto_midiendo.periodo >=8">
                                                                                                             <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes8}}</span>
                                                                                                             <span class="d-block p-1 bg-secondary text-white ">
                                                                                                                 <input  :value="concentrado_impacto_midiendo.mes8" class="border-2  text-center" type="text" disabled></input>
@@ -682,7 +689,7 @@ if ($_SESSION["usuario"] ){
                                                                                                     <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2"type="text" v-model="mes9"></input></span>
                                                                                             </div> 
                                                                                             <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
-                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && concentrado_impacto_midiendo.periodo >=9">
+                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && pendiente_impacto.orden == concentrado_impacto_midiendo.orden  && concentrado_impacto_midiendo.periodo >=9">
                                                                                                             <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes9}}</span>
                                                                                                             <span class="d-block p-1 bg-secondary text-white ">
                                                                                                                 <input  :value="concentrado_impacto_midiendo.mes9" class="border-2  text-center" type="text" disabled></input>
@@ -696,7 +703,7 @@ if ($_SESSION["usuario"] ){
                                                                                                     <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2"type="text" v-model="mes10"></input></span>
                                                                                             </div>    
                                                                                             <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
-                                                                                            <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && concentrado_impacto_midiendo.periodo >=10">
+                                                                                            <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && pendiente_impacto.orden == concentrado_impacto_midiendo.orden  && concentrado_impacto_midiendo.periodo >=10">
                                                                                                             <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes10}}</span>
                                                                                                             <span class="d-block p-1 bg-secondary text-white ">
                                                                                                                 <input  :value="concentrado_impacto_midiendo.mes10" class="border-2  text-center" type="text" disabled></input>
@@ -710,7 +717,7 @@ if ($_SESSION["usuario"] ){
                                                                                                     <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2"type="text" v-model="mes11"></input></span>
                                                                                             </div>  
                                                                                             <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
-                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && concentrado_impacto_midiendo.periodo >=11">
+                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && pendiente_impacto.orden == concentrado_impacto_midiendo.orden  && concentrado_impacto_midiendo.periodo >=11">
                                                                                                             <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes11}}</span>
                                                                                                             <span class="d-block p-1 bg-secondary text-white ">
                                                                                                                 <input  :value="concentrado_impacto_midiendo.mes11" class="border-2  text-center" type="text" disabled></input>
@@ -724,7 +731,7 @@ if ($_SESSION["usuario"] ){
                                                                                                     <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2" type="text" v-model="mes12"></input></span>
                                                                                             </div>     
                                                                                             <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
-                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && concentrado_impacto_midiendo.periodo >=12">
+                                                                                                        <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && pendiente_impacto.orden == concentrado_impacto_midiendo.orden  && concentrado_impacto_midiendo.periodo >=12">
                                                                                                             <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes12}}</span>
                                                                                                             <span class="d-block p-1 bg-secondary text-white ">
                                                                                                                 <input  :value="concentrado_impacto_midiendo.mes12" class="border-2  text-center" type="text" disabled></input>
@@ -1298,9 +1305,9 @@ if ($_SESSION["usuario"] ){
                             console.log(error)
                         })
                 },
-                actualizarPorcentajeEnActividad(id_actividad,porcentaje_actividad){
-                   // this.porcentaje=0//regresando valor original porcentaje para que no me de el mismo valor en todos las opciones
-                    //alert(id_actividad+"/"+porcentaje_actividad)
+                actualizarPorcentajeEnActividad(id_actividad){
+                    var selector = "select"+id_actividad
+                    var porcentaje_actividad= document.getElementById(selector).value;
                     axios.post("actualizar_porcentaje_en_actividad.php",{
                             id_actividad: id_actividad,
                             porcentaje_actividad: porcentaje_actividad,
@@ -1415,6 +1422,7 @@ if ($_SESSION["usuario"] ){
                     }
                 },
                 guardarEditarIndicador(id_concentrado,folio,orden){
+                    console.log(id_concentrado+""+orden)
                     axios.post('guardar_actualizar_datos_impacto.php',{
                     id_concentrado: id_concentrado,
                     indicador: this.indicador,

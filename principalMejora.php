@@ -889,8 +889,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                         <option v-for="factibilidad in lista_usuarios_y_analistas_factibilidad" :key="factibilidad.nombre" :value="factibilidad.nombre">{{factibilidad.nombre}}</option>
                                                     </select>
                                                 </td>
-                                                <td><input class="inputs-concentrado" type="text" v-model="var_impacto_planeado" name="impacto planeado" ></input></td>
-                                                <td><input class="inputs-concentrado" type="text" v-model="var_impacto_real" name="impacto_real" ></input></td>
+                                                <td><!--<input class="inputs-concentrado" type="text" v-model="var_impacto_planeado" name="impacto planeado" >--></input></td>
+                                                <td><!--<input class="inputs-concentrado" type="text" v-model="var_impacto_real" name="impacto_real" >--></input></td>
                                                 <td><label>{{usuario}}</label></td>
                                                 <td><label><?php echo date("d-m-Y"); ?></label></td>
                                                 <td></input></td>
@@ -1000,9 +1000,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                         <option v-for="analistas_factibilidad in lista_usuarios_y_analistas_factibilidad" :key="analistas_factibilidad.nombre" :value="analistas_factibilidad.nombre">{{analistas_factibilidad.nombre}}</option>
                                                     </select>
                                                     <label v-else>{{concentrado.analista_de_factibilidad}}</label>
-                                                </td>
-                                                <td><input class="inputs-concentrado" type="text" v-model="var_impacto_planeado" name="impacto planeado" v-if="actualizar_sugerencia==index+1"></input><label v-else>{{concentrado.impacto_planeado}}</label></td>
-                                                <td><input class="inputs-concentrado" type="text" v-model="var_impacto_real" name="impacto_real" v-if="actualizar_sugerencia==index+1"></input><label v-else>{{concentrado.impacto_real}}</label></td>
+                                                </td> 
+                                                <td><input  class="inputs-concentrado" type="text" v-model="var_impacto_planeado" name="impacto planeado" v-if="actualizar_sugerencia==index+1 && concentrado.status=='Implementada'"></input><label v-else>{{concentrado.impacto_planeado}}</label></td>
+                                                <td><input class="inputs-concentrado" type="text" v-model="var_impacto_real" name="impacto_real" v-if="actualizar_sugerencia==index+1 && concentrado.status=='Implementada'"></input><label v-else>{{concentrado.impacto_real}}</label></td>
                                                 <td><label>{{usuario}}</label></td>
                                                 <td><label v-if="actualizar_sugerencia==index+1"><?php echo date("d-m-Y"); ?></label><label v-else>{{concentrado.creado}}</label></td>
                                                 <td>{{concentrado.modificado_por}}</td>
