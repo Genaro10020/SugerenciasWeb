@@ -128,7 +128,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                             <tr class=" align-middle text-center fw-normal " v-for="(premios, index) in concentrado_premios">
                                                                 <td>{{index+1}}</td>
                                                                 <td>
-                                                                    <img class="img-thumbnail min-w-25" style="max-width:100px" :src="'http://localhost/sugerencias/'+premios.url_premio" />
+                                                                    <img class="img-thumbnail min-w-25" style="max-width:100px" :src="premios.url_premio" />
                                                                 </td>
                                                                 <td><label class="folio fst-italic" style=" font-size:0.7em">{{premios.descripcion}}</label></td>
                                                                 <td>

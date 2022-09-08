@@ -32,16 +32,15 @@ include "conexionGhoner.php";
        }
        if($insertar_actualizar=='Actualizar'){
 
-        $consulta = "SELECT * FROM concentrado_premios_sugerencias WHERE codigo_premio='$codigo_premios'";
+        $consulta = "SELECT * FROM concentrado_premios_sugerencias WHERE codigo_premio='$codigo_premios' AND id != '$id_premio'";
         $query=mysqli_query( $conexion, $consulta);
                 if(mysqli_num_rows($query)>0){
                         $query = "Existe";
                 }else{
                 $consulta = "UPDATE concentrado_premios_sugerencias SET codigo_premio='$codigo_premios', descripcion='$descripcion_premios', puntos_para_canjear='$puntos_canjear_premios' WHERE id = '$id_premio'";
                 $query = mysqli_query( $conexion, $consulta);
-                }
-
-        } 
+         } 
+        }
 
 
         $resultado = $query;
