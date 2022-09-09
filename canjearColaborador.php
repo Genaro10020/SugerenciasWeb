@@ -132,23 +132,42 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                                 </td>
                                                                 <td><label class="folio fst-italic" style=" font-size:0.7em">{{premios.descripcion}}</label></td>
                                                                 <td>
-                                                                
-                                                                        <div v-if="arreglo_canasta.length>0">
-                                                                        <!--raiz-->{{bandera=''}}
-                                                                            <div   v-for="canasta in arreglo_canasta">
+                                                                            
+                                                                        <div v-if="arreglo_canasta.length>0 && index<arreglo_canasta.length ">
+                                                                        <!--raiz-->
+                                                                            <div>
                                                                             <!--otrodiv-->
-                                                                                <select v-if="bandera==''" id="selectconarreglo">  
+            
+                                                                           <select v-if="bandera==''" :id="'select'+premios.id" @change="agregarCanasta(premios.id,premios.codigo_premio,premios.url_premio,premios.descripcion,premios.puntos_para_canjear,'<?php echo $_SESSION["usuario"]; ?>')"> 
+                                                                                    <option disabled selected>{{arreglo_canasta[index].cantidad}}</option>
+                                                                                    <option value="0">0</option>
+                                                                                    <option value="1">1</option>
+                                                                                    <option value="2">2</option>
+                                                                                    <option value="3">3</option>
+                                                                                    <option value="4">4</option>
+                                                                                    <option value="5">5</option>
+                                                                            <select>
+                                                                        
+                                                                               <!--Original <select v-if="bandera==''" id="selectconarreglo">  
                                                                                         <option v-if="canasta.id_premio==premios.id"  :value="canasta.cantidad">{{canasta.cantidad }} {{ bandera='Art'}}</option>
                                                                                         <option  else-if="bandera!='Art.'" v-for= "numero in numeros" :value="numero-1"  @click="agregarCanasta(premios.id,premios.codigo_premio,premios.url_premio,premios.descripcion,numero-1,premios.puntos_para_canjear,'<?php echo $_SESSION["usuario"]; ?>')">{{numero-1 }} {{bandera='Art.'}}</option>
-                                                                                </select>
+                                                                                </select>-->
                                                                                 
                                                                             </div>
                                                                         </div>
                                                                         <div v-else>
-                                                                            
-                                                                            <select id="selectnoarreglo"> 
+                                                                            <select :id="'select'+premios.id" @change="agregarCanasta(premios.id,premios.codigo_premio,premios.url_premio,premios.descripcion,premios.puntos_para_canjear,'<?php echo $_SESSION["usuario"]; ?>')"> 
+                                                                                    <option value="0">0</option>
+                                                                                    <option value="1">1</option>
+                                                                                    <option value="2">2</option>
+                                                                                    <option value="3">3</option>
+                                                                                    <option value="4">4</option>
+                                                                                    <option value="5">5</option>
+                                                                            <select> 
+                                                                          
+                                                                            <!--original<select id="selectnoarreglo"> 
                                                                                     <option else v-for= "numero in numeros" :value="numero-1"  @click="agregarCanasta(premios.id,premios.codigo_premio,premios.url_premio,premios.descripcion,numero-1,premios.puntos_para_canjear,'<?php echo $_SESSION["usuario"]; ?>')">{{numero-1}} {{bandera='Art.'}}</option>
-                                                                            <select>     
+                                                                            <select>-->     
                                                                         </div>
                                                                             
                                                                             
@@ -187,16 +206,16 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                 <div class="col-8 col-sm-5 col-lg-2 rounded-lg-start text-white" style=" background: #8B0000;">
                                                     Puntos Seleccionados
                                                 </div>
-                                                <div class="col-4 col-sm-5 col-lg-2 rounded-lg-end bg-success text-white" >
-                                                    {{puntos_seleccionado}} Puntos
+                                                <div class="col-4 col-sm-5 col-lg-2 rounded-lg-end bg-danger text-white" >
+                                                    <b>{{puntos_seleccionado}} Puntos</b>
                                                 </div>
                                         </div>
                                         <div v-if="arreglo_canasta.length>0"  class="row justify-content-center align-items-start mx-1" >
                                                 <div class="col-8 col-sm-5 col-lg-2 rounded-lg-start text-white" style=" background: #8B0000; ">
                                                     Puntos Restantes
                                                 </div>
-                                                <div class="col-4 col-sm-5 col-lg-2 rounded-lg-end bg-danger text-white">
-                                                    {{puntos_restantes}} Puntos
+                                                <div class="col-4 col-sm-5 col-lg-2 rounded-lg-end bg-success text-white">
+                                                   <b> {{puntos_restantes}} Puntos</b>
                                                 </div>
                                         </div>
                                    
@@ -281,7 +300,12 @@ window.location.hash="no-back-button";
 
                     })
                 },
-            agregarCanasta(id_premio,codigo,url,descripcion,cantidad,puntos,numero_nomina){
+            agregarCanasta(id_premio,codigo,url,descripcion,puntos,numero_nomina){
+
+                var selector = "select"+id_premio
+                var cantidad= document.getElementById(selector).value;
+                console.log(cantidad)
+                
                 //var puntos_selec=this.puntos_seleccionado
                 var verificando_si_alcanza=Math.round(cantidad*puntos)
                 //alert("Cantidad: "+cantidad+"Puntos: "+puntos+"Suma: "+verificando_si_alcanza+"Total de puntos:"+this.total_puntos)
@@ -308,7 +332,6 @@ window.location.hash="no-back-button";
                         }else{ 
                                 alert("Esta excediendo los puntos, no tienes: "+verificando_si_alcanza+" Puntos")
                             }
-
                 },
                 consultarCanasta(numero_nomina){
                     if(this.exceso_gasto==false){

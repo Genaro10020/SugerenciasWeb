@@ -333,10 +333,16 @@ $incrementar=1;
                                                                                         </td> 
                                                                                             <th scope="row">
                                                                                                 <label v-show="actualizar==true || check_mc=='Aceptado'">{{index+1}}</label>
-                                                                                                    <select  v-model="numero_orden_en_select" v-show="actualizar==false && check_mc!='Aceptado'" title="Cambiar posición">
+                                                                                                   <!-- <select  v-model="numero_orden_en_select" v-show="actualizar==false && check_mc!='Aceptado'" title="Cambiar posición">
                                                                                                         <option  value="0" disabled>{{index+1}}</option>
                                                                                                         <option :value="index+1" v-for="numero in numero_actividad" @click="ordenarActividades(index,numero-1,numero_orden_en_select=0)">{{numero}}</option>
-                                                                                                    </select>     
+                                                                                                    </select>-->
+                                                                                                    
+                                                                                                    <select :id="'select'+index" v-show="actualizar==false && check_mc!='Aceptado'" @change="ordenarActividades(index)" title="Cambiar posición">
+                                                                                                        <option  value="{{index+1}}" disabled selected>{{index+1}}</option>
+                                                                                                        <option :value="numero-1" v-for="numero in numero_actividad" >{{numero}}</option>
+                                                                                                    </select>  
+                                                                                                     
                                                                                             </th>
                                                                                         <td>   
                                                                                             <textarea v-model="descripcion_actividad" v-if="id_actualizar==index+1" class="inputs-concentrado text-area" type="text"  ></textarea> 
@@ -526,7 +532,7 @@ $incrementar=1;
                                                                                 <tr class="align-middle" v-for="(pendiente_impacto, index) in concentrado_sugerencias_pendiente_impacto">
                                                                                         
                                                                                          <td class="sticky" style=" background: rgb(94, 94, 94); color: white;"> 
-                                                                                         {{index}}
+                                                                                         
                                                                                             <button v-show="btn_actualizar==true" v-if="id_actualiza==index+1" type="button" class="btn btn-danger me-2" title="Cancelar" @click="editarIndicador('','')" ><i class="bi bi-x-circle" ></i></button>
                                                                                             <button v-show="btn_actualizar==false" type="button" class="btn btn-warning me-2" title="Editar" @click="editarIndicador(pendiente_impacto.id,index+1,pendiente_impacto.orden)"><i class="bi bi-pen" ></i></button>
                                                                                             <button v-if="id_actualiza==index+1" type="button" class="btn btn-primary " title="Guardar" @click="guardarEditarIndicador(pendiente_impacto.id,pendiente_impacto.folio,pendiente_impacto.orden)" ><i class="bi bi-check-circle"></i></button>
@@ -1128,7 +1134,10 @@ $incrementar=1;
                     console.log(error)
                 })
             },
-            ordenarActividades(posicion_actual,posicion_nueva){
+            ordenarActividades(posicion_actual){
+                var selector = "select"+posicion_actual
+                var posicion_nueva= document.getElementById(selector).value;
+        
               console.log("posicion actual:"+posicion_actual+"Nueva posicion"+posicion_nueva)
               var datos_posicion_actual=this.concentrado_actividades[posicion_actual]
               var datos_posicion_nueva=this.concentrado_actividades[posicion_nueva]
@@ -1139,7 +1148,7 @@ $incrementar=1;
                     nuevo_orden: this.concentrado_actividades
               }).then(response =>{
                     if(response.data==true){
-                        
+                        document.getElementById(selector).value = posicion_actual; 
                     }else{
                         alert("Algo salio mal al actualizar el nuevo orden de las actividades.")
                         this.consultarActividades()
