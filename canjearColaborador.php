@@ -137,8 +137,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                                         <!--raiz-->
                                                                             <div>
                                                                             <!--otrodiv-->
-            
-                                                                           <select v-if="bandera==''" :id="'select'+premios.id" @change="agregarCanasta(premios.id,premios.codigo_premio,premios.url_premio,premios.descripcion,premios.puntos_para_canjear,'<?php echo $_SESSION["usuario"]; ?>')"> 
+                
+                                                                           <select v-if="arreglo_canasta[index].id_premio == premios.id" :id="'select'+premios.id" @change="agregarCanasta(premios.id,premios.codigo_premio,premios.url_premio,premios.descripcion,premios.puntos_para_canjear,'<?php echo $_SESSION["usuario"]; ?>')"> 
                                                                                     <option disabled selected>{{arreglo_canasta[index].cantidad}}</option>
                                                                                     <option value="0">0</option>
                                                                                     <option value="1">1</option>
