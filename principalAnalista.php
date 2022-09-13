@@ -237,14 +237,14 @@ $incrementar=1;
                                                                         <div class="col-12" style=" background-color:#e9f3e7">
                                                                                 <div class="row mt-2 mx-3 ">
                                                                                     <div class="col-12 col-lg-6 ">
-                                                                                        Impacto Primerio:<br>
+                                                                                        Impacto Primerio(*):<br>
                                                                                         <select class="" v-model="impacto_primario" :disabled="deshabilitar">
                                                                                                 <option value="" >Seleccione una opción..</option>
                                                                                                 <option  v-for=" lista in lista_impacto" :key="lista.id">{{lista.impacto}}</option>
                                                                                         </select>
                                                                                     </div>
                                                                                     <div class="col-12 col-lg-6">
-                                                                                        Impacto Secundario:<br>
+                                                                                        Impacto Secundario(*):<br>
                                                                                         <select class="" v-model="impacto_secundario" :disabled="deshabilitar">
                                                                                                 <option value="" >Seleccione una opción..</option>
                                                                                                 <option v-for=" lista in lista_impacto" :key="lista.id">{{lista.impacto}}</option>
@@ -253,14 +253,14 @@ $incrementar=1;
                                                                                 </div>   
                                                                                 <div class="row mt-2 mx-3 ">
                                                                                         <div class="col-12 col-lg-6">
-                                                                                        Tipo de desperdicio:<br>
+                                                                                        Tipo de desperdicio(*):<br>
                                                                                             <select class="" v-model="tipo_desperdicio" :disabled="deshabilitar">
                                                                                                     <option value="" >Seleccione una opción..</option>
                                                                                                     <option  v-for=" lista in lista_tipo_desperdicio" :key="lista.id">{{lista.tipo_de_desperdicio}}</option>
                                                                                             </select>
                                                                                         </div>
                                                                                         <div class="col-12 col-lg-6  mt-3 mb-2" style=" font-size: 10px">
-                                                                                            Objetivos de Calidad y M.A.:<br>
+                                                                                            Objetivos de Calidad y M.A.(*):<br>
                                                                                             <div  class="inputs-concentrado" style="overflow-y: scroll; height:80px" >
                                                                                                     <label>{{var_objetivo_de_calidadMA}}</label>
                                                                                                         <ul >
@@ -272,7 +272,7 @@ $incrementar=1;
                                                                                             </div>
                                                                                         </div>
                                                                                 </div>   
-                                                                                <div class="col-12 text-center"> <button type="button" class="btn btn-success mb-2" style="font-size:0.9em" @click="guardarFormularioImpacto" v-show="deshabilitar==false">Guardar</button></div>
+                                                                                <!--<div class="col-12 text-center"> <button type="button" class="btn btn-success mb-2" style="font-size:0.9em" @click="guardarFormularioImpacto" v-show="deshabilitar==false">Guardar</button></div>-->
                                                                         </div>   
                                                                 </div>
                                                                 <!--fin formulario-->
@@ -471,7 +471,7 @@ $incrementar=1;
                                                         <div class="col-12 text-center">
                                                                 <button v-show="status!='En Implementación' && status!='Implementada'"  type="button" class="btn btn-success btn-lg me-2 fst-italic" @click="factible = true,  no_factible = false, repuestaFactibleNoFactible('Factible')">Factible</button> 
                                                                 <button v-show="status!='En Implementación' && status!='Implementada'" type="button" class="btn btn-warning btn-lg fst-italic" @click="no_factible = true, factible = false, repuestaFactibleNoFactible('No Factible')">No factible</button> 
-                                                                <button type="button" class="btn btn-secondary btn-sm ms-5"  data-bs-dismiss="modal" >Salir</button>
+                                                                <!--<button type="button" class="btn btn-secondary btn-sm ms-5"  data-bs-dismiss="modal" >Salir</button>-->
                                                         </div>              
                                                     </div>
                                     </div>
@@ -529,7 +529,7 @@ $incrementar=1;
                                                                                 </thead>
                                                                                 <tbody>
                                                                                     
-                                                                                <tr class="align-middle" v-for="(pendiente_impacto, index) in concentrado_sugerencias_pendiente_impacto">
+                                                                                <tr class="align-middle"   :style="pendiente_impacto.orden == 2? colorgreen : colorgris"  v-for="(pendiente_impacto, index) in concentrado_sugerencias_pendiente_impacto">
                                                                                         
                                                                                          <td class="sticky" style=" background: rgb(94, 94, 94); color: white;"> 
                                                                                          
@@ -537,44 +537,44 @@ $incrementar=1;
                                                                                             <button v-show="btn_actualizar==false" type="button" class="btn btn-warning me-2" title="Editar" @click="editarIndicador(pendiente_impacto.id,index+1,pendiente_impacto.orden)"><i class="bi bi-pen" ></i></button>
                                                                                             <button v-if="id_actualiza==index+1" type="button" class="btn btn-primary " title="Guardar" @click="guardarEditarIndicador(pendiente_impacto.id,pendiente_impacto.folio,pendiente_impacto.orden)" ><i class="bi bi-check-circle"></i></button>
                                                                                         </td> 
-                                                                                        <td><label>{{pendiente_impacto.status_impacto}}</label></td>
+                                                                                        <td><label >{{pendiente_impacto.status_impacto}}</label></td>
                                                                                         <td><label>{{pendiente_impacto.folio}}</label></td>
                                                                                         <td><label>{{pendiente_impacto.nombre_sugerencia}}</label></td>
                                                                                         <td><label>{{pendiente_impacto.analista_de_factibilidad}}</label></td>
                                                                                         <td><label>{{pendiente_impacto.planta}}</label></td>
-                                                                                        <td><label>{{pendiente_impacto.area}}</label></td>
+                                                                                        <td><label> {{pendiente_impacto.area}}</label></td>
                                                                                         <td><label>{{pendiente_impacto.subarea}}</label></td>
                                                                                         <td><label>{{pendiente_impacto.fecha_real_cierre}}</label>
                                                                                         
                                                                                         </td>
-                                                                                        <td style="background-color: #c9e7ff">
+                                                                                        <td>
                                                                                                 <input v-if="id_actualiza==index+1" class="rounded border-2" v-model="indicador" type="text" ></input> 
                                                                                                 <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
                                                                                                 <!--{{pendiente_impacto.orden}}{{ "=="+concentrado_impacto_midiendo.orden}}-->
-                                                                                                     <input v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && pendiente_impacto.orden == concentrado_impacto_midiendo.orden" :value="concentrado_impacto_midiendo.indicador" class="rounded border-2" type="text" disabled></input>
+                                                                                                     <input v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && pendiente_impacto.orden == concentrado_impacto_midiendo.orden" :value="concentrado_impacto_midiendo.indicador" class="rounded border-2 bg-light" type="text"  disabled></input>
                                                                                                 </div>
                                                                                                     
                                                                                         </td>
-                                                                                        <td style="background-color: #c9e7ff">
+                                                                                        <td>
                                                                                                 <input v-if="id_actualiza==index+1" class="rounded border-2" v-model="unidades" type="text" ></input>
                                                                                                 <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo"> 
-                                                                                                            <input v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && pendiente_impacto.orden == concentrado_impacto_midiendo.orden" :value="concentrado_impacto_midiendo.unidades" class="rounded border-2" type="text" disabled></input> 
+                                                                                                            <input v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && pendiente_impacto.orden == concentrado_impacto_midiendo.orden" :value="concentrado_impacto_midiendo.unidades" class="rounded border-2 bg-light" type="text" disabled></input> 
                                                                                                 </div>
                                                                                         </td>
-                                                                                        <td style="background-color: #c9e7ff">
+                                                                                        <td>
                                                                                                 <input v-if="id_actualiza==index+1" class="rounded border-2" v-model="linea_base" type="text" ></input>
                                                                                                 <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo"> 
-                                                                                                    <input v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && pendiente_impacto.orden == concentrado_impacto_midiendo.orden" :value="concentrado_impacto_midiendo.linea_base" class="rounded border-2" type="text" disabled></input> 
+                                                                                                    <input v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && pendiente_impacto.orden == concentrado_impacto_midiendo.orden" :value="concentrado_impacto_midiendo.linea_base" class="rounded border-2 bg-light" type="text" disabled></input> 
                                                                                                 </div>
                                                                                         </td>
-                                                                                        <td style="background-color: #c9e7ff">
+                                                                                        <td>
                                                                                        
                                                                                                 <select v-if="id_actualiza==index+1" v-model="periodo_de_medicion" class="rounded border-2  bg-body">
                                                                                                     <option value="0" disabled selected>Seleccione Periodo..</option>
                                                                                                     <option v-for="mes in 12" :value="mes" @click="vaciarMeses(pendiente_impacto.id)">{{mes}} Mes/es</option>
                                                                                                 </select>
                                                                                                         <div v-else  v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo"> 
-                                                                                                            <input v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && pendiente_impacto.orden == concentrado_impacto_midiendo.orden" :value="concentrado_impacto_midiendo.periodo" class="rounded border-2" type="text" disabled></input> 
+                                                                                                            <input v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && pendiente_impacto.orden == concentrado_impacto_midiendo.orden" :value="concentrado_impacto_midiendo.periodo" class="rounded border-2 bg-light" type="text" disabled></input> 
                                                                                                         </div>   
                                                                                         </td>
                                                                                         <td style="background-color: #fffadf"><!--Mes1-->
@@ -842,6 +842,8 @@ $incrementar=1;
                 acumulado:'',
                 btn_actualizar:false,
                 id_actualiza:'',
+                colorgreen:'background: url("img/verde2.jpg"); color:white; font-weight:bold;',
+                colorgris:'background-color: #fbfbfb ',
             }
         },
         mounted(){
@@ -1017,7 +1019,7 @@ $incrementar=1;
 
                 })
                 },
-                guardarFormularioImpacto(){
+                /*guardarFormularioImpacto(){
                     axios.post("guardar_formulario_impacto_analista.php",{
                         id_concentrado: this.id_concentrado_general,
                         impacto_primario: this.impacto_primario,
@@ -1033,7 +1035,7 @@ $incrementar=1;
 
                     })
 
-                },
+                },*/
                 guardarEditarActividad(tipo,id){
                
                 /*console.log(this.numero_actividad+this.descripcion_actividad+this.var_responsable_plan+this.fecha_inicial_actividad+this.fecha_final_actividad)*/
@@ -1181,28 +1183,38 @@ $incrementar=1;
             },
             checkPlanActividades(){
 
-                if(this.fecha_compromiso!=""){
-                    axios.post("actualizar_check_plan_trabajo.php",{
-                    id_concentrado:this.id_concentrado_general,
-                    enviado_o_no: 'ENVIADO',
-                    check_mc: this.check_mc
-                     }).then(response =>{
-                        console.log(response.data)
-                        if(response.data[1] == true || response.data[2] == true){
-                            alert("Su plan de trabajo sera revisado por Mejora Continua")
-                            this.bandera_btn_finalizar = "no mostrar"
-                            this.check_mc =  response.data[0]
-                            this.consultado_concentrado_pendiente_factibilidad()
-                            this.consultado_concentrado_pendiente_implementacion()
+                if(this.impacto_primario!='' && this.impacto_secundario!='' && this.tipo_desperdicio!='' && this.var_objetivo_de_calidadMA.length>0){
+                        if(this.fecha_compromiso!=""){
+                            axios.post("actualizar_check_plan_trabajo.php",{
+                            impacto_primario: this.impacto_primario,
+                            impacto_secundario: this.impacto_secundario,
+                            tipo_desperdicio: this.tipo_desperdicio,
+                            objetivos_de_calidadMA:this.var_objetivo_de_calidadMA,  
+
+                            id_concentrado:this.id_concentrado_general,
+                            enviado_o_no: 'ENVIADO',
+                            check_mc: this.check_mc
+                            }).then(response =>{
+                                console.log(response.data)
+                                if(response.data[1] == true && response.data[2] == true){
+                                    alert("Su plan de trabajo sera revisado por Mejora Continua")
+                                    this.bandera_btn_finalizar = "no mostrar"
+                                    this.check_mc =  response.data[0]
+                                    this.consultarFormularioImpacto()
+                                    this.consultado_concentrado_pendiente_factibilidad()
+                                    this.consultado_concentrado_pendiente_implementacion()
+                                }else{
+                                    alert("Algo salio mal.")
+                                }
+                            }).catch(error => {
+                                console.log(error)
+                            })
                         }else{
-                            alert("Algo salio mal.")
+                            alert("Agregue la fecha compromiso y despues finalice el Plan.")
                         }
-                    }).catch(error => {
-                        console.log(error)
-                    })
-                }else{
-                    alert("Agregue la fecha compromiso y despues finalice el Plan.")
-                }
+                    }else{
+                        alert("Todos los campos de Formulario Impacto son requeridos, VERIFIQUE.")
+                    }
             },
             guardarFechaCompromiso(){
                 axios.post("guardar_fecha_compromiso.php",{
