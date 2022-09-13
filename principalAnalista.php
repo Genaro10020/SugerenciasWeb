@@ -532,10 +532,10 @@ $incrementar=1;
                                                                                 <tr class="align-middle"   :style="pendiente_impacto.orden == 2? colorgreen : colorgris"  v-for="(pendiente_impacto, index) in concentrado_sugerencias_pendiente_impacto">
                                                                                         
                                                                                          <td class="sticky" style=" background: rgb(94, 94, 94); color: white;"> 
-                                                                                         
                                                                                             <button v-show="btn_actualizar==true" v-if="id_actualiza==index+1" type="button" class="btn btn-danger me-2" title="Cancelar" @click="editarIndicador('','')" ><i class="bi bi-x-circle" ></i></button>
                                                                                             <button v-show="btn_actualizar==false" type="button" class="btn btn-warning me-2" title="Editar" @click="editarIndicador(pendiente_impacto.id,index+1,pendiente_impacto.orden)"><i class="bi bi-pen" ></i></button>
                                                                                             <button v-if="id_actualiza==index+1" type="button" class="btn btn-primary " title="Guardar" @click="guardarEditarIndicador(pendiente_impacto.id,pendiente_impacto.folio,pendiente_impacto.orden)" ><i class="bi bi-check-circle"></i></button>
+                                                                                            <button v-show="btn_actualizar==false && pendiente_impacto.orden == 2" @click="duplicarImpacto(pendiente_impacto.folio)" type="button" class="addnewImpacto" title="Nuevo Impacto">+</button>
                                                                                         </td> 
                                                                                         <td><label >{{pendiente_impacto.status_impacto}}</label></td>
                                                                                         <td><label>{{pendiente_impacto.folio}}</label></td>
@@ -1892,6 +1892,13 @@ $incrementar=1;
                        
                             }
 
+                },
+                duplicarImpacto(folio_duplicar){
+                    var array = []
+                    var resultado = this.concentrado_sugerencias_pendiente_impacto.findIndex((element) => element.folio === folio_duplicar);
+                    console.log(resultado, folio_duplicar, this.concentrado_sugerencias_pendiente_impacto.length)
+                    array=this.concentrado_sugerencias_pendiente_impacto.slice()
+                    console.log(array)
                 }
         }   
     }
