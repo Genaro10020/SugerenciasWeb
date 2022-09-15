@@ -1895,11 +1895,20 @@ $incrementar=1;
                 },
                 duplicarImpacto(folio_duplicar){
                     var array = []
-                    var resultado = this.concentrado_sugerencias_pendiente_impacto.findIndex((element) => element.folio === folio_duplicar);
+                    var resultado = this.concentrado_sugerencias_pendiente_impacto.findIndex((element) => element.folio === folio_duplicar) //obtengo la posicion del objeto en el arreglo
                     console.log(resultado, folio_duplicar, this.concentrado_sugerencias_pendiente_impacto.length)
-                    array=this.concentrado_sugerencias_pendiente_impacto.slice()
-                    console.log(array)
-                }
+                    array=this.concentrado_sugerencias_pendiente_impacto[resultado]//asigno esa posicion a un nuevo arreglo.
+                    this.concentrado_sugerencias_pendiente_impacto.splice(resultado, 0, array)//lo agrego en la siguiente posicion donde gue en contrada la posicion.
+                    var sumar = 0
+                            for (let index = 0; index <  this.concentrado_sugerencias_pendiente_impacto.length; index++) {
+                                    if(this.concentrado_sugerencias_pendiente_impacto[index].folio==folio_duplicar){
+                                        sumar++;
+                                    }
+                                }
+                        this.concentrado_sugerencias_pendiente_impacto[resultado+1].orden = sumar;
+                        console.log(this.concentrado_sugerencias_pendiente_impacto)
+
+                    }
         }   
     }
     var mountedApp = Vue.createApp(vue3).mount('#app');
