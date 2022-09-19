@@ -548,10 +548,12 @@ $incrementar=1;
                                                                                         
                                                                                         </td>
                                                                                         <td>
+                                                                                        {{pendiente_impacto.orden}}
                                                                                                 <input v-if="id_actualiza==index+1" class="rounded border-2" v-model="indicador" type="text" ></input> 
                                                                                                 <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
-                                                                                                <!--{{pendiente_impacto.orden}}{{ "=="+concentrado_impacto_midiendo.orden}}-->
-                                                                                                     <input v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && pendiente_impacto.orden == concentrado_impacto_midiendo.orden" :value="concentrado_impacto_midiendo.indicador" class="rounded border-2 bg-light" type="text"  disabled></input>
+                                                                                                {{pendiente_impacto.orden}}{{ "=="+concentrado_impacto_midiendo.orden}}
+                                                                                                     <input v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id 
+                                                                                                                  && pendiente_impacto.orden == concentrado_impacto_midiendo.orden" :value="concentrado_impacto_midiendo.indicador" class="rounded border-2 bg-light" type="text"  disabled></input>
                                                                                                 </div>
                                                                                                     
                                                                                         </td>
@@ -1894,20 +1896,42 @@ $incrementar=1;
 
                 },
                 duplicarImpacto(folio_duplicar){
-                    var array = []
-                    var resultado = this.concentrado_sugerencias_pendiente_impacto.findIndex((element) => element.folio === folio_duplicar) //obtengo la posicion del objeto en el arreglo
-                    console.log(resultado, folio_duplicar, this.concentrado_sugerencias_pendiente_impacto.length)
-                    array=this.concentrado_sugerencias_pendiente_impacto[resultado]//asigno esa posicion a un nuevo arreglo.
-                    this.concentrado_sugerencias_pendiente_impacto.splice(resultado, 0, array)//lo agrego en la siguiente posicion donde gue en contrada la posicion.
-                    var sumar = 0
+
+                    //Recibo folio
+
+                    //Filtro arreglo y cuento cantidad de entradas de entradas
+                    //Agrego un impacto en blanco al final del arreglo
+                    //Agrego el folio que recibí al campo nuevo
+                    //Leo primer impacto y copio datos ¨generales¨ (nombre de la sugerencia, estauts, etc. (lo que es igual para todos los impactos de la sugerencia))
+                    //Modifico los campos vacios del campo nuevo con los datos de un folio existente
+
+                    //END
+
+                    //Que espero ver? Un arreglo con folios y datos, pero desordenados (en orden de creacion)
+
+
+                    //Problema de otra función: que se vea en orden para el usuario
+                    // Ordeno por folio, despues por ¨orden¨
+
+                    
+                        var array = []
+                        var resultado = this.concentrado_sugerencias_pendiente_impacto.findIndex((element) => element.folio === folio_duplicar) //obtengo la posicion del objeto en el arreglo
+                        console.log(resultado, folio_duplicar, this.concentrado_sugerencias_pendiente_impacto.length)
+                        array=this.concentrado_sugerencias_pendiente_impacto[resultado]//asigno esa posicion a un nuevo arreglo.
+                        this.concentrado_sugerencias_pendiente_impacto.splice(resultado, 0, array)//lo agrego en la siguiente posicion donde gue en contrada la posicion.
+                        this.concentrado_sugerencias_pendiente_impacto;
+                        var sumar = 0
                             for (let index = 0; index <  this.concentrado_sugerencias_pendiente_impacto.length; index++) {
-                                    if(this.concentrado_sugerencias_pendiente_impacto[index].folio==folio_duplicar){
+                                    if(this.concentrado_sugerencias_pendiente_impacto[index].folio===folio_duplicar){
                                         sumar++;
                                     }
                                 }
-                        this.concentrado_sugerencias_pendiente_impacto[resultado+1].orden = sumar;
-                        console.log(this.concentrado_sugerencias_pendiente_impacto)
-
+                        //this.concentrado_sugerencias_pendiente_impacto[resultado+1].orden = sumar;
+                        setTimeout(() => {
+                           // this.concentrado_sugerencias_pendiente_impacto[0].orden = 'RESULTADO:'+resultado;
+                             console.log(this.concentrado_sugerencias_pendiente_impacto[0].orden)                       
+                        }, 4000);
+                        
                     }
         }   
     }
