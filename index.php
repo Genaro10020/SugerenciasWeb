@@ -79,7 +79,9 @@ session_destroy();
                                     
                                 </div>
                                 </form>
-
+                    </div>
+                    <div v-show="mostrar" class="alert alert-warning" role="alert">
+                        <b class="alert-link">{{mensaje_negrita}}</b>
                     </div>
                     <div class="col-12 col-sm-6 d-flex align-items-center justify-content-center">
                         <div class="row">
@@ -102,6 +104,9 @@ session_destroy();
     {
         data(){
             return {
+                mostrar:false,
+                mensaje:'',
+                mensaje_negrita:'',
                 username: '',
                 password: ''  
             }
@@ -123,7 +128,13 @@ session_destroy();
                     }else if(response.data=='Colaborador') {
                         window.location.href = "principalColaborador.php"
                     }else{
-                        alert("Usuario/Contraseña Incorrecta")
+                            this.mostrar=true;
+                            this.mensaje_negrita= 'Usuario/Contraseña Incorrecta'
+                        setTimeout(()=>{
+                            this.mostrar=false;
+                        },3000);
+                       
+                       
                     }
                 })
             }

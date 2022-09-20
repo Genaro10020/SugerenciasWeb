@@ -529,13 +529,16 @@ $incrementar=1;
                                                                                 </thead>
                                                                                 <tbody>
                                                                                     
-                                                                                <tr class="align-middle"   :style="pendiente_impacto.orden == 2? colorgreen : colorgris"  v-for="(pendiente_impacto, index) in concentrado_sugerencias_pendiente_impacto">
+                                                                                <tr class="align-middle " :style="pendiente_impacto.orden == 2? colorgreen : colorgris"  v-for="(pendiente_impacto, index) in concentrado_sugerencias_pendiente_impacto">
                                                                                         
                                                                                          <td class="sticky" style=" background: rgb(94, 94, 94); color: white;"> 
-                                                                                            <button v-show="btn_actualizar==true" v-if="id_actualiza==index+1" type="button" class="btn btn-danger me-2" title="Cancelar" @click="editarIndicador('','')" ><i class="bi bi-x-circle" ></i></button>
+                                                                                         
+                                                                                            <button v-show="btn_actualizar==true" v-if="id_actualiza==index+1" type="button" class="btn btn-danger me-2 " title="Cancelar" @click="editarIndicador('','')"><i class="bi bi-x-circle" ></i></button>
                                                                                             <button v-show="btn_actualizar==false" type="button" class="btn btn-warning me-2" title="Editar" @click="editarIndicador(pendiente_impacto.id,index+1,pendiente_impacto.orden)"><i class="bi bi-pen" ></i></button>
                                                                                             <button v-if="id_actualiza==index+1" type="button" class="btn btn-primary " title="Guardar" @click="guardarEditarIndicador(pendiente_impacto.id,pendiente_impacto.folio,pendiente_impacto.orden)" ><i class="bi bi-check-circle"></i></button>
                                                                                             <button v-show="btn_actualizar==false && pendiente_impacto.orden == 2" @click="duplicarImpacto(pendiente_impacto.folio)" type="button" class="addnewImpacto" title="Nuevo Impacto">+</button>
+                                                                                            <!--<button v-show="btn_actualizar==false && pendiente_impacto.orden != 1 && pendiente_impacto.orden != 2" @click="duplicarImpacto(pendiente_impacto.folio)" type="button" class="deletenewImpacto" title="Eliminar impacto">-</button>-->
+   
                                                                                         </td> 
                                                                                         <td><label >{{pendiente_impacto.status_impacto}}</label></td>
                                                                                         <td><label>{{pendiente_impacto.folio}}</label></td>
@@ -545,17 +548,13 @@ $incrementar=1;
                                                                                         <td><label> {{pendiente_impacto.area}}</label></td>
                                                                                         <td><label>{{pendiente_impacto.subarea}}</label></td>
                                                                                         <td><label>{{pendiente_impacto.fecha_real_cierre}}</label>
-                                                                                        
                                                                                         </td>
                                                                                         <td>
-                                                                                       
+                                                                                           
                                                                                                 <input v-if="id_actualiza==index+1" class="rounded border-2" v-model="indicador" type="text" ></input> 
                                                                                                 <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
-                                                                                                {{pendiente_impacto.orden}}{{ "=="+concentrado_impacto_midiendo.orden}}
-                                                                                                     <input v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id 
-                                                                                                                  && pendiente_impacto.orden == concentrado_impacto_midiendo.orden" :value="concentrado_impacto_midiendo.indicador" class="rounded border-2 bg-light" type="text"  disabled></input>
-                                                                                                </div>
-                                                                                                    
+                                                                                                     <input v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && pendiente_impacto.orden == concentrado_impacto_midiendo.orden" :value="concentrado_impacto_midiendo.indicador" class="rounded border-2 bg-light" type="text"  disabled></input>
+                                                                                                </div> 
                                                                                         </td>
                                                                                         <td>
                                                                                                 <input v-if="id_actualiza==index+1" class="rounded border-2" v-model="unidades" type="text" ></input>
@@ -1896,29 +1895,10 @@ $incrementar=1;
 
                 },
                 duplicarImpacto(folio_duplicar){
-
-                    //Recibo folio
-
-                    //Filtro arreglo y cuento cantidad de entradas de entradas
-                    //Agrego un impacto en blanco al final del arreglo
-                    //Agrego el folio que recibí al campo nuevo
-                    //Leo primer impacto y copio datos ¨generales¨ (nombre de la sugerencia, estauts, etc. (lo que es igual para todos los impactos de la sugerencia))
-                    //Modifico los campos vacios del campo nuevo con los datos de un folio existente
-
-                    //END
-
-                    //Que espero ver? Un arreglo con folios y datos, pero desordenados (en orden de creacion)
-
-
-                    //Problema de otra función: que se vea en orden para el usuario
-                    // Ordeno por folio, despues por ¨orden¨
-
-                    
                         var array = []
                         var array_completo = []
                         array_completo= this.concentrado_sugerencias_pendiente_impacto
-                        var resultado = array_completo.findIndex((element) => element.folio === folio_duplicar) //obtengo la posicion del objeto en el arreglo
-                        //console.log(resultado, folio_duplicar, this.concentrado_sugerencias_pendiente_impacto.length)
+                        var resultado = array_completo.findLastIndex((element) => element.folio === folio_duplicar) //obtengo la posicion del objeto en el arreglo
                         array=array_completo[resultado]//asigno esa posicion a un nuevo arreglo.
                         var sumar = 0
                         for (let index = 0; index <  array_completo.length; index++) {
@@ -1926,25 +1906,11 @@ $incrementar=1;
                                         sumar++;
                                     }
                                 }
-                                var arr = Object.entries(array);       
+                        var arr = Object.entries(array);       
                         console.log(arr[56][1]=sumar+1,'ARREGLO')
                         var array = Object.fromEntries(arr);
-                        //array.orden = sumar+1;
-                        array_completo.splice(resultado+1, 0, array)//lo agrego en la siguiente posicion donde gue en contrada la posicion.
+                        array_completo.splice(0, 0, array)//lo agrego en la siguiente posicion donde gue en contrada la posicion.
                         console.log(array_completo,'ARRAY TRABAJANDO')
-                       /* var sumar = 0
-                            for (let index = 0; index <  this.concentrado_sugerencias_pendiente_impacto.length; index++) {
-                                    if(this.concentrado_sugerencias_pendiente_impacto[index].folio===folio_duplicar){
-                                        sumar++;
-                                    }
-                                }*/
-                       // var sumando1=resultado+1;
-                       // console.log(this.concentrado_sugerencias_pendiente_impacto)    
-                       /* setTimeout(() => {
-                           // this.concentrado_sugerencias_pendiente_impacto[0].orden = 'RESULTADO:'+resultado;
-                             console.log(this.concentrado_sugerencias_pendiente_impacto)                       
-                        }, 10000);*/
-                        
                     }
         }   
     }

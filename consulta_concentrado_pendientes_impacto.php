@@ -63,9 +63,20 @@
                 $agregando_mes = date("Y-m-d",strtotime("{$agregando_mes}+ 1 month")); 
                 $mes12 = date('Y-m-d', strtotime("{$agregando_mes} - 1 day"));
 
-                    $consultar = " SELECT * FROM concentrado_impacto_sugerencias WHERE id_concentrado = '$id_concentrado'";//Verificar que exista por lo menos uno
+                    $consultar = " SELECT * FROM concentrado_impacto_sugerencias WHERE id_concentrado = '$id_concentrado' ";//Verificar que exista por lo menos uno
                     $quer = mysqli_query($conexion,$consultar);
                     if($row = mysqli_num_rows($quer) > 0){
+ 
+                                    $consultando = " SELECT * FROM concentrado_impacto_sugerencias WHERE id_concentrado = '$id_concentrado' ORDER BY orden DESC";//Verificar que exista por lo menos uno
+                                    $quer = mysqli_query($conexion,$consultando);
+                                    while($datos = $quer-> fetch_array()){
+                                        $orden=$datos['orden'];
+                                        if($orden!="1" && $orden!="2"){
+                                            $resultado[] =["Afecha_compromiso"=>$fecha_compromiso,"Afecha_base"=>$fecha_base, "anio"=>$anio,"mes"=>(int)$mes,"dia"=>$dia,
+                                            "mes1"=>$mes1, "mes2"=>$mes2, "mes3"=>$mes3,"mes4"=>$mes4, "mes5"=>$mes5, "mes6"=>$mes6, "mes7"=> $mes7, 
+                                            "mes8"=>$mes8, "mes9"=>$mes9, "mes10"=> $mes10, "mes11"=>$mes11, "mes12"=>$mes12, "orden"=>$orden]+$fila;
+                                        }
+                                    }
 
                             for($i = 0; $i < 2; $i++)
                             {
@@ -74,8 +85,8 @@
                                 "mes8"=>$mes8, "mes9"=>$mes9, "mes10"=> $mes10, "mes11"=>$mes11, "mes12"=>$mes12, "orden"=>(int)$i+1]+$fila;
                                 //$resultado[] = "Vuelta"+$i;
                             }
-                    }else{
 
+                    }else{
                             for($i = 0; $i < 2; $i++)
                             {
                                 $resultado[] =["Afecha_compromiso"=>$fecha_compromiso,"Afecha_base"=>$fecha_base, "anio"=>$anio,"mes"=>(int)$mes,"dia"=>$dia,

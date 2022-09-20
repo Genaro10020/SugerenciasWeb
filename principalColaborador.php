@@ -51,22 +51,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                 font-family: 'Stint Ultra Condensed', cursive;
 
             }    
-            .btn_principal_coloborador{
-                border-radius:100px;
-                height:100px;
-                width:100px;
-                box-shadow: 0px 0px 2px black;
-                background-color: rgb(158, 0, 0);
-                
-            }
-            .btn_principal_coloborador:hover{
-                border-radius:100px;
-                height:100px;
-                width:100px;
-                box-shadow: 0px 0px 10px rgb(0, 0, 0);
-                background-color: rgb(35, 54, 226);
-            
-            }
+           
           /*  .btn_principal_coloborador_salir{
                 border-radius:100px;
                 height:50px;
@@ -157,7 +142,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                         <div class="row text-center mb-2 d-flex justify-content-center align-items-center" style="min-height: 132px;">
                                                 <div class="text-center col-12"> <label class="card-text mt-2 text-black">4.-Lista de Retos.</label></div>
                                                 <div @click="redireccionar('Lista Retos')" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer">
-                                                    <img src="img/app_retos.png" class="img-fluid" alt="..." style=" width: 50px;">
+                                                    <img src="img/app_reto.png" class="img-fluid" alt="..." style=" width: 50px;">
                                                 </div>        
                                         </div>
                                      </div>

@@ -130,7 +130,9 @@
   }
   /*fin modal no factibilidad */
  /*Medicion de Impacto*/
- .addnewImpacto {
+ 
+
+ .addnewImpacto  {
 	box-shadow: 0px 10px 14px -7px #3e7327;
 	background:linear-gradient(to bottom, #77b55a 5%, #72b352 100%);
 	background-color:#77b55a;
@@ -146,15 +148,52 @@
 	text-decoration:none;
 	text-shadow:0px 1px 0px #5b8a3c;
 }
-.addnewImpacto:hover {
+.deletenewImpacto{
+    box-shadow: 0px 10px 14px -7px #732727;
+	background:linear-gradient(to bottom, #b55a5a 5%, #b35252 100%);
+	background-color:#b55a5a;
+	border-radius:4px;
+	border:1px solid #8f2929;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:13px;
+	font-weight:bold;
+	padding:3px 6px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #8a3c3c;
+}
+
+.addnewImpacto:hover, .deletenewImpacto:hover {
 	background:linear-gradient(to bottom, #72b352 5%, #77b55a 100%);
 	background-color:#72b352;
 }
-.addnewImpacto:active {
+.deletenewImpacto:hover {
+	background:linear-gradient(to bottom, #b35252 5%, #b55a5a 100%);
+	background-color:#b35252;
+}
+.addnewImpacto:active, .deletenewImpacto:active {
 	position:relative;
 	top:1px;
 }
+/*APP*/
+.btn_principal_coloborador{
+    border-radius:100px;
+    height:100px;
+    width:100px;
+    box-shadow: 0px 0px 5px black;
+    background-color: rgb(255, 255, 255);
+    
+}
+.btn_principal_coloborador:hover{
+    border-radius:100px;
+    height:100px;
+    width:100px;
+    box-shadow: 0px 0px 10px rgb(0, 0, 0);
+    background-color: rgb(161, 251, 188);
 
+}
  }
  /* Medium devices (tablets, 576 and up)***************************************/
 @media (min-width: 576px) {
