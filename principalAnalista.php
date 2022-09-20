@@ -548,7 +548,7 @@ $incrementar=1;
                                                                                         
                                                                                         </td>
                                                                                         <td>
-                                                                                        {{pendiente_impacto.orden}}
+                                                                                       
                                                                                                 <input v-if="id_actualiza==index+1" class="rounded border-2" v-model="indicador" type="text" ></input> 
                                                                                                 <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
                                                                                                 {{pendiente_impacto.orden}}{{ "=="+concentrado_impacto_midiendo.orden}}
@@ -1915,22 +1915,35 @@ $incrementar=1;
 
                     
                         var array = []
-                        var resultado = this.concentrado_sugerencias_pendiente_impacto.findIndex((element) => element.folio === folio_duplicar) //obtengo la posicion del objeto en el arreglo
-                        console.log(resultado, folio_duplicar, this.concentrado_sugerencias_pendiente_impacto.length)
-                        array=this.concentrado_sugerencias_pendiente_impacto[resultado]//asigno esa posicion a un nuevo arreglo.
-                        this.concentrado_sugerencias_pendiente_impacto.splice(resultado, 0, array)//lo agrego en la siguiente posicion donde gue en contrada la posicion.
-                        this.concentrado_sugerencias_pendiente_impacto;
+                        var array_completo = []
+                        array_completo= this.concentrado_sugerencias_pendiente_impacto
+                        var resultado = array_completo.findIndex((element) => element.folio === folio_duplicar) //obtengo la posicion del objeto en el arreglo
+                        //console.log(resultado, folio_duplicar, this.concentrado_sugerencias_pendiente_impacto.length)
+                        array=array_completo[resultado]//asigno esa posicion a un nuevo arreglo.
                         var sumar = 0
+                        for (let index = 0; index <  array_completo.length; index++) {
+                                    if(array_completo[index].folio===folio_duplicar){
+                                        sumar++;
+                                    }
+                                }
+                                var arr = Object.entries(array);       
+                        console.log(arr[56][1]=sumar+1,'ARREGLO')
+                        var array = Object.fromEntries(arr);
+                        //array.orden = sumar+1;
+                        array_completo.splice(resultado+1, 0, array)//lo agrego en la siguiente posicion donde gue en contrada la posicion.
+                        console.log(array_completo,'ARRAY TRABAJANDO')
+                       /* var sumar = 0
                             for (let index = 0; index <  this.concentrado_sugerencias_pendiente_impacto.length; index++) {
                                     if(this.concentrado_sugerencias_pendiente_impacto[index].folio===folio_duplicar){
                                         sumar++;
                                     }
-                                }
-                        //this.concentrado_sugerencias_pendiente_impacto[resultado+1].orden = sumar;
-                        setTimeout(() => {
+                                }*/
+                       // var sumando1=resultado+1;
+                       // console.log(this.concentrado_sugerencias_pendiente_impacto)    
+                       /* setTimeout(() => {
                            // this.concentrado_sugerencias_pendiente_impacto[0].orden = 'RESULTADO:'+resultado;
-                             console.log(this.concentrado_sugerencias_pendiente_impacto[0].orden)                       
-                        }, 4000);
+                             console.log(this.concentrado_sugerencias_pendiente_impacto)                       
+                        }, 10000);*/
                         
                     }
         }   
