@@ -244,7 +244,7 @@ $incrementar=1;
                                                                                         </select>
                                                                                     </div>
                                                                                     <div class="col-12 col-lg-6">
-                                                                                        Impacto Secundario(*):<br>
+                                                                                        Impacto Secundario:<br>
                                                                                         <select class="" v-model="impacto_secundario" :disabled="deshabilitar">
                                                                                                 <option value="" >Seleccione una opción..</option>
                                                                                                 <option v-for=" lista in lista_impacto" :key="lista.id">{{lista.impacto}}</option>
@@ -949,7 +949,7 @@ $incrementar=1;
                 })
             },
             consulta_responsable_plan(){
-                axios.post('lista_usuarios_y_analistas_factibilidad.php',{
+                axios.post('lista_responsables_y_analistas_factibilidad.php',{
                 }).then(response =>{
                     this.lista_responsable_plan = response.data
                     console.log(this.lista_responsable_plan);
@@ -1184,7 +1184,7 @@ $incrementar=1;
             },
             checkPlanActividades(){
 
-                if(this.impacto_primario!='' && this.impacto_secundario!='' && this.tipo_desperdicio!='' && this.var_objetivo_de_calidadMA.length>0){
+                if(this.impacto_primario!='' && this.tipo_desperdicio!='' && this.var_objetivo_de_calidadMA.length>0){
                         if(this.fecha_compromiso!=""){
                             axios.post("actualizar_check_plan_trabajo.php",{
                             impacto_primario: this.impacto_primario,

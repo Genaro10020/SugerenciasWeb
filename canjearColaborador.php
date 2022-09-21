@@ -128,14 +128,14 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                             <tr class=" align-middle text-center fw-normal " v-for="(premios, index) in concentrado_premios">
                                                                 <td>{{index+1}}</td>
                                                                 <td>
-                                                                    <img class="img-thumbnail min-w-25" style="max-width:100px" :src="premios.url_premio" />
+                                                                    <img class="img-thumbnail min-w-25" style="max-width:100px; cursor:pointer" :src="premios.url_premio" data-bs-toggle="modal" data-bs-target="#exampleModal"/>
                                                                 </td>
                                                                 <td><label class="folio fst-italic" style=" font-size:0.7em">{{premios.descripcion}}</label></td>
                                                                 <td>
 
                                                                         <div>
                                                                             <select :id="'select'+premios.id" @change="agregarCanasta(premios.id,premios.codigo_premio,premios.url_premio,premios.descripcion,premios.puntos_para_canjear,'<?php echo $_SESSION["usuario"]; ?>')"> 
-                                                                                    <option value="0" selected disabled>Cantidad Art.</option>
+                                                                                    <option value="0" selected disabled>Cant. Art.</option>
                                                                                     <option value="0">0</option>
                                                                                     <option value="1">1</option>
                                                                                     <option value="2">2</option>
@@ -146,7 +146,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                                             <div  v-for="(canasta, index) in arreglo_canasta">
                                                                                  <span v-if="canasta.id_premio==premios.id" class="badge bg-dark">{{bandera=canasta.cantidad}}<br>(x Confirmar)</span> 
                                                                             </div>
-                                                                               
+                                                                           
+                                                                                                                                    
                                                                          <div>   
                                                                 </td>
                                                                 <td>{{premios.puntos_para_canjear}}</td>
@@ -154,6 +155,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                         </tbody>
                                                         </table>
                                                 </div><!--scroll-->
+                                                <div v-show="mostrar" class="alert alert-warning" role="alert">
+                                                    <b class="alert-link">{{mensaje}}</b>
+                                                </div>
                                                 <div v-if="arreglo_canasta.length>0" class="row justify-content-around align-items-start text-white mb-1">
                                                             <div class="col-12 text-center lh-1" style=" height:16px;"><span class="text-dark" style=" font-size:0.7em">
                                                                      Confirmar (Inicia el proceso de entrega.)
@@ -167,8 +171,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                             <div class="col-3 col-lg-2 col-xl-1 rounded-pill mt-3 text-center p-2 btn_cancelar" @click="vaciarCanasta('<?php echo $_SESSION["usuario"];?>')">
                                                                 Limpiar <i class="bi bi-eraser-fill"></i>
                                                             </div>
-                                                </div>
+                                                </div>     
                                     </div>
+                                                
                                         <div class="row justify-content-center align-items-start mx-1" >
                                                 <div class="col-8 col-sm-5 col-lg-2 rounded-lg-start text-white" style=" background: #8B0000;">
                                                     Puntos Seleccionados
@@ -203,7 +208,52 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                  
                       
 
-
+                        <!--MODAL CARRUCEL-->
+                        <!-- Button trigger modal -->
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                                            <ol class="carousel-indicators">
+                                                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                                                <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                                                <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                                            </ol>
+                                            <div class="carousel-inner">
+                                                <div class="carousel-item active">
+                                                <img class="d-block w-100" src="img/4.jpg" alt="First slide">
+                                                </div>
+                                                <div class="carousel-item">
+                                                <img class="d-block w-100" src="img/4.jpg" alt="Second slide">
+                                                </div>
+                                                <div class="carousel-item">
+                                                <img class="d-block w-100" src="img/4.jpg" alt="Third slide">
+                                                </div>
+                                            </div>
+                                            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                <span class="sr-only">Previous</span>
+                                            </a>
+                                            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                <span class="sr-only">Next</span>
+                                            </a>
+                                        </div>
+        </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Save changes</button>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                        <!--FIN MODAL CARRUCEL-->
 
                     
                             
@@ -235,7 +285,9 @@ window.location.hash="no-back-button";
                 bandera:'',
                 arreglo_falses:[],
                 exceso_gasto:false,
-                numeros:[1,2,3,4,5,6]
+                numeros:[1,2,3,4,5,6],
+                mostrar:false,
+                mensaje:'',
                 
             }
         },
@@ -291,14 +343,22 @@ window.location.hash="no-back-button";
                                         if( response.data==true){
                                             this.consultarCanasta(numero_nomina)
                                         }else{
-                                            alert("Algo salio mal al insertar su premio a canasta acuda a Mejora Continua para solucionar.")
+                                            this.mostrar=true;
+                                            this.mensaje= 'Algo salio mal al insertar su premio a canasta acuda a Mejora Continua para solucionar.'
+                                            setTimeout(()=>{
+                                                this.mostrar=false;
+                                            },3000);
                                         }
                                         //  this.arreglo_canasta=response.data
                                     }).catch(error =>{
 
                                     })
                         }else{ 
-                                alert("Esta excediendo los puntos, no tienes: "+verificando_si_alcanza+" Puntos")
+                                this.mostrar=true;
+                                this.mensaje= "Esta excediendo los puntos, no tienes: "+verificando_si_alcanza+" Puntos"
+                                setTimeout(()=>{
+                                    this.mostrar=false;
+                                },3000);
                             }
                 },
                 consultarCanasta(numero_nomina){
@@ -321,13 +381,21 @@ window.location.hash="no-back-button";
                                 this.exceso_gasto=false
                             }else{ 
                                 this.exceso_gasto=true
-                                alert("Esta excediendo los puntos, elimine artículos.")
+                                    this.mostrar=true;
+                                    this.mensaje= "Esta excediendo los puntos, elimine artículos."
+                                    setTimeout(()=>{
+                                        this.mostrar=false;
+                                    },3000);
                             }
                         }).catch(error =>{
 
                         })
                     }else{
-                        alert("Elimine artículos o presione en el Botón CANCELAR.")
+                                    this.mostrar=true;
+                                    this.mensaje= "Elimine artículos o presione en el Botón CANCELAR."
+                                    setTimeout(()=>{
+                                        this.mostrar=false;
+                                    },3000);
                     }
                 },
                 vaciarCanasta(numero_nomina){
@@ -336,12 +404,20 @@ window.location.hash="no-back-button";
                     }).then(response =>{
                         if(response.data==true){
                             this.exceso_gasto=false
-                            alert('Cancelado con exito.')
+                                    this.mostrar=true;
+                                    this.mensaje= "Cancelado con éxito."
+                                    setTimeout(()=>{
+                                        this.mostrar=false;
+                                    },3000);
                                 this.consultarCanasta(numero_nomina)
                                 this.bandera=0;
                                
                         }else{
-                            alert('Hay problemas pase con Mejora Continua')
+                            this.mostrar=true;
+                                    this.mensaje= "Hay problemas pase con Mejora Continua."
+                                    setTimeout(()=>{
+                                        this.mostrar=false;
+                                    },3000);
                         }
                             
                     }).catch(error =>{
@@ -360,7 +436,12 @@ window.location.hash="no-back-button";
                                 
                                 document.getElementById("options").value = "0"; 
                         }else{
-                            alert('Hay problemas al pedir los premios, pase con Mejora Continua')
+                            this.mostrar=true;
+                                    this.mensaje= "Hay problemas al solicitar los premios, pase con Mejora Continua"
+                                    setTimeout(()=>{
+                                        this.mostrar=false;
+                                    },3000);
+                           
                         }
                             
                     }).catch(error =>{

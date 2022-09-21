@@ -113,7 +113,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                         <tbody>
                                                             <tr class=" align-middle text-center fw-normal " v-for="(entregar, index) in concentrado_premios_entregar">
                                                                 <td>{{index+1}}</td>
-                                                                <td><img class="img-thumbnail min-w-25" style="max-width:100px" :src="'http://localhost/sugerencias/'+entregar.img_url" /></td>
+                                                                <td><img class="img-thumbnail min-w-25" style="max-width:100px" :src="entregar.img_url" /></td>
                                                                 <td>{{entregar.descripcion}}</td>
                                                                 <td>{{entregar.cantidad}}</td>
                                                                 <td>{{entregar.status}}</td>
@@ -122,6 +122,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                         </tbody>
                                                         </table>
                                                 </div><!--scroll-->
+                                                <div v-show="mostrar" class="alert alert-warning" role="alert">
+                                                    <b class="alert-link">{{mensaje}}</b>
+                                                </div>
 
                                     </div>
                                       
@@ -148,6 +151,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
     {
         data(){
             return {
+                mostrar:false,
+                mensaje:'',
                 concentrado_premios_entregar:[], 
                 numero_nomina:<?php echo $_SESSION['usuario']; ?>
             }
@@ -170,7 +175,12 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                         if(this.concentrado_premios_entregar.length>0){
                             
                         }else{
-                            alert("0 Artículos pendientes.")
+
+                            this.mostrar=true;
+                                    this.mensaje= "0 Artículos pendientes."
+                                    setTimeout(()=>{
+                                        this.mostrar=false;
+                                    },3000);
                         }
                            
                     }).catch(error =>{
