@@ -128,11 +128,11 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                             <tr class=" align-middle text-center fw-normal " v-for="(premios, index) in concentrado_premios">
                                                                 <td>{{index+1}}</td>
                                                                 <td>
-                                                                    <img class="img-thumbnail min-w-25" style="max-width:100px; cursor:pointer" :src="premios.url_premio" data-bs-toggle="modal" data-bs-target="#exampleModal"/>
+                                                                    
+                                                                    <img @click="buscarDocumentos(premios.codigo_premio)" class="img-thumbnail min-w-25" style="max-width:100px; cursor:pointer" :src="premios.url_premio" data-bs-toggle="modal" data-bs-target="#exampleModal"/>
                                                                 </td>
                                                                 <td><label class="folio fst-italic" style=" font-size:0.7em">{{premios.descripcion}}</label></td>
                                                                 <td>
-
                                                                         <div>
                                                                             <select :id="'select'+premios.id" @change="agregarCanasta(premios.id,premios.codigo_premio,premios.url_premio,premios.descripcion,premios.puntos_para_canjear,'<?php echo $_SESSION["usuario"]; ?>')"> 
                                                                                     <option value="0" selected disabled>Cant. Art.</option>
@@ -145,9 +145,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                                                 <select>  
                                                                             <div  v-for="(canasta, index) in arreglo_canasta">
                                                                                  <span v-if="canasta.id_premio==premios.id" class="badge bg-dark">{{bandera=canasta.cantidad}}<br>(x Confirmar)</span> 
-                                                                            </div>
-                                                                           
-                                                                                                                                    
+                                                                            </div>                                                  
                                                                          <div>   
                                                                 </td>
                                                                 <td>{{premios.puntos_para_canjear}}</td>
@@ -215,40 +213,43 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                         <div class="modal-dialog">
                             <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                <h5 class="modal-title" id="exampleModalLabel">Galería</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div class="modal-body">
-                                        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-                                            <ol class="carousel-indicators">
-                                                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                                                <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                                                <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-                                            </ol>
-                                            <div class="carousel-inner">
-                                                <div class="carousel-item active">
-                                                <img class="d-block w-100" src="img/4.jpg" alt="First slide">
-                                                </div>
-                                                <div class="carousel-item">
-                                                <img class="d-block w-100" src="img/4.jpg" alt="Second slide">
-                                                </div>
-                                                <div class="carousel-item">
-                                                <img class="d-block w-100" src="img/4.jpg" alt="Third slide">
-                                                </div>
-                                            </div>
-                                            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                                <span class="sr-only">Previous</span>
-                                            </a>
-                                            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                                <span class="sr-only">Next</span>
-                                            </a>
-                                        </div>
-        </div>
+                                <div class="modal-body">
+                                                    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
+                                                    <!--<div class="carousel-indicators">
+                                                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                                                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                                                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                                                    </div>-->
+                                                            <div class="carousel-inner  text-centerr">
+                                                                <!-- Mostrando los archivos cargados -->
+                                                                <div v-show="filepremio.length>0 && cual_documento=='premio'"  class="text-center justify-content-center"> 
+                                                                                <div :class=" counter == 0 ? 'activo' : 'no_activo' " >
+                                                                                    <img  :src="filepremio[counter]" style="width:80%;" class="img-responsive"></img>
+                                                                                    
+                                                                                </div>
+                                                                </div>
+                                                            </div>
+                                                        
+                                                    </div>
+                                                    <div class="d-flex justify-content-around ">
+                                                        <button class=" rounded-3 bg-dark" type="button" data-bs-target="#carouselExampleIndicators" v-on:click="menos()" style=" border: 0px">
+                                                            <span class="carousel-control-prev-icon mt-1" aria-hidden="true"></span>
+                                                            <span class="visually-hidden">Previous</span>
+                                                        </button>
+                                                        <label><b>{{counter+1}} / {{filepremio.length}}</b></label>
+                                                        <button class="rounded-3 bg-dark" type="button" data-bs-target="#carouselExampleIndicators" v-on:click="mas()" style=" border: 0px">
+                                                            <span class="carousel-control-next-icon mt-1" aria-hidden="true"></span>
+                                                            <span class="visually-hidden">Next</span>
+                                                        </button>
+                                                    </div>
+                                                   
+                                </div>
+                                
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Save changes</button>
                             </div>
                             </div>
                         </div>
@@ -288,6 +289,13 @@ window.location.hash="no-back-button";
                 numeros:[1,2,3,4,5,6],
                 mostrar:false,
                 mensaje:'',
+                filepremio: [],
+                cantidadDOCFILE:0,
+                folio_carpeta_doc:'',
+                cual_documento:'',
+                activo:'carousel-item active',
+                no_activo:'carousel-item',
+                counter:0,
                 
             }
         },
@@ -448,7 +456,44 @@ window.location.hash="no-back-button";
 
                     })
 
-                }
+                },
+                buscarDocumentos(folio_carpeta_doc){
+                    this.counter=0;
+                    this.cual_documento='premio'
+                    this.folio_carpeta_doc=folio_carpeta_doc;
+                //alert(this.folio_carpeta_doc+this.cual_documento)
+                if(this.folio_carpeta_doc!=undefined){
+                                axios.post("buscar_documentos.php",{
+                                    folio_carpeta_doc:this.folio_carpeta_doc,
+                                    cual_documento:this.cual_documento
+                                })
+                                .then(response => {
+                                            this.filepremio = response.data
+                                            this.cantidadDOCFILE = this.filepremio.length
+                                            if(this.filepremio.length>0){
+                                                console.log(this.filepremio.length + "Archivos encontrados.")
+                                            }else{
+                                                /*alert("Sin Documentos agregados.")*/
+                                            }
+                                })
+                                .catch(error => {
+                                    console.log(error);
+                                });
+                    }
+                },
+                mas(){
+                    this.counter+=1;
+                        if(this.counter==this.filepremio.length){
+                            this.counter=0;
+                        }
+                },
+                menos(){
+                    this.counter-=1;
+                        if(this.counter<0){
+                            this.counter=this.filepremio.length-1;
+                        }
+                },
+               
         }
     }
     var mountedApp = Vue.createApp(vue3).mount('#app');

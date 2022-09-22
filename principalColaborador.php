@@ -50,6 +50,22 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                 
                 font-family: 'Stint Ultra Condensed', cursive;
 
+            }
+            .btn_principal_coloborador{
+                border-radius:100px;
+                height:100px;
+                width:100px;
+                box-shadow: 0px 0px 5px black;
+                background-color: rgb(255, 255, 255);
+                
+            }
+            .btn_principal_coloborador:hover{
+                border-radius:100px;
+                height:100px;
+                width:100px;
+                box-shadow: 0px 0px 10px rgb(0, 0, 0);
+                background-color: rgb(161, 251, 188);
+
             }    
            
           /*  .btn_principal_coloborador_salir{

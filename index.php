@@ -61,7 +61,7 @@ session_destroy();
             </div>
             <div class="row" style="height:80vh">
                     <div class="col-12 col-sm-6 d-flex align-items-center justify-content-center rounded-3 mt-2" style="background:#f5f5f5">
-                    <form @submit.prevent="verificar" class="rounded-3 shadow"  style="background: rgb(181,0,0);">
+                        <form @submit.prevent="verificar" class="rounded-3 shadow"  style="background: rgb(181,0,0);">
                                 <div class="row rounded-3  d-flex align-items-center m-1 " style="background:#f9f9f9">
                                    
                                         <div class="col-12 mt-5" style="color:#920f0f; font-weight:bold">
@@ -75,14 +75,16 @@ session_destroy();
                                         </div>
                                         <div class="col-12 my-5 text-center"> 
                                             <button  type="submit" class="btn btn-danger">E n t r a r</button>
+                                                <div v-show="mostrar" class="alert alert-warning ">
+                                                    <b>{{mensaje_negrita}}</b>
+                                                </div> 
                                         </div>
-                                    
+                                        
                                 </div>
-                                </form>
+                               
+                        </form>
                     </div>
-                    <div v-show="mostrar" class="alert alert-warning" role="alert">
-                        <b class="alert-link">{{mensaje_negrita}}</b>
-                    </div>
+                    
                     <div class="col-12 col-sm-6 d-flex align-items-center justify-content-center">
                         <div class="row">
                             <div class="col-12">

@@ -213,7 +213,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                 },
             consultar_reto(folio){
                 this.folio_reto= folio
-                this.cual_documento="Reto"
+                this.cual_documento="reto"
                 axios.post('consulta_concentrado_retos.php',{
                 folio_reto: folio
                         }).then(response =>{
@@ -237,7 +237,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                     cual_documento:this.cual_documento
                                 })
                                 .then(response => {
-                            
+                                           
                                  
                                             this.filereto = response.data
                                             console.log(response.data,this.filereto.length);

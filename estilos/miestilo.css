@@ -178,22 +178,7 @@
 	top:1px;
 }
 /*APP*/
-.btn_principal_coloborador{
-    border-radius:100px;
-    height:100px;
-    width:100px;
-    box-shadow: 0px 0px 5px black;
-    background-color: rgb(255, 255, 255);
-    
-}
-.btn_principal_coloborador:hover{
-    border-radius:100px;
-    height:100px;
-    width:100px;
-    box-shadow: 0px 0px 10px rgb(0, 0, 0);
-    background-color: rgb(161, 251, 188);
 
-}
  }
  /* Medium devices (tablets, 576 and up)***************************************/
 @media (min-width: 576px) {
