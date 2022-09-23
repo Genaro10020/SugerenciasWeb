@@ -228,11 +228,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                                 <div v-show="filepremio.length>0 && cual_documento=='premio'"  class="text-center justify-content-center"> 
                                                                                 <div :class=" counter == 0 ? 'activo' : 'no_activo' " >
                                                                                     <img  :src="filepremio[counter]" style="width:80%;" class="img-responsive"></img>
-                                                                                    
                                                                                 </div>
                                                                 </div>
                                                             </div>
-                                                        
                                                     </div>
                                                     <div class="d-flex justify-content-around ">
                                                         <button class=" rounded-3 bg-dark" type="button" data-bs-target="#carouselExampleIndicators" v-on:click="menos()" style=" border: 0px">
@@ -244,10 +242,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                             <span class="carousel-control-next-icon mt-1" aria-hidden="true"></span>
                                                             <span class="visually-hidden">Next</span>
                                                         </button>
-                                                    </div>
-                                                   
+                                                    </div>  
                                 </div>
-                                
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             </div>
