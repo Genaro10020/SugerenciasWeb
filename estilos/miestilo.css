@@ -1,6 +1,9 @@
 /*PRINCIPAL MEJORA*/
 /* Small devices (landscape phones, 576px and up)***************************************/
 @media (min-width: 0px) {
+    body {
+        overscroll-behavior: contain;
+      }
     /*css pricipal colaboradoress*/
     .div-scroll-vertial{
         max-height: 70vh;

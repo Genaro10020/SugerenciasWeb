@@ -54,9 +54,9 @@ session_destroy();
               
     </style>
     <div id="app" class="container-fluid  " >
-            <div class="div_susperior d-flex justify-content-around align-items-center" style="height:10vh">
+            <div class="div_susperior d-flex justify-content-around align-items-center " style="height:10vh">
                 <div class=""><img class="img-fluid" src="img/logo_gonher.png"></img></div>
-                <div class=" titulo fs-2 lh-1 text-center">Sistema de Sugerencias de Mejora</div>
+                <div class=" titulo fs-2 lh-1 text-center mt-2 mt-sm-0">Sistema de Sugerencias de Mejora</div>
                 <div class=""><img class="img-fluid" src="img/logo_mejora_continua.png"></img></div>
             </div>
             <div class="row" style="height:80vh">
@@ -94,7 +94,7 @@ session_destroy();
                     </div>
                     
             </div>
-            <div class="row" style="height:10vh;   background: url(img/pie.jpg); background-repeat: repeat-x; background-size: 8% 100%;">
+            <div class="row d-none d-sm-block" style="height:10vh;   background: url(img/pie.jpg); background-repeat: repeat-x; background-size: 8% 100%;">
            
             </div>
         

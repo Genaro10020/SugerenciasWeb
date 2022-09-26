@@ -182,6 +182,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                                                         </div>
                                                                                 </div>
                                                                             </div>
+
+                                                                            <div v-show="mostrar" class="alert alert-warning" role="alert">
+                                                                                <b class="alert-link">{{mensaje}}</b>
+                                                                            </div>
                                                     </form> 
 
                                         <div class="col-12 col-lg-12 d-flex align-items-end justify-content-center" >
@@ -216,6 +220,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                 respuesta3: '',
                 respuestas: [],
                 disabled:1,
+                mostrar:false,
+                mensaje:''
             }
         },
         mounted(){
@@ -257,10 +263,18 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                     respuesta3: this.respuesta3
                 }).then(response=>{
                     if(response.data=='correcto'){
-                        alert("Encuesta guardada Correctamente.")
+                            this.mostrar=true;
+                            this.mensaje= "Encuesta guardada Correctamente."
+                            setTimeout(()=>{
+                                this.mostrar=false;
+                            },3000);
                          this.consutarResputasEncuesta()
                     }else{
-                        alert("Algo salio mal al contestar encuesta.")
+                        this.mostrar=true;
+                            this.mensaje= "Algo salio mal al contestar encuesta."
+                            setTimeout(()=>{
+                                this.mostrar=false;
+                            },3000);
                     }
                 }).catch(error =>{
                     console.log(error)

@@ -122,6 +122,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                         </div>
                                             </div>
                                         </div>
+                                                <div v-show="mostrar" class="alert alert-warning" role="alert">
+                                                    <b class="alert-link">{{mensaje}}</b>
+                                                </div>
                                 </form>
                         </div>
 
@@ -148,6 +151,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
     {
         data(){
             return {
+                mostrar:false,
+                mensaje:'',
                 concentrado_premios_entregar:[], 
                 numero_nomina:<?php echo $_SESSION['usuario']; ?>,
                 contrasena_actual:'',
@@ -167,24 +172,45 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
             },
             cambiarContrasenia(){
                 if(this.nueva_contrasena==this.confirmar_contrasena){
-                   
+                    
                     axios.post("cambiar_contrasena.php",{
                         numero_nomina:this.numero_nomina,
                         nueva_contrasena:this.nueva_contrasena,
                         contrasena_actual:this.contrasena_actual
+                        
                     }).then(response =>{
+                        console.log(response.data)
                         if(response.data=='correcto'){
                             this.contrasena_actual='',
                             this.nueva_contrasena='',
                             this.confirmar_contrasena=''
-                                alert('Contraseña actualizada con éxito')
+                                this.mostrar=true;
+                                this.mensaje= "Contraseña actualizada con éxito."
+                                setTimeout(()=>{
+                                    this.mostrar=false;
+                                },3000);
+                        }else if(response.data=='incorrecto'){
+                                this.mostrar=true;
+                                this.mensaje= "Verifique tu contraseña actual."
+                                setTimeout(()=>{
+                                    this.mostrar=false;
+                                },3000);
+
                         }else{
-                                alert('No se actualizo la contraseña reporte a Mejora Continua.')
+                            this.mostrar=true;
+                            this.mensaje= "No se actualizo la contraseña, reporte a Mejora Continua."
+                            setTimeout(()=>{
+                                this.mostrar=false;
+                            },3000);
                         }
                     })  
 
                 }else{
-                    alert('La nueva contraseña y la confirmación no coinciden.')
+                        this.mostrar=true;
+                        this.mensaje= "La nueva contraseña y la confirmación no coinciden."
+                        setTimeout(()=>{
+                            this.mostrar=false;
+                        },3000);
                 }
             }
         },
