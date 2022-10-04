@@ -108,7 +108,6 @@ $incrementar=1;
                                                     <th scope="col">Fecha Limite </th>
                                                     <th scope="col">Status de Factibilidad</th>
                                                     <th scope="col">Status Plan de Trabajo</th>
-                                                    
                                                     </tr>
                                                 </thead>
                                                 <tbody>

@@ -89,9 +89,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 </div>
             </div>
                  <!--CUERPO-->
-            <div class="row cuerpo_principal" style="min-height:76vh">
+            <div class="row cuerpo_principal" style="min-height:76vh" >
             <!--////////////////////////////////////////////////////////PRINCIPAL MEJORA-->
-                   <div v-if="ventana=='principalMejora'">
+                   <div v-if="ventana=='principalMejora'" v-cloak>
                             <!--cinta apartado-->
                             <div class="row justify-content-center align-items-start ">
                                     <div class="cintilla col-12 text-center">
@@ -722,7 +722,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
 
                    </div> <!--fin contenido principal gonher-->
                    <!--////////////////////////////////////////////////////////APARTADO CONCENTRADO DE SUGERENCIAS-->
-                   <div v-else-if="ventana=='concentrado'">
+                   <div v-else-if="ventana=='concentrado'" v-cloak>
                        <!--cinta apartado-->
                             <div class="row justify-content-center align-items-start ">
                                 <div class="cintilla col-12 text-center">
@@ -1158,7 +1158,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                             </div>
                    </div>
                   <!--////////////////////////////////////////////////////////APARTADO PREMIOS SUGERENCIAS-->
-                   <div v-else-if="ventana=='premios'">
+                   <div v-else-if="ventana=='premios'" v-cloak>
                             <!--cinta apartado-->
                             <div class="row justify-content-center align-items-start ">
                                 <div class="cintilla col-12 text-center">
@@ -1367,7 +1367,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                              <!--fin contenido principal gonher-->
                    </div>
                    <!--//////////////////////////////////////////////////////APARTADO ADMINISTRACION DE RETOS-->
-                   <div v-else-if="ventana=='retos'">
+                   <div v-else-if="ventana=='retos'" v-cloak>
                             <div class="row justify-content-center align-items-start ">
                                 <div class="cintilla col-12 text-center">
                                    <b> ADMINISTRACIÓN DE RETOS</b>
@@ -1584,7 +1584,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                         <!--Fin Modal subir imagenes en retos-->
                             
                    </div>
-                   <div v-else-if="ventana=='configuracion'">
+                   <div v-else-if="ventana=='configuracion'" v-cloak>
                     <!--//////////////////////////////////////////////////////////////////////////////APARTADO CONFIGURACIÓN-->
                     
                                 <div class="row justify-content-center align-items-start ">

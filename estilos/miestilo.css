@@ -1,6 +1,12 @@
 /*PRINCIPAL MEJORA*/
 /* Small devices (landscape phones, 576px and up)***************************************/
 @media (min-width: 0px) {
+
+    [v-cloak]{
+        display: none;
+    }
+
+    
     body {
         overscroll-behavior: contain;
       }
