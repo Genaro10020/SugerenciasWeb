@@ -16,10 +16,13 @@ $pass=$variables['contrasena'];
         while ($row = mysqli_fetch_array($resultado)){
             $tipo = $row['tipo'];
             $nombre = $row['nombre'];
+            $email = $row['email'];
         }
         $_SESSION["usuario"] = $user;//nomina
         $_SESSION["tipo"] = $tipo;//tipo
         $_SESSION["nombre"] = $nombre;//nombre
+        $_SESSION["email"] = $email;//correo
+        
         echo $tipo;
     }else{
             $consulta = "SELECT * FROM concentrado_sugerencias WHERE numero_nomina='$user' AND password='$pass'";
