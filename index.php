@@ -5,6 +5,9 @@ session_destroy();
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta http-equiv='cache-control' content='no-cache'><!--Evitar cache-->
+<meta http-equiv='expires' content='0'><!--Evitar cache-->
+<meta http-equiv='pragma' content='no-cache'><!--Evitar cache-->
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,8 +27,8 @@ session_destroy();
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet"> 
-
 </head>
+
 <body>
     <style>
             .titulo{
@@ -50,7 +53,6 @@ session_destroy();
                 box-shadow: 0 0px 0px rgba(0, 133, 180, 1)inset, 0 0 4px rgba( 187, 16, 16, 1);
                 outline: 0 none;
                 }
-
               
     </style>
     <div id="app" class="container-fluid  " >
@@ -110,11 +112,12 @@ session_destroy();
                 mensaje:'',
                 mensaje_negrita:'',
                 username: '',
-                password: ''  
+                password: '',  
+                val:0
             }
         },
         mounted(){
-            
+           
         },
         methods:{
             verificar(){
@@ -135,14 +138,13 @@ session_destroy();
                         setTimeout(()=>{
                             this.mostrar=false;
                         },3000);
-                       
-                       
                     }
                 })
-            }
+            },
         }
     }
     var mountedApp = Vue.createApp(vue3).mount('#app');
+    
 </script>
 
 
