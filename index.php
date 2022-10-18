@@ -68,12 +68,12 @@ session_destroy();
                                    
                                         <div class="col-12 mt-5" style="color:#920f0f; font-weight:bold">
                                             No. de Nómina
-                                            <input v-model="username" type="text" class="form-control "></input>
+                                            <input v-model="username" type="text" class="form-control " ></input>
                                             
                                         </div>
                                         <div class="col-12 mt-5" style="color:#920f0f; font-weight:bold"> 
                                             Contraseña
-                                            <input v-model="password" type="password" class="form-control"></input>
+                                            <input v-model="password" type="password" class="form-control" ></input>
                                         </div>
                                         <div class="col-12 my-5 text-center"> 
                                             <button  type="submit" class="btn btn-danger">E n t r a r</button>
@@ -83,7 +83,10 @@ session_destroy();
                                         </div>
                                         
                                 </div>
-                               
+                                <div class="form-check">
+                                        <input type="checkbox" name="remember" id="remember" <?php if(isset($_COOKIE["login_usuario"])) { ?> checked <?php } ?>  class="form-check-input"/>
+                                             <label for="remember-me">Recordarme</label>
+                                        </div>
                         </form>
                     </div>
                     
@@ -125,12 +128,13 @@ session_destroy();
                 usuario:this.username,
                 contrasena: this.password
                 }).then(response =>{
-                    console.log(response.data)
+                   // console.log(response.data)
                     if(response.data=='Admin'){
                       window.location.href = "principalMejora.php"
                     }else if(response.data=='Analista') {
                         window.location.href = "principalAnalista.php"
                     }else if(response.data=='Colaborador') {
+                       console.log( <?php if(isset($_COOKIE["login_usuario"])) { echo $_COOKIE["login_usuario"]; } if(isset($_COOKIE["usuario_password"])) { echo $_COOKIE["usuario_password"]; } ?> )
                         window.location.href = "principalColaborador.php"
                     }else{
                             this.mostrar=true;

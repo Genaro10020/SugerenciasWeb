@@ -107,6 +107,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
             } 
     </style>        
         <div id="app" class="container-fluid  " ><!--BODY-->
+        <?php if(isset($_COOKIE["login_usuario"])) { echo "COOKIES:".$_COOKIE["login_usuario"]; } if(isset($_COOKIE["usuario_password"])) { echo"COOKIES:". $_COOKIE["usuario_password"]; } ?>
                 <!--BARRA SUPERIOR-->
                     <div class="row  d-flex justify-content-around align-items-center" style="height:10vh; background-color: rgba(181,0,0,1); box-shadow: 0px 0px 12px -2px black;" >
                             <div class="row align-items-center bg-white"  >
@@ -127,7 +128,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                     <div id="opciones" style="width: 18rem;" class=" d-flex align-items-center justify-content-center ">
                                         <div class="row text-center mb-2 d-flex justify-content-center align-items-center" style="min-height: 132px;">
                                                 <div class="text-center col-12"><label class="card-text mt-2 text-black">1.- Mis Sugerencias.</label></div>
-                                                <div @click="redireccionar('Sugerencia')" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer">
+                                                <div @click="redireccionar(sug)" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer">
                                                     <img src="img/app_sugerencias.png" class="img-fluid" alt="..." style=" width: 50px;">
                                                 </div>
                                         </div>
@@ -137,7 +138,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                     <div id="opciones" style="width: 18rem; " class=" d-flex align-items-center justify-content-center ">
                                         <div class="row text-center mb-2 d-flex justify-content-center align-items-center" style="min-height: 132px;">
                                                 <div class="text-center col-12"><label class="card-text mt-2 text-black">2.- Canjear Premio.</label></div>
-                                                <div  @click="redireccionar('Canjear Premio')" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer">
+                                                <div  @click="redireccionar(can)" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer">
                                                     <img src="img/app_premios.png" class="img-fluid" alt="..." style=" width: 50px;">
                                                 </div>
                                         </div>
@@ -147,7 +148,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                     <div id="opciones" style="width: 18rem; " class=" d-flex align-items-center justify-content-center " >
                                         <div class="row text-center mb-2 d-flex justify-content-center align-items-center" style="min-height: 132px;">
                                                 <div class="text-center col-12"> <label class="card-text mt-2 text-black">3.- Status Premio.</label></div>
-                                                <div @click="redireccionar('Status Premio')" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer">
+                                                <div @click="redireccionar(sta)" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer">
                                                     <img src="img/app_status.png" class="img-fluid" alt="..." style=" width: 50px;">
                                                 </div>        
                                         </div>
@@ -157,7 +158,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                     <div id="opciones" style="width: 18rem; " class=" d-flex align-items-center  justify-content-center rounded-3 " >
                                         <div class="row text-center mb-2 d-flex justify-content-center align-items-center" style="min-height: 132px;">
                                                 <div class="text-center col-12"> <label class="card-text mt-2 text-black">4.-Lista de Retos.</label></div>
-                                                <div @click="redireccionar('Lista Retos')" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer">
+                                                <div @click="redireccionar(lis)" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer">
                                                     <img src="img/app_reto.png" class="img-fluid" alt="..." style=" width: 50px;">
                                                 </div>        
                                         </div>
@@ -167,7 +168,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                     <div id="opciones" style="width: 18rem; " class="d-flex align-items-center justify-content-center   " >
                                         <div class="row text-center mb-2 d-flex justify-content-center align-items-center" style="min-height: 132px;">
                                                 <div class="text-center col-12"> <label class="card-text mt-2 text-black">5.- Cambio Contraseña.</label></div>
-                                                <div @click="redireccionar('Cambiar Password')" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer">
+                                                <div @click="redireccionar(cam)" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer">
                                                     <img src="img/app_passwor.png" class="img-fluid" alt="..." style=" width: 50px;" >
                                                 </div>        
                                         </div>
@@ -177,7 +178,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                     <div id="opciones" style="width: 18rem;   " class=" d-flex align-items-center justify-content-center " >
                                         <div class="row text-center mb-2 d-flex justify-content-center align-items-center" style="min-height: 132px;">
                                                 <div class="text-center col-12"> <label class="card-text mt-2 text-black">6.- Encuesta de App.</label></div>
-                                               <div @click="redireccionar('Encuesta')" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer">
+                                               <div @click="redireccionar(enc)" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer">
                                                 <img src="img/app_encuesta.png" class="img-fluid" alt="..."  style=" width: 50px;">
                                             </div>       
                                         </div>
@@ -188,7 +189,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                     <div id="opciones" style="width: 18rem;" class=" d-flex align-items-center justify-content-center " >
                                         <div class="row text-center mb-2 d-flex justify-content-center align-items-center">
                                                 <div class="text-center col-12"> <label class="card-text mt-2 text-black ">Cerrar Sesion.</label></div>
-                                                <div @click="redireccionar('Salir')" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer"> 
+                                                <div @click="redireccionar(sal)" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer"> 
                                                     <img src="img/app_exit.png" class="img-fluid" alt="..." style=" width: 50px;" >
                                                 </div>        
                                         </div>
@@ -211,30 +212,58 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
     {
         data(){
             return {
-
+                pass_actual:'',
+                sug:'',
+                can:'',
+                sta:'',
+                lis:'',
+                cam:'',
+                enc:'',
+                sal:''
             }
         },
         mounted(){
-            
+            this.consultarPass()
         },
         methods:{
             redireccionar(opciones){
-                if(opciones=='Sugerencia'){
-                    window.location.href="sugerenciasColaborador.php"
-                }else if(opciones=='Canjear Premio'){
-                    window.location.href="canjearColaborador.php"
-                }else if(opciones=='Status Premio'){
-                    window.location.href="statusPremio.php"
-                }else if(opciones=='Lista Retos'){
-                    window.location.href="listaRetos.php"
-                }else if(opciones=='Cambiar Password'){
-                    window.location.href="cambiarContrasena.php"
-                }else if(opciones=='Encuesta'){
-                    window.location.href="encuestaApp.php"
-                }else if(opciones=='Salir'){
-                    window.location.href="index.php"
-                }
+                if(this.pass_actual!='123456')
+                    {
+                        if(opciones=='Sugerencia'){
+                            window.location.href="sugerenciasColaborador.php"
+                        }else if(opciones=='Canjear Premio'){
+                            window.location.href="canjearColaborador.php"
+                        }else if(opciones=='Status Premio'){
+                            window.location.href="statusPremio.php"
+                        }else if(opciones=='Lista Retos'){
+                            window.location.href="listaRetos.php"
+                        }else if(opciones=='Cambiar Password'){
+                            window.location.href="cambiarContrasena.php"
+                        }else if(opciones=='Encuesta'){
+                            window.location.href="encuestaApp.php"
+                        }else if(opciones=='Salir'){
+                            window.location.href="index.php"
+                        }
+                    }
                
+            },
+            consultarPass(){
+                axios.post('consultado_password.php',{
+
+                }).then(response =>{
+                    this.pass_actual = response.data
+                        if(this.pass_actual=='123456'){
+                            window.location.href="cambiarContrasena.php"
+                        }else{
+                            this.sug='Sugerencia',
+                            this.can='Canjear Premio',
+                            this.sta='Status Premio',
+                            this.lis='Lista Retos',
+                            this.cam='Cambiar Password',
+                            this.enc='Encuesta',
+                            this.sal='Salir'
+                        }
+                })
             }
         }
     }
