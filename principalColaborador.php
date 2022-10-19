@@ -1,6 +1,16 @@
 <?php
 session_start();
 if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){ 
+
+setcookie("login_usuario", $_SESSION["usuario"]);
+setcookie("login_password", $_SESSION["password"]);
+if(isset($_SESSION["remember"])){ 
+    setcookie("remember",  $_SESSION["remember"]);
+}else{
+    setcookie("remember",  "No");
+}
+
+
     ?>
  <!DOCTYPE html>
 <html lang="en">
@@ -107,7 +117,6 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
             } 
     </style>        
         <div id="app" class="container-fluid  " ><!--BODY-->
-        <?php if(isset($_COOKIE["login_usuario"])) { echo "COOKIES:".$_COOKIE["login_usuario"]; } if(isset($_COOKIE["usuario_password"])) { echo"COOKIES:". $_COOKIE["usuario_password"]; } ?>
                 <!--BARRA SUPERIOR-->
                     <div class="row  d-flex justify-content-around align-items-center" style="height:10vh; background-color: rgba(181,0,0,1); box-shadow: 0px 0px 12px -2px black;" >
                             <div class="row align-items-center bg-white"  >

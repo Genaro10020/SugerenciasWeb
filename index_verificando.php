@@ -22,6 +22,7 @@ $pass=$variables['contrasena'];
         $_SESSION["tipo"] = $tipo;//tipo
         $_SESSION["nombre"] = $nombre;//nombre
         $_SESSION["email"] = $email;//correo
+        $_SESSION["password"] = $pass;//password
         
         echo $tipo;
     }else{
@@ -36,6 +37,7 @@ $pass=$variables['contrasena'];
                 $_SESSION["usuario"] = $user;//nomina
                 $_SESSION["tipo"] = $tipo;//tipo
                 $_SESSION["nombre"] = $nombre;//nombre
+                $_SESSION["password"] = $pass;//password
                 echo $tipo;
             }else{
                 echo "No";

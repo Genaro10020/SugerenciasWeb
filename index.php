@@ -1,6 +1,7 @@
 <?php 
 session_start();
 session_destroy();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -84,9 +85,9 @@ session_destroy();
                                         
                                 </div>
                                 <div class="form-check">
-                                        <input type="checkbox" name="remember" id="remember" <?php if(isset($_COOKIE["login_usuario"])) { ?> checked <?php } ?>  class="form-check-input"/>
-                                             <label for="remember-me">Recordarme</label>
-                                        </div>
+                                        <input type="checkbox" id="checkbox" v-model="remember">
+                                        <label class="text-light" for="checkbox">Recordarme</label>
+                                </div>
                         </form>
                     </div>
                     
@@ -104,7 +105,9 @@ session_destroy();
             </div>
         
     </div>
+    
 
+    
 <script>
     
     const vue3 = 
@@ -114,9 +117,18 @@ session_destroy();
                 mostrar:false,
                 mensaje:'',
                 mensaje_negrita:'',
-                username: '',
-                password: '',  
-                val:0
+                username: '<?php if(isset($_COOKIE["remember"])){ 
+                    if($_COOKIE["remember"]=="yes")
+                        {
+                         echo $_COOKIE["login_usuario"];
+                        }else{
+                            echo "";
+                        }
+                        }?>',
+                        
+                password: '<?php if(isset($_COOKIE["remember"])){ if($_COOKIE["remember"]=="yes"){echo $_COOKIE["login_password"];}else{echo "";}}?>',
+                val:0,
+                remember:false
             }
         },
         mounted(){
@@ -134,8 +146,11 @@ session_destroy();
                     }else if(response.data=='Analista') {
                         window.location.href = "principalAnalista.php"
                     }else if(response.data=='Colaborador') {
-                       console.log( <?php if(isset($_COOKIE["login_usuario"])) { echo $_COOKIE["login_usuario"]; } if(isset($_COOKIE["usuario_password"])) { echo $_COOKIE["usuario_password"]; } ?> )
-                        window.location.href = "principalColaborador.php"
+                        if(this.remember){
+                            <?php $_SESSION["remember"]="yes";?>
+                           
+                        }
+                      window.location.href = "principalColaborador.php"
                     }else{
                             this.mostrar=true;
                             this.mensaje_negrita= 'Usuario/Contraseña Incorrecta'
@@ -148,7 +163,7 @@ session_destroy();
         }
     }
     var mountedApp = Vue.createApp(vue3).mount('#app');
-    
+   
 </script>
 
 
