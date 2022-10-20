@@ -6,6 +6,13 @@ $variables = json_decode(file_get_contents('php://input'), true);
 $tipo="";
 $user=$variables['usuario'];
 $pass=$variables['contrasena'];
+$remember=$variables['recordar'];
+if($remember==1){
+    $remember="true";
+}else{
+    $remember="false";
+}
+
 
 
 
@@ -23,6 +30,7 @@ $pass=$variables['contrasena'];
         $_SESSION["nombre"] = $nombre;//nombre
         $_SESSION["email"] = $email;//correo
         $_SESSION["password"] = $pass;//password
+        $_SESSION["remember"] = $remember;//password
         
         echo $tipo;
     }else{
@@ -38,9 +46,10 @@ $pass=$variables['contrasena'];
                 $_SESSION["tipo"] = $tipo;//tipo
                 $_SESSION["nombre"] = $nombre;//nombre
                 $_SESSION["password"] = $pass;//password
+                $_SESSION["remember"] = $remember;//password
                 echo $tipo;
             }else{
                 echo "No";
             }
-}
+        }
 ?>

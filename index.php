@@ -1,7 +1,9 @@
 <?php 
+
+
 session_start();
 session_destroy();
-
+session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -86,8 +88,10 @@ session_destroy();
                                 </div>
                                 <div class="form-check">
                                         <input type="checkbox" id="checkbox" v-model="remember">
-                                        <label class="text-light" for="checkbox">Recordarme</label>
+                                        <label class="text-light" for="checkbox">Recordarme {{remember}}</label>
                                 </div>
+                             
+                                
                         </form>
                     </div>
                     
@@ -101,7 +105,7 @@ session_destroy();
                     
             </div>
             <div class="row d-none d-sm-block" style="height:10vh;   background: url(img/pie.jpg); background-repeat: repeat-x; background-size: 8% 100%;">
-           
+          
             </div>
         
     </div>
@@ -118,7 +122,7 @@ session_destroy();
                 mensaje:'',
                 mensaje_negrita:'',
                 username: '<?php if(isset($_COOKIE["remember"])){ 
-                    if($_COOKIE["remember"]=="yes")
+                    if($_COOKIE["remember"]==true)
                         {
                          echo $_COOKIE["login_usuario"];
                         }else{
@@ -126,9 +130,9 @@ session_destroy();
                         }
                         }?>',
                         
-                password: '<?php if(isset($_COOKIE["remember"])){ if($_COOKIE["remember"]=="yes"){echo $_COOKIE["login_password"];}else{echo "";}}?>',
+                password: '<?php if(isset($_COOKIE["remember"])){ if($_COOKIE["remember"]==true){echo $_COOKIE["login_password"];}else{echo "";}}?>',
                 val:0,
-                remember:false
+                remember: '<?php if(isset($_COOKIE["remember"])){ if($_COOKIE["remember"]==true){echo true;}else{echo false;}}?>'
             }
         },
         mounted(){
@@ -138,19 +142,18 @@ session_destroy();
             verificar(){
                 axios.post('index_verificando.php',{
                 usuario:this.username,
-                contrasena: this.password
+                contrasena: this.password,
+                recordar: this.remember
                 }).then(response =>{
-                   // console.log(response.data)
-                    if(response.data=='Admin'){
+                    console.log(response.data)
+                   if(response.data=='Admin'){
                       window.location.href = "principalMejora.php"
                     }else if(response.data=='Analista') {
                         window.location.href = "principalAnalista.php"
-                    }else if(response.data=='Colaborador') {
-                        if(this.remember){
-                            <?php $_SESSION["remember"]="yes";?>
-                           
-                        }
-                      window.location.href = "principalColaborador.php"
+                    }else if(response.data=='Colaborador'){
+
+                           window.location.href = "principalColaborador.php"
+                        
                     }else{
                             this.mostrar=true;
                             this.mensaje_negrita= 'Usuario/Contraseña Incorrecta'
@@ -163,9 +166,6 @@ session_destroy();
         }
     }
     var mountedApp = Vue.createApp(vue3).mount('#app');
-   
 </script>
-
-
 </body>
 </html>

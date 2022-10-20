@@ -2,12 +2,11 @@
 session_start();
 if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){ 
 
+
 setcookie("login_usuario", $_SESSION["usuario"]);
 setcookie("login_password", $_SESSION["password"]);
 if(isset($_SESSION["remember"])){ 
-    setcookie("remember",  $_SESSION["remember"]);
-}else{
-    setcookie("remember",  "No");
+            setcookie("remember",  $_SESSION["remember"]);
 }
 
 
