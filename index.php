@@ -1,9 +1,10 @@
 <?php 
 
 
-session_start();
-session_destroy();
-session_start();
+session_start();  
+session_destroy(); 
+session_start();  
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -71,12 +72,12 @@ session_start();
                                    
                                         <div class="col-12 mt-5" style="color:#920f0f; font-weight:bold">
                                             No. de Nómina
-                                            <input v-model="username" type="text" class="form-control " ></input>
+                                            <input v-model="username" type="text" class="form-control "  autocomplete="off"></input>
                                             
                                         </div>
-                                        <div class="col-12 mt-5" style="color:#920f0f; font-weight:bold"> 
+                                        <div class="col-12 mt-5" style="color:#920f0f; font-weight:bold" > 
                                             Contraseña
-                                            <input v-model="password" type="password" class="form-control" ></input>
+                                            <input v-model="password" type="password" class="form-control" autocomplete="off"></input>
                                         </div>
                                         <div class="col-12 my-5 text-center"> 
                                             <button  type="submit" class="btn btn-danger">E n t r a r</button>
@@ -88,7 +89,7 @@ session_start();
                                 </div>
                                 <div class="form-check">
                                         <input type="checkbox" id="checkbox" v-model="remember">
-                                        <label class="text-light" for="checkbox">Recordarme {{remember}}</label>
+                                        <label class="text-light" for="checkbox">Recordarme</label>
                                 </div>
                              
                                 
@@ -121,18 +122,10 @@ session_start();
                 mostrar:false,
                 mensaje:'',
                 mensaje_negrita:'',
-                username: '<?php if(isset($_COOKIE["remember"])){ 
-                    if($_COOKIE["remember"]==true)
-                        {
-                         echo $_COOKIE["login_usuario"];
-                        }else{
-                            echo "";
-                        }
-                        }?>',
-                        
-                password: '<?php if(isset($_COOKIE["remember"])){ if($_COOKIE["remember"]==true){echo $_COOKIE["login_password"];}else{echo "";}}?>',
+                username: '<?php if(isset($_COOKIE["remember"])){if($_COOKIE["remember"]=="true" || $_COOKIE["remember"]==1){echo $_COOKIE["login_usuario"];}else{echo "";}}?>',    
+                password: '<?php if(isset($_COOKIE["remember"])){ if($_COOKIE["remember"]=="true" || $_COOKIE["remember"]==1){echo base64_decode($_COOKIE["login_password"]);}else{echo "";}}?>',
                 val:0,
-                remember: '<?php if(isset($_COOKIE["remember"])){ if($_COOKIE["remember"]==true){echo true;}else{echo false;}}?>'
+                remember: '<?php if(isset($_COOKIE["remember"])){ if($_COOKIE["remember"]=="true" || $_COOKIE["remember"]==1){echo "true";}else{echo "false";}}?>'
             }
         },
         mounted(){

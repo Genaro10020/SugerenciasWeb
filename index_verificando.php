@@ -7,7 +7,7 @@ $tipo="";
 $user=$variables['usuario'];
 $pass=$variables['contrasena'];
 $remember=$variables['recordar'];
-if($remember==1){
+if($remember==1 || $remember=="true"){
     $remember="true";
 }else{
     $remember="false";
@@ -34,7 +34,7 @@ if($remember==1){
         
         echo $tipo;
     }else{
-            $consulta = "SELECT * FROM concentrado_sugerencias WHERE numero_nomina='$user' AND password='$pass'";
+            $consulta = "SELECT * FROM usuarios_colocaboradores_sugerencias WHERE numero_nomina='$user' AND password='$pass'";
             $resultado = mysqli_query($conexion,$consulta);
             if (mysqli_num_rows($resultado)>0)
             {

@@ -4,12 +4,12 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
 
 
 setcookie("login_usuario", $_SESSION["usuario"]);
-setcookie("login_password", $_SESSION["password"]);
+setcookie("login_password", base64_encode($_SESSION["password"]));
 if(isset($_SESSION["remember"])){ 
             setcookie("remember",  $_SESSION["remember"]);
 }
 
-
+$_COOKIE["PHPSESSID"]="0";
     ?>
  <!DOCTYPE html>
 <html lang="en">

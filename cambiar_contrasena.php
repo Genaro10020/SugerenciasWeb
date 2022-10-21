@@ -10,12 +10,12 @@ include "conexionGhoner.php";
 
 
 
-$consulta = "SELECT * FROM concentrado_sugerencias WHERE password = '$contrasena_actual' && numero_nomina ='$numero_nomina'";
+$consulta = "SELECT * FROM usuarios_colocaboradores_sugerencias WHERE password = '$contrasena_actual' && numero_nomina ='$numero_nomina'";
 $resultado = mysqli_query($conexion,$consulta);
 
 
 if($row=mysqli_num_rows($resultado)>0){
-            $actualizar= "UPDATE concentrado_sugerencias SET password = '$nueva_contrasena' WHERE numero_nomina='$numero_nomina' AND password='$contrasena_actual'";
+            $actualizar= "UPDATE usuarios_colocaboradores_sugerencias SET password = '$nueva_contrasena' WHERE numero_nomina='$numero_nomina' AND password='$contrasena_actual'";
             $query = mysqli_query( $conexion, $actualizar);
             $resultado = $query;
             if($resultado){
