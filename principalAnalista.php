@@ -236,7 +236,7 @@ $incrementar=1;
                                                                         <div class="col-12" style=" background-color:#e9f3e7">
                                                                                 <div class="row mt-2 mx-3 ">
                                                                                     <div class="col-12 col-lg-6 ">
-                                                                                        Impacto Primerio(*):<br>
+                                                                                        Impacto Primario(*):<br>
                                                                                         <select class="" v-model="impacto_primario" :disabled="deshabilitar">
                                                                                                 <option value="" >Seleccione una opción..</option>
                                                                                                 <option  v-for=" lista in lista_impacto" :key="lista.id">{{lista.impacto}}</option>
