@@ -132,7 +132,14 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                         <td>
                                             <!--<a v-if="concentrado.status=='Cerrada/Fast Response' || concentrado.status=='Cerrada/No Factible'" data-bs-toggle="modal" data-bs-target="#modalCambiaraEnFactibilidad" style="cursor: pointer; text-decoration: underline blue;" @click="datos_modal(concentrado.id)" ><p class="fw-bold text-primary">{{concentrado.status}}</p></a>
                                             <a v-else> {{concentrado.status}}</a>-->
-                                            <a data-bs-toggle="modal" data-bs-target="#modalCambiaraEnFactibilidad" style="cursor: pointer; text-decoration: underline blue;" @click="datos_modal(concentrado.id)" ><p class="fw-bold text-primary">{{concentrado.status}}</p></a>
+                                            
+                                                <div class="d-inline">
+                                                        <a data-bs-toggle="modal" data-bs-target="#modalCambiaraEnFactibilidad" style="cursor: pointer; text-decoration: underline blue;" @click="datos_modal(concentrado.id)" class="fw-bold text-primary me-2">{{concentrado.status}}</a>
+                                                </div>
+                                                <div class="d-inline">
+                                                        <button  v-show="concentrado.status=='Cerrada/Fast Response' || concentrado.status=='Cerrada/No Factible'" class="btn btn-success" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalDetallesNofactible" @click=""><i class="bi bi-table" ></i> Detalles</button>
+                                                </div>
+                                          
                                         </td>
                                         <td> 
                                                 <div class="d-flex justify-content-around">
@@ -264,6 +271,59 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                     </div>
                                 </div>
                        </div><!--Fin Modal cambiar a en factibilidad-->
+
+
+                       <div class="modal fade" id="modalDetallesNofactible" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"><!--modal no factible detalles-->
+                                <div class="modal-dialog modal-lg modal-dialog-centered">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Detalles NO FACTIBLE.</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+
+
+                                                                <div class=" mt-3 ">
+                                                                    
+                                                                                <span class="badge bg-light text-dark mb-1">CAUSA DE NO FACTIBILIDAD</span>
+                                                                                <div class="col-12 text-center bg-warning">
+                                                                                    <textarea class="text-area-causa-no-factibilidad my-2" type="text"  style=" font-size:0.9em" required></textarea>
+                                                                                </div>
+                                                                </div>
+                                                                <div class="text-center">
+                                                                    <span class="badge bg-light text-dark">TIPO DE CIERRE</span><br>
+                                                                            
+                                                                                    <!--    <select class="" v-model="var_tipo_de_cierre" required>
+                                                                                                <option value="" disabled>Seleccione una opción..</option>
+                                                                                                <option  v-for=" lista in tipo_de_cierre" :key="lista.id" >{{lista}}</option>
+                                                                                        </select>-->
+                                                                                  
+                                                                </div>
+                                                                <hr>
+                                                                <div class=" mt-3 ">
+                                                                            <!-- Mostrando los archivos cargados -->
+                                                                       <div v-show="documento_opcional.length>0">
+                                                                                <hr>
+                                                                                <div class="col-12 text-center mb-5" v-for= "(ruta_documento,index) in documento_opcional">
+                                                                                        <div class="col-12 text-center">
+                                                                                        Descargar {{nombre_de_descarga=ruta_documento.slice((ruta_documento.lastIndexOf('/') - 1) + 2)}}<br><!--obtengo el nombre del documento con extension-->
+                                                                                            <a :href="ruta_documento" :download="nombre_de_descarga">
+                                                                                                <img src="img/descargar_archivo.png" style="width:100px; height:100px;"></img>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                        <div class="col-12 ">
+                                                                                            <button type="button" class="btn btn-danger" @click="eliminarDocumento(ruta_documento)" >Eliminar</button>
+                                                                                        </div>
+                                                                                </div>
+                                                                        </div>
+                                                                </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                    </div>
+                                    </div>
+                                </div>
+                       </div><!--Fin Modal no factible detalles-->
 
 
                        <div class="modal fade" id="modalImpactoCuantitativo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"><!--modal impacto cuantitativo-->
@@ -1718,10 +1778,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 concentrado_sugerencias_pendiente_impacto: [],
                 concentrado_impacto_sugerencias_midiendo:[],
                 myModal:'',
+                documento_opcional:[],
                 //*Varibales Concetrado*/
                 lista_validacion_de_impacto:['Cuantitativo','Cualitativo'],
                 concentrado_actividades:[],
-                
                 folio:'',
                 validacion_de_impacto:'',
                 //*Varibales modal acaptado o rechazado */
