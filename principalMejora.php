@@ -137,7 +137,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                         <a data-bs-toggle="modal" data-bs-target="#modalCambiaraEnFactibilidad" style="cursor: pointer; text-decoration: underline blue;" @click="datos_modal(concentrado.id)" class="fw-bold text-primary me-2">{{concentrado.status}}</a>
                                                 </div>
                                                 <div class="d-inline">
-                                                        <button  v-show="concentrado.status=='Cerrada/Fast Response' || concentrado.status=='Cerrada/No Factible'" class="btn btn-success" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalDetallesNofactible" @click=""><i class="bi bi-table" ></i> Detalles</button>
+                                                        <button  v-show="concentrado.status=='Cerrada/Fast Response' || concentrado.status=='Cerrada/No Factible'" class="btn btn-success" style="font-size:.9em"  @click="datos_modal_detalles(concentrado.folio,concentrado.causa_no_factibilidad)"><i class="bi bi-table" ></i> Detalles</button>
                                                 </div>
                                           
                                         </td>
@@ -287,7 +287,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                     
                                                                                 <span class="badge bg-light text-dark mb-1">CAUSA DE NO FACTIBILIDAD</span>
                                                                                 <div class="col-12 text-center bg-warning">
-                                                                                    <textarea class="text-area-causa-no-factibilidad my-2" type="text"  style=" font-size:0.9em" required></textarea>
+                                                                                    <textarea class="text-area-causa-no-factibilidad my-2" type="text"  style=" font-size:0.9em" disabled>{{causa}}</textarea>
                                                                                 </div>
                                                                 </div>
                                                                 <div class="text-center">
@@ -302,18 +302,17 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                 <hr>
                                                                 <div class=" mt-3 ">
                                                                             <!-- Mostrando los archivos cargados -->
-                                                                       <div v-show="documento_opcional.length>0">
-                                                                                <hr>
-                                                                                <div class="col-12 text-center mb-5" v-for= "(ruta_documento,index) in documento_opcional">
+                                                                       <div v-show="fileopcional.length>0">
+                                                                                <div class="col-12 text-center mb-5" v-for= "(ruta_documento,index) in fileopcional">
                                                                                         <div class="col-12 text-center">
                                                                                         Descargar {{nombre_de_descarga=ruta_documento.slice((ruta_documento.lastIndexOf('/') - 1) + 2)}}<br><!--obtengo el nombre del documento con extension-->
                                                                                             <a :href="ruta_documento" :download="nombre_de_descarga">
                                                                                                 <img src="img/descargar_archivo.png" style="width:100px; height:100px;"></img>
                                                                                             </a>
                                                                                         </div>
-                                                                                        <div class="col-12 ">
+                                                                                        <!--<div class="col-12 ">
                                                                                             <button type="button" class="btn btn-danger" @click="eliminarDocumento(ruta_documento)" >Eliminar</button>
-                                                                                        </div>
+                                                                                        </div>-->
                                                                                 </div>
                                                                         </div>
                                                                 </div>
@@ -956,7 +955,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                 <!--<td><button type="button" class="btn btn-danger" title="Eliminar" @click="nueva_sugerencia=false"><i class="bi bi-trash"></button></i></td>-->
                                             </tr>
                                            
-                                            <!--Consulta/Editar Segerencia -->
+                                            <!--Consulta/Editar Segerencia -->  
                                             <tr class="align-middle" v-for="(concentrado, index) in concentrado_sugerencias" :key="concentrado.id" >
                                                 <td class="sticky table-striped table-bordered">
                                                     <button type="button" class="btn btn-danger me-2" title="Cancelar" @click="mostrar_id('')" v-if="actualizar_sugerencia==index+1"><i class="bi bi-x-circle" ></i></button>
@@ -1778,7 +1777,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 concentrado_sugerencias_pendiente_impacto: [],
                 concentrado_impacto_sugerencias_midiendo:[],
                 myModal:'',
-                documento_opcional:[],
+                causa:'',
+                fileopcional:[],
                 //*Varibales Concetrado*/
                 lista_validacion_de_impacto:['Cuantitativo','Cualitativo'],
                 concentrado_actividades:[],
@@ -2030,6 +2030,15 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
         this.buscarDatosValidacionImpacto()
         
         
+    },
+    datos_modal_detalles(folio,causa){
+        this.folio_carpeta_doc=folio
+        this.cual_documento = "nofactibleopcional"
+        this.causa=causa
+        this.buscarDocumentos()
+        this.myModal = new bootstrap.Modal(document.getElementById('modalDetallesNofactible'))
+        this.myModal.show()
+
     },
     cambiaraEnFactibilidad(){
         if(!confirm('Desea usted cambiar el status de esta sugerencia a "En Factibilidad"')) return
@@ -2545,9 +2554,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 //alert(this.folio_carpeta_doc+this.cual_documento)
                 this.filenames=[] //limpiado vista del documento subido en modal 
                 this.filedoc=[]//limpiado vista del documento bajada en modal 
-                this.fileppt=[]//limpiado vista del documento bajada en modal 
+                this.fileppt=[]//limpiado vista del documento bajada en modal
+                this.fileopcional=[]//limpiado vista del documento bajada en modal 
                 if(this.folio_carpeta_doc!=undefined){
-                                axios.post("buscar_documentos.php",{
+                                axios.post("buscar_documentos.php",{//AQUI
                                     folio_carpeta_doc:this.folio_carpeta_doc,
                                     cual_documento:this.cual_documento
                                 })
@@ -2559,7 +2569,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                             if(this.filedoc.length>0){
                                                 console.log(this.filedoc.length + "Archivos encontrados.")
                                             }else{
-                                                /*alert("Sin Documentos agregados.")*/
+                                                //alert("Sin Documentos agregados.")
                                             }
                                             this.consultado_concentrado()
                                 }
@@ -2569,7 +2579,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                             if(this.fileppt.length>0){
                                                 console.log(this.fileppt.length + "Archivos encontrados.")
                                             }else{
-                                                /*alert("Sin Documentos agregados.")*/
+                                                //alert("Sin Documentos agregados.")
                                             }
                                             this.consultado_concentrado()
                                     }
@@ -2579,7 +2589,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                             if(this.filereto.length>0){
                                                 console.log(this.filereto.length + "Archivos encontrados.")
                                             }else{
-                                                /*alert("Sin Documentos agregados.")*/
+                                                //alert("Sin Documentos agregados.")
                                             }
                                             this.consultaConcentradoRetos()
                                     }
@@ -2589,9 +2599,19 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                             if(this.filepremio.length>0){
                                                 console.log(this.filepremio.length + "Archivos encontrados.")
                                             }else{
-                                                /*alert("Sin Documentos agregados.")*/
+                                                //alert("Sin Documentos agregados.")
                                             }
                                             this.consultar_concentrado_premios()
+                                    }
+                                if(this.cual_documento=="nofactibleopcional"){
+                                            this.fileopcional = response.data
+                                            this.cantidadDOCFILE = this.fileopcional.length
+                                            if(this.fileopcional.length>0){
+                                                console.log(this.fileopcional.length + "Archivos encontrados.")
+                                            }else{
+                                                //alert("Sin Documentos agregados.")
+                                            }
+                                            //this.consultar_concentrado_premios()
                                     }
                                     
                                 })
@@ -2724,7 +2744,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 }).then(response =>{
                         if(response.data=="si"){//eliminar registro de premios
                             this.consultar_concentrado_premios()
-                            alert("Premio Eliminado con Éxito")//AQUI
+                            alert("Premio Eliminado con Éxito")
 
                             this.id_concentrado = id_premio
                             this.cual_documento = 'premio'
