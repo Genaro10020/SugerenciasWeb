@@ -137,7 +137,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                         <a data-bs-toggle="modal" data-bs-target="#modalCambiaraEnFactibilidad" style="cursor: pointer; text-decoration: underline blue;" @click="datos_modal(concentrado.id)" class="fw-bold text-primary me-2">{{concentrado.status}}</a>
                                                 </div>
                                                 <div class="d-inline">
-                                                        <button  v-show="concentrado.status=='Cerrada/Fast Response' || concentrado.status=='Cerrada/No Factible'" class="btn btn-success" style="font-size:.9em"  @click="datos_modal_detalles(concentrado.folio,concentrado.causa_no_factibilidad)"><i class="bi bi-table" ></i> Detalles</button>
+                                                        <button  v-show="concentrado.status=='Cerrada/Fast Response' || concentrado.status=='Cerrada/No Factible'" class="btn btn-success" style="font-size:.9em"  @click="datos_modal_detalles(concentrado.id,concentrado.folio,concentrado.numero_nomina,concentrado.causa_no_factibilidad)"><i class="bi bi-table" ></i> Detalles</button>
                                                 </div>
                                           
                                         </td>
@@ -316,6 +316,14 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                                 </div>
                                                                         </div>
                                                                 </div>
+                                                                <div class="d-flex justify-content-center align-items-center">
+                                                                         <div class="col-6 col-sm-3 text-center">  
+                                                                                    <button class="btn btn-success" type="submit" style=" font-size:1em" @click="guardarPuntosnofactible()">Guardar Puntos.</button>
+                                                                         </div>
+                                                                         <div class="col-6 col-sm-3 text-center">  
+                                                                                    <input type="number" min="0" class="form-control" v-model="puntos_no_factible"></input>
+                                                                         </div>
+                                                                </div>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -402,7 +410,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                                 <div class="row">
                                                                                         <div class="col-12 col-sm-3">
                                                                                             <label>Puntos Asignados</label>
-                                                                                            <input v-model="puntos_asignados" type="number" class=" form-control" style="font-size:.8em" required/>
+                                                                                            <input v-model="puntos_asignados" type="number" min="0" class=" form-control" style="font-size:.8em" required/>
                                                                                         </div>
                                                                                 </div>
                                                                                 <div class="d-flex justify-content-center">
@@ -486,7 +494,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                                 <div class="row">
                                                                                         <div class="col-12 col-sm-3">
                                                                                             <label>Puntos Asignados</label>
-                                                                                            <input v-model="puntos_asignados_cualitativos" type="number" class=" form-control" style="font-size:.8em" required/>
+                                                                                            <input v-model="puntos_asignados_cualitativos" type="number" min="0" class=" form-control" style="font-size:.8em" required/>
                                                                                         </div>
                                                                                 </div>
                                                                                 <div class="d-flex justify-content-center">
@@ -1779,6 +1787,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 myModal:'',
                 causa:'',
                 fileopcional:[],
+                puntos_no_factible:0,
                 //*Varibales Concetrado*/
                 lista_validacion_de_impacto:['Cuantitativo','Cualitativo'],
                 concentrado_actividades:[],
@@ -2031,14 +2040,55 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
         
         
     },
-    datos_modal_detalles(folio,causa){
+    datos_modal_detalles(id_concentrado,folio,nomina,causa){
         this.folio_carpeta_doc=folio
+        this.folio = folio
         this.cual_documento = "nofactibleopcional"
         this.causa=causa
+        this.id_concentrado = id_concentrado
+        this.numero_nomina = nomina
+        //id_concentrado,folio,numero_nomina,puntos
+
         this.buscarDocumentos()
+        this.consultarPuntosNoFactible()
         this.myModal = new bootstrap.Modal(document.getElementById('modalDetallesNofactible'))
         this.myModal.show()
 
+    },
+    consultarPuntosNoFactible(){
+        axios.post("consultar_puntos_no_factible.php",{
+            id_concentrado:this.id_concentrado,
+            folio:this.folio
+        }).then(response =>{
+            if(response.data!=""){
+                this.puntos_no_factible=response.data;
+            }
+        })
+    },
+    guardarPuntosnofactible(){
+        axios.post('guardar_actualizar_puntos_no_factible.php',{
+            id_concentrado:this.id_concentrado,
+            folio:this.folio,
+            numero_nomina:this.numero_nomina,
+            puntos:this.puntos_no_factible
+        }).then(response =>{
+            if(response.data[0]== true){
+                    this.myModal.hide();
+            }else{
+                alert("Algo salio mal no se pueden guardar/actualizar los puntos")
+            }
+        }).catch(arror =>{
+            console.log(error)
+        })
+
+      /*  axios.post('guardar_actulizar_puntos_no_factible.php',{
+            id_concentrado:this.id_concentrado,
+            folio:this.folio,
+            numero_nomina:this.numero_nomina,
+            puntos:this.puntos_no_factible
+        }).then(response =>{
+                console.log(response.data);
+        })*/
     },
     cambiaraEnFactibilidad(){
         if(!confirm('Desea usted cambiar el status de esta sugerencia a "En Factibilidad"')) return
