@@ -8,6 +8,7 @@
     $puntos_cuanti=0;
     $puntos_cuali=0;
     $puntos_usados=0;
+    $puntos_no_factible=0;
     $total = 0;
     
             $consulta = "SELECT * FROM impacto_cuantitativo_sugerencias WHERE numero_nomina = '$numero_nomina'";
@@ -26,6 +27,14 @@
                 }
             }
 
+            $consulta = "SELECT * FROM no_factible_puntos WHERE numero_nomina = '$numero_nomina'";
+            $query = mysqli_query($conexion,$consulta);
+            if(mysqli_num_rows($query)>0){
+                while ($fila=$query -> fetch_array()){
+                    $puntos_no_factible = (int)$fila['puntos']+$puntos_no_factible;
+                }
+            }
+
             $consulta = "SELECT * FROM canjer_premios_colaborador_sugerencias WHERE numero_nomina = '$numero_nomina' AND status='Pte. de entrega' || numero_nomina = '$numero_nomina' AND status='Entregado'";
             $query = mysqli_query($conexion,$consulta);
             if(mysqli_num_rows($query)>0){
@@ -34,7 +43,7 @@
                 }
             }
             
-            $total=$puntos_cuanti + $puntos_cuali;
+            $total=$puntos_cuanti + $puntos_cuali + $puntos_no_factible;
             $producto=$total-$puntos_usados;
         
 

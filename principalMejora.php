@@ -87,7 +87,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                 Configuración
                             </button>
                 </div>
+                
             </div>
+            <div style=" font-size: 15px;"><b> <?php echo $_SESSION['nombre']; ?></b></div>
                  <!--CUERPO-->
             <div class="row cuerpo_principal" style="min-height:76vh" >
             <!--////////////////////////////////////////////////////////PRINCIPAL MEJORA-->
