@@ -22,7 +22,6 @@ if(isset($variables['numero_nomina'])){
 date_default_timezone_set('America/Mexico_City');
 $fecha = date("Y-m-d");
 include "conexionGhoner.php";
-
         $consultar = "SELECT * FROM canjer_premios_colaborador_sugerencias WHERE id_premio='$id_premio'";
         $query = mysqli_query( $conexion, $consultar);
         if(mysqli_num_rows($query)>0){
@@ -35,13 +34,18 @@ include "conexionGhoner.php";
                         $consulta = "UPDATE canjer_premios_colaborador_sugerencias SET numero_nomina = '$numero_nomina', descripcion = '$descripcion', cantidad='$cantidad', puntos_para_canjear='$puntos', img_url='$img_url'  WHERE id_premio = '$id_premio'";
                         $query = mysqli_query( $conexion, $consulta);
                 }
-               
 
         }else{
-                
                 if($cantidad!=0){
-                        $consulta = "INSERT INTO canjer_premios_colaborador_sugerencias (id_premio,numero_nomina, descripcion, cantidad, puntos_para_canjear, img_url,fecha, status)  VALUES ('$id_premio ','$numero_nomina','$descripcion','$cantidad','$puntos','$img_url','$fecha','Sin aceptar')";
-                        $query = mysqli_query( $conexion, $consulta);
+                        $consultando = "SELECT * FROM concentrado_sugerencias WHERE numero_nomina = '$numero_nomina' ORDER BY id DESC LIMIT 1";
+                        $querys = $conexion->query($consultando);
+                        while($datos = $querys->fetch_array()){
+                                $planta=$datos['planta'];
+                                $area_participante=$datos['area_participante'];
+                        }
+                                $colaborador=$_SESSION['nombre'];
+                                $consulta = "INSERT INTO canjer_premios_colaborador_sugerencias (id_premio,numero_nomina,colaborador,planta,area_participante,codigo_premio,descripcion, cantidad, puntos_para_canjear, img_url,fecha, status)  VALUES ('$id_premio ','$numero_nomina','$colaborador','$planta','$area_participante','$codigo','$descripcion','$cantidad','$puntos','$img_url','$fecha','Sin aceptar')";
+                                $query = mysqli_query( $conexion, $consulta);
                 }else{
                         $query=true;
                 }       
