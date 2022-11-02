@@ -225,9 +225,14 @@ $incrementar=1;
                                                                         <!-- <iframe src="https://vvnorth.com/Sugerencias/documentos/pdf.pdf" style="width:100%;height:500px;"></iframe>-->
                                                                         </div>
                                                                 </div><!--Fin Vista Documentos--->
+                                                                <div class="col-12 text-center">
+                                                                    <button v-show="status!='En Implementación' && status!='Implementada'"  type="button" class="btn btn-success btn-sm me-2 " @click="factible = true,  no_factible = false, repuestaFactibleNoFactible('Factible')">Factible</button> 
+                                                                    <button v-show="status!='En Implementación' && status!='Implementada'" type="button" class="btn btn-warning btn-sm" @click="no_factible = true, factible = false, repuestaFactibleNoFactible('No Factible')">No factible</button> 
+                                                                    <!--<button type="button" class="btn btn-secondary btn-sm ms-5"  data-bs-dismiss="modal" >Salir</button>-->
+                                                                </div>   
                                                                       <!--Formualario-->
-                                                                      <div class="col-12" v-show="factible==true"><span class="badge text-dark fs-1"><p>FACTIBLE<p></span></div>
-                                                                      <div class="col-12" v-show="no_factible==true"><span class="badge text-dark fs-1"><p>NO FACTIBLE<p></span></div>
+                                                                      <div class="col-12" v-show="factible==true"><span class="badge text-dark fs-6">FACTIBLE</span></div>
+                                                                      <div class="col-12" v-show="no_factible==true"><span class="badge text-dark fs-6">NO FACTIBLE</span></div>
                                                                 <div class="col-12" v-show="factible==true"><!--ESPACIO FACTIBLE-->
                                                                     <hr>
                                                                             <div class=" mt-3 ">
@@ -258,8 +263,19 @@ $incrementar=1;
                                                                                                     <option  v-for=" lista in lista_tipo_desperdicio" :key="lista.id">{{lista.tipo_de_desperdicio}}</option>
                                                                                             </select>
                                                                                         </div>
-                                                                                        <div class="col-12 col-lg-6  mt-3 mb-2" style=" font-size: 10px">
-                                                                                            Objetivos de Calidad y M.A.(*):<br>
+                                                                                        <div class="col-12 col-lg-6  mt-3 mb-2" >
+                                                                                        Tipode impacto(*):<br>
+                                                                                            <select class="" v-model="tipo_impacto" :disabled="deshabilitar">
+                                                                                                    <option value="" >Seleccione una opción..</option>
+                                                                                                    <option value="Cuantitativo">Cuantitativo</option>
+                                                                                                    <option value="Cualitativo">Cualitativo</option>
+                                                                                            </select>
+                                                                                           
+                                                                                        </div>
+                                                                                </div>   
+                                                                                <div class="row mt-2 mx-3 mb-5 ">
+                                                                                        <div class="col-12 col-lg-6" style=" font-size: 10px">
+                                                                                         Objetivos de Calidad y M.A.(*):<br>
                                                                                             <div  class="inputs-concentrado" style="overflow-y: scroll; height:80px" >
                                                                                                     <label>{{var_objetivo_de_calidadMA}}</label>
                                                                                                         <ul >
@@ -270,7 +286,30 @@ $incrementar=1;
                                                                                                         </ul>
                                                                                             </div>
                                                                                         </div>
+                                                                                        <div class="col-12 col-lg-6 mb-2">
+                                                                                                <div class="row" v-if="tipo_impacto=='Cuantitativo'"><!--si es cuanti-->
+                                                                                                        <div class="col-12 col-sm-6">
+                                                                                                            <label>Indicador:</label>
+                                                                                                            <input v-model="indicador_cuanti" type="text" class="form-control" style="font-size:1em"/>
+                                                                                                        </div>
+                                                                                                        <div class="col-12 col-sm-6">
+                                                                                                            <label>Línea Base:</label>
+                                                                                                            <input  v-model="linea_base_cuanti" type="text" class=" form-control" style="font-size:1em"/>
+                                                                                                        </div>
+                                                                                                        <div class="col-12 col-sm-6">
+                                                                                                            <label>Resultado Esperado:</label>
+                                                                                                            <input v-model="resultado_esperado_cuanti" type="text" class=" form-control" style="font-size:1em"/>
+                                                                                                        </div>
+                                                                                                 </div>
+                                                                                                 <div class="row" v-if="tipo_impacto=='Cualitativo'"><!--si es cuali-->
+                                                                                                        <div class="col-12">
+                                                                                                            <label>Impacto cualitativo:</label>
+                                                                                                            <textarea v-model="impacto_cualitativo" type="text" class="form-control" style="font-size:1em;"></textarea>
+                                                                                                        </div>
+                                                                                                 </div>
+                                                                                        </div>
                                                                                 </div>   
+                                                                               
                                                                                 <!--<div class="col-12 text-center"> <button type="button" class="btn btn-success mb-2" style="font-size:0.9em" @click="guardarFormularioImpacto" v-show="deshabilitar==false">Guardar</button></div>-->
                                                                         </div>   
                                                                 </div>
@@ -467,11 +506,7 @@ $incrementar=1;
                                                     
                                                     </div>   <!--FIN ESPACIO NO FACTIBLE-->
                                                     <div class="12 modal-footer " > 
-                                                        <div class="col-12 text-center">
-                                                                <button v-show="status!='En Implementación' && status!='Implementada'"  type="button" class="btn btn-success btn-lg me-2 fst-italic" @click="factible = true,  no_factible = false, repuestaFactibleNoFactible('Factible')">Factible</button> 
-                                                                <button v-show="status!='En Implementación' && status!='Implementada'" type="button" class="btn btn-warning btn-lg fst-italic" @click="no_factible = true, factible = false, repuestaFactibleNoFactible('No Factible')">No factible</button> 
-                                                                <!--<button type="button" class="btn btn-secondary btn-sm ms-5"  data-bs-dismiss="modal" >Salir</button>-->
-                                                        </div>              
+                                                       <!--btn salir -->           
                                                     </div>
                                     </div>
                                 </div>
@@ -794,6 +829,11 @@ $incrementar=1;
                 impacto_primario:'',
                 impacto_secundario:'',
                 tipo_desperdicio:'',
+                tipo_impacto:'',
+                indicador_cuanti:'',
+                linea_base_cuanti:'',
+                resultado_esperado_cuanti:'',
+                impacto_cualitativo:'',
                 descripcion_actividad:'',
                 fecha_inicial_actividad:'',
                 fecha_final_actividad:'',
@@ -1183,7 +1223,7 @@ $incrementar=1;
             },
             checkPlanActividades(){
 
-                if(this.impacto_primario!='' && this.tipo_desperdicio!='' && this.var_objetivo_de_calidadMA.length>0){
+                if(this.impacto_primario!='' && this.tipo_desperdicio!='' && this.var_objetivo_de_calidadMA.length>0 && tipo_impacto!=''){
                         if(this.fecha_compromiso!=""){
                             axios.post("actualizar_check_plan_trabajo.php",{
                             impacto_primario: this.impacto_primario,
@@ -1213,7 +1253,7 @@ $incrementar=1;
                             alert("Agregue la fecha compromiso y despues finalice el Plan.")
                         }
                     }else{
-                        alert("Todos los campos de Formulario Impacto son requeridos, VERIFIQUE.")
+                        alert("Todos los campos del Formulario Impacto con (*) son requeridos, VERIFIQUE.")
                     }
             },
             guardarFechaCompromiso(){
