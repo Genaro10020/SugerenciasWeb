@@ -186,9 +186,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                             this.confirmar_contrasena=''
                                 this.mostrar=true;
                                 this.mensaje= "Contraseña actualizada con éxito."
-                                setTimeout(()=>{
+                                window.location.href="principalColaborador.php"
+                                /*setTimeout(()=>{
                                     this.mostrar=false;
-                                },3000);
+                                },3000);*/
                         }else if(response.data=='incorrecto'){
                                 this.mostrar=true;
                                 this.mensaje= "Verifique tu contraseña actual."
@@ -201,7 +202,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                             this.mensaje= "No se actualizo la contraseña, reporte a Mejora Continua."
                             setTimeout(()=>{
                                 this.mostrar=false;
-                            },3000);
+                            },5000);
                         }
                     })  
 
@@ -210,7 +211,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                         this.mensaje= "La nueva contraseña y la confirmación no coinciden."
                         setTimeout(()=>{
                             this.mostrar=false;
-                        },3000);
+                        },5000);
                 }
             }
         },
