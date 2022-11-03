@@ -119,9 +119,9 @@ $incrementar=1;
                                                         <td>{{concentrado.fecha_limite}}</td>
                                                         <td class="text-center">
                                                             <button v-if="concentrado.status_factibilidad=='Pendiente'" type="button" class="btn btn-warning" style=" font-size: 1em" title="Factible o No Factible" data-bs-toggle="modal" data-bs-target="#modal" 
-                                                            @click="datos_modal_factibilidad('factibilidad',concentrado.id,concentrado.folio,concentrado.status,concentrado.respuesta_analista,concentrado.check_mc)"><i class="bi bi-eye"></i> {{concentrado.status}} </button>
+                                                            @click="datos_modal_factibilidad('factibilidad',concentrado.id,concentrado.folio,concentrado.numero_nomina, concentrado.status,concentrado.respuesta_analista,concentrado.check_mc,concentrado.validacion_de_impacto)"><i class="bi bi-eye"></i> {{concentrado.status}} </button>
                                                             <button v-else="concentrado.status_factibilidad=='Vencida'" type="button" class="btn btn-danger" style=" font-size: 1em" title="Factible o No Factible" data-bs-toggle="modal" data-bs-target="#modal" 
-                                                            @click="datos_modal_factibilidad('factibilidad',concentrado.id,concentrado.folio,concentrado.status,concentrado.respuesta_analista,concentrado.check_mc)"><i class="bi bi-eye"></i> {{concentrado.status}} </button>
+                                                            @click="datos_modal_factibilidad('factibilidad',concentrado.id,concentrado.folio,concentrado.numero_nomina, concentrado.status,concentrado.respuesta_analista,concentrado.check_mc,concentrado.validacion_de_impacto)"><i class="bi bi-eye"></i> {{concentrado.status}} </button>
                                                         </td>
                                                         <td>
                                                             <label> {{concentrado.check_mc}}</label>
@@ -154,13 +154,13 @@ $incrementar=1;
                                                         <td class="text-center"><label class="me-2"><b>{{concentrado.cumplimiento}}% </b></label> 
                                                         <!--Amarillo-->
                                                             <button v-show="concentrado.dias_restantes>7" type="button" class="btn btn-warning" style="font-size: 1em; " data-bs-toggle="modal" data-bs-target="#modal"  title="Ver Plan de Trabajo"
-                                                            @click="datos_modal_factibilidad('En Implementación',concentrado.id,concentrado.folio,concentrado.status,concentrado.respuesta_analista,concentrado.check_mc)"><i class="bi bi-pencil"></i></i> {{concentrado.status}} </button>
+                                                            @click="datos_modal_factibilidad('En Implementación',concentrado.id,concentrado.folio,concentrado.numero_nomina, concentrado.status,concentrado.respuesta_analista,concentrado.check_mc,concentrado.validacion_de_impacto)"><i class="bi bi-pencil"></i></i> {{concentrado.status}} </button>
                                                        
                                                             <button  v-show="concentrado.dias_restantes>=1 && concentrado.dias_restantes<=7 " type="button" class="btn"  style="font-size: 1em; background-color: #fd7e14; border: 1px solid #" data-bs-toggle="modal" data-bs-target="#modal"  title="Ver Plan de Trabajo"
-                                                            @click="datos_modal_factibilidad('En Implementación',concentrado.id,concentrado.folio,concentrado.status,concentrado.respuesta_analista,concentrado.check_mc)"><i class="bi bi-pencil"></i></i> {{concentrado.status}} </button>
+                                                            @click="datos_modal_factibilidad('En Implementación',concentrado.id,concentrado.folio,concentrado.numero_nomina, concentrado.status,concentrado.respuesta_analista,concentrado.check_mc,concentrado.validacion_de_impacto)"><i class="bi bi-pencil"></i></i> {{concentrado.status}} </button>
                                                      
                                                             <button v-show="concentrado.dias_restantes<=0"  type="button" class="btn btn-danger" style="font-size: 1em;" data-bs-toggle="modal" data-bs-target="#modal"  title="Ver Plan de Trabajo"
-                                                            @click="datos_modal_factibilidad('En Implementación',concentrado.id,concentrado.folio,concentrado.status,concentrado.respuesta_analista,concentrado.check_mc)"><i class="bi bi-pencil"></i></i> {{concentrado.status}} </button>
+                                                            @click="datos_modal_factibilidad('En Implementación',concentrado.id,concentrado.folio,concentrado.numero_nomina, concentrado.status,concentrado.respuesta_analista,concentrado.check_mc,concentrado.validacion_de_impacto)"><i class="bi bi-pencil"></i></i> {{concentrado.status}} </button>
                                                         </td>
                                                         <td class="text-center " style="vertical-align:middle" >
                                                             <label class=" my-around ">{{concentrado.dias_restantes}}</label>
@@ -180,10 +180,11 @@ $incrementar=1;
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                             <div class="d-flex justify-content-center mt-3 ">
-                                                                <span class="badge bg-light text-dark">FACTIBILIDAD DE SUGERENCIA FOLIO: {{folio}} </span>
+                                                                <span class="badge bg-light text-dark">FACTIBILIDAD DE SUGERENCIA FOLIO: {{folio}} NUMERO NOMINA:{{numero_nomina}}</span>
                                                             </div>
                                                                 <div class="modal-body alert alert-secondary">
                                                                         <div class="">
+                                                                        
                                                                             <div class="" v-for="(concentrado,index) in concentrado_sugerencias_pendiente_implementacion">
                                                                                         <div v-if="concentrado.id==id_concentrado_general">
                                                                                         <label class=" fw-bold mt-1">Nombre de la sugerencias: </label> {{ concentrado.nombre_sugerencia}}<br>
@@ -195,6 +196,7 @@ $incrementar=1;
                                                                                         <label class=" fw-bold mt-1">Área: </label> {{concentrado.area}}<br>
                                                                                         <label class=" fw-bold mt-1">Subárea: </label> {{concentrado.subarea}}<br>
                                                                                         <label class=" fw-bold mt-1">Fecha de Sugerencia: </label> {{concentrado.fecha_de_sugerencia}}<br>
+                                                                                        
                                                                                         </div>
                                                                             </div>
                                                                             <div class="" v-for="(concentrado,index) in concentrado_sugerencias_pendiente_factibilidad">
@@ -290,21 +292,21 @@ $incrementar=1;
                                                                                                 <div class="row" v-if="tipo_impacto=='Cuantitativo'"><!--si es cuanti-->
                                                                                                         <div class="col-12 col-sm-6">
                                                                                                             <label>Indicador:</label>
-                                                                                                            <input v-model="indicador_cuanti" type="text" class="form-control" style="font-size:1em"/>
+                                                                                                            <input v-model="indicador_cuanti" type="text" class="form-control" style="font-size:1em" :disabled="deshabilitar"/>
                                                                                                         </div>
                                                                                                         <div class="col-12 col-sm-6">
                                                                                                             <label>Línea Base:</label>
-                                                                                                            <input  v-model="linea_base_cuanti" type="text" class=" form-control" style="font-size:1em"/>
+                                                                                                            <input  v-model="linea_base_cuanti" type="text" class=" form-control" style="font-size:1em" :disabled="deshabilitar"/>
                                                                                                         </div>
                                                                                                         <div class="col-12 col-sm-6">
                                                                                                             <label>Resultado Esperado:</label>
-                                                                                                            <input v-model="resultado_esperado_cuanti" type="text" class=" form-control" style="font-size:1em"/>
+                                                                                                            <input v-model="resultado_esperado_cuanti" type="text" class=" form-control" style="font-size:1em" :disabled="deshabilitar"/>
                                                                                                         </div>
                                                                                                  </div>
                                                                                                  <div class="row" v-if="tipo_impacto=='Cualitativo'"><!--si es cuali-->
                                                                                                         <div class="col-12">
                                                                                                             <label>Impacto cualitativo:</label>
-                                                                                                            <textarea v-model="impacto_cualitativo" type="text" class="form-control" style="font-size:1em;"></textarea>
+                                                                                                            <textarea v-model="impacto_cualitativo" type="text" class="form-control" style="font-size:1em;" :disabled="deshabilitar"></textarea>
                                                                                                         </div>
                                                                                                  </div>
                                                                                         </div>
@@ -398,7 +400,7 @@ $incrementar=1;
                                                                                         <td><input v-if="id_actualizar==index+1" class="inputs-concentrado" v-model="fecha_inicial_actividad" type="date" ></input><label v-else>{{actividades.fecha_inicial}}<label></td>
                                                                                         <td><input v-if="id_actualizar==index+1" class="inputs-concentrado" v-model="fecha_final_actividad" type="date" ></input><label v-else>{{actividades.fecha_final}}<label></td>
                                                                                         <td>
-                                                                                            <select :id="'select'+actividades.id" @change="actualizarPorcentajeEnActividad(actividades.id)" v-show="actualizar==false && status=='En Implementación' && check_mc=='Aceptado' && bandera_btn_finalizar!='mostrar'" class="form-control"  >
+                                                                                            <select :id="'select'+actividades.id" @change="actualizarPorcentajeEnActividad(actividades.id)" v-show="actualizar==false && status=='En Implementación' && check_mc=='Aceptado' && bandera_btn_finalizar!='mostrar'" class="form-control" >
                                                                                                 <option disabled selected>{{actividades.porcentaje}}%</option>
                                                                                                 <option value="0">0%</option>
                                                                                                 <option value="10">10%</option>
@@ -433,15 +435,13 @@ $incrementar=1;
                                                                     <div class="alert alert-danger fw-bold"  v-if="numero_actividad>0 && bandera_btn_finalizar!='mostrar' && check_mc=='Rechazado'">
                                                                                                                      Su plan fue rechazado por Mejora Continua.</div>
                                                                     <div class="alert alert-success fw-bold"  v-if="numero_actividad>0 && bandera_btn_finalizar!='mostrar' && check_mc=='Aceptado'">
-                                                                                                                    Su plan fue aceptado, favor de ejecutar en tiempo y forma.</div>
-                                                                    
-                                                                   
-                                                                                    
-                                                                                   
-                                                                    
+                                                                                                                    Su plan fue aceptado, favor de ejecutar en tiempo y forma.</div>                                                    
                                                                 </div> <!--Fin espacio de Plana de trabajo -->  
+                                                            <div class="justify-content-center text-end">
+                                                                <button type="button" class="btn btn-secondary mb-2 me-2" data-bs-dismiss="modal" aria-label="Close">Aceptar</button>
+                                                            </div>                    
                                                     </div><!--FIN ESPACIO FACTIBLE-->
-                                                    <hr>
+                                                   
                                                     <div v-show="no_factible==true"><!--ESPACIO NO FACTIBLE-->
                                                     <span class="badge bg-light text-dark mb-1">ADJUNTAR EVIDENCIA DE NO FACTIBILIDAD (OPCIONAL)</span>
                                                         <form @submit.prevent="uploadFile()">
@@ -829,6 +829,7 @@ $incrementar=1;
                 impacto_primario:'',
                 impacto_secundario:'',
                 tipo_desperdicio:'',
+                numero_nomina:'',
                 tipo_impacto:'',
                 indicador_cuanti:'',
                 linea_base_cuanti:'',
@@ -939,7 +940,7 @@ $incrementar=1;
                     console.log(this.lista_impacto);
                 })
             },
-            datos_modal_factibilidad(tipo,index,folio,status,respuesta,check_mc){
+            datos_modal_factibilidad(tipo,index,folio,numero_nomina,status,respuesta,check_mc,tipo_impacto){
                 this.id_actualizar = ''
                 this.status = status
                 this.check_mc = check_mc
@@ -952,17 +953,22 @@ $incrementar=1;
                 if(respuesta=="Factible"){
                     this.factible=true
                     this.no_factible=false
+                     
                 }else if(respuesta=="No Factible"){
                     this.factible=false
                     this.no_factible=true
                 }
                 this.folio=folio
+                this.numero_nomina = numero_nomina
                 this.id_concentrado_general=index
+                this.tipo_impacto = tipo_impacto
                 if(this.tipo_factibilida_o_implementacion=="factibilidad"){
+                   
                     this.buscarDocumentos_analista()
                     this.consultarFormularioImpacto()
                     this.consultarActividades()
                     this.buscarDocumentos()
+                    this.buscarDatosValidacionImpacto()
                     
                 } else if (this.tipo_factibilida_o_implementacion=="En Implementación"){
                     this.factible=true
@@ -971,6 +977,7 @@ $incrementar=1;
                     this.consultarFormularioImpacto()
                     this.consultarActividades()
                     this.buscarDocumentos()
+                    this.buscarDatosValidacionImpacto()
                 }else{
 
                 }
@@ -1038,6 +1045,7 @@ $incrementar=1;
                         this.impacto_primario = response.data[0].impacto_primario
                         this.impacto_secundario = response.data[0].impacto_secundario
                         this.tipo_desperdicio = response.data[0].tipo_de_desperdicio
+                        this.tipo_impacto = response.data[0].validacion_de_impacto
                         this.fecha_compromiso = response.data[0].fecha_compromiso
                         var arr = response.data[0].objetivo_de_calidad_ma.split(',')
                         var longitud = arr.length
@@ -1163,7 +1171,6 @@ $incrementar=1;
                         if(this.concentrado_actividades[i].enviado_o_no == 'ENVIADO'){
                             contar++
                         }
-                        
                     }
                     if(this.numero_actividad==contar){
                         this.bandera_btn_finalizar = "no mostrar"
@@ -1221,40 +1228,89 @@ $incrementar=1;
                         })
 
             },
-            checkPlanActividades(){
-
-                if(this.impacto_primario!='' && this.tipo_desperdicio!='' && this.var_objetivo_de_calidadMA.length>0 && tipo_impacto!=''){
-                        if(this.fecha_compromiso!=""){
-                            axios.post("actualizar_check_plan_trabajo.php",{
-                            impacto_primario: this.impacto_primario,
-                            impacto_secundario: this.impacto_secundario,
-                            tipo_desperdicio: this.tipo_desperdicio,
-                            objetivos_de_calidadMA:this.var_objetivo_de_calidadMA,  
-
-                            id_concentrado:this.id_concentrado_general,
-                            enviado_o_no: 'ENVIADO',
-                            check_mc: this.check_mc
-                            }).then(response =>{
-                                console.log(response.data)
-                                if(response.data[1] == true && response.data[2] == true){
-                                    alert("Su plan de trabajo sera revisado por Mejora Continua")
-                                    this.bandera_btn_finalizar = "no mostrar"
-                                    this.check_mc =  response.data[0]
-                                    this.consultarFormularioImpacto()
-                                    this.consultado_concentrado_pendiente_factibilidad()
-                                    this.consultado_concentrado_pendiente_implementacion()
-                                }else{
-                                    alert("Algo salio mal.")
+            buscarDatosValidacionImpacto(){
+                //alert(this.id_concentrado_general+""+this.folio+""+this.tipo_impacto)
+                axios.post('buscar_formulario_validacion_de_impacto.php',{
+                id_concentrado: this.id_concentrado_general,
+                folio:this.folio,
+                cuantitativo_o_cualitativo: this.tipo_impacto
+                    }).then(response =>{
+                        
+                        if(this.tipo_impacto=="Cuantitativo")
+                                {
+                                    this.indicador_cuanti= response.data.indicador
+                                    this.linea_base_cuanti = response.data.linea_base
+                                    this.resultado_esperado_cuanti = response.data.resultado_esperado
                                 }
-                            }).catch(error => {
-                                console.log(error)
-                            })
-                        }else{
-                            alert("Agregue la fecha compromiso y despues finalice el Plan.")
+                        if(this.tipo_impacto=="Cualitativo")
+                                {
+                                    this.impacto_cualitativo = response.data.impacto
+                                }
+                    }).catch(arror =>{
+                        console.log(error)
+                    })
+            },
+            checkPlanActividades(){
+               
+                 if(this.impacto_primario!='' && this.tipo_desperdicio!='' && this.var_objetivo_de_calidadMA.length>0 && this.tipo_impacto!=''){
+                        if(this.tipo_impacto=="Cuantitativo"){
+                            if(this.indicador_cuanti!="" && this.linea_base_cuanti!="" && this.resultado_esperado_cuanti){
+                                this.actualizar_check_plan_trabajo()   
+                            }else{
+                                alert("Todos los campos de Tipo de impacto son requeridos.")
+                            }      
                         }
+                        if(this.tipo_impacto=="Cualitativo"){
+                            if(this.impacto_cualitativo!=""){
+                                this.actualizar_check_plan_trabajo() 
+                            }else{
+                                alert ("El campo, impacto cualitativo es requerido.")
+                            }
+                        }
+
                     }else{
                         alert("Todos los campos del Formulario Impacto con (*) son requeridos, VERIFIQUE.")
                     }
+            },
+            actualizar_check_plan_trabajo(){
+                    if(this.fecha_compromiso!=""){
+                                axios.post("actualizar_check_plan_trabajo.php",{
+                                impacto_primario: this.impacto_primario,
+                                impacto_secundario: this.impacto_secundario,
+                                tipo_desperdicio: this.tipo_desperdicio,
+                                objetivos_de_calidadMA:this.var_objetivo_de_calidadMA,
+
+                                tipo_impacto:this.tipo_impacto,
+
+                                indicador_cuanti: this.indicador_cuanti,
+                                linea_base_cuanti:this.linea_base_cuanti,
+                                resultado_esperado_cuanti:this.resultado_esperado_cuanti,
+                                
+                                impacto_cualitativo: this.impacto_cualitativo,
+
+                                numero_nomina: this.numero_nomina,
+                                folio: this.folio,
+                                id_concentrado:this.id_concentrado_general,
+                                enviado_o_no: 'ENVIADO',
+                                check_mc: this.check_mc
+                                }).then(response =>{
+                                    console.log(response.data)
+                                    if(response.data[1] == true && response.data[2] == true && response.data[3] == true && response.data[4] == true){
+                                        alert("Su plan de trabajo sera revisado por Mejora Continua")
+                                        this.bandera_btn_finalizar = "no mostrar"
+                                        this.check_mc =  response.data[0]
+                                        this.consultarFormularioImpacto()
+                                        this.consultado_concentrado_pendiente_factibilidad()
+                                        this.consultado_concentrado_pendiente_implementacion()
+                                    }else{
+                                        alert("Algo salio mal.")
+                                    }
+                                }).catch(error => {
+                                    console.log(error)
+                                })
+                            }else{
+                                alert("Agregue la fecha compromiso y despues finalice el Plan.")
+                            }
             },
             guardarFechaCompromiso(){
                 axios.post("guardar_fecha_compromiso.php",{
@@ -1375,10 +1431,11 @@ $incrementar=1;
                             id_concentrado:this.id_concentrado_general
                         }).then( response=>{
                             if(response.data[0]==true && response.data[1]==true){
-                                console.log(response.data)
-                                this.consultarActividades()
-                                this.consultado_concentrado_pendiente_implementacion()
+                                //console.log(response.data)
+                                //this.consultarActividades()
+                                //this.consultado_concentrado_pendiente_implementacion()
                                 alert("Porcentaje guardado con Exito.")
+                                window.location.reload()
                             }else{
                                 alert("No se actulizados datos en una o dos tablas")
                             }
