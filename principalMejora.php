@@ -35,12 +35,12 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
 </head>
 <body>
 <style>
-                .titulo{
-                        font-family: 'Luckiest Guy', cursive;
-                        color: white; 
-                        /*text-shadow: 0px 0px 2px black;*/
-                       /* -webkit-text-stroke: 1px black;*/
-                    }
+            .titulo{    
+                    font-family: 'Luckiest Guy', cursive;
+                    color: white; 
+                    /*text-shadow: 0px 0px 2px black;*/
+                    /* -webkit-text-stroke: 1px black;*/
+                }
 
                .div_susperior{
                 background: rgb(255,255,255);
@@ -133,7 +133,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                         <td>{{concentrado.folio}}</td>
                                         <td>{{concentrado.nombre_sugerencia}}</td>
                                         <td>{{concentrado.fecha_compromiso}}</td>
-                                        <td>{{concentrado.cumplimiento}}%</td>
+                                        <td><b>{{concentrado.cumplimiento}}%</b></td>
                                         <td>
                                             <!--<a v-if="concentrado.status=='Cerrada/Fast Response' || concentrado.status=='Cerrada/No Factible'" data-bs-toggle="modal" data-bs-target="#modalCambiaraEnFactibilidad" style="cursor: pointer; text-decoration: underline blue;" @click="datos_modal(concentrado.id)" ><p class="fw-bold text-primary">{{concentrado.status}}</p></a>
                                             <a v-else> {{concentrado.status}}</a>-->
@@ -142,7 +142,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                         <a data-bs-toggle="modal" data-bs-target="#modalCambiaraEnFactibilidad" style="cursor: pointer; text-decoration: underline blue;" @click="datos_modal(concentrado.id)" class="fw-bold text-primary me-2">{{concentrado.status}}</a>
                                                 </div>
                                                 <div class="d-inline">
-                                                        <button  v-show="concentrado.status=='Cerrada/Fast Response' || concentrado.status=='Cerrada/No Factible'" class="btn btn-success" style="font-size:.9em"  @click="datos_modal_detalles(concentrado.id,concentrado.folio,concentrado.numero_nomina,concentrado.causa_no_factibilidad)"><i class="bi bi-table" ></i> Detalles</button>
+                                                        <button  v-show="concentrado.status=='Cerrada/Fast Response' || concentrado.status=='Cerrada/No Factible'" class="btn btn-success" style="font-size:.9em"  @click="datos_modal_detalles(concentrado.id,concentrado.folio,concentrado.numero_nomina,concentrado.causa_no_factibilidad,concentrado.cumplimiento)"><i class="bi bi-table" ></i> Detalles</button>
                                                 </div>
                                           
                                         </td>
@@ -185,7 +185,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                     </div>
                                     <div class="modal-body">
                                         <div class="row" style="font-size:0.7em;">
-
+                                                <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center" ><div><b>Situación Actual:</b></div></div>
+                                                <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div>{{datos_sugerencia.situacion_actual}}</div></div>
+                                                <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center" ><div><b>Idea Propuesta:</b></div></div>
+                                                <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div>{{datos_sugerencia.idea_propuesta}}</div></div>
                                                 <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center" ><div><b>Impacto Primario:</b></div></div>
                                                 <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div>{{datos_sugerencia.impacto_primario}}</div></div>
                                                 <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div><b>Impacto Secundario:</b></div></div>
@@ -322,15 +325,19 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                         </div>
                                                                 </div>
                                                                 <div class="d-flex justify-content-center align-items-center">
-                                                                         <div class="col-6 col-sm-3 text-center">  
+                                                                         <div v-if="vistobueno==false" class="col-6 col-sm-3 text-center">  
                                                                                     <button class="btn btn-success" type="submit" style=" font-size:1em" @click="guardarPuntosnofactible()">Guardar Puntos.</button>
                                                                          </div>
                                                                          <div class="col-6 col-sm-3 text-center">  
-                                                                                    <input type="number" min="0" class="form-control" v-model="puntos_no_factible"></input>
+                                                                                    <input type="number" min="0" class="form-control" v-model="puntos_no_factible" :disabled="vistobueno"></input>
                                                                          </div>
                                                                 </div>
                                     </div>
                                     <div class="modal-footer">
+                                                <div class="col-12 text-center">
+                                                <input type="checkbox" id="checkbox" v-model="vistobueno"  />
+                                                    <label for="checkbox" class="ms-2 text-primary" @click="checknoFactibilidad()">Aceptar la no factibilidad</label>
+                                                </div>
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                                     </div>
                                     </div>
@@ -1871,6 +1878,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 causa:'',
                 fileopcional:[],
                 puntos_no_factible:0,
+                vistobueno:false,
                 //*Varibales Concetrado*/
                 lista_validacion_de_impacto:['Cuantitativo','Cualitativo'],
                 concentrado_actividades:[],
@@ -2124,10 +2132,14 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
             }
         this.buscarDocumentos()
         this.buscarDatosValidacionImpacto()
-        
-        
     },
-    datos_modal_detalles(id_concentrado,folio,nomina,causa){
+    datos_modal_detalles(id_concentrado,folio,nomina,causa,cumplimiento){
+        
+        if(cumplimiento==100){
+            this.vistobueno=true
+        }else{
+            this.vistobueno=false
+        }
         this.folio_carpeta_doc=folio
         this.folio = folio
         this.cual_documento = "nofactibleopcional"
@@ -2176,6 +2188,21 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
         }).then(response =>{
                 console.log(response.data);
         })*/
+    },
+    checknoFactibilidad(){
+        setTimeout(()=>{
+                axios.post('check_no_factibilidad.php',{
+                    id_concentrado:this.id_concentrado,
+                    vistobueno:this.vistobueno,
+                }).then(response =>{
+                    if(response.data==true){
+                        this.consultado_concentrado()
+                    }else{
+                        alert("Error al actualizar el porcentaje en el check.")
+                    }
+                    
+                })
+        },100)
     },
     cambiaraEnFactibilidad(){
         if(!confirm('Desea usted cambiar el status de esta sugerencia a "En Factibilidad"')) return

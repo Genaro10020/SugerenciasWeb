@@ -180,7 +180,7 @@ $incrementar=1;
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                             <div class="d-flex justify-content-center mt-3 ">
-                                                                <span class="badge bg-light text-dark">FACTIBILIDAD DE SUGERENCIA FOLIO: {{folio}} NUMERO NOMINA:{{numero_nomina}}</span>
+                                                                <span class="badge bg-light text-dark">FACTIBILIDAD DE SUGERENCIA FOLIO: {{folio}}</span>
                                                             </div>
                                                                 <div class="modal-body alert alert-secondary">
                                                                         <div class="">
@@ -238,7 +238,7 @@ $incrementar=1;
                                                                 <div class="col-12" v-show="factible==true"><!--ESPACIO FACTIBLE-->
                                                                     <hr>
                                                                             <div class=" mt-3 ">
-                                                                                <span class="badge bg-light text-dark">FORMULARIO IMPACTO</span>
+                                                                                <span class="badge bg-light text-dark">FORMULARIO IMPACTO{{deshabilitar}}</span>
                                                                             </div>
                                                                         <div class="col-12" style=" background-color:#e9f3e7">
                                                                                 <div class="row mt-2 mx-3 ">
@@ -366,19 +366,19 @@ $incrementar=1;
                                                                                         <tr class="align-middle" v-for="(actividades, index) in concentrado_actividades">
                                                                                            
                                                                                         <td> 
-                                                                                            <button v-show="check_mc!='Aceptado'" type="button" class="btn btn-danger me-2" title="Eliminar" @click="eliminarActividad(actividades.id)"><i class="bi bi-trash3-fill"></i></button>
+                                                                                            <button v-show="deshabilitar==false" type="button" class="btn btn-danger me-2" title="Eliminar" @click="eliminarActividad(actividades.id)"><i class="bi bi-trash3-fill"></i></button>
                                                                                             <button type="button" class="btn btn-danger me-2" title="Cancelar" @click="editarActividad('')" v-if="id_actualizar==index+1"><i class="bi bi-x-circle" ></i></button>
                                                                                             <button v-show="deshabilitar==false" type="button" class="btn btn-warning me-2" title="Editar" @click="editarActividad(index+1)"><i class="bi bi-pen" ></i></button>
                                                                                             <button type="button" class="btn btn-primary " title="Guardar" @click="guardarEditarActividad('actualizar',actividades.id)" v-if="id_actualizar==index+1"><i class="bi bi-check-circle"></i></button>
                                                                                         </td> 
                                                                                             <th scope="row">
-                                                                                                <label v-show="actualizar==true || check_mc=='Aceptado'">{{index+1}}</label>
+                                                                                                <label v-show="actualizar==true || check_mc=='Aceptado' || deshabilitar==true">{{index+1}}</label>
                                                                                                    <!-- <select  v-model="numero_orden_en_select" v-show="actualizar==false && check_mc!='Aceptado'" title="Cambiar posición">
                                                                                                         <option  value="0" disabled>{{index+1}}</option>
                                                                                                         <option :value="index+1" v-for="numero in numero_actividad" @click="ordenarActividades(index,numero-1,numero_orden_en_select=0)">{{numero}}</option>
                                                                                                     </select>-->
                                                                                                     
-                                                                                                    <select :id="'select'+index" v-show="actualizar==false && check_mc!='Aceptado'" @change="ordenarActividades(index)" title="Cambiar posición">
+                                                                                                    <select :id="'select'+index" v-show="actualizar==false && check_mc!='Aceptado'  && deshabilitar!=true" @change="ordenarActividades(index)" title="Cambiar posición">
                                                                                                         <option  value="{{index+1}}" disabled selected>{{index+1}}</option>
                                                                                                         <option :value="numero-1" v-for="numero in numero_actividad" >{{numero}}</option>
                                                                                                     </select>  
@@ -392,7 +392,7 @@ $incrementar=1;
                                                                                         
                                                                                        <td>
                                                                                         <select v-if="id_actualizar==index+1" class="inputs-concentrado" v-model="responsable_plan" >
-                                                                                            <option value="" disabled>Seleccione Analista..</option>
+                                                                                            <option value="" disabled>Seleccione responsable..</option>
                                                                                             <option v-for="responsable in lista_responsable_plan" :key="responsable.nombre" :value="responsable.nombre">{{responsable.nombre}}</option>
                                                                                         </select>
                                                                                             <label v-else>{{actividades.responsable}}<label>
@@ -944,7 +944,7 @@ $incrementar=1;
                 this.id_actualizar = ''
                 this.status = status
                 this.check_mc = check_mc
-                if(this.check_mc=="Aceptado"){
+                if(this.check_mc=="Aceptado" || this.check_mc=="Pendiente" | this.check_mc=="Corregido"){
                     this.deshabilitar = true
                 }else{
                     this.deshabilitar = false
@@ -1296,7 +1296,8 @@ $incrementar=1;
                                 }).then(response =>{
                                     console.log(response.data)
                                     if(response.data[1] == true && response.data[2] == true && response.data[3] == true && response.data[4] == true){
-                                        alert("Su plan de trabajo sera revisado por Mejora Continua")
+                                        alert("Su plan de trabajo será revisado por Mejora Continua")
+                                        this.deshabilitar = true
                                         this.bandera_btn_finalizar = "no mostrar"
                                         this.check_mc =  response.data[0]
                                         this.consultarFormularioImpacto()
