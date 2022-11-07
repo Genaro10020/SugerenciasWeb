@@ -557,7 +557,7 @@ $incrementar=1;
                                                                                     <th scope="col">Mes 10</th>
                                                                                     <th scope="col">Mes 11</th>
                                                                                     <th scope="col">Mes 12</th>
-                                                                                    <!--<th scope="col">Acumulado</th>-->
+                                                                                    <th scope="col">Status</th>
                                                                                     
                                                                                     </tr>
                                                                                 </thead>
@@ -779,6 +779,9 @@ $incrementar=1;
                                                                                                             </span> 
                                                                                                         </div>    
                                                                                             </div>     
+                                                                                        </td>
+                                                                                        <td>
+                                                                                           {{pendiente_impacto.status_impacto}}
                                                                                         </td>
                                                                                     </tr>
   

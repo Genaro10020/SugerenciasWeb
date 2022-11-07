@@ -155,11 +155,11 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                                     <div class=" d-flex justify-content-center mt-1 ">
                                                                         <div class="col-4 col-sm-4 col-lg-1  d-flex justify-content-center">
                                                                             <div class="rounded-pill  d-flex align-items-center justify-content-center" style=" height:50px; width: 50px; background: linear-gradient(to bottom, #b5bdc8 0%,#828c95 36%,#28343b 100%);">
-                                                                                <img v-if="sugerencia[0].status=='En Factibilidad' || sugerencia[0].status=='En Implementación' || sugerencia[0].status=='Implementada' || sugerencia[0].validacion_de_impacto!=''" src="img/app_listo.png" style=" height:50px; width:50px"> </img>
+                                                                                <img v-if="sugerencia[0].status=='En Factibilidad' || sugerencia[0].status=='En Implementación' || sugerencia[0].status=='Implementada' || mes1!=''" src="img/app_listo.png" style=" height:50px; width:50px"> </img>
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-8 col-sm-8 col-lg-3  mt-1 d-flex">
-                                                                            <input v-if="sugerencia[0].status=='En Factibilidad' || sugerencia[0].status=='En Implementación' || sugerencia[0].status=='Implementada' || sugerencia[0].validacion_de_impacto!='' || puntos_sugerencia>0" type="text" class="form-control me-1" value="En Factibilidad" disabled></input>
+                                                                            <input v-if="sugerencia[0].status=='En Factibilidad' || sugerencia[0].status=='En Implementación' || sugerencia[0].status=='Implementada' || mes1!='' || puntos_sugerencia>0" type="text" class="form-control me-1" value="En Factibilidad" disabled></input>
                                                                             <input v-else type="text" class="form-control me-1" value="En Implementación"  disabled></input>
                                                                         </div>
                                                                     </div>
@@ -167,11 +167,11 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                                     <div class=" d-flex justify-content-center mt-1 ">
                                                                         <div class="col-4 col-sm-4 col-lg-1  d-flex justify-content-center">
                                                                             <div  class="rounded-pill bg-secondary d-flex align-items-center justify-content-center" style=" height:50px; width: 50px;  background: linear-gradient(to bottom, #b5bdc8 0%,#828c95 36%,#28343b 100%);">
-                                                                                <img v-show="sugerencia[0].status=='En Implementación' || sugerencia[0].status=='Implementada' || sugerencia[0].validacion_de_impacto!=''" src="img/app_listo.png" style=" height:50px; width:50px"> </img> 
+                                                                                <img v-show="sugerencia[0].status=='En Implementación' || sugerencia[0].status=='Implementada' || mes1!=''" src="img/app_listo.png" style=" height:50px; width:50px"> </img> 
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-8 col-sm-8 col-lg-3  d-flex">
-                                                                            <input v-if="sugerencia[0].status=='En Implementación' || sugerencia[0].status=='Implementada' || sugerencia[0].validacion_de_impacto!=''|| puntos_sugerencia>0" type="text" class="form-control me-1" value="En Implementación" disabled>
+                                                                            <input v-if="sugerencia[0].status=='En Implementación' || sugerencia[0].status=='Implementada' || mes1!=''|| puntos_sugerencia>0" type="text" class="form-control me-1" value="En Implementación" disabled>
                                                                             <input v-else type="text" class="form-control me-1" value="En Implementación"  disabled></input>
                                                                         </div>
                                                                     </div>
@@ -179,11 +179,11 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                                      <div class=" d-flex justify-content-center mt-1  ">
                                                                         <div class="col-4 col-sm-4 col-lg-1  d-flex justify-content-center">
                                                                             <div class="rounded-pill bg-secondary d-flex align-items-center justify-content-center" style=" height:50px; width: 50px;  background: linear-gradient(to bottom, #b5bdc8 0%,#828c95 36%,#28343b 100%);">
-                                                                                    <img v-show="sugerencia[0].status=='Implementada' || sugerencia[0].validacion_de_impacto!=''" src="img/app_listo.png" style=" height:50px; width:50px"> </img> 
+                                                                                    <img v-show="sugerencia[0].status=='Implementada' || mes1!=''" src="img/app_listo.png" style=" height:50px; width:50px"> </img> 
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-8 col-sm-8 col-lg-3  d-flex">
-                                                                            <input v-if="sugerencia[0].status=='Implementada' || sugerencia[0].validacion_de_impacto!='' || puntos_sugerencia>0 " type="text" class="form-control me-1" value="Implementada" disabled>
+                                                                            <input v-if="sugerencia[0].status=='Implementada' || mes1!='' || puntos_sugerencia>0 " type="text" class="form-control me-1" value="Implementada" disabled>
                                                                             <input v-else type="text" class="form-control me-1" value="Implementada"  disabled></input>
                                                                         </div>
                                                                     </div>
@@ -191,11 +191,11 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                                     <div class=" d-flex justify-content-center mt-1">
                                                                         <div class="col-4 col-sm-4 col-lg-1  d-flex justify-content-center">
                                                                             <div class="rounded-pill bg-secondary d-flex align-items-center justify-content-center" style=" height:50px; width: 50px;  background: linear-gradient(to bottom, #b5bdc8 0%,#828c95 36%,#28343b 100%);">
-                                                                                <img v-show="sugerencia[0].validacion_de_impacto!='' || puntos_sugerencia>0" src="img/app_listo.png" style=" height:50px; width:50px"> </img> 
+                                                                                <img v-show="mes1!='' || puntos_sugerencia>0" src="img/app_listo.png" style=" height:50px; width:50px"> </img> 
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-8 col-sm-8 col-lg-3  d-flex">
-                                                                            <input v-if="sugerencia[0].validacion_de_impacto!='' || puntos_sugerencia>0" type="text" class="form-control me-1" value="Validación de Impacto" disabled>
+                                                                            <input v-if="mes1!='' || puntos_sugerencia>0" type="text" class="form-control me-1" value="Validación de Impacto" disabled>
                                                                             <input v-else type="text" class="form-control me-1" value="Validación de Impacto" disabled></input>
                                                                         </div>
                                                                     </div>
@@ -211,7 +211,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                                             <input v-else type="text" class="form-control me-1" value="Asignación de Punto"  disabled></input>
                                                                         </div>
                                                                     </div>
-
+                                                                    
                                                                     <div class=" d-flex justify-content-center mt-1 text-white">
                                                                         <div class="col-6 col-sm-6 col-lg-2  d-flex justify-content-center p-3" style=" background:#053b78; color:white"> 
                                                                             <b>Status:</b>
@@ -252,9 +252,11 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
         data(){
             return {
                 concentrado_sugerencias:[],
+                concentrado_impacto_sugerencias:[],
                 seguimiento:false,
                 sugerencia:[],
                 puntos_sugerencia:0,
+                mes1:'',
             }
         },
         mounted(){
@@ -268,8 +270,16 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                 this.concentrado_sugerencias = response.data
                             })
             },
+            concentrado_impacto_id(id){
+                axios.post('consulta_concentrado_impacto_id.php',{
+                            id_concentrado:id
+                            }).then(response =>{
+                                this.concentrado_impacto_sugerencias = response.data
+                                console.log(this.concentrado_impacto_sugerencias,'FATOS')
+                                this.mes1 = this.concentrado_impacto_sugerencias[0].mes1
+                            })
+            },
             consultar_sugerencia(folio){
-            
                 axios.post('consulta_concentrado_sugerencias_colaborador.php',{
                     folio_sugerencia: folio
                             }).then(response =>{
@@ -277,6 +287,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                 if(this.sugerencia.length > 0){
                                     this.seguimiento=true
                                     this.consultadoPuntosSugerencia(this.sugerencia[0].id)
+                                    this.concentrado_impacto_id(this.sugerencia[0].id)
+                                    
                                 }else{
                                     alert("No logramos localizar ese folio, póngase en contacto con Mejora Continua")
                                 }

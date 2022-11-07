@@ -151,20 +151,20 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                     <div>
                                                            <div v-if="concentrado.validacion_de_impacto =='Cuantitativo'"><!--BTN VERDE-->
                                                                 <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-success" @click="datos_modal(concentrado.id, concentrado.folio,'Cuantitativo',concentrado.numero_nomina)" style=" font-size:.9em">Impacto Cuantitativo</button>
-                                                                <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-danger ms-2" @click="vaciarValidaciondeImpacto(concentrado.id,'Cuantitativo')" title="Limpiar impacto" style=" font-size:.9em">x</button>
+                                                                <!--<button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-danger ms-2" @click="vaciarValidaciondeImpacto(concentrado.id,'Cuantitativo')" title="Limpiar impacto" style=" font-size:.9em">x</button>-->
                                                            </div>
-                                                           <div v-else><!--BTN GRIS-->                                                           
+                                                           <!--<div v-else>                                                          
                                                                 <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-secondary" @click="datos_modal(concentrado.id, concentrado.folio,'Cuantitativo',concentrado.numero_nomina)" style=" font-size:.9em" >Impacto Cuantitativo</button>
-                                                           </div> 
+                                                           </div>
                                                     </div>
-                                                    <div>
+                                                    <div>--> 
                                                             <div v-if="concentrado.validacion_de_impacto =='Cualitativo'"><!--BTN VERDE-->
                                                                 <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-success" @click="datos_modal(concentrado.id, concentrado.folio,'Cualitativo',concentrado.numero_nomina)" style=" font-size:.9em" >Impacto Cualitativo</button>
-                                                                <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-danger ms-2" @click="vaciarValidaciondeImpacto(concentrado.id,'Cualitativo')" title="Limpiar impacto" style=" font-size:.9em">x</button>
+                                                               <!-- <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-danger ms-2" @click="vaciarValidaciondeImpacto(concentrado.id,'Cualitativo')" title="Limpiar impacto" style=" font-size:.9em">x</button>-->
                                                             </div>
-                                                            <div v-else><!--BTN GRIS-->
+                                                           <!-- <div v-else>
                                                                 <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-secondary" @click="datos_modal(concentrado.id, concentrado.folio,'Cualitativo',concentrado.numero_nomina)" style=" font-size:.9em" >Impacto Cualitativo</button>
-                                                            </div>  
+                                                            </div> BTN GRIS -->
                                                     </div>
                                                  </div>
                                         </td>
@@ -391,17 +391,17 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                                 <div class="row">
                                                                                         <div class="col-12 col-sm-6">
                                                                                             <label>Indicador:</label>
-                                                                                            <input v-model="indicador" type="text" class="form-control" style="font-size:.8em" required/>
+                                                                                            <input v-model="indicador" type="text" class="form-control" style="font-size:.8em" required disabled/>
                                                                                         </div>
                                                                                 </div>
                                                                                 <div class="row">
                                                                                         <div class="col-12 col-sm-6">
                                                                                             <label>Línea Base:</label>
-                                                                                            <input  v-model="linea_base" type="text" class=" form-control" style="font-size:.8em" required/>
+                                                                                            <input  v-model="linea_base" type="text" class=" form-control" style="font-size:.8em" required disabled/>
                                                                                         </div>
                                                                                         <div class="col-12 col-sm-6">
                                                                                             <label>Resultado Esperado:</label>
-                                                                                            <input v-model="resultado_esperado" type="text" class=" form-control" style="font-size:.8em" required/>
+                                                                                            <input v-model="resultado_esperado" type="text" class=" form-control" style="font-size:.8em" required disabled/>
                                                                                         </div>
                                                                                 </div>
                                                                                 <div class="row">
@@ -489,7 +489,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                                 <div class="row">
                                                                                         <div class="col-12">
                                                                                             <label>Impacto cualitativo:</label>
-                                                                                            <textarea v-model="impacto_cualitativo" type="text" class="form-control" style="font-size:.8em;" required></textarea>
+                                                                                            <textarea v-model="impacto_cualitativo" type="text" class="form-control" style="font-size:.8em;" required disabled></textarea>
                                                                                         </div>
                                                                                 </div>
                                                                                 <div class="row">
