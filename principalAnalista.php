@@ -533,7 +533,7 @@ $incrementar=1;
                                                                                 <thead class="encabezado-tabla text-center text-light ">
                                                                                     <tr >
                                                                                     <th scope="col" class="sticky">Editar/Guardar</th>
-                                                                                    <th scope="col">Status</th>
+                                                                                    <!--<th scope="col">Status</th>-->
                                                                                     <th scope="col">Folio</th>
                                                                                     <th scope="col">Nombre de Sugerencia</th>
                                                                                     <th scope="col">Analista de Factibilidad</th>
@@ -574,7 +574,7 @@ $incrementar=1;
                                                                                             <!--<button v-show="btn_actualizar==false && pendiente_impacto.orden != 1 && pendiente_impacto.orden != 2" @click="duplicarImpacto(pendiente_impacto.folio)" type="button" class="deletenewImpacto" title="Eliminar impacto">-</button>-->
    
                                                                                         </td> 
-                                                                                        <td><label >{{pendiente_impacto.status_impacto}}</label></td>
+                                                                                        <!--<td><label >{{pendiente_impacto.status_impacto}}</label></td>-->
                                                                                         <td><label>{{pendiente_impacto.folio}}</label></td>
                                                                                         <td><label>{{pendiente_impacto.nombre_sugerencia}}</label></td>
                                                                                         <td><label>{{pendiente_impacto.analista_de_factibilidad}}</label></td>
@@ -782,6 +782,7 @@ $incrementar=1;
                                                                                         </td>
                                                                                         <td>
                                                                                            {{pendiente_impacto.status_impacto}}
+                                                                                           <button v-show="btn_actualizar==false && pendiente_impacto.orden == 2" @click="finalizarMedicionImpacto(pendiente_impacto.id)" type="button" class="addnewImpacto" title="Nuevo Impacto">Finalizar</button>
                                                                                         </td>
                                                                                     </tr>
   
@@ -2011,7 +2012,16 @@ $incrementar=1;
                         var array = Object.fromEntries(arr);
                         array_completo.splice(0, 0, array)//lo agrego en la siguiente posicion donde gue en contrada la posicion.
                         console.log(array_completo,'ARRAY TRABAJANDO')
-                    }
+                    },
+                    finalizarMedicionImpacto(id_concentrado){
+                        if(!confirm("¿Desea finalizar ?")) return;
+                      axios.post("actualizar_medicion_status.php",{
+                        id_concentrado:id_concentrado
+                      }).then(response =>{
+                            console.log(response.data)
+                            this.consultado_concentrado_pendiente_impacto()
+                      })
+                    },
         }   
     }
     var mountedApp = Vue.createApp(vue3).mount('#app');

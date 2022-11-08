@@ -545,7 +545,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                                             <table class="tablaMonitoreo-sugerencias table table-striped table-bordered text-center">
                                                                                                 <thead class="encabezado-tabla text-center text-light ">
                                                                                                     <tr >
-                                                                                                    <th scope="col">Status</th>
+                                                                                                    
                                                                                                     <th scope="col">Folio</th>
                                                                                                     <th scope="col">Nombre de Sugerencia</th>
                                                                                                     <th scope="col">Analista de Factibilidad</th>
@@ -569,6 +569,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                                                     <th scope="col">Mes 10</th>
                                                                                                     <th scope="col">Mes 11</th>
                                                                                                     <th scope="col">Mes 12</th>
+                                                                                                    <th scope="col">Status</th>
                                                                                                     <!--<th scope="col">Acumulado</th>-->
                                                                                                     </tr>
                                                                                                 </thead>
@@ -576,7 +577,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                                 <tr class="align-middle"  :style="pendiente_impacto.orden == 2? colorgreen : colorgris"  v-for="(pendiente_impacto, index) in concentrado_sugerencias_pendiente_impacto">
                                                                                         
                                                                                             
-                                                                                       <td><label>{{pendiente_impacto.status_impacto}}</label></td>
+                                                                                       
                                                                                        <td><label>{{pendiente_impacto.folio}}</label></td>
                                                                                        <td><label>{{pendiente_impacto.nombre_sugerencia}}</label></td>
                                                                                        <td><label>{{pendiente_impacto.analista_de_factibilidad}}</label></td>
@@ -782,6 +783,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                                                            </span> 
                                                                                                        </div>    
                                                                                            </div>     
+                                                                                       </td>
+                                                                                       <td>
+                                                                                            <label v-show="pendiente_impacto.orden == 2">{{pendiente_impacto.status_impacto}}</label>
                                                                                        </td>
                                                                                    </tr>
                 
