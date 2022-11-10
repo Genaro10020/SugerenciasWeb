@@ -35,7 +35,7 @@
                 }
             }
 
-            $consulta = "SELECT * FROM canjer_premios_colaborador_sugerencias WHERE numero_nomina = '$numero_nomina' AND status='Pte. de entrega' || numero_nomina = '$numero_nomina' AND status='Entregado'";
+            $consulta = "SELECT * FROM canjer_premios_colaborador_sugerencias WHERE numero_nomina = '$numero_nomina' AND status='Pte. Solped' || status='Pte. de entrega' || status='Entregado'";
             $query = mysqli_query($conexion,$consulta);
             if(mysqli_num_rows($query)>0){
                 while ($fila=$query -> fetch_array()){

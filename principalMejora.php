@@ -1787,7 +1787,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                             <div class="text-center pt-3 ">
                                                                 <span class="badge bg-light text-dark" style="font-size:0.7em;">Listado de Premios Solicitados</span>
                                                             </div>
-                                                            <div class="" style=" height:70vh; overflow-x: scroll;">
+                                                            <div class="" style="height:70vh; overflow-x: scroll;">
                                                                 <table class="tablaMonitoreo-sugerencias table table-striped table-bordered ">
                                                                 <thead class="encabezado-tabla text-center text-light ">
                                                                     <tr>
@@ -1802,13 +1802,12 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                         <th scope="col">No. Solped</th>
                                                                         <th scope="col">Status</th>
                                                                         <th scope="col">Entregado</th>
-                                                                        <th scope="col">Validado</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr v-for="(concentrado_premios, index) in concentrado_status_premios">    
                                                                          <td>
-                                                                            {{id_updates}}
+                                                                            
                                                                             <button v-if="id_updates==index+1" type="button" class="btn btn-danger me-2" title="Cancelar" @click="editarUsuarios(0,0)" ><i class="bi bi-x-circle" ></i></button>
                                                                             <button v-if="bandera_editar_user == false" type="button" class="btn btn-warning me-2" title="Actualizar" @click="editarUsuarios(1,index+1)"><i class="bi bi-pen" ></i></button>
                                                                             <button v-if="id_updates==index+1" class="btn btn-primary me-2" title="Guardar" @click="actualizar_admin_y_analista(admis_usuarios.id)"><i class="bi bi-check-circle"></i></button> 
@@ -1840,11 +1839,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                         <td>
                                                                                 {{concentrado_premios.status}}
                                                                         </td>   
-                                                                        <td>
-                                                                              PENDIENTE
-                                                                        </td>  
-                                                                        <td>
-                                                                              BTN
+                                                                        <td class="text-center">
+                                                                                <button class="boton-nuevo" >Finalizar</button>
                                                                         </td>     
                                                                     </tr>
                                                                 </tbody>
@@ -2022,6 +2018,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 /*Variables de Estatus de Premios */
                 concentrado_status_premios: [],
                 id_updates:'',
+                bandera_editor:false,
                 /* Variables de Impacto*/
                 colorgreen:'background: url("img/verde2.jpg"); color:white; font-weight:bold;',
                 colorgris:'background-color: #fbfbfb ',
@@ -3170,6 +3167,24 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     this.concentrado_status_premios = response.data
                 })
             },
+            editarUsuarios(bandera,index){
+              
+              this.id_updates = index
+              if(bandera==1){
+                  this.bandera_editar_user = true
+                  this.u_user=this.array_usuarios[index-1].user
+                  this.u_password=this.array_usuarios[index-1].password
+                  this.u_email=this.array_usuarios[index-1].email
+                  this.u_nombre=this.array_usuarios[index-1].nombre
+                  this.u_departamento=this.array_usuarios[index-1].departamento
+                  this.u_tipo=this.array_usuarios[index-1].tipo
+
+              }
+              if(bandera==0){
+                  this.bandera_editar_user = false
+              }
+          },
+
         }   
     }
     var mountedApp = Vue.createApp(vue3).mount('#app');

@@ -238,7 +238,7 @@ $incrementar=1;
                                                                 <div class="col-12" v-show="factible==true"><!--ESPACIO FACTIBLE-->
                                                                     <hr>
                                                                             <div class=" mt-3 ">
-                                                                                <span class="badge bg-light text-dark">FORMULARIO IMPACTO{{deshabilitar}}</span>
+                                                                                <span class="badge bg-light text-dark">FORMULARIO IMPACTO</span>
                                                                             </div>
                                                                         <div class="col-12" style=" background-color:#e9f3e7">
                                                                                 <div class="row mt-2 mx-3 ">
@@ -437,9 +437,7 @@ $incrementar=1;
                                                                     <div class="alert alert-success fw-bold"  v-if="numero_actividad>0 && bandera_btn_finalizar!='mostrar' && check_mc=='Aceptado'">
                                                                                                                     Su plan fue aceptado, favor de ejecutar en tiempo y forma.</div>                                                    
                                                                 </div> <!--Fin espacio de Plana de trabajo -->  
-                                                            <div class="justify-content-center text-end">
-                                                                <button type="button" class="btn btn-secondary mb-2 me-2" data-bs-dismiss="modal" aria-label="Close">Aceptar</button>
-                                                            </div>                    
+                                                                             
                                                     </div><!--FIN ESPACIO FACTIBLE-->
                                                    
                                                     <div v-show="no_factible==true"><!--ESPACIO NO FACTIBLE-->
@@ -505,7 +503,11 @@ $incrementar=1;
                                                                
                                                     
                                                     </div>   <!--FIN ESPACIO NO FACTIBLE-->
+                                                    
                                                     <div class="12 modal-footer " > 
+                                                            <div class="justify-content-center text-end">
+                                                                <button type="button" class="btn btn-secondary mb-2 me-2" data-bs-dismiss="modal" aria-label="Close">Salir</button>
+                                                            </div>  
                                                        <!--btn salir -->           
                                                     </div>
                                     </div>

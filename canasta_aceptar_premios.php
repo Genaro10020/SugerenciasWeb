@@ -7,7 +7,7 @@ $resultado ="";
 $numero_nomina = $variables['numero_nomina'];
 include "conexionGhoner.php";
 
-$consulta = "UPDATE canjer_premios_colaborador_sugerencias SET status='Pte. de entrega' WHERE numero_nomina = '$numero_nomina' AND status='Sin Aceptar'";
+$consulta = "UPDATE canjer_premios_colaborador_sugerencias SET status='Pte. Solped' WHERE numero_nomina = '$numero_nomina' AND status='Sin Aceptar'";
 $query = mysqli_query( $conexion, $consulta);
 $resultado = $query;
 echo json_encode($resultado);
