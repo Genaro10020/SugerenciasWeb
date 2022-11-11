@@ -545,7 +545,6 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                                             <table class="tablaMonitoreo-sugerencias table table-striped table-bordered text-center">
                                                                                                 <thead class="encabezado-tabla text-center text-light ">
                                                                                                     <tr >
-                                                                                                    
                                                                                                     <th scope="col">Folio</th>
                                                                                                     <th scope="col">Nombre de Sugerencia</th>
                                                                                                     <th scope="col">Analista de Factibilidad</th>
@@ -574,7 +573,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                                                     </tr>
                                                                                                 </thead>
                                                                                                 <tbody>
-                                                                                <tr class="align-middle"  :style="pendiente_impacto.orden == 2? colorgreen : colorgris"  v-for="(pendiente_impacto, index) in concentrado_sugerencias_pendiente_impacto">
+                                                                                    <tr class="align-middle"  :style="pendiente_impacto.orden == 2? colorgreen : colorgris"  v-for="(pendiente_impacto, index) in concentrado_sugerencias_pendiente_impacto">
                                                                                         
                                                                                             
                                                                                        
@@ -1805,18 +1804,18 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    <tr v-for="(concentrado_premios, index) in concentrado_status_premios">    
+                                                                    <tr class="text-center" v-for="(concentrado_premios, index) in concentrado_status_premios">    
                                                                          <td>
                                                                             
-                                                                            <button v-if="id_updates==index+1" type="button" class="btn btn-danger me-2" title="Cancelar" @click="editarUsuarios(0,0)" ><i class="bi bi-x-circle" ></i></button>
-                                                                            <button v-if="bandera_editar_user == false" type="button" class="btn btn-warning me-2" title="Actualizar" @click="editarUsuarios(1,index+1)"><i class="bi bi-pen" ></i></button>
-                                                                            <button v-if="id_updates==index+1" class="btn btn-primary me-2" title="Guardar" @click="actualizar_admin_y_analista(admis_usuarios.id)"><i class="bi bi-check-circle"></i></button> 
+                                                                            <button v-if="id_updates==index+1" type="button" class="btn btn-danger me-2" title="Cancelar" @click="editarStutasPremioSolicitado(0,0)" ><i class="bi bi-x-circle" ></i></button>
+                                                                            <button v-if="bandera_editar_solicitud == false" type="button" class="btn btn-warning me-2" title="Actualizar" @click="editarStutasPremioSolicitado(1,index+1)"><i class="bi bi-pen" ></i></button>
+                                                                            <button v-if="id_updates==index+1" class="btn btn-primary me-2" title="Guardar" @click="guardarStutasPremioSolicitado(concentrado_premios.id)"><i class="bi bi-check-circle"></i></button> 
                                                                         </td> 
                                                                         <td>
                                                                                 {{concentrado_premios.numero_nomina}}
                                                                         </td>  
                                                                         <td>
-                                                                                {{concentrado_premios.codigo_premio}}
+                                                                                {{concentrado_premios.codigo_premio}}   
                                                                         </td>   
                                                                         <td>
                                                                                 {{concentrado_premios.planta}}
@@ -1833,14 +1832,22 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                         <td>
                                                                                 {{concentrado_premios.cantidad}}
                                                                         </td> 
-                                                                        <td>
-                                                                                {{concentrado_premios.solped}}
+                                                                        <td >
+                                                                                <input class="inputs-concentrado text-center" type="text"  v-model="numero_solped"  v-if="id_updates==index+1">
+                                                                                <label v-else>{{concentrado_premios.solped}}</label>
+                                                                               
+                                                                               
                                                                         </td>   
                                                                         <td>
-                                                                                {{concentrado_premios.status}}
+                                 
+                                                                                    <label v-if="concentrado_premios.status=='Entregado'" class="fw-bold text-success">{{concentrado_premios.status}}</label>
+                                                                                    <label v-else-if="concentrado_premios.status=='Pte. Entrega'" class="fw-bold text-warning">{{concentrado_premios.status}}</label>
+                                                                                    <label v-else>{{concentrado_premios.status}}</label>
+                                                                                   
+                                                                        
                                                                         </td>   
                                                                         <td class="text-center">
-                                                                                <button class="boton-nuevo" >Finalizar</button>
+                                                                                <button class="boton-nuevo" @click="finalizarEntregaPremio(concentrado_premios.id)" >Finalizar</button>
                                                                         </td>     
                                                                     </tr>
                                                                 </tbody>
@@ -2017,11 +2024,15 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 u_tipo:'',
                 /*Variables de Estatus de Premios */
                 concentrado_status_premios: [],
-                id_updates:'',
-                bandera_editor:false,
+                id_updates:0,
+                bandera_editar_solicitud:false,
+                numero_solped:'',
+                premio_status:'',
+                cssentregado:'',
                 /* Variables de Impacto*/
                 colorgreen:'background: url("img/verde2.jpg"); color:white; font-weight:bold;',
                 colorgris:'background-color: #fbfbfb ',
+                
             }
         },
         mounted(){
@@ -3167,24 +3178,54 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     this.concentrado_status_premios = response.data
                 })
             },
-            editarUsuarios(bandera,index){
-              
+            editarStutasPremioSolicitado(bandera,index){
               this.id_updates = index
               if(bandera==1){
-                  this.bandera_editar_user = true
+                  /*this.bandera_editar_user = true
                   this.u_user=this.array_usuarios[index-1].user
                   this.u_password=this.array_usuarios[index-1].password
                   this.u_email=this.array_usuarios[index-1].email
                   this.u_nombre=this.array_usuarios[index-1].nombre
                   this.u_departamento=this.array_usuarios[index-1].departamento
-                  this.u_tipo=this.array_usuarios[index-1].tipo
-
+                  this.u_tipo=this.array_usuarios[index-1].tipo*/
+                  this.numero_solped=this.concentrado_status_premios[index-1].solped
+                  this.premio_status=this.concentrado_status_premios[index-1].status
               }
               if(bandera==0){
-                  this.bandera_editar_user = false
+                  this.bandera_editar_solicitud = false
               }
           },
-
+          guardarStutasPremioSolicitado(id_premio){
+            axios.post("actualizar_solped_status.php",{
+                id_premio: id_premio,
+                numero_solped: this.numero_solped,
+                premio_status: this.premio_status
+            }).then(response =>{
+                if(response.data==true){
+                    this.id_updates=0
+                    this.bandera_editar_solicitud = false
+                    this.consultar_premios_solicitados()
+                }else{
+                    alert("Algo salio mal al actualizar Solped y Status")
+                }
+            })
+          },
+          finalizarEntregaPremio(id_premio){
+            if(!confirm("El premio se a entregado al colaborador."))return
+                axios.post("actualizar_solped_status.php",{
+                    id_premio: id_premio,
+                    numero_solped: this.numero_solped,
+                    premio_status: "Entregado"
+                }).then(response =>{
+                    if(response.data==true){
+                        this.id_updates=0
+                        this.bandera_editar_solicitud = false
+                        this.consultar_premios_solicitados()
+                    }else{
+                        alert("Algo salio mal al actualizar Solped y Status")
+                    }
+                })
+          }
         }   
     }
     var mountedApp = Vue.createApp(vue3).mount('#app');
