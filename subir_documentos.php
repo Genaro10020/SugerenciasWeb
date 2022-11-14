@@ -17,11 +17,16 @@ $suma=0;
 $cual_documento=$_POST['cual_documento']; 
 $folio=$_POST['folio']; 
 
+
 // Contar archivos totales
 $countfiles = count($_FILES['files']['name']);
 $suma=$countfiles + $cantidad;
 //ruta
-$path = "documentos/".$folio."/".$cual_documento."/";
+
+    $path = "documentos/".$folio."/".$cual_documento."/";
+
+
+
 //verificar si existe directorio de$path = "sample/path/newfolder";
 if (!file_exists($path)) {
     mkdir($path, 0777, true);
@@ -42,7 +47,7 @@ if (!file_exists($path)) {
                             if($cual_documento=="sugerencia" || $cual_documento=="reto" ){
                                 $valid_ext = array("png","jpeg","jpg","pdf");//entension valida para 
                             }
-                            if($cual_documento=="premio"){
+                            if($cual_documento=="premio" ||  $cual_documento=="entregado"){
                                 $valid_ext = array("png","jpeg","jpg");//entension valida para 
                             }
                             if($cual_documento=="ppt"){
@@ -89,6 +94,13 @@ if (!file_exists($path)) {
                                 }
                                 
                             }
+                            if($cual_documento=="entregado"){
+                                $id_premio=$id_concentrado;
+                                $actualizar = "UPDATE canjer_premios_colaborador_sugerencias SET status='Entregado' WHERE id = '$id_premio'";
+                                $query = mysqli_query( $conexion, $actualizar);
+                            }
+
+
                            
                             
                             // Ruta de archivo

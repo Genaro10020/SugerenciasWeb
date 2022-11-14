@@ -1547,7 +1547,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                  
                                                                 <td class="sticky" style=" background: rgb(194, 194, 194)">
                                                                             
-                                                                            <button v-if="actualizar_reto==index+1" type="button" class="btn btn-danger me-2" title="Cancelar" @click="editaReto(0)" ><i class="bi bi-x-circle" ></i></button>
+                                                                <button v-if="actualizar_reto==index+1" type="button" class="btn btn-danger me-2" title="Cancelar" @click="editaReto(0)" ><i class="bi bi-x-circle" ></i></button>
                                                                             <button v-show="bandera_editar==false" type="button" class="btn btn-warning me-2" title="Actualizar" @click="editaReto(index+1)"><i class="bi bi-pen" ></i></button>
                                                                             <button v-show="bandera_editar==true" class="btn btn-primary me-2" title="Guardar Reto" @click="guardarActualizacionReto(0,retos.id,'Actualizar')"><i class="bi bi-check-circle"></i></button> 
                                                                             <button v-if="retos.cantidad_img>0" type="button" class="btn btn-success  ms-2" title="Subir Imagen" @click="modal_subir_ver_documentos('Subir',retos.id,retos.folio_reto,'reto',retos.cantidad_img)"><i class="bi bi-paperclip">{{retos.cantidad_img}}</i></button>
@@ -1810,12 +1810,15 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                             <button v-if="id_updates==index+1" type="button" class="btn btn-danger me-2" title="Cancelar" @click="editarStutasPremioSolicitado(0,0)" ><i class="bi bi-x-circle" ></i></button>
                                                                             <button v-if="bandera_editar_solicitud == false" type="button" class="btn btn-warning me-2" title="Actualizar" @click="editarStutasPremioSolicitado(1,index+1)"><i class="bi bi-pen" ></i></button>
                                                                             <button v-if="id_updates==index+1" class="btn btn-primary me-2" title="Guardar" @click="guardarStutasPremioSolicitado(concentrado_premios.id)"><i class="bi bi-check-circle"></i></button> 
+                                                                            <button v-if="concentrado_premios.status=='Entregado'" type="button" class="btn btn-success  ms-2" title="Subir Imagen" @click="modal_subir_ver_documentos('Subir',concentrado_premios.id,concentrado_premios.solped,'entregado','1')"><i class="bi bi-paperclip"></i></button>
+                                                                            <button v-else-if="concentrado_premios.solped!='' && concentrado_premios.status=='Pte. Entrega'" type="button" class="btn btn-secondary" type="button" title="Subir evidencia de la entrega del premios." @click="modal_subir_ver_documentos('Subir',concentrado_premios.id,concentrado_premios.solped,'entregado','1')"><i class="bi bi-paperclip"></i></button> 
+                                                                            <button v-else-if="concentrado_premios.solped==''" title="Coloque número de solped para que se active." class="btn btn-secondary" disabled><i class="bi bi-paperclip"></i></button>  
                                                                         </td> 
-                                                                        <td>
+                                                                        <td >
                                                                                 {{concentrado_premios.numero_nomina}}
                                                                         </td>  
                                                                         <td>
-                                                                                {{concentrado_premios.codigo_premio}}   
+                                                                                {{concentrado_premios.colaborador}}   
                                                                         </td>   
                                                                         <td>
                                                                                 {{concentrado_premios.planta}}
@@ -1853,7 +1856,58 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                 </tbody>
                                                                 </table>
                                                             </div>          
+                                    </div>
+
+
+
+                           <!-- Modal Eliminar/Actualizar-->
+                            <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h6 class="modal-title" id="exampleModalLabel" >{{titulo_modal}} </h6>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
+                                <div class="modal-body">
+                                        <div class="text-center">
+                                                <form @submit.prevent="uploadFile()">
+                                                    <!--Subir Documento Sugerencia-->
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <div class="custom-file my-5"> 
+                                                                <input type="file" id="input_file_subir"  ref="archivosydocumentos" multiple required/>{{extensiones_valida}}</input>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <button  type="submit" name="upload" class="btn btn-primary">Subir Archivos </button>
+                                                        </div>
+                                                    </div> 
+                                                       
+                                                          <!-- Mostrando los archivos cargados -->
+                                                        <div v-show="fileentregado.length>0 && cual_documento=='entregado'" >
+                                                        <hr>
+                                                                <div class="col-12" v-for= "(fileimgreto,index) in fileentregado">
+                                                                    <div class="row">
+                                                                        <span class="badge bg-secondary">Documento {{index+1}}</span><br>
+                                                                            <div class="">
+                                                                                <button type="button" class="btn btn-danger" @click="eliminarDocumento(fileimgreto)" >Eliminar</button>
+                                                                            </div>
+                                                                    </div>
+                                                                    <iframe  :src="fileentregado[index]" style="width:100%;height:500px;"></iframe>
+                                                                   <!-- <iframe src="https://vvnorth.com/Sugerencias/documentos/pdf.pdf" style="width:100%;height:500px;"></iframe>-->
+                                                                </div>
+                                                        </div>
+                                                </form>
+                                        </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                        <!--Fin Modal subir imagenes en retos-->
+
                    </div>
             </div>
                 <!--FOOTER-->
@@ -1913,6 +1967,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 fileppt: [],
                 filepremio: [],
                 filereto: [],
+                fileentregado: [],
                 contar_DOC:0,
                 contar_PPT:0,
                 actualizar_sugerencia:'',
@@ -2642,6 +2697,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     this.myModal = new bootstrap.Modal(document.getElementById('modal'))
                     this.myModal.show()
                     this.extensiones_valida = '(.png, .jpeg, .jpg)'
+                }else if(this.cual_documento == 'entregado'){
+                    this.myModal = new bootstrap.Modal(document.getElementById('modal'))
+                    this.myModal.show()
+                    this.extensiones_valida = '(.png, .jpeg, .jpg)'
                 }else{
                     this.extensiones_valida = ''
                 }
@@ -2714,6 +2773,17 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                             this.myModal.hide()
                             document.getElementById("input_file_subir").value=""
                             alert(this.filepremio.length + " archivo/s se han subido.")
+                            this.buscarDocumentos()
+                        }else{
+                            alert("Verifique la extension del archivo o Intente nuevamente.")
+                        }
+                     }   
+                     if(this.cual_documento=="entregado"){
+                        this.fileentregado = response.data;
+                        if(this.fileentregado.length>0){
+                            this.myModal.hide()
+                            document.getElementById("input_file_subir").value=""
+                            alert(this.fileentregado.length + " archivo/s se han subido.")
                             this.buscarDocumentos()
                         }else{
                             alert("Verifique la extension del archivo o Intente nuevamente.")
@@ -2816,6 +2886,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     if(this.cual_documento=="reto"){
                         this.consultaConcentradoRetos()
                     }else if(this.cual_documento=="premio"){
+                        this.consultar_concentrado_premios()
+                    }else if(this.cual_documento=="entregado"){
                         this.consultar_concentrado_premios()
                     }else{
                         this.consultado_concentrado()
