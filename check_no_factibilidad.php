@@ -10,7 +10,7 @@ $resultado= 0;
 if($vistobueno==1){
         $valor = 100;
 }else{
-        $valor = 0;
+        $valor = 99;
 }
 include "conexionGhoner.php";
 

@@ -5,7 +5,7 @@ $variables = json_decode(file_get_contents('php://input'), true);
 $id_concentrado=$variables['id_concentrado'];
 
 include "conexionGhoner.php";
-        $actualizar= "UPDATE concentrado_sugerencias SET status = 'En Factibilidad', causa_no_factibilidad = '', respuesta_analista = '', check_mc='' WHERE id='$id_concentrado'";
+        $actualizar= "UPDATE concentrado_sugerencias SET cumplimiento=0, status = 'En Factibilidad', causa_no_factibilidad = '', respuesta_analista = '', check_mc='' WHERE id='$id_concentrado'";
         $query = mysqli_query( $conexion, $actualizar);
         $resultado = $query;
         if($resultado){

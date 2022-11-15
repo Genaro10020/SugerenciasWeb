@@ -94,11 +94,7 @@ if (!file_exists($path)) {
                                 }
                                 
                             }
-                            if($cual_documento=="entregado"){
-                                $id_premio=$id_concentrado;
-                                $actualizar = "UPDATE canjer_premios_colaborador_sugerencias SET status='Entregado' WHERE id = '$id_premio'";
-                                $query = mysqli_query( $conexion, $actualizar);
-                            }
+                            
 
 
                            
@@ -117,6 +113,12 @@ if (!file_exists($path)) {
                                     if($cual_documento=="premio"){
                                         $actualizar = "UPDATE concentrado_premios_sugerencias SET cant_img='$suma', url_premio='$ruta_y_doc' WHERE id = '$id_concentrado'";
                                         $query = mysqli_query($conexion,$actualizar);
+                                    }
+
+                                    if($cual_documento=="entregado"){
+                                        $id_premio=$id_concentrado;
+                                        $actualizar = "UPDATE canjer_premios_colaborador_sugerencias SET  cant_img_evidencia='$suma', status='Entregado' WHERE id = '$id_premio'";
+                                        $query = mysqli_query( $conexion, $actualizar);
                                     }
                             }
                         }

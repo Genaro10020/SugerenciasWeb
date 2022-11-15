@@ -7,7 +7,7 @@ $causa_no_factibilidad=$variables['causa_no_factibilidad'];
 $id_concentrado=$variables['id_concentrado'];
 
 include "conexionGhoner.php";
-        $actualizar= "UPDATE concentrado_sugerencias SET status = '$var_tipo_de_cierre', causa_no_factibilidad = '$causa_no_factibilidad' WHERE id='$id_concentrado'";
+        $actualizar= "UPDATE concentrado_sugerencias SET cumplimiento=99, status = '$var_tipo_de_cierre', causa_no_factibilidad = '$causa_no_factibilidad' WHERE id='$id_concentrado'";
         $query = mysqli_query( $conexion, $actualizar);
         $resultado = $query;
         if($resultado){

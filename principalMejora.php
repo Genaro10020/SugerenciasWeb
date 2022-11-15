@@ -89,6 +89,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                             <button class="opciones   mx-lg-2 rounded-3" @click="mostrar('solicitados')" v-bind:class="{pintarSeis}">
                                 Premios Solicitados
                             </button>
+                            <button class="opciones   mx-lg-2 rounded-3" @click="mostrar('colaboradores')" v-bind:class="{pintarSiete}">
+                                Colaborador
+                            </button>
                 </div>
                 
             </div>
@@ -133,7 +136,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                         <td>{{concentrado.folio}}</td>
                                         <td>{{concentrado.nombre_sugerencia}}</td>
                                         <td>{{concentrado.fecha_compromiso}}</td>
-                                        <td><b>{{concentrado.cumplimiento}}%</b></td>
+                                        <td v-if="concentrado.cumplimiento==100" class="text-white bg-success"><b>{{concentrado.cumplimiento}}%</b></td>
+                                        <td v-else-if="concentrado.cumplimiento==99" class="text-white bg-warning" ><b>{{concentrado.cumplimiento}}%</b></td>
+                                        <td v-else><b>{{concentrado.cumplimiento}}%</b></td>
                                         <td>
                                             <!--<a v-if="concentrado.status=='Cerrada/Fast Response' || concentrado.status=='Cerrada/No Factible'" data-bs-toggle="modal" data-bs-target="#modalCambiaraEnFactibilidad" style="cursor: pointer; text-decoration: underline blue;" @click="datos_modal(concentrado.id)" ><p class="fw-bold text-primary">{{concentrado.status}}</p></a>
                                             <a v-else> {{concentrado.status}}</a>-->
@@ -1800,58 +1805,52 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                         <th scope="col">Cantidad (Pzs.)</th>
                                                                         <th scope="col">No. Solped</th>
                                                                         <th scope="col">Status</th>
-                                                                        <th scope="col">Entregado</th>
+                                                                        <!--<th scope="col">Entregado</th>-->
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    <tr class="text-center" v-for="(concentrado_premios, index) in concentrado_status_premios">    
+                                                                    <tr class="text-center" v-for="(status_premios, index) in concentrado_status_premios">    
                                                                          <td>
-                                                                            
                                                                             <button v-if="id_updates==index+1" type="button" class="btn btn-danger me-2" title="Cancelar" @click="editarStutasPremioSolicitado(0,0)" ><i class="bi bi-x-circle" ></i></button>
                                                                             <button v-if="bandera_editar_solicitud == false" type="button" class="btn btn-warning me-2" title="Actualizar" @click="editarStutasPremioSolicitado(1,index+1)"><i class="bi bi-pen" ></i></button>
-                                                                            <button v-if="id_updates==index+1" class="btn btn-primary me-2" title="Guardar" @click="guardarStutasPremioSolicitado(concentrado_premios.id)"><i class="bi bi-check-circle"></i></button> 
-                                                                            <button v-if="concentrado_premios.status=='Entregado'" type="button" class="btn btn-success  ms-2" title="Subir Imagen" @click="modal_subir_ver_documentos('Subir',concentrado_premios.id,concentrado_premios.solped,'entregado','1')"><i class="bi bi-paperclip"></i></button>
-                                                                            <button v-else-if="concentrado_premios.solped!='' && concentrado_premios.status=='Pte. Entrega'" type="button" class="btn btn-secondary" type="button" title="Subir evidencia de la entrega del premios." @click="modal_subir_ver_documentos('Subir',concentrado_premios.id,concentrado_premios.solped,'entregado','1')"><i class="bi bi-paperclip"></i></button> 
-                                                                            <button v-else-if="concentrado_premios.solped==''" title="Coloque número de solped para que se active." class="btn btn-secondary" disabled><i class="bi bi-paperclip"></i></button>  
+                                                                            <button v-if="id_updates==index+1" class="btn btn-primary me-2" title="Guardar" @click="guardarStutasPremioSolicitado(status_premios.id)"><i class="bi bi-check-circle"></i></button> 
+                                                                            <button v-if="status_premios.status=='Entregado'" type="button" class="btn btn-success  ms-2" title="Subir Imagen" @click="modal_subir_ver_documentos('Subir',status_premios.id,status_premios.solped,'entregado',status_premios.cant_img_evidencia)"><i class="bi bi-paperclip"></i>{{status_premios.cant_img_evidencia}}</button>
+                                                                            <button v-else-if="status_premios.solped!='' && status_premios.status=='Pte. Entrega'" type="button" class="btn btn-secondary" type="button" title="Subir evidencia de la entrega del premios." @click="modal_subir_ver_documentos('Subir',status_premios.id,status_premios.solped,'entregado',status_premios.cant_img_evidencia)"><i class="bi bi-paperclip"></i>{{concentrado_status_premios.cant_img_evidencia}}</button> 
+                                                                            <button v-else-if="status_premios.solped==''" title="Coloque número de solped para que se active." class="btn btn-secondary" disabled><i class="bi bi-paperclip"></i></button>  
                                                                         </td> 
                                                                         <td >
-                                                                                {{concentrado_premios.numero_nomina}}
+                                                                                {{status_premios.numero_nomina}}
                                                                         </td>  
                                                                         <td>
-                                                                                {{concentrado_premios.colaborador}}   
+                                                                                {{status_premios.colaborador}}   
                                                                         </td>   
                                                                         <td>
-                                                                                {{concentrado_premios.planta}}
+                                                                                {{status_premios.planta}}
                                                                         </td>   
                                                                         <td>
-                                                                                {{concentrado_premios.area_participante}}
+                                                                                {{status_premios.area_participante}}
                                                                         </td>   
                                                                         <td>
-                                                                                {{concentrado_premios.fecha}}
+                                                                                {{status_premios.fecha}}
                                                                         </td>   
                                                                         <td>
-                                                                                {{concentrado_premios.codigo_premio}}
+                                                                                {{status_premios.codigo_premio}}
                                                                         </td> 
                                                                         <td>
-                                                                                {{concentrado_premios.cantidad}}
+                                                                                {{status_premios.cantidad}}
                                                                         </td> 
                                                                         <td >
                                                                                 <input class="inputs-concentrado text-center" type="text"  v-model="numero_solped"  v-if="id_updates==index+1">
-                                                                                <label v-else>{{concentrado_premios.solped}}</label>
-                                                                               
-                                                                               
+                                                                                <label v-else>{{status_premios.solped}}</label>   
                                                                         </td>   
                                                                         <td>
-                                 
-                                                                                    <label v-if="concentrado_premios.status=='Entregado'" class="fw-bold text-success">{{concentrado_premios.status}}</label>
-                                                                                    <label v-else-if="concentrado_premios.status=='Pte. Entrega'" class="fw-bold text-warning">{{concentrado_premios.status}}</label>
-                                                                                    <label v-else>{{concentrado_premios.status}}</label>
-                                                                                   
-                                                                        
+                                                                                    <label v-if="status_premios.status=='Entregado'" class="fw-bold text-success">{{status_premios.status}}</label>
+                                                                                    <label v-else-if="status_premios.status=='Pte. Entrega'" class="fw-bold text-warning">{{status_premios.status}}</label>
+                                                                                    <label v-else>{{status_premios.status}}</label>
                                                                         </td>   
-                                                                        <td class="text-center">
-                                                                                <button class="boton-nuevo" @click="finalizarEntregaPremio(concentrado_premios.id)" >Finalizar</button>
-                                                                        </td>     
+                                                                        <!--<td class="text-center">
+                                                                                <button class="boton-nuevo" @click="finalizarEntregaPremio(status_premios.id)" >Finalizar</button>
+                                                                        </td> -->
                                                                     </tr>
                                                                 </tbody>
                                                                 </table>
@@ -1900,16 +1899,72 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                 </form>
                                         </div>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                    </div>
                                 </div>
                             </div>
                             </div>
                         <!--Fin Modal subir imagenes en retos-->
-
                    </div>
+                   <div v-else-if="ventana=='colaboradores'" v-cloak>
+                                    <div class="row justify-content-center align-items-start ">
+                                                <div class="cintilla col-12 text-center">
+                                                    <b>COLABORADORES</b>
+                                                </div>
+                                    </div>
+                                    <div class="row  justify-content-center align-items-center">
+                                                            <div class="text-center pt-3 ">
+                                                                <span class="badge bg-light text-dark" style="font-size:0.7em;">Listado de Colaboradores</span>
+                                                            </div>
+                                                            <div class="" style="height:70vh; overflow-x: scroll;">
+                                                                <table class="tablaMonitoreo-sugerencias table table-striped table-bordered ">
+                                                                <thead class="encabezado-tabla text-center text-light ">
+                                                                    <tr>
+                                                                        <!--<th scope="col" class="sticky">Editar</th>-->
+                                                                        <th scope="col" >#</th>
+                                                                        <th scope="col">Nombre Colaborador</th>
+                                                                        <th scope="col">Número de Nómina</th>
+                                                                        <th scope="col">Password</th>
+                                                                        <!--<th scope="col">Entregado</th>-->
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr class="text-center" v-for="(colaboradores, index) in concentrado_colaboradores">    
+                                                                          <!--<td>
+                                                                           <button v-if="id_updates==index+1" type="button" class="btn btn-danger me-2" title="Cancelar" @click="editarStutasPremioSolicitado(0,0)" ><i class="bi bi-x-circle" ></i></button>
+                                                                            <button v-if="bandera_editar_solicitud == false" type="button" class="btn btn-warning me-2" title="Actualizar" @click="editarStutasPremioSolicitado(1,index+1)"><i class="bi bi-pen" ></i></button>
+                                                                            <button v-if="id_updates==index+1" class="btn btn-primary me-2" title="Guardar" @click="guardarStutasPremioSolicitado(status_premios.id)"><i class="bi bi-check-circle"></i></button> 
+                                                                            <button v-if="status_premios.status=='Entregado'" type="button" class="btn btn-success  ms-2" title="Subir Imagen" @click="modal_subir_ver_documentos('Subir',status_premios.id,status_premios.solped,'entregado',status_premios.cant_img_evidencia)"><i class="bi bi-paperclip"></i>{{status_premios.cant_img_evidencia}}</button>
+                                                                            <button v-else-if="status_premios.solped!='' && status_premios.status=='Pte. Entrega'" type="button" class="btn btn-secondary" type="button" title="Subir evidencia de la entrega del premios." @click="modal_subir_ver_documentos('Subir',status_premios.id,status_premios.solped,'entregado',status_premios.cant_img_evidencia)"><i class="bi bi-paperclip"></i>{{concentrado_status_premios.cant_img_evidencia}}</button> 
+                                                                            <button v-else-if="status_premios.solped==''" title="Coloque número de solped para que se active." class="btn btn-secondary" disabled><i class="bi bi-paperclip"></i></button> 
+                                                                        </td> -->
+                                                                        <td>
+                                                                        <b>{{index+1}}</b>
+                                                                        </td> 
+                                                                        <td>
+                                                                                {{colaboradores.colaborador}}
+                                                                        </td>  
+                                                                        <td>
+                                                                                {{colaboradores.numero_nomina}}   
+                                                                        </td>   
+                                                                        <td v-if="colaboradores.password=='123456'">
+                                                                                {{colaboradores.password}}
+                                                                        </td> 
+                                                                        <td v-else class="bg-success text-white">
+                                                                            <b>{{colaboradores.password}}</b>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                                </table>
+                                                            </div>          
+                                    </div>
+                    </div>
+
+
             </div>
+
+
                 <!--FOOTER-->
             <div class="row" style="height:10vh; background: url(img/pie.jpg); background-repeat: repeat-x; background-size: 8% 100%;">
            
@@ -1932,6 +1987,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 pintarCuatro:false,
                 pintarCinco: false,
                 pintarSeis: false,
+                pintarSiete: false,
                 nueva_sugerencia:false,
                 concentrado_sugerencias_pendiente_impacto: [],
                 concentrado_impacto_sugerencias_midiendo:[],
@@ -2087,6 +2143,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 /* Variables de Impacto*/
                 colorgreen:'background: url("img/verde2.jpg"); color:white; font-weight:bold;',
                 colorgris:'background-color: #fbfbfb ',
+                concentrado_colaboradores:[],
                 
             }
         },
@@ -2117,9 +2174,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
              //consultado lista analistas de factibilidad
              this.consulta_lista_analista_factibilidad(),
              this.consulta_lista_usuarios_y_analistas_factibilidad(),
-            
-             
-             
+ 
                 axios.post('consulta_usuario.php',{
                     usuario: this.usuario
                 }).then(response =>{
@@ -2138,6 +2193,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                    if(dato=='retos'){this.pintarCuatro=true; this.consultaConcentradoRetos()}else{this.pintarCuatro=false}
                    if(dato=='configuracion'){this.pintarCinco=true; this. consultar_usuarios()}else{this.pintarCinco=false}
                    if(dato=='solicitados'){this.pintarSeis=true; this.consultar_premios_solicitados()}else{this.pintarSeis=false}
+                   if(dato=='colaboradores'){this.pintarSiete=true; this.consultar_colaboradores() }else{this.pintarSiete=false}
              },
        /*METODOS PRINCIPAL MEJORA*/      
     datosSugerencia(id){
@@ -2797,11 +2853,12 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     });
                 },
             buscarDocumentos(){
-                //alert(this.folio_carpeta_doc+this.cual_documento)
+                //alert(this.cual_documento+""+this.folio_carpeta_doc)
                 this.filenames=[] //limpiado vista del documento subido en modal 
                 this.filedoc=[]//limpiado vista del documento bajada en modal 
                 this.fileppt=[]//limpiado vista del documento bajada en modal
                 this.fileopcional=[]//limpiado vista del documento bajada en modal 
+                this.fileentregado=[]//limpiado vista del documento bajada en modal 
                 if(this.folio_carpeta_doc!=undefined){
                                 axios.post("buscar_documentos.php",{//AQUI
                                     folio_carpeta_doc:this.folio_carpeta_doc,
@@ -2859,7 +2916,16 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                             }
                                             //this.consultar_concentrado_premios()
                                     }
-                                    
+                                if(this.cual_documento=="entregado"){
+                                            this.fileentregado = response.data
+                                            this.cantidadDOCFILE = this.fileentregado.length
+                                            if(this.fileentregado.length>0){
+                                                console.log(this.fileentregado.length + "Archivos encontrados.")  
+                                            }else{
+                                                //alert("Sin Documentos agregados.")
+                                            }
+                                            this.consultar_premios_solicitados()
+                                    }
                                 })
                                 .catch(error => {
                                     console.log(error);
@@ -2883,12 +2949,13 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     }else{
                         alert("Error al eliminar el Documento.")
                     }
+
                     if(this.cual_documento=="reto"){
                         this.consultaConcentradoRetos()
                     }else if(this.cual_documento=="premio"){
                         this.consultar_concentrado_premios()
                     }else if(this.cual_documento=="entregado"){
-                        this.consultar_concentrado_premios()
+                        this.consultar_premios_solicitados()
                     }else{
                         this.consultado_concentrado()
                     }
@@ -3297,7 +3364,13 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                         alert("Algo salio mal al actualizar Solped y Status")
                     }
                 })
-          }
+          },
+          consultar_colaboradores(){
+            axios.post("consultar_colaboradores.php",{
+            }).then(response =>{
+                this.concentrado_colaboradores = response.data
+            })
+          },
         }   
     }
     var mountedApp = Vue.createApp(vue3).mount('#app');

@@ -53,6 +53,12 @@ if(unlink($ruta_eliminar_doc)){
         }
         
     }
+    if($cual_documento=="entregado"){
+            $id_premio=$id_concentrado;
+            $actualizar = "UPDATE canjer_premios_colaborador_sugerencias SET  cant_img_evidencia='$cantidad' WHERE id = '$id_premio'";
+            $query = mysqli_query( $conexion, $actualizar);
+    }
+
     $respuesta = "Archivo Eliminado";
 } else{
    $respuesta = "No Eliminado";
