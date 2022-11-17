@@ -1,13 +1,13 @@
 <?php
 
 include('conexionGhoner.php');
-require_once('vendor/php-excel-reader/excel_reader2.php');
-require_once('vendor/SpreadsheetReader.php');
+
 
 
 $files_arr = array();
-            $allowedFileType = ['application/vnd.ms-excel','text/xls','text/xlsx','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
+            
 $message="";
+$resultado="";
             if($_FILES["files"]["name"]){
                                             // Ciclo todos los archivos
                                             $countfiles=1;
@@ -18,50 +18,30 @@ $message="";
 
                                                     $targetPath = "subidas/".$_FILES["files"]["name"][$index];
                                                     if(move_uploaded_file($_FILES['files']['tmp_name'][$index], $targetPath)){
-                                                  
-                                                    
-                                                    $Reader = new SpreadsheetReader($targetPath);
-                                                    
-                                                    $sheetCount = count($Reader->sheets());
-                                                    for($i=0;$i<$sheetCount;$i++)
-                                                    {
-                                                        
-                                                        $Reader->ChangeSheet($i);
-                                                        
-                                                        foreach ($Reader as $Row)
-                                                        {
-                                                    
-                                                            $colaborador = "";
-                                                            if(isset($Row[0])) {
-                                                                $colaborador = mysqli_real_escape_string($conexion,$Row[0]);
-                                                            }
-                                                            
-                                                            $numero_nomina = "";
-                                                            if(isset($Row[1])) {
-                                                                $numero_nomina = mysqli_real_escape_string($conexion,$Row[1]);
-                                                            }
-                                                            
-                                                            $password = "";
-                                                            if(isset($Row[2])) {
-                                                                $password = mysqli_real_escape_string($conexion,$Row[2]);
-                                                            }
-                                                            
-                                                            if (!empty($nombres) || !empty($cargo) || !empty($celular) || !empty($descripcion)) {
-                                                                $query = "INSERT INTO usuarios_colocaboradores_sugerencias(colaborador,numero_nomina, password) VALUES('".$colaborador."','".$numero_nomina."','".$password."')";
-                                                                $resultados = mysqli_query($conexion, $query);
-                                                            
-                                                                if (! empty($resultados)) {
-                                                                    //$type = "success";
-                                                                    $message = "Excel importado correctamente";
-                                                                } else {
-                                                                    //$type = "error";
-                                                                    $message = "Hubo un problema al importar registros";
+                    
+
+                                                                /// leer el archivo excel
+                                                                require_once 'PHPExcel/Classes/PHPExcel.php';
+                                                                $archivo =  $targetPath;
+                                                                $inputFileType = PHPExcel_IOFactory::identify($archivo);
+                                                                $objReader = PHPExcel_IOFactory::createReader($inputFileType);
+                                                                $objPHPExcel = $objReader->load($archivo);
+                                                                $sheet = $objPHPExcel->getSheet(0); 
+                                                                $highestRow = $sheet->getHighestRow(); 
+                                                                $highestColumn = $sheet->getHighestColumn();
+                                                                for ($row = 1; $row < $highestRow-3; $row++){ 
+                                                                    $colaborador = $sheet->getCell("A".$row)->getValue();
+                                                                    $numero_nomina = $sheet->getCell("B".$row)->getValue();
+                                                                    $password = $sheet->getCell("C".$row)->getValue();
+                                                                    $sql = "INSERT INTO usuarios_colocaboradores_sugerencias (colaborador, numero_nomina, password) VALUES ('$colaborador','$numero_nomina', '$password')";
+                                                                    $query = mysqli_query( $conexion, $sql);
+                                                                    $resultado=$query;
                                                                 }
-                                                            }
-                                                        }
-                                                    
-                                                    }
-                                                    
+                                                                
+                                                                if($resultado==true){
+                                                                    $message = $resultado;
+                                                                }
+
                                                 }else{
                                                     $message = "No se movio el archivo";
                                                 }  

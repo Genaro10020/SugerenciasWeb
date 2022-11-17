@@ -3411,7 +3411,13 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     })
                     .then(response => {
                         console.log(response.data);
-
+                       if(response.data==true){
+                            alert("Subida Exitosa.")
+                            this.consultar_colaboradores();
+                       }else{
+                            alert("Algo salio Mal.")
+                            this.consultar_colaboradores();
+                       }
                     })
                     .catch(error => {
                         console.log(error);
