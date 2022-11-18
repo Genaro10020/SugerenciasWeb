@@ -1919,17 +1919,17 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                             </div>
 
                                                                 <div>
-                                                                                <h6>Importar Excel nuevos colaboradores</h6>
-                                                                                <hr>
+                                                                               
+                                                                             
                                                                                 <div class="row">
                                                                                     <div class="col-12 col-md-12"> 
                                                                                     <!-- Contenido -->
                                                                                     
                                                                                              <div class="outer-container" style=" font-size:1em">
-                                                                                                    <form @submit.prevent="subirExcelNuevosColaboradores">
+                                                                                                    <form @submit.prevent="subirExcelNuevosColaboradores" style="font-size:0.7em;">
                                                                                                         <div>
                                                                                                            
-                                                                                                            <input type="file"  ref="documentoExcel" accept=".xls,.xlsx" required/> Archivo Excel</input>
+                                                                                                            <input type="file"  ref="documentoExcel" accept=".csv" required/></input>
                                                                                                             <button type="submit" class="btn btn-primary" style=" font-size: 0.8em" >Importar Registros</button>
                                                                                                         </div>
                                                                                                     </form>
@@ -3412,8 +3412,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     .then(response => {
                         console.log(response.data);
                        if(response.data==true){
-                            alert("Subida Exitosa.")
                             this.consultar_colaboradores();
+                            alert("Subida Exitosa.")
                        }else{
                             alert("Algo salio Mal.")
                             this.consultar_colaboradores();
