@@ -123,8 +123,18 @@
             min-width: 100px;
         }
 
+        .inputs-concentrado-disabled{
+            background: rgb(255, 255, 255);
+            border: 1px solid;
+            border-radius: 5px;
+            height: 50px;
+            min-width: 500px;
+        }
+        
+
         .input-nom-sugerencia{ width: 250px;}
-        .text-area{resize: inline; }
+        .text-area{resize: horizontal; }
+        .text-area-disabled{resize: none;}
         
   /*Fin concentrado sugerencias*/
   /*model no factibilidad */

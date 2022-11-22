@@ -340,8 +340,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                     </div>
                                     <div class="modal-footer">
                                                 <div class="col-12 text-center">
-                                                <input type="checkbox" id="checkbox" v-model="vistobueno"  />
-                                                    <label for="checkbox" class="ms-2 text-primary" @click="checknoFactibilidad()">Aceptar la no factibilidad</label>
+                                                <input type="checkbox" id="checkbox" v-model="vistobueno"  @change="checknoFactibilidad()" />
+                                                    <label for="checkbox" class="ms-2 text-primary">Aceptar la no factibilidad</label>
                                                 </div>
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                                     </div>
@@ -1008,9 +1008,11 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                 <td><textarea class="inputs-concentrado text-area" type="text"  name="nombre_sugerencia" v-model="var_nombre_sugerencias" v-if="actualizar_sugerencia==index+1"></textarea> <label v-else>{{concentrado.nombre_sugerencia}}</label></td>
                                                 <td><input class="inputs-concentrado" type="text" v-model="var_folio" v-if="actualizar_sugerencia==index+1"></input> <label v-else>{{concentrado.folio}}</label></td>
                                                 <td><label>{{concentrado.status}}</label></td>
-                                                <td><label>{{concentrado.causa_no_factibilidad}}</label></td>
-                                                <td><textarea class="inputs-concentrado text-area" type="text" v-model="var_situacion_actual"  v-if="actualizar_sugerencia==index+1"></textarea><label v-else>{{concentrado.situacion_actual}}</label></td>
-                                                <td><textarea class="inputs-concentrado text-area" type="text"  v-model="var_idea_propuesta"  v-if="actualizar_sugerencia==index+1"></textarea><label v-else>{{concentrado.idea_propuesta}}</label></td>
+                                                <td><textarea class="inputs-concentrado-disabled text-area-disabled" type="text" style="width: 300px;"  v-bind:title="concentrado.causa_no_factibilidad" disabled> {{concentrado.causa_no_factibilidad}}</textarea></td>
+                                                <td><textarea class="inputs-concentrado text-area" type="text" v-model="var_situacion_actual"  v-if="actualizar_sugerencia==index+1"></textarea>
+                                                    <textarea  v-else class="inputs-concentrado-disabled text-area-disabled" type="text" style="width: 300px;"  v-bind:title="concentrado.situacion_actual" disabled> {{concentrado.situacion_actual}}</textarea></td>
+                                                <td><textarea class="inputs-concentrado text-area" type="text"  v-model="var_idea_propuesta"  v-if="actualizar_sugerencia==index+1"></textarea>
+                                                    <textarea  v-else class="inputs-concentrado-disabled text-area-disabled" type="text" style="width: 300px;"  v-bind:title="concentrado.idea_propuesta" disabled> {{concentrado.idea_propuesta}}</textarea></td>
                                                 <td><input class="inputs-concentrado" type="text"  v-model="var_nomina"  v-if="actualizar_sugerencia==index+1"></input><label v-else>{{concentrado.numero_nomina}}</label></td>
                                                 <td><input class="inputs-concentrado" type="text"  v-model="var_colaborador"  v-if="actualizar_sugerencia==index+1"><label v-else>{{concentrado.colaborador}}</label></input></td>
                                                 <td><input class="inputs-concentrado" type="text"  v-model="var_puesto"  v-if="actualizar_sugerencia==index+1"><label v-else>{{concentrado.puesto}}</label></input></td>
@@ -2318,7 +2320,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
             puntos:this.puntos_no_factible
         }).then(response =>{
             if(response.data[0]== true){
-                    this.myModal.hide();
+                alert("Puntos guardados.")
+                    //this.myModal.hide();
             }else{
                 alert("Algo salio mal no se pueden guardar/actualizar los puntos")
             }
@@ -2336,10 +2339,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
         })*/
     },
     checknoFactibilidad(){
-        setTimeout(()=>{
+       var valor = document.getElementById("checkbox").checked;
                 axios.post('check_no_factibilidad.php',{
                     id_concentrado:this.id_concentrado,
-                    vistobueno:this.vistobueno,
+                    vistobueno:valor,
                 }).then(response =>{
                     if(response.data==true){
                         this.consultado_concentrado()
@@ -2348,7 +2351,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     }
                     
                 })
-        },100)
+      
     },
     cambiaraEnFactibilidad(){
         if(!confirm('Desea usted cambiar el status de esta sugerencia a "En Factibilidad"')) return
