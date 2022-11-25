@@ -147,7 +147,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                         <a data-bs-toggle="modal" data-bs-target="#modalCambiaraEnFactibilidad" style="cursor: pointer; text-decoration: underline blue;" @click="datos_modal(concentrado.id)" class="fw-bold text-primary me-2">{{concentrado.status}}</a>
                                                 </div>
                                                 <div class="d-inline">
-                                                        <button  v-show="concentrado.status=='Cerrada/Fast Response' || concentrado.status=='Cerrada/No Factible'" class="btn btn-success" style="font-size:.9em"  @click="datos_modal_detalles(concentrado.id,concentrado.folio,concentrado.numero_nomina,concentrado.causa_no_factibilidad,concentrado.cumplimiento)"><i class="bi bi-table" ></i> Detalles</button>
+                                                        <button  v-show="concentrado.status=='Cerrada/Fast Response' || concentrado.status=='Cerrada/No Factible'" class="btn btn-success" style="font-size:.9em" 
+                                                         @click="datos_modal_detalles(concentrado.id,concentrado.folio,concentrado.numero_nomina,concentrado.causa_no_factibilidad,concentrado.cumplimiento,concentrado.analista_de_factibilidad,concentrado.colaborador,concentrado.idea_propuesta,concentrado.situacion_actual)"><i class="bi bi-table" ></i> Detalles</button>
                                                 </div>
                                           
                                         </td>
@@ -296,17 +297,31 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                     <div class="modal-body">
 
 
-                                                                <div class=" mt-3 ">
-                                                                    
-                                                                                <span class="badge bg-light text-dark mb-1">CAUSA DE NO FACTIBILIDAD</span>
+                                                                <div class=" mt-3 text-center ">
+                                                                                    <div class="row text-start" style=" font-size:0.8em;">
+                                                                                            <div class="col-3" >
+                                                                                                    <div class="col-12"><b>Analista:</b></div>
+                                                                                                    <div class="col-12"><b>Nombre Colaborador:</b></div>
+                                                                                                    <div class="col-12"><b>Idea Propuesta:</b></div>
+                                                                                                    <div class="col-12"><b>Situación Actual:</b></div>
+                                                                                            </div>  
+                                                                                            <div class="col-9">  
+                                                                                                    <div class="col-12">{{nombre_analista}}</div>
+                                                                                                    <div class="col-12">{{nombre_colaborador}}</div>
+                                                                                                    <div class="col-12">{{idea_propuesta}}</div>
+                                                                                                    <div class="col-12">{{situacion_actual}}</div>
+                                                                                            </div>  
+                                                                                    </div> 
+                                                                      
+                                                                                <span class="badge bg-light text-dark mb-1 mt-3">CAUSA DE NO FACTIBILIDAD</span>
                                                                                 <div class="col-12 text-center bg-warning">
                                                                                     <textarea class="text-area-causa-no-factibilidad my-2" type="text"  style=" font-size:0.9em" disabled>{{causa}}</textarea>
                                                                                 </div>
                                                                 </div>
                                                                 <div class="text-center">
-                                                                    <span class="badge bg-light text-dark">TIPO DE CIERRE</span><br>
+                                                                   <!-- <span class="badge bg-light text-dark">TIPO DE CIERRE</span><br>
                                                                             
-                                                                                    <!--    <select class="" v-model="var_tipo_de_cierre" required>
+                                                                                        <select class="" v-model="var_tipo_de_cierre" required>
                                                                                                 <option value="" disabled>Seleccione una opción..</option>
                                                                                                 <option  v-for=" lista in tipo_de_cierre" :key="lista.id" >{{lista}}</option>
                                                                                         </select>-->
@@ -2021,6 +2036,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 fileopcional:[],
                 puntos_no_factible:0,
                 vistobueno:false,
+                nombre_analista:'',
+                nombre_colaborador:'',
+                idea_propuesta:'',
+                situacion_actual:'',
                 //*Varibales Concetrado*/
                 lista_validacion_de_impacto:['Cuantitativo','Cualitativo'],
                 concentrado_actividades:[],
@@ -2281,8 +2300,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
         this.buscarDocumentos()
         this.buscarDatosValidacionImpacto()
     },
-    datos_modal_detalles(id_concentrado,folio,nomina,causa,cumplimiento){
-        
+    datos_modal_detalles(id_concentrado,folio,nomina,causa,cumplimiento,nombre_analista,nombre_colaborador,idea_propuesta,situacion_actual){
+       
         if(cumplimiento==100){
             this.vistobueno=true
         }else{
@@ -2294,6 +2313,11 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
         this.causa=causa
         this.id_concentrado = id_concentrado
         this.numero_nomina = nomina
+
+        this.nombre_analista = nombre_analista
+        this.nombre_colaborador = nombre_colaborador
+        this.idea_propuesta = idea_propuesta
+        this.situacion_actual = situacion_actual
         //id_concentrado,folio,numero_nomina,puntos
 
         this.buscarDocumentos()
