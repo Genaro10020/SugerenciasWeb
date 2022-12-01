@@ -231,6 +231,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                             <td><label>{{actividades.fecha_inicial}}<label></td>
                                                                             <td><label>{{actividades.fecha_final}}<label></td>
                                                                             <td>
+                                                                                <div v-show="actividades.porcentaje != 100">
+                                                                                    <b>Dias restantes: {{actividades.dias_restantes_actividad}}</b>
+                                                                                </div>
                                                                                 <div v-show ="actividades.dias_restantes_actividad > 7 && actividades.porcentaje !=100" class="bg-warning"><!--En curso-->
                                                                                     <label>{{actividades.porcentaje}}%<label>
                                                                                 </div>
@@ -299,18 +302,16 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
 
                                                                 <div class=" mt-3 text-center ">
                                                                                     <div class="row text-start" style=" font-size:0.8em;">
-                                                                                            <div class="col-3" >
-                                                                                                    <div class="col-12"><b>Analista:</b></div>
-                                                                                                    <div class="col-12"><b>Nombre Colaborador:</b></div>
-                                                                                                    <div class="col-12"><b>Idea Propuesta:</b></div>
-                                                                                                    <div class="col-12"><b>Situación Actual:</b></div>
-                                                                                            </div>  
-                                                                                            <div class="col-9">  
-                                                                                                    <div class="col-12">{{nombre_analista}}</div>
-                                                                                                    <div class="col-12">{{nombre_colaborador}}</div>
-                                                                                                    <div class="col-12">{{idea_propuesta}}</div>
-                                                                                                    <div class="col-12">{{situacion_actual}}</div>
-                                                                                            </div>  
+                                                                                      
+                                                                                                    <div class="col-12 col-sm-3  mb-2 "><b>Analista:</b></div>
+                                                                                                    <div class="col-12 col-sm-9  mb-2">{{nombre_analista}}</div>
+                                                                                                    <div class="col-12 col-sm-3  mb-2"><b>Nombre Colaborador:</b></div>
+                                                                                                    <div class="col-12 col-sm-9  mb-2">{{nombre_colaborador}}</div>
+                                                                                                    <div class="col-12 col-sm-3  mb-2"><b>Situación Actual:</b></div>
+                                                                                                    <div class="col-12 col-sm-9  mb-2">{{situacion_actual}}</div>
+                                                                                                    <div class="col-12 col-sm-3  mb-2"><b>Idea Propuesta:</b></div>
+                                                                                                    <div class="col-12 col-sm-9  mb-2">{{idea_propuesta}}</div>
+                                                                                              
                                                                                     </div> 
                                                                       
                                                                                 <span class="badge bg-light text-dark mb-1 mt-3">CAUSA DE NO FACTIBILIDAD</span>
@@ -2255,7 +2256,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 axios.post("consultando_actividades.php",{
                 id_concentrado:this.id_concentrado
                 }).then(response =>{
-                    console.log(this.concentrado_actividades = response.data)
+                    console.log("ARREGLO",this.concentrado_actividades = response.data)
                 }).catch(error => {
                     console.log(error)
                 })
@@ -2910,7 +2911,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 this.fileopcional=[]//limpiado vista del documento bajada en modal 
                 this.fileentregado=[]//limpiado vista del documento bajada en modal 
                 if(this.folio_carpeta_doc!=undefined){
-                                axios.post("buscar_documentos.php",{//AQUI
+                                axios.post("buscar_documentos.php",{
                                     folio_carpeta_doc:this.folio_carpeta_doc,
                                     cual_documento:this.cual_documento
                                 })

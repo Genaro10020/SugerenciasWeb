@@ -163,7 +163,7 @@ $incrementar=1;
                                                             @click="datos_modal_factibilidad('En Implementación',concentrado.id,concentrado.folio,concentrado.numero_nomina, concentrado.status,concentrado.respuesta_analista,concentrado.check_mc,concentrado.validacion_de_impacto)"><i class="bi bi-pencil"></i></i> {{concentrado.status}} </button>
                                                         </td>
                                                         <td class="text-center " style="vertical-align:middle" >
-                                                            <label class=" my-around ">{{concentrado.dias_restantes}}</label>
+                                                            <label class=" my-around "><b>{{concentrado.dias_restantes}}</b></label>
                                                         </td>
                                                     </tr>
                                                 </tbody>

@@ -191,7 +191,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                                     <div class=" d-flex justify-content-center mt-1">
                                                                         <div class="col-4 col-sm-4 col-lg-1  d-flex justify-content-center">
                                                                             <div class="rounded-pill bg-secondary d-flex align-items-center justify-content-center" style=" height:50px; width: 50px;  background: linear-gradient(to bottom, #b5bdc8 0%,#828c95 36%,#28343b 100%);">
-                                                                                <img v-show="mes1!='' || puntos_sugerencia>0" src="img/app_listo.png" style=" height:50px; width:50px"> </img> 
+                                                                                <img v-show="mes1!='' && puntos_sugerencia>0" src="img/app_listo.png" style=" height:50px; width:50px"> </img> 
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-8 col-sm-8 col-lg-3  d-flex">
@@ -203,7 +203,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                                     <div class=" d-flex justify-content-center mt-1">
                                                                         <div class="col-4 col-sm-4 col-lg-1  d-flex justify-content-center">
                                                                             <div class="rounded-pill bg-secondary d-flex align-items-center justify-content-center" style=" height:50px; width: 50px;  background: linear-gradient(to bottom, #b5bdc8 0%,#828c95 36%,#28343b 100%);">
-                                                                                <img v-show="puntos_sugerencia>0" src="img/app_listo.png" style=" height:50px; width:50px"> </img> 
+                                                                                <img v-show="sugerencia[0].status=='Implementada' && puntos_sugerencia>0" src="img/app_listo.png" style=" height:50px; width:50px"> </img> 
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-8 col-sm-8 col-lg-3  d-flex">
@@ -276,7 +276,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                             }).then(response =>{
                                 this.concentrado_impacto_sugerencias = response.data
                                 console.log(this.concentrado_impacto_sugerencias,'FATOS')
-                                this.mes1 = this.concentrado_impacto_sugerencias[0].mes1
+                                if(this.concentrado_impacto_sugerencias[0]!=null ||  this.concentrado_impacto_sugerencias[0]!=undefined){
+                                    this.mes1 = this.concentrado_impacto_sugerencias[0].mes1
+                                }
+                                
                             })
             },
             consultar_sugerencia(folio){
