@@ -1440,7 +1440,6 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                             <button  type="submit" name="upload" class="btn btn-primary">Subir Archivos </button>
                                                         </div>
                                                     </div> 
-                                                       
                                                           <!-- Mostrando los archivos cargados -->
                                                         <div v-show="filereto.length>0 && cual_documento=='reto'" >
                                                         <hr>
@@ -1933,7 +1932,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                     </div>
                                     <div class="row  justify-content-center align-items-center">
                                                             <div class="text-center pt-3 ">
-                                                                <span class="badge bg-light text-dark" style="font-size:0.7em;">Listado de Colaboradores</span>
+                                                                <span class="badge bg-light text-dark" style="font-size:0.7em;">Listado de Colaboradores {{sumatotal}} </span>
+                                                               <!-- <div v-for="(colaboradores, index) in concentrado_colaboradores">
+                                                                   <labe v-if="colaboradores.password!='123456'"></label>
+                                                                </div>-->
                                                             </div>
 
                                                                 <div>
@@ -1993,7 +1995,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                                 {{colaboradores.password}}
                                                                         </td> 
                                                                         <td v-else class="bg-success text-white">
-                                                                            <b>{{colaboradores.password}}</b>
+                                                                            <b>{{colaboradores.password}}</b><br>{{}}
                                                                         </td>
                                                                     </tr>
                                                                 </tbody>
@@ -2189,6 +2191,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 colorgreen:'background: url("img/verde2.jpg"); color:white; font-weight:bold;',
                 colorgris:'background-color: #fbfbfb ',
                 concentrado_colaboradores:[],
+                suma:0,
+                sumatotal:0,
+                cambio_contrasenia:[],
                 
             }
         },
