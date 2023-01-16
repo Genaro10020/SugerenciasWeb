@@ -1932,10 +1932,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                     </div>
                                     <div class="row  justify-content-center align-items-center">
                                                             <div class="text-center pt-3 ">
-                                                                <span class="badge bg-light text-dark" style="font-size:0.7em;">Listado de Colaboradores {{sumatotal}} </span>
-                                                               <!-- <div v-for="(colaboradores, index) in concentrado_colaboradores">
-                                                                   <labe v-if="colaboradores.password!='123456'"></label>
-                                                                </div>-->
+                                                                <span class="badge bg-light text-dark" style="font-size:0.7em;">Listado de Colaboradores Registrados: {{ concentrado_colaboradores.Registrados}}</span><br>
+                                                                <span class="badge bg-light text-dark" style="font-size:0.7em;">No Registrados: {{ concentrado_colaboradores.NoRegistrados}}</span>
+                                                              
                                                             </div>
 
                                                                 <div>
@@ -1944,7 +1943,6 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                                 <div class="row">
                                                                                     <div class="col-12 col-md-12"> 
                                                                                     <!-- Contenido -->
-                                                                                    
                                                                                              <div class="outer-container" style=" font-size:1em">
                                                                                                     <form @submit.prevent="subirExcelNuevosColaboradores" style="font-size:0.7em;">
                                                                                                         <div>
@@ -1983,7 +1981,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                             <button v-else-if="status_premios.solped==''" title="Coloque número de solped para que se active." class="btn btn-secondary" disabled><i class="bi bi-paperclip"></i></button> 
                                                                         </td> -->
                                                                         <td>
-                                                                        <b>{{index+1}}</b>
+                                                                        <b >{{index}}</b>
                                                                         </td> 
                                                                         <td>
                                                                                 {{colaboradores.colaborador}}
@@ -3425,6 +3423,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
             axios.post("consultar_colaboradores.php",{
             }).then(response =>{
                 this.concentrado_colaboradores = response.data
+               // console.log("AVER",this.concentrado_colaboradores)
             })
           },
           subirExcelNuevosColaboradores(){
