@@ -38,8 +38,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
             .titulo{    
                     font-family: 'Luckiest Guy', cursive;
                     color: white; 
-                    /*text-shadow: 0px 0px 2px black;*/
-                    /* -webkit-text-stroke: 1px black;*/
+                    /*text-shadow: 0px 0px 2px black;
+                     -webkit-text-stroke: 1px black;*/
                 }
 
                .div_susperior{
@@ -156,7 +156,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                 <div class="d-flex justify-content-around">
                                                     <div>
                                                            <div v-if="concentrado.validacion_de_impacto =='Cuantitativo'"><!--BTN VERDE-->
-                                                                <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-success" @click="datos_modal(concentrado.id, concentrado.folio,'Cuantitativo',concentrado.numero_nomina)" style=" font-size:.9em">Impacto Cuantitativo</button>
+                                                                <button v-show="concentrado.status=='Implementada' && concentrado.validacion_calificada!=0" type="button" class="btn btn-success" @click="datos_modal(concentrado.id, concentrado.folio,'Cuantitativo',concentrado.numero_nomina)" style=" font-size:.9em">Impacto Cuantitativo</button>
+                                                                <button v-show="concentrado.status=='Implementada' && concentrado.validacion_calificada==0" type="button" class="btn btn-warning" @click="datos_modal(concentrado.id, concentrado.folio,'Cuantitativo',concentrado.numero_nomina)" style=" font-size:.9em">Impacto Cuantitativo</button>
                                                                 <!--<button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-danger ms-2" @click="vaciarValidaciondeImpacto(concentrado.id,'Cuantitativo')" title="Limpiar impacto" style=" font-size:.9em">x</button>-->
                                                            </div>
                                                            <!--<div v-else>                                                          
@@ -165,7 +166,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                     </div>
                                                     <div>--> 
                                                             <div v-if="concentrado.validacion_de_impacto =='Cualitativo'"><!--BTN VERDE-->
-                                                                <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-success" @click="datos_modal(concentrado.id, concentrado.folio,'Cualitativo',concentrado.numero_nomina)" style=" font-size:.9em" >Impacto Cualitativo</button>
+                                                                <button v-show="concentrado.status=='Implementada' && concentrado.validacion_calificada!=0" type="button" class="btn btn-success" @click="datos_modal(concentrado.id, concentrado.folio,'Cualitativo',concentrado.numero_nomina)" style=" font-size:.9em" >Impacto Cualitativo</button>
+                                                                <button v-show="concentrado.status=='Implementada' && concentrado.validacion_calificada==0" type="button" class="btn btn-warning" @click="datos_modal(concentrado.id, concentrado.folio,'Cualitativo',concentrado.numero_nomina)" style=" font-size:.9em" >Impacto Cualitativo</button>
                                                                <!-- <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-danger ms-2" @click="vaciarValidaciondeImpacto(concentrado.id,'Cualitativo')" title="Limpiar impacto" style=" font-size:.9em">x</button>-->
                                                             </div>
                                                            <!-- <div v-else>

@@ -28,8 +28,14 @@ $query = mysqli_query( $conexion, $consulta);
       $quer = mysqli_query( $conexion, $insertar);
       $resultado[] = $quer;
  }
+  
+    if($puntos_asignados>0){
+          $esta_calificado = 1;
+    }else{
+          $esta_calificado = 0;
+    } 
 
-   $actualizar = "UPDATE concentrado_sugerencias SET validacion_de_impacto ='$validacion_de_impacto' WHERE id = '$id_concentrado'"; ;
+   $actualizar = "UPDATE concentrado_sugerencias SET validacion_de_impacto ='$validacion_de_impacto', validacion_calificada = '$esta_calificado' WHERE id = '$id_concentrado'"; 
    $actualizando = mysqli_query( $conexion, $actualizar);
    $resultado[] = $actualizando;
 
