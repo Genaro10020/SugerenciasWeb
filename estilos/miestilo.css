@@ -135,7 +135,12 @@
         .input-nom-sugerencia{ width: 250px;}
         .text-area{resize: horizontal; }
         .text-area-disabled{resize: none;}
-        
+        .columna-nofactible{
+            text-align: justify;
+        }
+        .labels-consulta{
+            width: 500px;
+        }
   /*Fin concentrado sugerencias*/
   /*model no factibilidad */
   .text-area-causa-no-factibilidad{
