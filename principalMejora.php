@@ -1558,7 +1558,6 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                         <tr >
                                                         <th scope="col" class="sticky">Guardar </th>
                                                         <th>No. #</th>
-                                                        <th scope="col">Status </th>
                                                         <th scope="col">Reto </th>
                                                         <th scope="col">Descripción</th>
                                                         <th scope="col">Responsable </th>
@@ -1594,7 +1593,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                     <textarea v-if="actualizar_reto==index+1" class="inputs-concentrado text-area" type="text"  v-model="act_titulo_del_reto" required></textarea> 
                                                                     <label v-else>{{retos.titulo_reto}}</label>                  
                                                                 </td>
-                                                                <td>  
+                                                                <td class="text-start">  
                                                                     <textarea v-if="actualizar_reto==index+1" class="inputs-concentrado text-area" type="text" v-model="act_descripcion_del_reto" required></textarea>  
                                                                     <label  v-else>{{retos.descripcion_reto}}</label>               
                                                                 </td>
