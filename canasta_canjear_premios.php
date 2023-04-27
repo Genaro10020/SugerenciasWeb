@@ -3,6 +3,7 @@ session_start();
 header("Content-Type: application/json");
 $variables = json_decode(file_get_contents('php://input'), true);
 $resultado ="";
+$numero_nomina="";
 $id_premio = $variables['id_premio'];
 $codigo = $variables['codigo_premio'];
 $img_url = $variables['img_url'];
@@ -22,7 +23,7 @@ if(isset($variables['numero_nomina'])){
 date_default_timezone_set('America/Mexico_City');
 $fecha = date("Y-m-d");
 include "conexionGhoner.php";
-        $consultar = "SELECT * FROM canjer_premios_colaborador_sugerencias WHERE id_premio='$id_premio'";
+        $consultar = "SELECT * FROM canjer_premios_colaborador_sugerencias WHERE id_premio='$id_premio' AND status = 'Sin aceptar' AND numero_nomina = '$numero_nomina'";
         $query = mysqli_query( $conexion, $consultar);
         if(mysqli_num_rows($query)>0){
 

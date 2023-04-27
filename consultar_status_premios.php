@@ -7,8 +7,7 @@ $resultado =[];
 $numero_nomina = $variables['numero_nomina'];
 include "conexionGhoner.php";
 
-        $consultar = "SELECT * FROM canjer_premios_colaborador_sugerencias WHERE numero_nomina='$numero_nomina' AND status='Pte. de entrega' 
-        || numero_nomina='$numero_nomina' AND status='Entregado'";
+        $consultar = "SELECT * FROM canjer_premios_colaborador_sugerencias WHERE numero_nomina='$numero_nomina' AND status='Pte. Entrega' || numero_nomina='$numero_nomina' AND status='Entregado' || numero_nomina='$numero_nomina' AND status='Pte. Solped'";
         $query = mysqli_query( $conexion, $consultar);
         while ($datos = mysqli_fetch_array($query)){
                 $resultado[] = $datos; 
