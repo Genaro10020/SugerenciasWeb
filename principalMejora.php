@@ -205,6 +205,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                 <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div>{{datos_sugerencia.tipo_de_desperdicio}}</div></div>
                                                 <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div><b>Objetivos de Calidad y M.A.</b></div></div>
                                                 <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div>{{datos_sugerencia.objetivo_de_calidad_ma}}</div></div>
+                                                <div class="col-12 d-flex justify-content-center p-2 fw-medium"><div>Analista: {{datos_sugerencia.analista_de_factibilidad}} ({{datos_sugerencia.folio}})</div></div>
                                           
                                         </div>
                                                         <div class="div-scroll"><!--Scroll-->
@@ -256,10 +257,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                          </div><!--scroll-->
                                                 <div class="d-flex justify-content-around">
                                                     <div>
-                                                            <button v-show ="status!='Implementada'" type="button" class="btn btn-success" @click="actualizarVoBoPlan('Aceptado')" data-bs-dismiss="modal">Aceptado</button>
+                                                            <button v-show ="datos_sugerencia.check_mc!='Aceptado'" type="button" class="btn btn-success" @click="actualizarVoBoPlan('Aceptado')" data-bs-dismiss="modal">Aceptado</button>
                                                     </div>
                                                     <div>
-                                                            <button v-show ="status!='Implementada'" type="button" class="btn btn-danger" @click="actualizarVoBoPlan('Rechazado')" data-bs-dismiss="modal">Rechazado</button>
+                                                            <button v-show ="datos_sugerencia.check_mc!='Aceptado'" type="button" class="btn btn-danger" @click="actualizarVoBoPlan('Rechazado')" data-bs-dismiss="modal">Rechazado</button>
                                                      </div>
                                                  </div>
                                       
