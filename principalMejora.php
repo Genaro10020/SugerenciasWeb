@@ -1113,7 +1113,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                 </td> 
                                                 <td><input  class="inputs-concentrado" type="text" v-model="var_impacto_planeado" name="impacto planeado" v-if="actualizar_sugerencia==index+1 && concentrado.status=='Implementada'"></input><label v-else>{{concentrado.impacto_planeado}}</label></td>
                                                 <td><input class="inputs-concentrado" type="text" v-model="var_impacto_real" name="impacto_real" v-if="actualizar_sugerencia==index+1 && concentrado.status=='Implementada'"></input><label v-else>{{concentrado.impacto_real}}</label></td>
-                                                <td><label>{{usuario}}</label></td>
+                                                <td><label>{{concentrado.creado_por}}</label></td>
                                                 <td><label v-if="actualizar_sugerencia==index+1"><?php echo date("d-m-Y"); ?></label><label v-else>{{concentrado.creado}}</label></td>
                                                 <td>{{concentrado.modificado_por}}</td>
                                                 <td>{{concentrado.modificado}}</td>
@@ -1560,6 +1560,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                         <th scope="col" class="sticky">Guardar </th>
                                                         <th>No. #</th>
                                                         <th scope="col">Reto </th>
+                                                        <th scope="col">Título</th>
                                                         <th scope="col">Descripción</th>
                                                         <th scope="col">Responsable </th>
                                                         <th scope="col">Planta </th>
