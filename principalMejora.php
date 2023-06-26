@@ -2338,6 +2338,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
 
     },
     consultarPuntosNoFactible(){
+        this.puntos_no_factible=0;//reinicio la variable para que no me muestre el valor anterior
         axios.post("consultar_puntos_no_factible.php",{
             id_concentrado:this.id_concentrado,
             folio:this.folio
