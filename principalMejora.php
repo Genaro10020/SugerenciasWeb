@@ -73,23 +73,26 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                
                             <button class="opciones mx-lg-2 rounded-3 " @click="mostrar('principalMejora')"  v-bind:class="{pintarUno}" >
                                 Principal Mejora
+                            </button> 
+                            <button class="opciones mx-lg-2 rounded-3 " @click="mostrar('planesDeTrabajo')"  v-bind:class="{pintarDos}" >
+                                Planes de Trabajo
                             </button>  
-                            <button class="opciones  mx-lg-2 rounded-3" @click="mostrar('concentrado')" v-bind:class="{pintarDos}">
+                            <button class="opciones  mx-lg-2 rounded-3" @click="mostrar('concentrado')" v-bind:class="{pintarTres}">
                                 Concentrado de sugerencias
                             </button>  
-                            <button class="opciones  mx-lg-2  rounded-3" @click="mostrar('premios')" v-bind:class="{pintarTres}">
+                            <button class="opciones  mx-lg-2  rounded-3" @click="mostrar('premios')" v-bind:class="{pintarCuatro}">
                                 Administración de Premios
                             </button>
-                            <button class="opciones  mx-lg-2  rounded-3" @click="mostrar('retos')" v-bind:class="{pintarCuatro}">
+                            <button class="opciones  mx-lg-2  rounded-3" @click="mostrar('retos')" v-bind:class="{pintarCinco}">
                                 Administración de Retos
                             </button>
-                            <button class="opciones   mx-lg-2 rounded-3" @click="mostrar('configuracion')" v-bind:class="{pintarCinco}">
+                            <button class="opciones   mx-lg-2 rounded-3" @click="mostrar('configuracion')" v-bind:class="{pintarSeis}">
                                 Configuración
                             </button>
-                            <button class="opciones   mx-lg-2 rounded-3" @click="mostrar('solicitados')" v-bind:class="{pintarSeis}">
+                            <button class="opciones   mx-lg-2 rounded-3" @click="mostrar('solicitados')" v-bind:class="{pintarSiete}">
                                 Premios Solicitados
                             </button>
-                            <button class="opciones   mx-lg-2 rounded-3" @click="mostrar('colaboradores')" v-bind:class="{pintarSiete}">
+                            <button class="opciones   mx-lg-2 rounded-3" @click="mostrar('colaboradores')" v-bind:class="{pintarOcho}">
                                 Colaborador
                             </button>
                 </div>
@@ -827,6 +830,80 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
 
 
                    </div> <!--fin contenido principal gonher-->
+
+
+                   <!--////////////////////////////////////////////////////////APARTADO CONCENTRADO DE SUGERENCIAS-->
+                   <div v-else-if="ventana=='planesDeTrabajo'" v-cloak>
+                       <!--cinta apartado-->
+                            <div class="row justify-content-center align-items-start ">
+                                <div class="cintilla col-12 text-center">
+                                   <b> PLANES DE TRABAJO </b>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center align-items-center">
+                            <div class="text-center pt-3 ">
+                                <span class="badge bg-light text-dark" style="font-size:0.7em;">Filtrado por columnas</span>
+                            </div>
+                                    <div class="div-scroll">
+                                        <table class="tablaMonitoreo-sugerencias table table-striped table-bordered ">
+                                            <thead class="encabezado-tabla text-center text-light ">
+                                                <tr >
+                                                    <th scope="col" class="sticky">Pendiente</th>
+                                                    <th scope="col">Folio<span class="badge bg-primary">*</span></th>
+                                                    <th scope="col">Planta <span  class="badge bg-primary">*</span></th>
+                                                    <th scope="col">Área<span class="badge bg-primary">*</span></th>
+                                                    <th scope="col">Subárea<span class="badge bg-primary">*</span></th>
+                                                    <th scope="col">Analista</th>
+                                                    <th scope="col">Actividad</th>
+                                                    <th scope="col">Fecha de Cierre</th>
+                                                    <th scope="col">Responsable</th>
+                                                    <th scope="col">Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr  class=" text-center" v-for="actividades in arregloPlanesDeTrabajo">
+                                                
+                                                        <!--<td class="align-middle sticky" style="  background: #f8f9fa;">
+                                                                <button  class="btn btn-primary" ><i class="bi bi-check-circle"></i></button>       
+                                                        </td>-->
+                                                        <td>
+                                                            Pendiente
+                                                        </td>
+                                                        <td>
+                                                           {{actividades.folio}}
+                                                        </td>
+                                                        
+                                                        <td>
+                                                          planta
+                                                        </td>
+                                                        <td>
+                                                          area
+                                                        </td>
+                                                        <td>
+                                                          subarea
+                                                        </td>
+                                                        <td>
+                                                          analista
+                                                        </td>
+                                                        <td>
+                                                           {{actividades.actividad}}
+                                                        </td>
+                                                        <td>
+                                                           {{actividades.fecha_final}}
+                                                        </td>
+                                                        <td>
+                                                           {{actividades.responsable}}
+                                                        </td>
+                                                        <td>
+                                                           {{actividades.porcentaje}}
+                                                        </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                            </div>
+                        <!--fin cinta apartado-->
+                    </div>     
                    <!--////////////////////////////////////////////////////////APARTADO CONCENTRADO DE SUGERENCIAS-->
                    <div v-else-if="ventana=='concentrado'" v-cloak>
                        <!--cinta apartado-->
@@ -1703,7 +1780,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                         <b> CONFIGURACIÓN</b>
                                         </div>
                                 </div>
-                                <div class="row  justify-content-center align-items-center">
+                                <div class="row justify-content-center align-items-center">
                                    
                                                 <div class="col-12 col-sm-6  col-lg-4 col-xl-3 bg-light ms-3  ms-sm-0 mt-2   border bordered-2 border-secondary rounded-2">
                                                     <form @submit.prevent="guardar_admin_y_analista" class="m-2 ">
@@ -2036,6 +2113,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 pintarCinco: false,
                 pintarSeis: false,
                 pintarSiete: false,
+                pintarOcho: false,
                 nueva_sugerencia:false,
                 concentrado_sugerencias_pendiente_impacto: [],
                 concentrado_impacto_sugerencias_midiendo:[],
@@ -2048,6 +2126,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 nombre_colaborador:'',
                 idea_propuesta:'',
                 situacion_actual:'',
+                //*Variables Planes de Trabajo*/
+                arregloPlanesDeTrabajo:[],
                 //*Varibales Concetrado*/
                 lista_validacion_de_impacto:['Cuantitativo','Cualitativo'],
                 concentrado_actividades:[],
@@ -2243,12 +2323,13 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
             mostrar(dato){
                    this.ventana=dato;
                    if(dato=='principalMejora'){ this.pintarUno=true}else{this.pintarUno=false}
-                   if(dato=='concentrado'){this.pintarDos=true}else{this.pintarDos=false}
-                   if(dato=='premios'){ this.pintarTres=true;  this.consultar_concentrado_premios()}else{this.pintarTres=false}
-                   if(dato=='retos'){this.pintarCuatro=true; this.consultaConcentradoRetos()}else{this.pintarCuatro=false}
-                   if(dato=='configuracion'){this.pintarCinco=true; this. consultar_usuarios()}else{this.pintarCinco=false}
-                   if(dato=='solicitados'){this.pintarSeis=true; this.consultar_premios_solicitados()}else{this.pintarSeis=false}
-                   if(dato=='colaboradores'){this.pintarSiete=true; this.consultar_colaboradores() }else{this.pintarSiete=false}
+                   if(dato=='planesDeTrabajo'){this.pintarDos=true; this.consultar_planes_de_trabajo()}else{this.pintarDos=false}
+                   if(dato=='concentrado'){this.pintarTres=true}else{this.pintarTres=false}
+                   if(dato=='premios'){ this.pintarCuatro=true;  this.consultar_concentrado_premios()}else{this.pintarCuatro=false}
+                   if(dato=='retos'){this.pintarCinco=true; this.consultaConcentradoRetos()}else{this.pintarCinco=false}
+                   if(dato=='configuracion'){this.pintarSeis=true; this. consultar_usuarios()}else{this.pintarSeis=false}
+                   if(dato=='solicitados'){this.pintarSiete=true; this.consultar_premios_solicitados()}else{this.pintarSiete=false}
+                   if(dato=='colaboradores'){this.pintarOcho=true; this.consultar_colaboradores() }else{this.pintarOcho=false}
              },
        /*METODOS PRINCIPAL MEJORA*/      
     datosSugerencia(id){
@@ -2259,7 +2340,16 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 }).catch(error => {
                     console.log(error)
                 })
-            },                                 
+            },
+    consultar_planes_de_trabajo(){
+        axios.post("consultar_planes_de_trabajo.php",{
+        }).then(response =>{
+            this.arregloPlanesDeTrabajo = response.data
+            console.log(this.arregloPlanesDeTrabajo);
+        }).catch(error => {
+            console.log(error);
+        })
+    },                                 
     consultarActividades(id,status){
                 this.id_concentrado = id
                 this.status = status
