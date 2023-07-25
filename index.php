@@ -62,7 +62,7 @@ session_start();
             <div class="div_susperior d-flex justify-content-around align-items-center " style="height:10vh">
                 <div class=""><img class="img-fluid" src="img/logo_gonher.png"></img></div>
                 <div class=" titulo fs-2 lh-1 text-center mt-2 mt-sm-0">Sistema de Sugerencias de Mejora</div>
-                <div class=""><img class="img-fluid" src="img/logo_mejora_continua.png"></img></div>
+                <div class=""><img class="img-fluid" style=" max-height: 80px;" src="img/opex.png" ></img></div>
             </div>
             <div class="row" style="height:80vh">
                     <div class="col-12 col-sm-6 d-flex align-items-center justify-content-center rounded-3 mt-2" style="background:#f5f5f5">

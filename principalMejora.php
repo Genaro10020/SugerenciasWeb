@@ -65,7 +65,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
             <div class="div_susperior d-flex justify-content-around align-items-center" style="height:10vh">
                 <div class=""><img class="img-fluid" src="img/logo_gonher.png"></img></div>
                 <div class=" titulo fs-2 lh-1 text-center">SISTEMA DE SUGERENCIAS DE MEJORA</div>
-                <div class=""><img class="img-fluid" src="img/logo_mejora_continua.png"></img></div>
+                <div class=""><img class="img-fluid" style=" height: 80px;" src="img/logo_opex.jpg"></img></div>
             </div>
              <!--BARRA MENÚ-->
             <div class="row" style="height:4vh">
@@ -75,7 +75,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                 Principal Mejora
                             </button> 
                             <button class="opciones mx-lg-2 rounded-3 " @click="mostrar('planesDeTrabajo')"  v-bind:class="{pintarDos}" >
-                                Planes de Trabajo
+                                Planes de Trabajo (Working)
                             </button>  
                             <button class="opciones  mx-lg-2 rounded-3" @click="mostrar('concentrado')" v-bind:class="{pintarTres}">
                                 Concentrado de sugerencias
@@ -1789,28 +1789,28 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                 </div>
                                 <div class="row justify-content-center align-items-center">
                                    
-                                                <div class="col-12 col-sm-6  col-lg-4 col-xl-3 bg-light ms-3  ms-sm-0 mt-2   border bordered-2 border-secondary rounded-2">
-                                                    <form @submit.prevent="guardar_admin_y_analista" class="m-2 ">
+                                                <div class="col-12 col-sm-4 col-xl-3  bg-light ms-3  ms-sm-0 mt-2   border bordered-2 border-secondary rounded-2 ">
+                                                    <form @submit.prevent="guardar_admin_y_analista" class="m-2 " style="font-size: 0.9em;">
                                                     <div class="text-center"><span class="badge text-dark ">ALTA DE ADMIN/ANALISTAS.</span></div>
                                                         <div class="mb-3">
                                                         <div><span class="badge text-dark">Usuario (No. de Nómina):</span></div>
-                                                            <input type="text" class="form-control" v-model="nuevo_usuario"  required>
+                                                            <input type="text" class="w-100" v-model="nuevo_usuario"  required>
                                                         </div>
-                                                        <div class="mb-3">
+                                                        <div class="">
                                                         <div><span class="badge text-dark">Password:</span></div>
-                                                            <input type="text" class="form-control" v-model="nuevo_password" required>
+                                                            <input type="text" class="w-100" v-model="nuevo_password" required>
                                                         </div>
-                                                        <div class="mb-3">
+                                                        <div class="">
                                                             <div><span class="badge text-dark">Nombre Completo:</span></div>
-                                                            <input type="text"   class="form-control" v-model="nuevo_nombre" required>
+                                                            <input type="text"   class="w-100" v-model="nuevo_nombre" required>
                                                         </div>
-                                                        <div class="mb-3">
+                                                        <div class="">
                                                             <div><span class="badge text-dark">Correo:</span></div>
-                                                            <input type="email" class="form-control" v-model="nuevo_correo" required>
+                                                            <input type="email"class="w-100" v-model="nuevo_correo" required>
                                                         </div>
-                                                        <div class="mb-3">
+                                                        <div class="">
                                                             <div><span class="badge text-dark">Departamento:</span></div>
-                                                            <select class="form-control" v-model="nuevo_departamento" required>
+                                                            <select class="w-100" v-model="nuevo_departamento" required  style="font-size: 0.9em;">
                                                                 <option value="" disabled>Seleccione departamento...</option>
                                                                 <option v-for="area_part in lista_area_participante" :value="area_part.area_participante">{{area_part.area_participante}}</option>
                                                             </select> 
@@ -1818,7 +1818,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                         </div>
                                                         <div class="mb-3">
                                                             <div><span class="badge text-dark">Tipo:</span></div>
-                                                            <select class="form-control" v-model="var_tipo_usuario" required>
+                                                            <select class="w-100" v-model="var_tipo_usuario" required  style="font-size: 0.9em;">
                                                                 <option value="" disabled>Seleccione tipo...</option>
                                                                 <option v-for="array_tipo in array_tipo_usuario" :value="array_tipo">{{array_tipo}}</option>
                                                             </select> 
@@ -1829,11 +1829,11 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                         </div>
                                                     </form>
                                                 </div>
-                                                <div class="col-12 ">
-                                                            <div class="text-center pt-3 ">
+                                                <div class="col-12 col-sm-8 ">
+                                                            <div class="text-center pt-1 ">
                                                                 <span class="badge bg-light text-dark" style="font-size:0.7em;">Administradores / Analistas / Responsables</span>
                                                             </div>
-                                                            <div class="" style=" height:20vh; overflow-x: scroll;">
+                                                            <div class="" style=" height:65vh; overflow-x: scroll;">
                                                                 <table class="tablaMonitoreo-sugerencias table table-striped table-bordered ">
                                                                 <thead class="encabezado-tabla text-center text-light ">
                                                                     <tr >
@@ -1843,7 +1843,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                         <th scope="col">Email </th>
                                                                         <th scope="col">Nombre</th>
                                                                         <th scope="col">Departamento</th>
-                                                                        <th scope="col">Tipo {{}}</th>
+                                                                        <th scope="col">Tipo </th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -1888,7 +1888,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                 </div>
                    </div>
                    <div v-else-if="ventana=='solicitados'" v-cloak>
-                    <!--//////////////////////////////////////////////////////////////////////////////APARTADO CONFIGURACIÓN-->
+                    <!--//////////////////////////////////////////////////////////////////////////////REMIOS SOLICITADOS-->
                     
                                 <div class="row justify-content-center align-items-start ">
                                         <div class="cintilla col-12 text-center">

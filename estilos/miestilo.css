@@ -228,6 +228,10 @@
  }
 /* Medium devices (tablets, 768px and up)***************************************/
 @media (min-width: 768px) { 
+    .opciones{
+        font-size: 0.6em;
+        border-radius: 20px;
+    }
     
  }
 /* Large devices (desktops, 992px and up)****************************************/
@@ -237,7 +241,7 @@
         overflow-x: auto;
     }
     .opciones{
-        font-size: 0.9em;
+        font-size: 0.6em;
     }
     .tablaConcentrado, .tablaMonitoreo-sugerencias{
         font-size: 0.6em;         
@@ -246,6 +250,9 @@
  }
 /* X-Large devices (large desktops, 1200px and up)***************************************/
 @media (min-width: 1200px) {
+    .opciones{
+        font-size: 0.8em;
+    }
     .tablaConcentrado, .tablaMonitoreo-sugerencias{
         font-size: 0.7em;         
      }

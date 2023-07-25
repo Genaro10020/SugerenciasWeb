@@ -64,7 +64,7 @@ $incrementar=1;
             <div class="div_susperior d-flex justify-content-around align-items-center" style="height:10vh">
                 <div class=""><img class="img-fluid" src="img/logo_gonher.png"></img></div>
                 <div class=" titulo fs-2 lh-1 text-center">SISTEMA DE SUGERENCIAS DE MEJORA</div>
-                <div class=""><img class="img-fluid" src="img/logo_mejora_continua.png"></img></div>
+                <div class=""><img class="img-fluid ms-2" style=" height:80px;" src="img/logo_opex.jpg"></img></div>
             </div>
              <!--BARRA MENÚ-->
             <div class="row" style="height:4vh">

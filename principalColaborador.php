@@ -127,7 +127,7 @@ $_COOKIE["PHPSESSID"]="0";
                                                     <div class="subtitulo fs-5 lh-1  text-center mt-1 text-secondary mb-3" ><?php echo $_SESSION['nombre']; ?></div>
                                                 </div>
                                     </div>
-                                <div class=" col-2 d-flex align-items-center rounded-start" style="height:45.8833px"><img class="img-fluid ms-2" src="img/logo_mejora_continua.png"></img></div>
+                                <div class=" col-2 d-flex align-items-center rounded-start" style="height:45.8833px"><img class="img-fluid ms-2" style="max-height: 80px;" src="img/logo_opex.jpg"></img></div>
                             </div>
                     </div>
                     <!--CUERPO-->
