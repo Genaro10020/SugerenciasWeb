@@ -47,9 +47,9 @@ $resultado="";
 
                                                                    foreach ($csv as $columna) {
                                                                         $columna = str_getcsv($columna, ",");
-                                                                         if($columna[0]!="" && $columna[1]!="" && $columna[2]!="")
+                                                                         if($columna[0]!="" && $columna[1]!="" && $columna[2]!="" && $columna[3]!="")
                                                                             {
-                                                                                $sql = "INSERT INTO usuarios_colocaboradores_sugerencias (colaborador, numero_nomina, password) VALUES ('$columna[0]','$columna[1]', '$columna[2]')";
+                                                                                $sql = "INSERT INTO usuarios_colocaboradores_sugerencias (colaborador, numero_nomina, password, planta) VALUES ('$columna[0]','$columna[1]', '$columna[2]', '$columna[3]')";
                                                                                 $query = mysqli_query( $conexion, $sql);
                                                                             }
                                                                     }

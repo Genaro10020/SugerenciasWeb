@@ -2029,8 +2029,6 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                             </div>
 
                                                                 <div>
-                                                                               
-                                                                             
                                                                                 <div class="row">
                                                                                     <div class="col-12 col-md-12"> 
                                                                                     <!-- Contenido -->
@@ -2058,6 +2056,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                         <th scope="col">Nombre Colaborador</th>
                                                                         <th scope="col">Número de Nómina</th>
                                                                         <th scope="col">Password</th>
+                                                                        <th scope="col">Planta</th>
                                                                         <!--<th scope="col">Entregado</th>-->
                                                                     </tr>
                                                                 </thead>
@@ -2084,7 +2083,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                                 {{colaboradores.password}}
                                                                         </td> 
                                                                         <td v-else class="bg-success text-white">
-                                                                            <b>{{colaboradores.password}}</b><br>{{}}
+                                                                            <b>{{colaboradores.password}}</b>
+                                                                        </td>
+                                                                        <td>
+                                                                             {{colaboradores.planta}}
                                                                         </td>
                                                                     </tr>
                                                                 </tbody>
