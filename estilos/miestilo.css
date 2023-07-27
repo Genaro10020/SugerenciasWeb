@@ -6,7 +6,22 @@
         display: none;
     }
 
+    .tamanio-text-chico{
+        font-size:0.6em;
+    }
+
+    .tamanio-text-mediano{
+        font-size:0.7em;
+    }
+
+    .tamanio-text-grande{
+        font-size:0.8em;
+    }
+
     
+
+
+
     body {
         overscroll-behavior: contain;
       }

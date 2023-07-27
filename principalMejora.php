@@ -2057,6 +2057,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                         <th scope="col">Número de Nómina</th>
                                                                         <th scope="col">Password</th>
                                                                         <th scope="col">Planta</th>
+                                                                        <th scope="col">Actualizar</th>
                                                                         <!--<th scope="col">Entregado</th>-->
                                                                     </tr>
                                                                 </thead>
@@ -2071,7 +2072,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                             <button v-else-if="status_premios.solped==''" title="Coloque número de solped para que se active." class="btn btn-secondary" disabled><i class="bi bi-paperclip"></i></button> 
                                                                         </td> -->
                                                                         <td>
-                                                                        <b >{{index}}</b>
+                                                                            <b>{{index}}</b>
                                                                         </td> 
                                                                         <td>
                                                                                 {{colaboradores.colaborador}}
@@ -2088,11 +2089,37 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                         <td>
                                                                              {{colaboradores.planta}}
                                                                         </td>
+                                                                        <td>
+                                                                             <button type="button" class="btn btn-warning me-2" title="Actualizar" @click="modalActualizarColaborador(colaboradores.colaborador,colaboradores.id)" data-bs-toggle="modal" data-bs-target="#modalColaborador"><i class="bi bi-pen" ></i></button>
+                                                                        </td>
                                                                     </tr>
                                                                 </tbody>
                                                                 </table>
                                                             </div>          
                                     </div>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="modalColaborador" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                            <div class="modal-header tamanio-text-grande">
+                                                <label class="modal-title" id="staticBackdropLabel"> Actualizar a: <b>{{colaborador_nombre}}<b></label>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body tamanio-text-grande text-center">
+                                                        <select v-model="selector_planta_colaborador">
+                                                            <option  value="" selected>Selecciona una planta</option>
+                                                            <option v-for="planta in lista_planta" :key="planta.planta" :value="planta.planta">{{planta.planta}}</option>
+                                                        </select>
+                                            </div>
+                                            <div class="modal-footer taminio-text-mediano ">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                <button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="actualizarColaborador(id_colaborador)">Actualizar</button>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                     <!-- Fin Modal -->
                     </div>
 
 
@@ -2135,6 +2162,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 nombre_colaborador:'',
                 idea_propuesta:'',
                 situacion_actual:'',
+                colaborador_nombre:'',
+                id_colaborador:'',
+                selector_planta_colaborador:'',
                 //*Variables Planes de Trabajo*/
                 arregloPlanesDeTrabajo:[],
                 //*Varibales Concetrado*/
@@ -2288,7 +2318,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 suma:0,
                 sumatotal:0,
                 cambio_contrasenia:[],
-                
+               
             }
         },
         mounted(){
@@ -3564,6 +3594,28 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                
 
           },
+          modalActualizarColaborador(nombre,id){
+                this.colaborador_nombre = nombre
+                this.id_colaborador = id
+          },
+          actualizarColaborador(id){
+               axios.post("actualizar_colaborador.php",{
+                    id:id,
+                    planta_seleccionada:this.selector_planta_colaborador
+               }).then(response => {
+                    console.log(response.data);
+                    if (response.data==true) {
+                        console.log("Actualizado correctamente");
+                        this.consultar_colaboradores();
+                    }else{
+                        alert("No se actualizo.")
+                    }
+               }).catch(error => {
+                    console.log("Error en el metodo actualizarColaborador");
+               }).finally(() => {
+                    
+               });
+          }
         }   
     }
     var mountedApp = Vue.createApp(vue3).mount('#app');
