@@ -2057,12 +2057,13 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                         <th scope="col">Número de Nómina</th>
                                                                         <th scope="col">Password</th>
                                                                         <th scope="col">Planta</th>
+                                                                        <th scope="col">Baja laboral</th>
                                                                         <th scope="col">Actualizar</th>
                                                                         <!--<th scope="col">Entregado</th>-->
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    <tr class="text-center" v-for="(colaboradores, index) in concentrado_colaboradores">    
+                                                                    <tr class="text-center align-middle " v-for="(colaboradores, index) in concentrado_colaboradores">    
                                                                           <!--<td>
                                                                            <button v-if="id_updates==index+1" type="button" class="btn btn-danger me-2" title="Cancelar" @click="editarStutasPremioSolicitado(0,0)" ><i class="bi bi-x-circle" ></i></button>
                                                                             <button v-if="bandera_editar_solicitud == false" type="button" class="btn btn-warning me-2" title="Actualizar" @click="editarStutasPremioSolicitado(1,index+1)"><i class="bi bi-pen" ></i></button>
@@ -2089,6 +2090,12 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                         <td>
                                                                              {{colaboradores.planta}}
                                                                         </td>
+                                                                        <td v-if="colaboradores.status=='Baja'" class="bg-danger text-white">
+                                                                            {{colaboradores.status}}
+                                                                        </td>
+                                                                        <td v-else>
+                                                                            
+                                                                        </td>   
                                                                         <td>
                                                                              <button type="button" class="btn btn-warning me-2" title="Actualizar" @click="modalActualizarColaborador(colaboradores.colaborador,colaboradores.id)" data-bs-toggle="modal" data-bs-target="#modalColaborador"><i class="bi bi-pen" ></i></button>
                                                                         </td>
