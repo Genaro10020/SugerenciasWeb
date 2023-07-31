@@ -849,48 +849,158 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                             <thead class="encabezado-tabla text-center text-light ">
                                                 <tr >
                                                     <th scope="col" class="sticky">Pendiente</th>
-                                                    <th scope="col">Folio
-                                                        <button class="btn-filtrar border rounded">
+                                                    <th scope="col">Folio<br>
+                                                        <button class="btn-filtrar border rounded" :class="{ 'btn-filtrar-activo': buttonActivo === 1 }" @click="activeButton(1,'pts.id','asc')"><!--el segundo parametro me estoy basando a la consulta de consultar_planes_de_trabajo.php-->
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-short" viewBox="0 0 16 16">
                                                                 <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>
                                                             </svg>
                                                             <label class="label-asc">ASC</label>
                                                         </button>
+                                                        <button class="btn-filtrar border rounded":class="{ 'btn-filtrar-activo': buttonActivo === 2 }" @click="activeButton(2,'pts.id','desc')">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-short" viewBox="0 0 16 16">
+                                                                <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4z"/>
+                                                            </svg>
+                                                            <label class="label-asc">DES</label>
+                                                        </button>
                                                     </th>
-                                                    <th scope="col">Planta <span  class="badge bg-primary">*</span></th>
-                                                    <th scope="col">Área<span class="badge bg-primary">*</span></th>
-                                                    <th scope="col">Subárea<span class="badge bg-primary">*</span></th>
-                                                    <th scope="col">Analista</th>
-                                                    <th scope="col">Actividad</th>
-                                                    <th scope="col">Fecha de Cierre</th>
-                                                    <th scope="col">Responsable</th>
-                                                    <th scope="col">Status</th>
+                                                    <th scope="col">Planta<br>
+                                                        <button class="btn-filtrar border rounded" :class="{ 'btn-filtrar-activo': buttonActivo === 3 }" @click="activeButton(3)">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-short" viewBox="0 0 16 16">
+                                                                <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>
+                                                            </svg>
+                                                            <label class="label-asc">ASC</label>
+                                                        </button>
+                                                        <button class="btn-filtrar border rounded" :class="{ 'btn-filtrar-activo': buttonActivo === 4 }" @click="activeButton(4)">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-short" viewBox="0 0 16 16">
+                                                                <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4z"/>
+                                                            </svg>
+                                                            <label class="label-asc">DES</label>
+                                                        </button>
+                                                    </th>
+                                                    <th scope="col">Área<br>
+                                                        <button class="btn-filtrar border rounded" :class="{ 'btn-filtrar-activo': buttonActivo === 5 }" @click="activeButton(5)">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-short" viewBox="0 0 16 16">
+                                                                <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>
+                                                            </svg>
+                                                            <label class="label-asc">ASC</label>
+                                                        </button>
+                                                        <button class="btn-filtrar border rounded" :class="{ 'btn-filtrar-activo': buttonActivo === 6 }" @click="activeButton(6)">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-short" viewBox="0 0 16 16">
+                                                                <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4z"/>
+                                                            </svg>
+                                                            <label class="label-asc">DES</label>
+                                                        </button>
+                                                    </th>
+                                                    <th scope="col">Subárea<br>
+                                                        <button class="btn-filtrar border rounded" :class="{ 'btn-filtrar-activo': buttonActivo === 7 }" @click="activeButton(7)">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-short" viewBox="0 0 16 16">
+                                                                <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>
+                                                            </svg>
+                                                            <label class="label-asc">ASC</label>
+                                                        </button>
+                                                        <button class="btn-filtrar border rounded" :class="{ 'btn-filtrar-activo': buttonActivo === 8 }" @click="activeButton(8)">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-short" viewBox="0 0 16 16">
+                                                                <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4z"/>
+                                                            </svg>
+                                                            <label class="label-asc">DES</label>
+                                                        </button>
+                                                    </th>
+                                                    <th scope="col">Analista<br>
+                                                        <button class="btn-filtrar border rounded" :class="{ 'btn-filtrar-activo': buttonActivo === 9 }" @click="activeButton(9)">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-short" viewBox="0 0 16 16">
+                                                                <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>
+                                                            </svg>
+                                                            <label class="label-asc">ASC</label>
+                                                        </button>
+                                                        <button class="btn-filtrar border rounded" :class="{ 'btn-filtrar-activo': buttonActivo === 10 }" @click="activeButton(10)">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-short" viewBox="0 0 16 16">
+                                                                <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4z"/>
+                                                            </svg>
+                                                            <label class="label-asc">DES</label>
+                                                        </button>
+                                                    </th>
+                                                    <th scope="col">Actividad<br>
+                                                        <button class="btn-filtrar border rounded" :class="{ 'btn-filtrar-activo': buttonActivo === 11 }" @click="activeButton(11)">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-short" viewBox="0 0 16 16">
+                                                                <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>
+                                                            </svg>
+                                                            <label class="label-asc">ASC</label>
+                                                        </button>
+                                                        <button class="btn-filtrar border rounded" :class="{ 'btn-filtrar-activo': buttonActivo === 12 }" @click="activeButton(12)">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-short" viewBox="0 0 16 16">
+                                                                <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4z"/>
+                                                            </svg>
+                                                            <label class="label-asc">DES</label>
+                                                        </button>
+                                                    </th>
+                                                    <th scope="col">Fecha Cierra<br>
+                                                        <button class="btn-filtrar border rounded" :class="{ 'btn-filtrar-activo': buttonActivo === 13 }" @click="activeButton(13)">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-short" viewBox="0 0 16 16">
+                                                                <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>
+                                                            </svg>
+                                                            <label class="label-asc">ASC</label>
+                                                        </button>
+                                                        <button class="btn-filtrar border rounded" :class="{ 'btn-filtrar-activo': buttonActivo === 14 }" @click="activeButton(14)">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-short" viewBox="0 0 16 16">
+                                                                <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4z"/>
+                                                            </svg>
+                                                            <label class="label-asc">DES</label>
+                                                        </button>
+                                                    </th>
+                                                    <th scope="col">Responsable<br>
+                                                        <button class="btn-filtrar border rounded" :class="{ 'btn-filtrar-activo': buttonActivo === 15 }" @click="activeButton(15)">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-short" viewBox="0 0 16 16">
+                                                                <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>
+                                                            </svg>
+                                                            <label class="label-asc">ASC</label>
+                                                        </button>
+                                                        <button class="btn-filtrar border rounded" :class="{ 'btn-filtrar-activo': buttonActivo === 16 }" @click="activeButton(16)">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-short" viewBox="0 0 16 16">
+                                                                <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4z"/>
+                                                            </svg>
+                                                            <label class="label-asc">DES</label>
+                                                        </button>
+                                                    </th>
+                                                    <th scope="col">Estatus<br>
+                                                        <button class="btn-filtrar border rounded" :class="{ 'btn-filtrar-activo': buttonActivo === 17 }" @click="activeButton(17)">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-short" viewBox="0 0 16 16">
+                                                                <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>
+                                                            </svg>
+                                                            <label class="label-asc">ASC</label>
+                                                        </button>
+                                                        <button class="btn-filtrar border rounded" :class="{ 'btn-filtrar-activo': buttonActivo === 18 }" @click="activeButton(18)">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-short" viewBox="0 0 16 16">
+                                                                <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4z"/>
+                                                            </svg>
+                                                            <label class="label-asc">DES</label>
+                                                        </button>
+                                                    </th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr  class=" text-center" v-for="actividades in arregloPlanesDeTrabajo">
+                                                <tr  class=" text-center" v-for="(actividades,index) in arregloPlanesDeTrabajo">
                                                 
                                                         <!--<td class="align-middle sticky" style="  background: #f8f9fa;">
                                                                 <button  class="btn btn-primary" ><i class="bi bi-check-circle"></i></button>       
                                                         </td>-->
                                                         <td>
-                                                            Pendiente
+                                                            {{index+1}}
                                                         </td>
                                                         <td>
                                                            {{actividades.folio}}
                                                         </td>
                                                         
                                                         <td>
-                                                          planta
+                                                            {{actividades.planta}}
                                                         </td>
                                                         <td>
-                                                          area
+                                                            {{actividades.area}}
                                                         </td>
                                                         <td>
-                                                          subarea
+                                                            {{actividades.subarea}}
                                                         </td>
                                                         <td>
-                                                          analista
+                                                            {{actividades.analista_de_factibilidad}}
                                                         </td>
                                                         <td>
                                                            {{actividades.actividad}}
@@ -2217,6 +2327,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 selector_planta_colaborador:'',
                 //*Variables Planes de Trabajo*/
                 arregloPlanesDeTrabajo:[],
+                desc_o_asc:'desc',
+                ordenar:'pts.id',//tabla plabes_de_trabajo_sugerencias (pts)
+                buttonActivo:2,//lo inicializo con 2 para que se active desc.
                 //*Varibales Concetrado*/
                 lista_validacion_de_impacto:['Cuantitativo','Cualitativo'],
                 concentrado_actividades:[],
@@ -2444,6 +2557,18 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
         }).catch(error => {
             console.log(error);
         })
+    },
+    activeButton(numero,ordenar,desc_o_asc){
+        this.buttonActivo = numero
+              /*  alert(ordenar,desc_o_asc)
+            axios.post("consultar_planes_de_trabajo.php",{
+                ordenar: ordenar, 
+                desc_o_asc: desc_o_asc
+            }).then(response =>{
+                this.arregloPlanesDeTrabajo = response.data
+            }).catch(error => {
+                console.log(error);
+            })*/
     },                                 
     consultarActividades(id,status){
                 this.id_concentrado = id
