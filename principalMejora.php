@@ -1809,12 +1809,32 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                             <input type="email"class="w-100" v-model="nuevo_correo" required>
                                                         </div>
                                                         <div class="">
+                                                            <div><span class="badge text-dark">Planta:</span></div>
+                                                            <select class="w-100" v-model="analista_planta" required  style="font-size: 0.9em;">
+                                                                <option value="" disabled>Seleccione planta...</option>
+                                                                <option v-for="planta_analista in lista_planta" :value="planta_analista.planta">{{planta_analista.planta}}</option>
+                                                            </select> 
+                                                        </div>
+                                                        <div class="">
+                                                            <div><span class="badge text-dark">Área:</span></div>
+                                                            <select class="w-100" v-model="analista_area" required  style="font-size: 0.9em;">
+                                                                <option value="" disabled>Seleccione área...</option>
+                                                                <option v-for="area_analista in lista_area" :value="area_analista.area">{{area_analista.area}}</option>
+                                                            </select> 
+                                                        </div>
+                                                        <div class="">
+                                                            <div><span class="badge text-dark">Subárea:</span></div>
+                                                            <select class="w-100" v-model="analista_subarea" required  style="font-size: 0.9em;">
+                                                                <option value="" disabled>Seleccione subárea...</option>
+                                                                <option v-for="subarea_analista in lista_subarea" :value="subarea_analista.subarea">{{subarea_analista.subarea}}</option>
+                                                            </select> 
+                                                        </div>
+                                                        <div class="">
                                                             <div><span class="badge text-dark">Departamento:</span></div>
                                                             <select class="w-100" v-model="nuevo_departamento" required  style="font-size: 0.9em;">
                                                                 <option value="" disabled>Seleccione departamento...</option>
                                                                 <option v-for="area_part in lista_area_participante" :value="area_part.area_participante">{{area_part.area_participante}}</option>
                                                             </select> 
-
                                                         </div>
                                                         <div class="mb-3">
                                                             <div><span class="badge text-dark">Tipo:</span></div>
@@ -1842,6 +1862,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                         <th scope="col">Password</th>
                                                                         <th scope="col">Email </th>
                                                                         <th scope="col">Nombre</th>
+                                                                        <th scope="col">Planta</th>
+                                                                        <th scope="col">Área</th>
+                                                                        <th scope="col">Subárea</th>
                                                                         <th scope="col">Departamento</th>
                                                                         <th scope="col">Tipo </th>
                                                                     </tr>
@@ -1865,6 +1888,26 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                         </td>
                                                                         <td><input v-if="id_update==index+1" class="inputs-concentrado" type="text" v-model="u_nombre"/> 
                                                                             <label v-else>{{admis_usuarios.nombre}}<label>
+                                                                        </td>    
+                                                                        <td>
+                                                                            <select v-if="id_update==index+1" class="inputs-concentrado" v-model="u_planta" required>
+                                                                                <option value="" disabled>Seleccione planta...</option>
+                                                                                <option v-for="planta_list in lista_planta" :value="planta_list.planta">{{planta_list.planta}}</option>
+                                                                            </select>  
+                                                                            <label v-else>{{admis_usuarios.planta}}<label>
+                                                                        </td>    
+                                                                        <td>
+                                                                            <select v-if="id_update==index+1" class="inputs-concentrado" v-model="u_area" required>
+                                                                                <option value="" disabled>Seleccione área...</option>
+                                                                                <option v-for="area_list in lista_area" :value="area_list.area">{{area_list.area}}</option>
+                                                                            </select>  
+                                                                            <label v-else>{{admis_usuarios.area}}<label>
+                                                                        </td>    
+                                                                        <td><select v-if="id_update==index+1" class="inputs-concentrado" v-model="u_subarea" required>
+                                                                                <option value="" disabled>Seleccione subárea...</option>
+                                                                                <option v-for="subarea_list in lista_subarea" :value="subarea_list.subarea">{{subarea_list.subarea}}</option>
+                                                                            </select>  
+                                                                            <label v-else>{{admis_usuarios.subarea}}<label>
                                                                         </td>    
                                                                         <td>
                                                                             <select v-if="id_update==index+1" class="inputs-concentrado" v-model="u_departamento" required>
@@ -2300,6 +2343,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 nuevo_nombre:'',
                 nuevo_correo:'',
                 nuevo_departamento:'',
+                analista_planta:'',
+                analista_area:'',
+                analista_subarea:'',
                 array_tipo_usuario: ['Admin','Analista','Responsable'],
                 var_tipo_usuario:'',
                 array_usuarios:[],
@@ -2308,7 +2354,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 u_user: '', 
                 u_password:'', 
                 u_email: '',
-                u_nombre:'', 
+                u_nombre:'',
+                u_planta:'',
+                u_area:'',
+                u_subarea:'', 
                 u_departamento:'', 
                 u_tipo:'',
                 /*Variables de Estatus de Premios */
@@ -3442,6 +3491,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     nuevo_password: this.nuevo_password,
                     nuevo_nombre: this.nuevo_nombre,
                     nuevo_correo: this.nuevo_correo,
+                    planta: this.analista_planta,
+                    area:this.analista_area,
+                    subarea:this.analista_subarea,
                     nuevo_departamento: this.nuevo_departamento,
                     var_tipo_usuario: this.var_tipo_usuario,
                     accion: 'guardar'
@@ -3478,6 +3530,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     this.u_password=this.array_usuarios[index-1].password
                     this.u_email=this.array_usuarios[index-1].email
                     this.u_nombre=this.array_usuarios[index-1].nombre
+                    this.u_planta=this.array_usuarios[index-1].planta
+                    this.u_area=this.array_usuarios[index-1].area
+                    this.u_subarea=this.array_usuarios[index-1].subarea
                     this.u_departamento=this.array_usuarios[index-1].departamento
                     this.u_tipo=this.array_usuarios[index-1].tipo
 
@@ -3492,6 +3547,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     nuevo_password: this.u_password,
                     nuevo_nombre:  this.u_nombre,
                     nuevo_correo: this.u_email,
+                    planta: this.u_planta,
+                    area: this.u_area,
+                    subarea: this.u_subarea,
                     nuevo_departamento: this.u_departamento,
                     var_tipo_usuario: this.u_tipo,
                     id: id,
