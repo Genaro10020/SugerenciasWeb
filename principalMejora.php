@@ -842,7 +842,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                             </div>
                             <div class="row justify-content-center align-items-center">
                             <div class="text-center pt-3 ">
-                                <span class="badge bg-light text-dark" style="font-size:0.7em;">Filtrado por columnas</span>
+                                <span class="badge bg-light text-dark" style="font-size:0.7em;">Filtrado por columnas{{loanding}}</span>
                             </div>
                                     <div class="div-scroll">
                                         <table class="tablaMonitoreo-sugerencias table table-striped table-bordered ">
@@ -1036,7 +1036,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                     </th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody v-if="loanding===false">
                                                 <tr  class=" text-center" v-for="(actividades,index) in arregloPlanesDeTrabajo">
                                                 
                                                         <!--<td class="align-middle sticky" style="  background: #f8f9fa;">
@@ -1093,6 +1093,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                 </tr>
                                             </tbody>
                                         </table>
+                                        <div v-if="loanding===true" class="d-flex justify-content-center w-100">
+                                                <img src="img/loading.gif">
+                                        </div>
                                     </div>
                             </div>
                         <!--fin cinta apartado-->
@@ -2402,6 +2405,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 id_colaborador:'',
                 selector_planta_colaborador:'',
                 //*Variables Planes de Trabajo*/
+                loanding:true,
                 arregloPlanesDeTrabajo:[],
                 desc_o_asc:'desc',
                 ordenar:'pts.id',//tabla plabes_de_trabajo_sugerencias (pts)
@@ -2640,6 +2644,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 })
             },
     consultar_planes_de_trabajo(){//consulto al iniar y al seleccionar una opcion de los select
+        this.loanding = true;
         axios.post("consultar_planes_de_trabajo.php",{
             planta: this.planta_filtrada,
             area: this.area_filtrada,
@@ -2653,9 +2658,12 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
             console.log(this.arregloPlanesDeTrabajo);
         }).catch(error => {
             console.log(error);
+        }).finally(() =>{
+            this.loanding = false;
         })
     }, 
     activeButton(numero,ordenar,orden){//cosultar al presionar el boton ordenar
+        this.loanding = true;
         this.buttonActivo = numero
             axios.post("consultar_planes_de_trabajo.php",{
                 planta: this.planta_filtrada,
@@ -2672,6 +2680,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 this.arregloPlanesDeTrabajo = response.data
             }).catch(error => {
                 console.log(error);
+            }).finally(() => {
+                this.loanding = false;
             })
     },    
     consultar_listas_selected_filtrados(){
