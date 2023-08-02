@@ -9,6 +9,9 @@ $planta = $variables['planta'] ?? '';
 $area = $variables['area'] ?? '';
 $subarea = $variables['subarea'] ?? '';
 $analista = $variables['analista'] ?? '';
+$responsable = $variables['responsable'] ?? '';
+$responsable_subarea = $variables['responsable_subarea'] ?? '';
+$estatus_hallazgos = $variables['estatus_hallazgos'] ?? '';
 $ordenar = $variables['ordenar'] ?? 'pts.id'; // Columna por defecto para ordenar (pts tabla planes de trabo sugerencia)
 $orden = $variables['orden'] ?? 'desc'; // Orden por defecto: ascendente
 
@@ -17,6 +20,8 @@ $planta = mysqli_real_escape_string($conexion, "%$planta%");
 $area = mysqli_real_escape_string($conexion, "%$area%");
 $subarea = mysqli_real_escape_string($conexion, "%$subarea%");
 $analista = mysqli_real_escape_string($conexion, "%$analista%");
+$responsable = mysqli_real_escape_string($conexion, "%$responsable%");
+$responsable_subarea = mysqli_real_escape_string($conexion, "%$responsable_subarea%");
 $ordenar = mysqli_real_escape_string($conexion, "$ordenar");
 $orden = mysqli_real_escape_string($conexion, "$orden");
 
@@ -29,6 +34,9 @@ INNER JOIN usuarios_sugerencias usr ON pts.responsable = usr.nombre
 WHERE  us.planta LIKE '$planta'
              AND us.area LIKE '$area'
              AND us.subarea LIKE '$subarea'
+             AND us.nombre LIKE '$analista'
+             AND pts.responsable LIKE '$responsable'
+             AND usr.subarea LIKE '$responsable_subarea'
              ORDER BY $ordenar $orden";
 
 $query = mysqli_query($conexion, $consulta);
@@ -39,7 +47,19 @@ while($datos=mysqli_fetch_array($query)){
     $diff = $f_actual->diff($f_final);
     $dias=$diff->format('%R'.$diff->days);
     $datos['dias_restantes'] = $dias;
-    $resultado[] = $datos;
+    
+    if($estatus_hallazgos==""){
+        $resultado[] = $datos;
+    }else if($estatus_hallazgos=="Completada" && $datos['porcentaje']==100){
+        $resultado[] = $datos;
+    }else if($estatus_hallazgos=="Por Vencer" &&  $dias >0 &&  $dias <= 7 && $datos['porcentaje']!=100){
+        $resultado[] = $datos;
+    }else if($estatus_hallazgos=="En tiempo" &&  $dias >7 && $datos['porcentaje']!=100){
+        $resultado[] = $datos;
+    }else if($estatus_hallazgos=="Vencida" && $dias <=0 && $datos['porcentaje']!=100){
+        $resultado[] = $datos;
+    }
 }
 echo json_encode($resultado);
 ?>
+  
