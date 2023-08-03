@@ -842,7 +842,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                             </div>
                             <div class="row justify-content-center align-items-center">
                             <div class="text-center pt-3 ">
-                                <span class="badge bg-light text-dark" style="font-size:0.7em;">Filtrado por columnas{{loanding}}</span>
+                                <span class="badge bg-light text-dark" style="font-size:0.7em;">Filtrado por columnas</span>
                             </div>
                                     <div class="div-scroll">
                                         <table class="tablaMonitoreo-sugerencias table table-striped table-bordered ">
@@ -850,6 +850,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                 <tr >
                                                     <th scope="col" class="sticky">Pendiente</th>
                                                     <th scope="col">Folio<br>
+                                                    <input v-model="input_folio_filtrar" type="text" placeholder="folio y presione Enter" @change="consultar_planes_de_trabajo()"/> <br>
                                                         <button class="btn-filtrar border rounded" :class="{ 'btn-filtrar-activo': buttonActivo === 1 }" @click="activeButton(1,'pts.id','ASC')"><!--el segundo parametro me estoy basando a la consulta de consultar_planes_de_trabajo.php-->
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-short" viewBox="0 0 16 16">
                                                                 <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>
@@ -2329,7 +2330,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                             
                                                                         </td>   
                                                                         <td>
-                                                                             <button type="button" class="btn btn-warning me-2" title="Actualizar" @click="modalActualizarColaborador(colaboradores.colaborador,colaboradores.id)" data-bs-toggle="modal" data-bs-target="#modalColaborador"><i class="bi bi-pen" ></i></button>
+                                                                             <button type="button" class="btn btn-warning me-2" title="Actualizar" @click="modalActualizarColaborador(colaboradores.colaborador,colaboradores.id,colaboradores.planta,colaboradores.status)" data-bs-toggle="modal" data-bs-target="#modalColaborador"><i class="bi bi-pen" ></i></button>
                                                                         </td>
                                                                     </tr>
                                                                 </tbody>
@@ -2345,10 +2346,15 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                 <label class="modal-title" id="staticBackdropLabel"> Actualizar a: <b>{{colaborador_nombre}}<b></label>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
-                                            <div class="modal-body tamanio-text-grande text-center">
+                                            <div class="modal-body tamanio-text-grande text-center d-flex justify-content-around">
                                                         <select v-model="selector_planta_colaborador">
                                                             <option  value="" selected>Selecciona una planta</option>
                                                             <option v-for="planta in lista_planta" :key="planta.planta" :value="planta.planta">{{planta.planta}}</option>
+                                                        </select>
+
+                                                        <select v-model="selector_baja_colaborador">
+                                                            <option  value="" selected>¡¡Sigue activo!!</option>
+                                                            <option  value="Baja">Dado de BAJA</option>
                                                         </select>
                                             </div>
                                             <div class="modal-footer taminio-text-mediano ">
@@ -2404,12 +2410,14 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 colaborador_nombre:'',
                 id_colaborador:'',
                 selector_planta_colaborador:'',
+                selector_baja_colaborador:'',
                 //*Variables Planes de Trabajo*/
                 loanding:true,
                 arregloPlanesDeTrabajo:[],
                 desc_o_asc:'desc',
                 ordenar:'pts.id',//tabla plabes_de_trabajo_sugerencias (pts)
                 buttonActivo:2,//lo inicializo con 2 para que se active desc.
+                input_folio_filtrar:'',
                 lista_plantas_select_filtrar:[],
                 lista_areas_select_filtrar:[],
                 lista_subareas_select_filtrar:[],
@@ -2581,7 +2589,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 suma:0,
                 sumatotal:0,
                 cambio_contrasenia:[],
-               
+             
             }
         },
         mounted(){
@@ -2646,6 +2654,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
     consultar_planes_de_trabajo(){//consulto al iniar y al seleccionar una opcion de los select
         this.loanding = true;
         axios.post("consultar_planes_de_trabajo.php",{
+            folio:this.input_folio_filtrar,
             planta: this.planta_filtrada,
             area: this.area_filtrada,
             subarea: this.subarea_filtrada,
@@ -2666,6 +2675,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
         this.loanding = true;
         this.buttonActivo = numero
             axios.post("consultar_planes_de_trabajo.php",{
+                folio:this.input_folio_filtrar,
                 planta: this.planta_filtrada,
                 area: this.area_filtrada,
                 subarea: this.subarea_filtrada,
@@ -3922,14 +3932,17 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                
 
           },
-          modalActualizarColaborador(nombre,id){
+          modalActualizarColaborador(nombre,id,planta,status){
                 this.colaborador_nombre = nombre
                 this.id_colaborador = id
+                this.selector_planta_colaborador = planta
+                this.selector_baja_colaborador = status
           },
           actualizarColaborador(id){
                axios.post("actualizar_colaborador.php",{
                     id:id,
-                    planta_seleccionada:this.selector_planta_colaborador
+                    planta_seleccionada:this.selector_planta_colaborador,
+                    activo_baja:this.selector_baja_colaborador
                }).then(response => {
                     console.log(response.data);
                     if (response.data==true) {

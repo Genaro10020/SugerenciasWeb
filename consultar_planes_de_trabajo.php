@@ -5,6 +5,7 @@ $variables = json_decode(file_get_contents('php://input'), true);
 include "conexionGhoner.php";
 
 // Obtener los parámetros del filtro y la ordenación desde el cliente
+$folio = $variables['folio'] ?? '';
 $planta = $variables['planta'] ?? '';
 $area = $variables['area'] ?? '';
 $subarea = $variables['subarea'] ?? '';
@@ -15,7 +16,7 @@ $estatus_hallazgos = $variables['estatus_hallazgos'] ?? '';
 $ordenar = $variables['ordenar'] ?? 'pts.id'; // Columna por defecto para ordenar (pts tabla planes de trabo sugerencia)
 $orden = $variables['orden'] ?? 'desc'; // Orden por defecto: ascendente
 
-
+$folio = mysqli_real_escape_string($conexion,"%$folio%");
 $planta = mysqli_real_escape_string($conexion, "%$planta%");
 $area = mysqli_real_escape_string($conexion, "%$area%");
 $subarea = mysqli_real_escape_string($conexion, "%$subarea%");
@@ -37,6 +38,7 @@ WHERE  us.planta LIKE '$planta'
              AND us.nombre LIKE '$analista'
              AND pts.responsable LIKE '$responsable'
              AND usr.subarea LIKE '$responsable_subarea'
+             AND pts.folio LIKE '$folio'
              ORDER BY $ordenar $orden";
 
 $query = mysqli_query($conexion, $consulta);
