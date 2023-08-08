@@ -116,6 +116,64 @@ include "conexionGhoner.php";
         impacto_planeado = '$impacto_planeado', impacto_real = '$impacto_real', modificado_por = '$creado_por_o_modificado_por', modificado = '$creado_o_modificado'  WHERE id='$id'";
         
         $query = mysqli_query( $conexion, $consulta);
+        if($query==true){
+            //$resultado="actualizada";
+
+                    $consulta = "SELECT * FROM usuarios_sugerencias WHERE nombre = '$analista_de_factibilidad' && tipo = 'Analista'";
+                    $resultado = mysqli_query($conexion,$consulta);
+                    if (mysqli_num_rows($resultado)>0)
+                    {
+                        while ($row = mysqli_fetch_array($resultado)){
+                            $email = $row['email'];
+                        }
+                        
+                            //header('Content-Type: text/html; charset=utf-8'); 
+                            // Varios destinatarios
+                            $para  = $email . ', '; // atención a la coma
+                            //$para .= 'iscgenarovp@gmail.com';
+                            // título
+                            $título = 'Cuenta con un nueva sugerencia. (Reasignada)';
+                            // mensaje
+                            $mensaje = '
+                            <html>
+                                <head>
+                                <title>Datos para de la sugerencia</title>
+                                </head>
+                                <body>
+                                <p>¡Recomendado no exceder la fecha, para su factibilidad '.$fecha_limite.'.<br>
+                                <table>
+                                    <tr>
+                                        <td>Ruta del sistema: </td><td> https://vvnorth.com/Sugerencia/</td> 
+                                    </tr>
+                                    <tr>
+                                        <th colspan="2">Información básica de la sugerencia:</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Nombre de la sugerencia: </td><td> '.$nombre_sugerencia.'</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Folio: </td><td> '.$folio.'</td>
+                                    </tr>
+                                </table>
+                                </body>
+                            </html>';
+                            // Para enviar un correo HTML, debe establecerse la cabecera Content-type
+                            $cabeceras  = 'MIME-Version: 1.0' . "\r\n";
+                            $cabeceras .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+                            //$cabeceras .= 'Content-Type: text/html; charset=utf-8' . "\r\n";
+                            //$cabeceras .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+                            // Cabeceras adicionales
+                            //$cabeceras .= 'To: Genaro <gvillanuevap@enerya.com>' . "\r\n";
+                            $cabeceras .= 'From: Sugerencias <iscgenarovp@gmail.com>' . "\r\n";
+                            //$cabeceras .= 'Cc: birthdayarchive@example.com' . "\r\n";
+                            //$cabeceras .= 'Bcc: birthdaycheck@example.com' . "\r\n";
+                            // Enviarlo
+                            $mail=mail($para,$título, $mensaje, $cabeceras);
+                            $mail?"correcto":"<h1>El envío de correo falló.</h1>";
+                            //echo "correcto";
+                    }
+
+                }
         $resultado = $query;
     }else{
 
