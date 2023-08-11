@@ -2202,7 +2202,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
 
                            <!-- Modal Eliminar/Actualizar-->
                             <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-dialog modal-dialog-centered modal-xl">
                                 <div class="modal-content">
                                 <div class="modal-header">
                                     <h6 class="modal-title" id="exampleModalLabel" >{{titulo_modal}} </h6>
