@@ -1648,7 +1648,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                         <!--Inicio Modal subir imagen en premio-->
                         <!-- Modal Eliminar/Actualizar-->
                         <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-dialog modal-dialog-centered modal-xl">
                                 <div class="modal-content">
                                 <div class="modal-header">
                                     <h6 class="modal-title" id="exampleModalLabel" >{{titulo_modal}} </h6>
@@ -1701,7 +1701,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                         <!--Inicio Modal subir imagen en retos-->
                         <!-- Modal Eliminar/Actualizar-->
                             <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-dialog modal-dialog-centered modal-xl">
                                 <div class="modal-content">
                                 <div class="modal-header">
                                     <h6 class="modal-title" id="exampleModalLabel" >{{titulo_modal}} </h6>
@@ -1726,13 +1726,14 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                         <hr>
                                                                 <div class="col-12" v-for= "(fileimgreto,index) in filereto">
                                                                     <div class="row">
-                                                                        <span class="badge bg-secondary">Documento {{index+1}}</span><br>
-                                                                            <div class="">
-                                                                                <button type="button" class="btn btn-danger" @click="eliminarDocumento(fileimgreto)" >Eliminar</button>
-                                                                            </div>
+                                                                    <span class="badge bg-secondary">Documento {{index+1}}</span><br>
+                                                                        <div class="d-flex justify-content-center m-3">
+                                                                            
+                                                                                <button type="button" class="btn btn-danger" @click="eliminarDocumento(fileimgreto)" >Eliminar</button><br>
+                                                                                <iframe class="text-center" :src="filereto[index]" style="width:100%;"></iframe>
+                                                                            
+                                                                        </div>    
                                                                     </div>
-                                                                    <iframe  :src="filereto[index]" style="width:100%;height:500px;"></iframe>
-                                                                    
                                                                    <!-- <iframe src="https://vvnorth.com/Sugerencias/documentos/pdf.pdf" style="width:100%;height:500px;"></iframe>-->
                                                                 </div>
                                                         </div>
@@ -1921,7 +1922,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                         <!--Inicio Modal subir imagen en retos-->
                         <!-- Modal Eliminar/Actualizar-->
                             <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-dialog modal-dialog-centered modal-xl">
                                 <div class="modal-content">
                                 <div class="modal-header">
                                     <h6 class="modal-title" id="exampleModalLabel" >{{titulo_modal}} </h6>
@@ -2155,7 +2156,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                             <button v-if="id_updates==index+1" type="button" class="btn btn-danger me-2" title="Cancelar" @click="editarStutasPremioSolicitado(0,0)" ><i class="bi bi-x-circle" ></i></button>
                                                                             <button v-if="bandera_editar_solicitud == false" type="button" class="btn btn-warning me-2" title="Actualizar" @click="editarStutasPremioSolicitado(1,index+1)"><i class="bi bi-pen" ></i></button>
                                                                             <button v-if="id_updates==index+1" class="btn btn-primary me-2" title="Guardar" @click="guardarStutasPremioSolicitado(status_premios.id)"><i class="bi bi-check-circle"></i></button> 
-                                                                            <button v-if="status_premios.status=='Entregado'" type="button" class="btn btn-success  ms-2" title="Subir Imagen" @click="modal_subir_ver_documentos('Subir',status_premios.id,status_premios.solped,'entregado',status_premios.cant_img_evidencia)"><i class="bi bi-paperclip"></i>{{status_premios.cant_img_evidencia}}</button>
+                                                                            <button v-if="status_premios.status=='Entregado'" type="button" class="btn btn-success  ms-2" title="Subir Imagen" @click="modal_subir_ver_documentos('Subir',status_premios.id,status_premios.id,'entregado',status_premios.cant_img_evidencia)"><i class="bi bi-paperclip"></i>{{status_premios.cant_img_evidencia}}</button>
                                                                             <button v-else-if="status_premios.solped!='' && status_premios.status=='Pte. Entrega'" type="button" class="btn btn-secondary" type="button" title="Subir evidencia de la entrega del premios." @click="modal_subir_ver_documentos('Subir',status_premios.id,status_premios.solped,'entregado',status_premios.cant_img_evidencia)"><i class="bi bi-paperclip"></i>{{concentrado_status_premios.cant_img_evidencia}}</button> 
                                                                             <button v-else-if="status_premios.solped==''" title="Coloque número de solped para que se active." class="btn btn-secondary" disabled><i class="bi bi-paperclip"></i></button>  
                                                                         </td> 
@@ -2224,16 +2225,20 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                     </div> 
                                                        
                                                           <!-- Mostrando los archivos cargados -->
-                                                        <div v-show="fileentregado.length>0 && cual_documento=='entregado'" >
+                                                        <div class="div" v-show="fileentregado.length>0 && cual_documento=='entregado'" >
                                                         <hr>
-                                                                <div class="col-12" v-for= "(fileimgreto,index) in fileentregado">
+                                                                <div v-for= "(fileimgreto,index) in fileentregado" :key="index"  class="col-12 text-center">
                                                                     <div class="row">
-                                                                        <span class="badge bg-secondary">Documento {{index+1}}</span><br>
-                                                                            <div class="">
-                                                                                <button type="button" class="btn btn-danger" @click="eliminarDocumento(fileimgreto)" >Eliminar</button>
-                                                                            </div>
+                                                                     <span class="badge bg-secondary">Documento {{index+1}}</span><br>
+                                                                        <div class=" d-flex justify-content-center mt-3">
+                                                                                <div>
+                                                                                    <button type="button" class="btn btn-danger" @click="eliminarDocumento(fileimgreto)" >Eliminar</button><br>
+                                                                                   
+                                                                                </div>
+                                                                        </div>
+                                                                        <iframe class="centered-iframe" :src="fileentregado[index]" style="width:100%; height:600px;"></iframe>
                                                                     </div>
-                                                                    <iframe  :src="fileentregado[index]" style="width:100%;height:500px;"></iframe>
+                                                                   
                                                                    <!-- <iframe src="https://vvnorth.com/Sugerencias/documentos/pdf.pdf" style="width:100%;height:500px;"></iframe>-->
                                                                 </div>
                                                         </div>
