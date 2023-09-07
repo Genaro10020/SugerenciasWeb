@@ -5,7 +5,7 @@
     $resultado = [];
     include "conexionGhoner.php";
     
-    $consulta = "SELECT * FROM canjer_premios_colaborador_sugerencias ORDER BY id DESC";
+    $consulta = "SELECT * FROM canjer_premios_colaborador_sugerencias ORDER BY status DESC";
     $query = mysqli_query($conexion,$consulta);
     while ($fila=$query -> fetch_array()) {
         $resultado[] = $fila;
