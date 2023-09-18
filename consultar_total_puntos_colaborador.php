@@ -5,11 +5,29 @@
     $numero_nomina = $_SESSION['usuario'];
     include "conexionGhoner.php";
     $producto = 0;
+    $puntos_iniciales = 0;
+    $puntos_factible = 0;
     $puntos_cuanti=0;
     $puntos_cuali=0;
     $puntos_usados=0;
     $puntos_no_factible=0;
     $total = 0;
+
+            $consulta = "SELECT puntos FROM concentrado_sugerencias WHERE numero_nomina = '$numero_nomina'";
+            $query = mysqli_query($conexion,$consulta);
+            if(mysqli_num_rows($query)>0){
+                while ($fila=$query -> fetch_array()){
+                    $puntos_iniciales = (int)$fila['puntos']+$puntos_iniciales;
+                }
+            }
+
+            $consulta = "SELECT puntos_factible, validacion_calificada FROM concentrado_sugerencias WHERE numero_nomina = '$numero_nomina' AND validacion_calificada=0";
+            $query = mysqli_query($conexion,$consulta);
+            if(mysqli_num_rows($query)>0){
+                while ($fila=$query -> fetch_array()){
+                    $puntos_factible = (int)$fila['puntos_factible']+$puntos_factible;
+                }
+            }
     
             $consulta = "SELECT * FROM impacto_cuantitativo_sugerencias WHERE numero_nomina = '$numero_nomina'";
             $query = mysqli_query($conexion,$consulta);
@@ -43,7 +61,7 @@
                 }
             }
             
-            $total=$puntos_cuanti + $puntos_cuali + $puntos_no_factible;
+            $total=$puntos_cuanti + $puntos_cuali + $puntos_no_factible + $puntos_iniciales + $puntos_factible;
             $producto=$total-$puntos_usados;
         
 
