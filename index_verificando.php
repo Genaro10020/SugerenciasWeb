@@ -41,9 +41,11 @@ if($remember==1 || $remember=="true"){
                 while ($row = mysqli_fetch_array($resultado)){
                     $tipo = "Colaborador";
                     $nombre = $row['colaborador'];
+                    $planta = $row['planta'];
                 }
                 $_SESSION["usuario"] = $user;//nomina
                 $_SESSION["tipo"] = $tipo;//tipo
+                $_SESSION["planta"] = $planta;//nombre
                 $_SESSION["nombre"] = $nombre;//nombre
                 $_SESSION["password"] = $pass;//password
                 $_SESSION["remember"] = $remember;//password

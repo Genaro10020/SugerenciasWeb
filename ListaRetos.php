@@ -100,7 +100,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                     <div class="col-12 mt-3  d-flex" style=" background:#e7e7e7;">
                                         <p>NOTA: Anota el folio del reto en el apartado “Reto” del Formato de Sugerencia. 
                                             Recuerda que las sugerencias que tengan un impacto en los retos definidos serán 
-                                            acreedoras a un puntaje más alto.  
+                                            acreedoras a un puntaje más alto. 
                                         </p>
                                     </div>    
  
@@ -109,16 +109,16 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                     <table class="table table-striped " style=" font-size: 0.9em;">
                                                     <thead >
                                                         <tr class="table_encabezado align-middle" style="background:rgb(137, 0, 0); height:5px; color:white; font-size: 0.9em;">
-                                                            <th scope="col">#</th>
-                                                            <th scope="col">Folio</th>
-                                                            <th scope="col">Título de Reto</th>
+                                                        <th scope="col" class="text-center">#</th>
+                                                            <th scope="col" class="text-center">Folio</th>
+                                                            <th scope="col " class="text-center">Título de Reto</th>
                                                         </tr>
                                                     </thead>
                                                         <tbody>
-                                                            <tr class=" align-middle text-center fw-normal " v-for="(retos, index) in concentrado_retos">
-                                                                <td>{{index+1}}</td>
-                                                                <td><label class="folio fst-italic text-primary" style="cursor:pointer" @click="consultar_reto(retos.folio_reto)"><b>{{retos.folio_reto}}</b></label></td>
-                                                                <td>{{retos.titulo_reto}}</td>
+                                                            <tr class=" align-middle  fw-normal " v-for="(retos, index) in concentrado_retos" :key="index">
+                                                                <td v-if="retos.planta_reto == planta">{{incrementar()}}</td>
+                                                                <td v-if="retos.planta_reto == planta"><label class="folio fst-italic text-primary" style="cursor:pointer" @click="consultar_reto(retos.folio_reto)"><b>{{retos.folio_reto}}</b></label></td>
+                                                                <td v-if="retos.planta_reto == planta">{{retos.titulo_reto}}</td>
                                                             </tr>
                                                         </tbody>
                                                         </table>
@@ -128,16 +128,18 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                             <div v-else>
                                     <div class="row justify-content-center">
                                         <div v-for="reto in reto_folio"class="row row-cols-1 text-center mt-3 justify-content-center">
-                                            <div class="col-10 col-sm-8 col-lg-6  col-xl-4" style=" background-color:#eaeaea"><b>Folio</b></div>
-                                            <div class="col">{{reto.folio_reto}}</div>
-                                            <div class="col-10 col-sm-8 col-lg-6  col-xl-4" style=" background-color:#eaeaea"><b>Responsable</b></div>
-                                            <div class="col">{{reto.responsable_reto}}</div>
-                                            <div class="col-10 col-sm-8 col-lg-6  col-xl-4" style=" background-color:#eaeaea"><b>Planta</b></div>
-                                            <div class="col">{{reto.planta_reto}}</div>
-                                            <div class="col-10 col-sm-8 col-lg-6  col-xl-4" style=" background-color:#eaeaea"><b>Área</b></div>
-                                            <div class="col">{{reto.area_reto}}</div>
-                                            <div class="col"><b>Descripción del Reto</b></div>
-                                            <textarea class="text-area-causa-no-factibilidad my-2" type="text"  style=" font-size:0.9em" disabled>{{reto.descripcion_reto}}</textarea>
+                                            
+                                                <div class="col-10 col-sm-8 col-lg-6  col-xl-4" style=" background-color:#eaeaea"><b>Folio</b></div>
+                                                <div class="col">{{reto.folio_reto}}</div>
+                                                <div class="col-10 col-sm-8 col-lg-6  col-xl-4" style=" background-color:#eaeaea"><b>Responsable</b></div>
+                                                <div class="col">{{reto.responsable_reto}}</div>
+                                                <div class="col-10 col-sm-8 col-lg-6  col-xl-4" style=" background-color:#eaeaea"><b>Planta</b></div>
+                                                <div class="col">{{reto.planta_reto}}</div>
+                                                <div class="col-10 col-sm-8 col-lg-6  col-xl-4" style=" background-color:#eaeaea"><b>Área</b></div>
+                                                <div class="col">{{reto.area_reto}}</div>
+                                                <div class="col"><b>Descripción del Reto</b></div>
+                                                <textarea class="text-area-causa-no-factibilidad my-2" type="text"  style=" font-size:0.9em" disabled>{{reto.descripcion_reto}}</textarea>
+
                                         </div>
                                     </div>
                                      <!-- Mostrando los archivos cargados -->
@@ -149,13 +151,6 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                         <iframe  :src="filereto[index]" style="height:100%; width: 100%;"></iframe>
                                                 </div>
                                     </div>
-                                  
-
-                                            
-                       
-
-
-
                        
                             </div>          
                                     <div class="col-12 col-lg-12 d-flex align-items-end justify-content-center" >
@@ -180,6 +175,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
 
 <script>
 
+    var incrementar=1;
     const vue3 = 
     {
         data(){
@@ -191,6 +187,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                 folio_carpeta_doc:'',
                 cantidadDOCFILE:0, 
                 cual_documento:'',
+                planta: '<?php echo $_SESSION['planta'];?>',
             }
         },
         mounted(){
@@ -211,6 +208,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
 
                     })
                 },
+            incrementar(){
+                return incrementar++;
+            },
             consultar_reto(folio){
                 this.folio_reto= folio
                 this.cual_documento="reto"
