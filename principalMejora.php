@@ -1679,7 +1679,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                                 <button type="button" class="btn btn-danger" @click="eliminarDocumento(fileprem)" >Eliminar</button>
                                                                             </div>
                                                                     </div>
-                                                                    <iframe  :src="filepremio[index]" style="width:100%;height:500px;"></iframe>
+                                                                    <img :src="filepremio[index]" style="width:50%"></img>
                                                                     
                                                                    <!-- <iframe src="https://vvnorth.com/Sugerencias/documentos/pdf.pdf" style="width:100%;height:500px;"></iframe>-->
                                                                 </div>
@@ -1730,7 +1730,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                         <div class="d-flex justify-content-center m-3">
                                                                             
                                                                                 <button type="button" class="btn btn-danger" @click="eliminarDocumento(fileimgreto)" >Eliminar</button><br>
-                                                                                <iframe class="text-center" :src="filereto[index]" style="width:100%;"></iframe>
+                                                                                <img class="text-center" :src="filereto[index]" style="width:100%; height:100%;"></img>
                                                                             
                                                                         </div>    
                                                                     </div>
@@ -1953,7 +1953,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                                 <button type="button" class="btn btn-danger" @click="eliminarDocumento(fileimgreto)" >Eliminar</button>
                                                                             </div>
                                                                     </div>
-                                                                    <iframe  :src="filereto[index]" style="width:100%;height:500px;"></iframe>
+                                                                    <img  :src="filereto[index]" style="width:100%;width:100%"></img>
                                                                     
                                                                    <!-- <iframe src="https://vvnorth.com/Sugerencias/documentos/pdf.pdf" style="width:100%;height:500px;"></iframe>-->
                                                                 </div>
