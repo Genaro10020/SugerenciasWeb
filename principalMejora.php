@@ -2236,7 +2236,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                                    
                                                                                 </div>
                                                                         </div>
-                                                                        <iframe class="centered-iframe" :src="fileentregado[index]" style="width:100%; height:600px;"></iframe>
+                                                                        <img class="centered-iframe" :src="fileentregado[index]" style="width:100%; height:100%;"></img>
                                                                     </div>
                                                                    
                                                                    <!-- <iframe src="https://vvnorth.com/Sugerencias/documentos/pdf.pdf" style="width:100%;height:500px;"></iframe>-->
