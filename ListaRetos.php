@@ -143,15 +143,41 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                         </div>
                                     </div>
                                      <!-- Mostrando los archivos cargados -->
-                                    <div v-show="filereto.length>0 " class="d-flex justify-content-center" >
-                                        <hr>
-                                
-                                                <div  v-for= "(fileimgreto,index) in filereto">
-                                                        <span class="badge bg-secondary">Documento {{index+1}}</span><br>
-                                                        <iframe  :src="filereto[index]" style="height:100%; width: 100%;"></iframe>
-                                                </div>
+                                    <div class="d-flex justify-content-center" >
+                                        <button v-if="filereto[0]" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalReto" >Ver Imagen</button>
+                                        <label v-else class="alert alert-info py-1">No se  adjuto imagen</label>
                                     </div>
-                       
+                                                    <!--Modal-->     <!-- Modal -->
+                                                                    <div id="modalReto" class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                                                        <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" id="exampleModalLabel">Imagen Reto</h5>
+                                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                        </div>
+                                                                            <div class="modal-body">
+                                                                                                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
+                                                                                                <!--<div class="carousel-indicators">
+                                                                                                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                                                                                                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                                                                                                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                                                                                                </div>-->
+                                                                                                        <div class="carousel-inner  text-centerr">
+                                                                                                            <!-- Mostrando los archivos cargados -->
+                                                                                                            <div  v-for= "(fileimgreto,index) in filereto">
+                                                                                                                    <span class="badge bg-secondary">Documento {{index+1}}</span><br>
+                                                                                                                    <img  :src="filereto[index]" style="height:100%; width: 100%;"></img>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                </div>
+                                                                            </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                        </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    </div>
+                                                     <!--FIN MODAL-->
                             </div>          
                                     <div class="col-12 col-lg-12 d-flex align-items-end justify-content-center" >
                                                     <div id="opciones" style="width: 18rem;" class=" d-flex align-items-center justify-content-center " >
@@ -175,7 +201,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
 
 <script>
 
-    var incrementar=1;
+var incrementar=1;
     const vue3 = 
     {
         data(){
@@ -188,6 +214,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                 cantidadDOCFILE:0, 
                 cual_documento:'',
                 planta: '<?php echo $_SESSION['planta'];?>',
+                bandera:0
             }
         },
         mounted(){
@@ -209,9 +236,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                     })
                 },
             incrementar(){
-                return incrementar++;
+                    return incrementar++;
             },
             consultar_reto(folio){
+                incrementar=1;
                 this.folio_reto= folio
                 this.cual_documento="reto"
                 axios.post('consulta_concentrado_retos.php',{
@@ -221,6 +249,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                             if(this.reto_folio.length > 0){
                                 this.detalles_reto=true
                                 this.buscarDocumentos()
+                               
                             }else{
                                 alert("No logramos localizar ese folio, póngase en contacto con Mejora Continua")
                             }
@@ -245,8 +274,6 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                             
                                             if(this.filereto.length>0){
                                                 console.log(this.filereto.length + "Archivos encontrados.")
-                                            }else{
-                                                alert("Sin Documentos agregados.")
                                             }
                                             
                                     
