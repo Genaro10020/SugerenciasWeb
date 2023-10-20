@@ -36,7 +36,7 @@ $impacto_real= $variables['impacto_real'];
 $creado_o_modificado= date('Y-m-d');
 $creado_por_o_modificado_por=$variables['usuario'];
 $fecha_limite= date("Y-m-d",strtotime($fecha_inicio."+ 8 days")); //agregando 7 dias
-$puntos_por_la_sugerencia = 1;
+$puntos_por_la_sugerencia = 0;
 include "conexionGhoner.php";
     if($tipo=="nueva"){
         $consulta = "INSERT INTO concentrado_sugerencias (cumplimiento, sindicalizado_empleado, nombre_sugerencia, folio, status, causa_no_factibilidad, situacion_actual, idea_propuesta,
