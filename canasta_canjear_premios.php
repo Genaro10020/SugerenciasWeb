@@ -28,7 +28,8 @@ include "conexionGhoner.php";
         if(mysqli_num_rows($query)>0){
 
                 if($cantidad==0){
-                        $delete = "DELETE FROM canjer_premios_colaborador_sugerencias WHERE id_premio = '$id_premio'";
+                        //$delete = "DELETE FROM canjer_premios_colaborador_sugerencias WHERE id_premio = '$id_premio'";//ELIMINA TODOS HASTA LOS ENTREGADOS ANTES/ ESTO ES INCORRECTO NO ACTIVAR O ELIMINAR ESTA LINEA
+                        $delete = "DELETE FROM canjer_premios_colaborador_sugerencias WHERE id_premio='$id_premio' AND status = 'Sin aceptar' AND numero_nomina = '$numero_nomina'";
                         $query = mysqli_query( $conexion, $delete);
 
                 }else{

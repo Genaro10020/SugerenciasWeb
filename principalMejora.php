@@ -2137,6 +2137,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                 <table class="tablaMonitoreo-sugerencias table table-striped table-bordered ">
                                                                 <thead class="encabezado-tabla text-center text-light ">
                                                                     <tr>
+                                                                        <th scope="col">#</th>
                                                                         <th scope="col" class="sticky">Editar</th>
                                                                         <th scope="col">Número de Nómina</th>
                                                                         <th scope="col">Colaborador</th>
@@ -2151,7 +2152,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    <tr class="text-center" v-for="(status_premios, index) in concentrado_status_premios">    
+                                                                    <tr class="text-center" v-for="(status_premios, index) in concentrado_status_premios">   
+                                                                        <td>
+                                                                            {{index+1}}
+                                                                        </td> 
                                                                          <td>
                                                                             <button v-if="id_updates==index+1" type="button" class="btn btn-danger me-2" title="Cancelar" @click="editarStutasPremioSolicitado(0,0)" ><i class="bi bi-x-circle" ></i></button>
                                                                             <button v-if="bandera_editar_solicitud == false" type="button" class="btn btn-warning me-2" title="Actualizar" @click="editarStutasPremioSolicitado(1,index+1)"><i class="bi bi-pen" ></i></button>

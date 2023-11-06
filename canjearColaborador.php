@@ -131,7 +131,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                                     
                                                                     <img @click="buscarDocumentos(premios.codigo_premio)" class="img-thumbnail min-w-25" style="max-width:100px; cursor:pointer" :src="premios.url_premio" data-bs-toggle="modal" data-bs-target="#exampleModal"/>
                                                                 </td>
-                                                                <td><label class="folio fst-italic" style=" font-size:0.7em">{{premios.descripcion}}</label></td>
+                                                                <td><label class="folio fst-italic" style=" font-size:0.7em">{{premios.descripcion}}<br>{{premios.codigo_premio}}</label></td>
                                                                 <td>
                                                                         <div>
                                                                             <select :id="'select'+premios.id" @change="agregarCanasta(premios.id,premios.codigo_premio,premios.url_premio,premios.descripcion,premios.puntos_para_canjear,'<?php echo $_SESSION["usuario"]; ?>')"> 
