@@ -1183,7 +1183,6 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                 <td class="sticky"> 
                                                     <button type="button" class="btn btn-danger  me-2" title="Cancelar" @click="nueva_sugerencia=false"><i class="bi bi-x-circle" ></i></button>
                                                     <button type="button" class="btn btn-primary" title="Guardar" @click="guardar_nueva_sugerencia_y_actualizar('nueva','')"><i class="bi bi-check-circle"></i></button>   
-                                                    
                                                 </td>
                                                 <th scope="row">Nueva</th>
                                                 <td><label>0%</label></td>
