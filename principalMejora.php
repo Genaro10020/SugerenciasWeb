@@ -260,10 +260,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                          </div><!--scroll-->
                                                 <div class="d-flex justify-content-around">
                                                     <div>
-                                                            <button v-show ="datos_sugerencia.check_mc!='Aceptado'" type="button" class="btn btn-success" @click="actualizarVoBoPlan('Aceptado')" data-bs-dismiss="modal">Aceptado</button>
+                                                            <button type="button" class="btn btn-success" @click="actualizarVoBoPlan('Aceptado')" data-bs-dismiss="modal">Aceptado</button> <!--v-show ="datos_sugerencia.check_mc!='Aceptado'"-->
                                                     </div>
                                                     <div>
-                                                            <button v-show ="datos_sugerencia.check_mc!='Aceptado'" type="button" class="btn btn-danger" @click="actualizarVoBoPlan('Rechazado')" data-bs-dismiss="modal">Rechazado</button>
+                                                            <button  type="button" class="btn btn-danger" @click="actualizarVoBoPlan('Rechazado')" data-bs-dismiss="modal">Rechazado</button><!--v-show ="datos_sugerencia.check_mc!='Aceptado'"-->
                                                      </div>
                                                  </div>
                                       
