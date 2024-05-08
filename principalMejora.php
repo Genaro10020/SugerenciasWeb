@@ -3925,12 +3925,11 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                      headers: {"Content-Type": "multipart/form-data"}
                     })
                     .then(response => {
-                        console.log(response.data);
-                       if(response.data==true){
+                        console.log('Respuesta csv',response.data);
+                       if(response.data[0]==true){
                             this.consultar_colaboradores();
-                            alert("Subida Exitosa.")
+                            alert("Subida Exitosa.\n \n Coincidencias: ("+response.data[1].length+") \n Agregados: ("+response.data[2].length+")")
                        }else{
-                            alert("Algo salio Mal.")
                             this.consultar_colaboradores();
                        }
                     })

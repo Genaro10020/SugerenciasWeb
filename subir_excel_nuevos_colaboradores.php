@@ -42,24 +42,47 @@ $resultado="";
                                                                 }*/
                                                                     /* Leer y recorrer el fichero */
 
-                                                                    $csv = file($targetPath);
-
-
+                                                                $csv = file($targetPath);
+                                                                $coincidencias = [];
+                                                                $insertados = [];
+                                                                  $planta = "";
                                                                    foreach ($csv as $columna) {
                                                                         $columna = str_getcsv($columna, ",");
-                                                                         if($columna[0]!="" && $columna[1]!="" && $columna[2]!="" && $columna[3]!="")
-                                                                            {
-                                                                                $sql = "INSERT INTO usuarios_colocaboradores_sugerencias (colaborador, numero_nomina, password, planta) VALUES ('$columna[0]','$columna[1]', '$columna[2]', '$columna[3]')";
-                                                                                $query = mysqli_query( $conexion, $sql);
+                                                                        if(isset($columna[0]) && isset($columna[1]) && isset($columna[2])){//Verficando que exitan los 3 datos
+                                                                            if(isset($columna[3])){//si existe planta asignarlo a la variable
+                                                                                $planta=$columna[3];
                                                                             }
+                                                                            $nomina=$columna[1];
+                                                                            $consulta = "SELECT * FROM usuarios_colocaboradores_sugerencias WHERE numero_nomina = '$nomina'";
+                                                                            $resultado = $conexion->query($consulta);
+                                                                             if($resultado->num_rows>0){
+                                                                                $coincidencias[] = $nomina."-".$columna[0];
+                                                                             }else{
+                                                                                    if($columna[0]!='' && $columna[1]!='' && $columna[2]!=''){
+                                                                                        $sql = "INSERT INTO usuarios_colocaboradores_sugerencias (colaborador, numero_nomina, password, planta) VALUES ('$columna[0]','$columna[1]', '$columna[2]', '$planta')";
+                                                                                        $query = mysqli_query( $conexion, $sql);
+                                                                                            if($query){
+                                                                                                $insertados[] =  $nomina."-".$columna[0];
+                                                                                            }else{
+                                                                                                $message = $conexion->error;
+                                                                                            }
+                                                                                    }
+                                                                             }
+                                                                        }else{
+                                                                            $menssage="Deben ser 3 parametros (Nombre,Nómina,Contraseña) el cuarto es opcional (Planta) ";
+                                                                        }
                                                                     }
-
+                                                                    
+                                                                    if(count($coincidencias)>0 || count($insertados)>0){
+                                                                        $message = true;
+                                                                    }
+                                                                    //$message=sizeof($csv);
                                                                   // sizeof($csv);
-                                                                    if($query){
-                                                                        $message = $query;
-                                                                    }
-
-
+                                                                   /* if($resultado){
+                                                                        $message = $resultado;
+                                                                    }else{
+                                                                        $message = $conexion->error;
+                                                                    }*/
                                                 }else{
                                                     $message = "No se movio el archivo";
                                                 }  
@@ -72,5 +95,5 @@ $resultado="";
             }
 
 
-echo json_encode($message);
+echo json_encode(array($message,$coincidencias,$insertados));
 ?>
