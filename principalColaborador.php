@@ -196,9 +196,9 @@ $_COOKIE["PHPSESSID"]="0";
                         <div class="col-6 col-lg-4 d-flex align-items-center justify-content-center" >
                                     <div id="opciones" style="width: 18rem;" class=" d-flex align-items-center justify-content-center " >
                                         <div class="row text-center mb-2 d-flex justify-content-center align-items-center">
-                                                <div class="text-center col-12"> <label class="card-text mt-2 text-black ">OPEX</label></div>
-                                                <div @click="redireccionar(opx)" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer"> 
-                                                    <img src="img/opex.png" class="img-fluid" alt="..." style=" width: 50px;" >
+                                                <div class="text-center col-12"> <label class="card-text mt-2 text-black ">EAD</label></div>
+                                                <div @click="redireccionar(ead)" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer"> 
+                                                    <img src="img/ead.png" class="img-fluid" alt="..." style=" width: 50px;" >
                                                 </div>        
                                         </div>
                                      </div>
@@ -237,7 +237,7 @@ $_COOKIE["PHPSESSID"]="0";
                 lis:'',
                 cam:'',
                 enc:'',
-                opx:'',
+                ead:'',
                 sal:''
             }
         },
@@ -260,8 +260,8 @@ $_COOKIE["PHPSESSID"]="0";
                             window.location.href="cambiarContrasena.php"
                         }else if(opciones=='Encuesta'){
                             window.location.href="encuestaApp.php"
-                        }else if(opciones=='Opex'){
-                            window.location.href="opex.php"
+                        }else if(opciones=='ead'){
+                            window.location.href="juntasArranque.php"
                         }else if(opciones=='Salir'){
                             window.location.href="index.php"
                         }
@@ -281,7 +281,7 @@ $_COOKIE["PHPSESSID"]="0";
                             this.lis='Lista Retos',
                             this.cam='Cambiar Password',
                             this.enc='Encuesta',
-                            this.opx='Opex',
+                            this.ead='ead',
                             this.sal='Salir'
                         }
                 })

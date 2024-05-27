@@ -88,7 +88,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                 <div class="col-2 d-flex align-items-center rounded-end" style=" height:45.8833px;"><img class="img-fluid" src="img/logo_gonher.png"></img></div>
                                     <div class="col-8 d-flex align-items-center justify-content-center">
                                                 <div>
-                                                    <div class="titulo lh-1 mt-3 text-dark fs-2 fw-bold text-center" >OPEX</div>
+                                                    <div class="titulo lh-1 mt-3 text-dark fs-2 fw-bold text-center" >EAD</div>
                                                     <div class="subtitulo fs-5 lh-1  text-center mt-1 text-secondary mb-3 " ><?php echo $_SESSION['nombre']; ?></div>
                                                 </div>
                                     </div>
@@ -112,7 +112,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                                        
                                                                             <ul class="text-start">
                                                                                 <li v-for="(tema,index) in temas" class="mb-2" style="margin-bottom: 2px; ">
-                                                                                    <input v-model="temasCheck[index]" class="me-2" type="checkbox" @click="tomarFechaActual(index)" :disabled="temasCheck[index]==true"/>
+                                                                                    <input v-model="temasCheck[index]" class="me-2" type="checkbox" :disabled="temasCheck[index]==true"/>
                                                                                     {{index+1}}.- {{tema.tema}}
                                                                                 </li>
                                                                             </ul>
@@ -127,16 +127,17 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                                             </ul>     
                                                                         </div>
                                                                         <div class="d-flex justify-content-center">
-                                                                                <div class="rounded-circle bg-warning d-flex justify-content-center align-items-center shadow p-5  mb-3" style="width: 25px; height: 25px;">
-                                                                                    <label><i class="bi bi-hourglass-split"></i> <b>{{this.tiempo_transcurrido}}</b></label>
+                                                                                <div v-if="hora_inicial==''" class="rounded-circle bg-success d-flex justify-content-center align-items-center shadow p-5  mb-3 text-white" @click="tomarFechaActual()" style="width: 25px; height: 25px; cursor:pointer">
+                                                                                    <b>Iniciar Junta</b>
+                                                                                </div>
+                                                                                <div v-else class="rounded-circle bg-warning  shadow p-5 mb-3 d-flex justify-content-center align-items-center flex-column" @click="guardarJunta()" style="width: 100px; height: 100px; cursor: pointer;">
+                                                                                    <span><b>{{this.tiempo_transcurrido}}</b></span>
+                                                                                    <span style="font-size:1.5em;"><b>Finalizar</b></span>
                                                                                 </div>
                                                                         </div>
                                                                         <div class="d-flex justify-content-center">
                                                                                     <button v-if="hora_inicial" type="button" class="btn_cancelar col-12 rounded-pill text-center p-2 text-white border-0 w-25 mb-3" @click="limpiar()">
                                                                                     <i class="bi bi-stopwatch-fill"></i> Reiniciar 
-                                                                                    </button>
-                                                                                    <button v-if="mostarBtn" type="button" class="btn_confirmar col-12 rounded-pill text-center p-2 text-white border-0 w-25 mb-3 ms-5" @click="guardarJunta()">
-                                                                                    <i class="bi bi-check-circle-fill"></i>    Guardar 
                                                                                     </button>
                                                                         </div>
                                                                         <!---->
@@ -249,7 +250,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                     console.log('Error en axios',error)
                 })
             },
-            tomarFechaActual(index){
+            tomarFechaActual(){
                 var fecha = new Date();
                 var anio = fecha.getFullYear();
                 var mes = fecha.getMonth() + 1; // Se suma 1 porque los meses comienzan en 0
@@ -259,7 +260,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                 var hora = fecha.getHours();
                 var minutos = fecha.getMinutes();
                 var segundos = fecha.getSeconds();
-                if(index==0){
+    
                     if(this.tiempo_transcurrido!=''){return}
                     this.hora_inicial =  anio+"-"+mes+"-"+dia+" "+hora+":"+minutos+":"+segundos
                     console.log('Iniciar',this.hora_inicial)
@@ -289,10 +290,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                 console.log('Tiempo transcurrido', this.tiempo_transcurrido);
                             }, 1000);
                      // Fin temporizador
-                }
-                if(index==this.temas.length-1){
-                    this.mostarBtn = true;
-                }
+                
+                
             },
             consultarJuntasArranque(){
                 axios.get('consultar_juntas_arranque.php',{
