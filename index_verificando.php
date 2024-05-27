@@ -13,9 +13,6 @@ if($remember==1 || $remember=="true"){
     $remember="false";
 }
 
-
-
-
     $consulta = "SELECT * FROM usuarios_sugerencias WHERE user='$user' AND password='$pass'";
     $resultado = mysqli_query($conexion,$consulta);
     if (mysqli_num_rows($resultado)>0)
@@ -42,6 +39,8 @@ if($remember==1 || $remember=="true"){
                     $tipo = "Colaborador";
                     $nombre = $row['colaborador'];
                     $planta = $row['planta'];
+                    $id_equipo = $row['equipo_ead'];
+                    $lider = $row['lider_ead'];
                 }
                 $_SESSION["usuario"] = $user;//nomina
                 $_SESSION["tipo"] = $tipo;//tipo
@@ -49,6 +48,8 @@ if($remember==1 || $remember=="true"){
                 $_SESSION["nombre"] = $nombre;//nombre
                 $_SESSION["password"] = $pass;//password
                 $_SESSION["remember"] = $remember;//password
+                $_SESSION["id_ead"] = $id_equipo;//es lider o no ?
+                $_SESSION["lider"] = $lider;//es lider o no ?
                 echo $tipo;
             }else{
                 echo "No";

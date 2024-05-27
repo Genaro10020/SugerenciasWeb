@@ -192,8 +192,19 @@ $_COOKIE["PHPSESSID"]="0";
                                         </div>
                                      </div>
                         </div>
-
-                        <div class="col-12 col-lg-4 d-flex align-items-center justify-content-center" >
+                        <?php if(isset($_SESSION['lider']) && $_SESSION['lider']=="Si") { ?><!--Solo lideres-->
+                        <div class="col-6 col-lg-4 d-flex align-items-center justify-content-center" >
+                                    <div id="opciones" style="width: 18rem;" class=" d-flex align-items-center justify-content-center " >
+                                        <div class="row text-center mb-2 d-flex justify-content-center align-items-center">
+                                                <div class="text-center col-12"> <label class="card-text mt-2 text-black ">OPEX</label></div>
+                                                <div @click="redireccionar(opx)" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer"> 
+                                                    <img src="img/opex.png" class="img-fluid" alt="..." style=" width: 50px;" >
+                                                </div>        
+                                        </div>
+                                     </div>
+                        </div>
+                        <?php } ?>
+                        <div class="col-6 col-lg-4 d-flex align-items-center justify-content-center" >
                                     <div id="opciones" style="width: 18rem;" class=" d-flex align-items-center justify-content-center " >
                                         <div class="row text-center mb-2 d-flex justify-content-center align-items-center">
                                                 <div class="text-center col-12"> <label class="card-text mt-2 text-black ">Cerrar Sesion.</label></div>
@@ -201,9 +212,8 @@ $_COOKIE["PHPSESSID"]="0";
                                                     <img src="img/app_exit.png" class="img-fluid" alt="..." style=" width: 50px;" >
                                                 </div>        
                                         </div>
-                                     </div>
+                                    </div>
                         </div>
-                        
                     </div><!--FIN CUERPO-->
                             <!--FOOTER-->
                     <div class="row" style="height:10vh; background-color: rgba(181,0,0,1); box-shadow: 0px 0px 12px -2px black;">
@@ -227,6 +237,7 @@ $_COOKIE["PHPSESSID"]="0";
                 lis:'',
                 cam:'',
                 enc:'',
+                opx:'',
                 sal:''
             }
         },
@@ -249,11 +260,12 @@ $_COOKIE["PHPSESSID"]="0";
                             window.location.href="cambiarContrasena.php"
                         }else if(opciones=='Encuesta'){
                             window.location.href="encuestaApp.php"
+                        }else if(opciones=='Opex'){
+                            window.location.href="opex.php"
                         }else if(opciones=='Salir'){
                             window.location.href="index.php"
                         }
                     }
-               
             },
             consultarPass(){
                 axios.post('consultado_password.php',{
@@ -269,6 +281,7 @@ $_COOKIE["PHPSESSID"]="0";
                             this.lis='Lista Retos',
                             this.cam='Cambiar Password',
                             this.enc='Encuesta',
+                            this.opx='Opex',
                             this.sal='Salir'
                         }
                 })
