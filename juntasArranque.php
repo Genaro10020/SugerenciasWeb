@@ -309,54 +309,74 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                 })
             },
             guardarJunta(){
-                clearInterval(this.temporizador); // Detener temporizador
-                //tomando fechas
-                    var fecha = new Date();
-                    var anio = fecha.getFullYear();
-                    var mes = fecha.getMonth() + 1; // Se suma 1 porque los meses comienzan en 0
-                    var dia = fecha.getDate();
+           
+           if(this.temasCheck!=''){// verifico que seleccione minimo un tema
+                            var todosTrue= this.temasCheck.every(numero => numero == true)// busco que todos sean true
+                            if(todosTrue && this.temasCheck.length==this.temas.length){// si son true pero el check temas tiene el mismo tamaño continuan y guarda
+                                            clearInterval(this.temporizador); // Detener temporizador
+                                            //tomando fechas
+                                                var fecha = new Date();
+                                                var anio = fecha.getFullYear();
+                                                var mes = fecha.getMonth() + 1; // Se suma 1 porque los meses comienzan en 0
+                                                var dia = fecha.getDate();
 
-                    var fecha = new Date();
-                    var hora = fecha.getHours();
-                    var minutos = fecha.getMinutes();
-                    var segundos = fecha.getSeconds();
-                    this.hora_final = anio+"-"+mes+"-"+dia+" "+hora+":"+minutos+":"+segundos
-                //tomando fechas
-                var porcentaje = (this.asistieron.length / this.integrantesEAD.length)*100;//asistencia;
-                porcentaje = parseFloat(porcentaje.toFixed(2));
-                axios.post('guardar_junta_arranque.php',{
-                    nombre_ead: this.datosEquipo.nombre_ead,
-                    ids_integrantes:this.datosEquipo.integrantes,
-                    ids_asistentes:this.asistieron,
-                    asistencia:porcentaje,
-                    hora_inicial:this.hora_inicial,
-                    hora_final:this.hora_final,
-                    tiempo_transcurrido:this.tiempo_transcurrido,
-                }).then(response=>{  
-                    if(response.data==true){
-                        this.hora_inicial=''
-                        this.hora_final=''
-                        this.tiempo_transcurrido=''
-                        this.mostarBtn=false
-                        this.temasCheck = []
-                        this.mostrar=true
-                        this.mensaje = 'Guardada con ÉXITO';
-                        this.consultarJuntasArranque()
-                        setTimeout(()=>{
-                            this.mostrar=false
-                            this.mensaje = ''
-                        },10000);
-                    }else{
-                        this.mostrar=true
-                        this.mensaje = 'Algo salió mal, si persiste el problema reportarlo con Mejora Continua';
-                        setTimeout(()=>{
+                                                var fecha = new Date();
+                                                var hora = fecha.getHours();
+                                                var minutos = fecha.getMinutes();
+                                                var segundos = fecha.getSeconds();
+                                                this.hora_final = anio+"-"+mes+"-"+dia+" "+hora+":"+minutos+":"+segundos
+                                            //tomando fechas
+                                            var porcentaje = (this.asistieron.length / this.integrantesEAD.length)*100;//asistencia;
+                                            porcentaje = parseFloat(porcentaje.toFixed(2));
+                                            axios.post('guardar_junta_arranque.php',{
+                                                nombre_ead: this.datosEquipo.nombre_ead,
+                                                ids_integrantes:this.datosEquipo.integrantes,
+                                                ids_asistentes:this.asistieron,
+                                                asistencia:porcentaje,
+                                                hora_inicial:this.hora_inicial,
+                                                hora_final:this.hora_final,
+                                                tiempo_transcurrido:this.tiempo_transcurrido,
+                                            }).then(response=>{  
+                                                if(response.data==true){
+                                                    this.hora_inicial=''
+                                                    this.hora_final=''
+                                                    this.tiempo_transcurrido=''
+                                                    this.mostarBtn=false
+                                                    this.temasCheck = []
+                                                    this.mostrar=true
+                                                    this.mensaje = 'Guardada con Éxito';
+                                                    this.consultarJuntasArranque()
+                                                    setTimeout(()=>{
+                                                        this.mostrar=false
+                                                        this.mensaje = ''
+                                                    },10000);
+                                                }else{
+                                                    this.mostrar=true
+                                                    this.mensaje = 'Algo salió mal, si persiste el problema reportarlo con Mejora Continua';
+                                                    setTimeout(()=>{
+                                                        this.mostrar=false
+                                                        this.mensaje = ''
+                                                    },5000);
+                                                }
+                                            }).catch(error =>{
+                                                console.log('Error',error);
+                                            })
+                            }else{
+                            this.mostrar=true
+                            this.mensaje = 'Todos los puntos deben estar seleccionados';
+                                setTimeout(()=>{
+                                            this.mostrar=false
+                                            this.mensaje = ''
+                                        },5000);
+                            }
+             }else{
+                this.mostrar=true
+                this.mensaje = 'No ha seleccionado ningún tema.';
+                setTimeout(()=>{
                             this.mostrar=false
                             this.mensaje = ''
                         },5000);
-                    }
-                }).catch(error =>{
-                    console.log('Error',error);
-                })
+                }
             },
             limpiar(){
                 clearInterval(this.temporizador);    
@@ -365,6 +385,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                         this.tiempo_transcurrido=''
                         this.mostarBtn=false
                         this.temasCheck = []
+                        this.mostrar=false
+                        this.mensaje = ''
             }
         }
     }
