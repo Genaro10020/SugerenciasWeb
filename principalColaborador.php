@@ -261,7 +261,7 @@ $_COOKIE["PHPSESSID"]="0";
                         }else if(opciones=='Encuesta'){
                             window.location.href="encuestaApp.php"
                         }else if(opciones=='ead'){
-                            window.location.href="juntasArranque.php"
+                            window.location.href = "juntasArranque.php?id_equipo=<?php echo $_SESSION["id_ead"]; ?>";
                         }else if(opciones=='Salir'){
                             window.location.href="index.php"
                         }

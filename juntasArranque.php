@@ -96,7 +96,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                             </div>
                     </div>
                     <!--CUERPO-->
-                    <div class="row cuerpo" style="min-height:80vh; font-size: 0.8em" >
+                    <div class="row cuerpo" style="min-height:80vh; font-size: 1em" >
                                     <div class="col-12 d-flex justify-content-center">
                                             <div class="col-10 col-sm-8 col-lg-4 col-xl-3 text-center align-self-center rounded shadow" style=" background-color:#eaeaea;">
                                                                         <div class="col-12 p-3 rounded-1" style=" background-color:#eaeaea"><b>Junta de Arraque</b></div>
@@ -112,7 +112,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                                        
                                                                             <ul class="text-start">
                                                                                 <li v-for="(tema,index) in temas" class="mb-2" style="margin-bottom: 2px; ">
-                                                                                    <input v-model="temasCheck[index]" class="me-2" type="checkbox" :disabled="temasCheck[index]==true"/>
+                                                                                    <input v-model="temasCheck[index]" class="me-3" type="checkbox" :disabled="temasCheck[index]==true"/>
                                                                                     {{index+1}}.- {{tema.tema}}
                                                                                 </li>
                                                                             </ul>
@@ -135,54 +135,37 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                                                     <span style="font-size:1.5em;"><b>Finalizar</b></span>
                                                                                 </div>
                                                                         </div>
+                                                                  
                                                                         <div class="d-flex justify-content-center">
                                                                                     <button v-if="hora_inicial" type="button" class="btn_cancelar col-12 rounded-pill text-center p-2 text-white border-0 w-25 mb-3" @click="limpiar()">
                                                                                     <i class="bi bi-stopwatch-fill"></i> Reiniciar 
                                                                                     </button>
                                                                         </div>
-                                                                        <!---->
-                                                                            
-                                                                        <!---->
+                                                                        <? if($_SESSION['usuario']=='65799'){?>
+                                                                            <!---->
+                                                                            <button @click="activarCamara">Activar Cámara (En desarrollo)</button>
+                                                                            <button @click="capturarImagen">Capturar Imagen</button>
+                                                                            <video ref="video" autoplay></video>
+                                                                             <!---->
+                                                                        <?php }?>
                                                                         <div v-show="mostrar" class="alert alert-warning" role="alert">
                                                                             <b class="alert-link">{{mensaje}}</b>
                                                                         </div>
-                                                     </div> 
-                                                  
+                                                                   
+                                                                        
+                                                     </div>   
                                     </div>
-                                        <div v-if="juntas_arraque.length>0" class="col-12 col-lg-6 mx-auto text-center">
-                                            <label><b>Historial</b></label>
-                                            <!--scroll--><div  style="max-height: 20vh; overflow-x: auto;">
-                                                        <table class="table table-striped " style=" font-size: 0.9em;">
-                                                                <thead>
-                                                                    <tr class="table_encabezado align-middle" style="background:rgb(137, 0, 0); height:5px; color:white; font-size: 0.9em;">
-                                                                        <th scope="col" class="text-center">#</th>
-                                                                        <th scope="col" class="text-center">Fecha (Año-Mes-Día)</th>
-                                                                        <th scope="col " class="text-center">Duración de Junta</th>
-                                                                        <th scope="col" class="text-center">% Asistencia</th>
-                                                                       
-                                                                    </tr>
-                                                                </thead>
-                                                                    <tbody>
-                                                                        <tr class=" align-middle  fw-normal " v-for="(junta, index) in juntas_arraque" :key="index">
-                                                                            <td class="text-center">{{index+1}}</td>    
-                                                                            <td class="text-center">{{junta.hora_inicial.split(' ')[0]}}</td>    
-                                                                            <td class="text-center">{{junta.total_tiempo}}</td>
-                                                                            <td class="text-center">{{junta.asistencia}}</td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                            </table>
-                                        <!--scroll--> </div>
-                                        </div>
+
                                         <div class="col-12 col-lg-12 d-flex align-items-end justify-content-center" >
-                                            <div id="opciones" style="width: 18rem;" class=" d-flex align-items-center justify-content-center my-2" >
-                                                <div class="row text-center mb-2 d-flex justify-content-center align-items-center">
-                                                        <div  @click="redireccionar('Atras')" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer"> 
-                                                            <div> <img src="img/app_atras.png" class="img-fluid" alt="..." style=" width: 50px;" ></div>
-                                                        </div>        
+                                                <div id="opciones" style="width: 18rem;" class=" d-flex align-items-center justify-content-center my-2" >
+                                                    <div class="row text-center mb-2 d-flex justify-content-center align-items-center">
+                                                            <div  @click="redireccionar('Atras')" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer"> 
+                                                                <div> <img src="img/app_atras.png" class="img-fluid" alt="..." style=" width: 50px;" ></div>
+                                                            </div>        
+                                                    </div>
                                                 </div>
-                                            </div>
                                         </div>
-                                 
+
                     </div><!--FIN CUERPO-->
                             <!--FOOTER-->
                     <div class="row" style="height:10vh; background-color: rgba(181,0,0,1); box-shadow: 0px 0px 12px -2px black;">
@@ -190,7 +173,17 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
         </div>  <!--FIN DIV CONTENEDOR-->  
 </body>
 
+
+
 <script>
+ document.addEventListener("DOMContentLoaded", function() {
+            var video = document.getElementById("video");
+
+            // Verifica si el atributo es nulo
+            if (video.getAttribute("ref") === null) {
+                video.style.display = "none"; // Si es nulo oculta el video
+            }
+        });
     const vue3 = 
     {
         data(){
@@ -209,15 +202,63 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                 hora_final:'',
                 tiempo_transcurrido:'',
                 mostarBtn:false,
-                
+                fotografia:null
             }
         },
         mounted(){
             this.consultarEAD()
             this.consultarTemas()
-            this.consultarJuntasArranque()
+           
         },
         methods:{
+        activarCamara() {
+             // Verifica si el atributo es nulo
+             if (video.getAttribute("ref") === null) {
+                video.style.display = "none"; // Si es nulo oculta el video
+            }else{
+                video.style.display = "block"; 
+            }
+        navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
+                this.$refs.video.srcObject = stream;
+            }).catch(error => {
+            console.error('Error al acceder a la cámara:', error);
+            });
+        },
+        capturarImagen() {
+                const canvas = document.createElement('canvas');
+                const video = this.$refs.video;
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                // Agregar el canvas al DOM
+                document.body.appendChild(canvas);
+                const dataURL = canvas.toDataURL('image/png');
+                 // Convertir el canvas a un Blob
+                let formData = new FormData();
+                    formData.append("imagen", dataURL);
+                    formData.append("id_ead", this.id_ead);
+                    // Luego puedes enviar this.fotografia por Axios como un archivo
+                    axios.post("guardarFotografia.php", formData,{
+                            headers: { "Content-Type": "multipart/form-data" }
+                        }).then(response => {
+                            this.mostrar=true
+                            this.mensaje = 'Éxito'+response.data;
+                            setTimeout(()=>{
+                                        this.mostrar=false
+                                        this.mensaje = ''
+                                    },5000);
+                        
+                        }).catch(error => {
+                            this.mostrar=true
+                            this.mensaje = 'Error'+response.data;
+                            setTimeout(()=>{
+                                        this.mostrar=false
+                                        this.mensaje = ''
+                                    },5000);
+                        });
+            },
+
             redireccionar(opciones){
                 if(opciones=='Atras'){
                     window.location.href="principalColaborador.php"
@@ -293,7 +334,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                 
                 
             },
-            consultarJuntasArranque(){
+            /*consultarJuntasArranque(){
                 axios.get('consultar_juntas_arranque.php',{
                     params: {
                         id_ead:this.id_ead
@@ -307,76 +348,75 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                 }).catch({
 
                 })
-            },
+            },*/
             guardarJunta(){
-           
-           if(this.temasCheck!=''){// verifico que seleccione minimo un tema
-                            var todosTrue= this.temasCheck.every(numero => numero == true)// busco que todos sean true
-                            if(todosTrue && this.temasCheck.length==this.temas.length){// si son true pero el check temas tiene el mismo tamaño continuan y guarda
-                                            clearInterval(this.temporizador); // Detener temporizador
-                                            //tomando fechas
-                                                var fecha = new Date();
-                                                var anio = fecha.getFullYear();
-                                                var mes = fecha.getMonth() + 1; // Se suma 1 porque los meses comienzan en 0
-                                                var dia = fecha.getDate();
+                if(this.temasCheck!=''){// verifico que seleccione minimo un tema
+                                    var todosTrue= this.temasCheck.every(numero => numero == true)// busco que todos sean true
+                                    if(todosTrue && this.temasCheck.length==this.temas.length){// si son true pero el check temas tiene el mismo tamaño continuan y guarda
+                                                    clearInterval(this.temporizador); // Detener temporizador
+                                                    //tomando fechas
+                                                        var fecha = new Date();
+                                                        var anio = fecha.getFullYear();
+                                                        var mes = fecha.getMonth() + 1; // Se suma 1 porque los meses comienzan en 0
+                                                        var dia = fecha.getDate();
 
-                                                var fecha = new Date();
-                                                var hora = fecha.getHours();
-                                                var minutos = fecha.getMinutes();
-                                                var segundos = fecha.getSeconds();
-                                                this.hora_final = anio+"-"+mes+"-"+dia+" "+hora+":"+minutos+":"+segundos
-                                            //tomando fechas
-                                            var porcentaje = (this.asistieron.length / this.integrantesEAD.length)*100;//asistencia;
-                                            porcentaje = parseFloat(porcentaje.toFixed(2));
-                                            axios.post('guardar_junta_arranque.php',{
-                                                nombre_ead: this.datosEquipo.nombre_ead,
-                                                ids_integrantes:this.datosEquipo.integrantes,
-                                                ids_asistentes:this.asistieron,
-                                                asistencia:porcentaje,
-                                                hora_inicial:this.hora_inicial,
-                                                hora_final:this.hora_final,
-                                                tiempo_transcurrido:this.tiempo_transcurrido,
-                                            }).then(response=>{  
-                                                if(response.data==true){
-                                                    this.hora_inicial=''
-                                                    this.hora_final=''
-                                                    this.tiempo_transcurrido=''
-                                                    this.mostarBtn=false
-                                                    this.temasCheck = []
-                                                    this.mostrar=true
-                                                    this.mensaje = 'Guardada con Éxito';
-                                                    this.consultarJuntasArranque()
-                                                    setTimeout(()=>{
-                                                        this.mostrar=false
-                                                        this.mensaje = ''
-                                                    },10000);
-                                                }else{
-                                                    this.mostrar=true
-                                                    this.mensaje = 'Algo salió mal, si persiste el problema reportarlo con Mejora Continua';
-                                                    setTimeout(()=>{
-                                                        this.mostrar=false
-                                                        this.mensaje = ''
-                                                    },5000);
-                                                }
-                                            }).catch(error =>{
-                                                console.log('Error',error);
-                                            })
-                            }else{
-                            this.mostrar=true
-                            this.mensaje = 'Todos los puntos deben estar seleccionados';
-                                setTimeout(()=>{
-                                            this.mostrar=false
-                                            this.mensaje = ''
-                                        },5000);
-                            }
-             }else{
-                this.mostrar=true
-                this.mensaje = 'No ha seleccionado ningún tema.';
-                setTimeout(()=>{
-                            this.mostrar=false
-                            this.mensaje = ''
-                        },5000);
-                }
+                                                        var fecha = new Date();
+                                                        var hora = fecha.getHours();
+                                                        var minutos = fecha.getMinutes();
+                                                        var segundos = fecha.getSeconds();
+                                                        this.hora_final = anio+"-"+mes+"-"+dia+" "+hora+":"+minutos+":"+segundos
+                                                    //tomando fechas
+                                                    var porcentaje = (this.asistieron.length / this.integrantesEAD.length)*100;//asistencia;
+                                                    porcentaje = parseFloat(porcentaje.toFixed(2));
+                                                    axios.post('guardar_junta_arranque.php',{
+                                                        nombre_ead: this.datosEquipo.nombre_ead,
+                                                        ids_integrantes:this.datosEquipo.integrantes,
+                                                        ids_asistentes:this.asistieron,
+                                                        asistencia:porcentaje,
+                                                        hora_inicial:this.hora_inicial,
+                                                        hora_final:this.hora_final,
+                                                        tiempo_transcurrido:this.tiempo_transcurrido,
+                                                    }).then(response=>{  
+                                                        if(response.data==true){
+                                                            this.hora_inicial=''
+                                                            this.hora_final=''
+                                                            this.tiempo_transcurrido=''
+                                                            this.mostarBtn=false
+                                                            this.temasCheck = []
+                                                            this.mostrar=true
+                                                            this.mensaje = 'Guardada con Éxito';
+                                                            this.consultarJuntasArranque()
+                                                            setTimeout(()=>{
+                                                                this.mostrar=false
+                                                                this.mensaje = ''
+                                                            },10000);
+                                                        }else{
+                                                            this.mostrar=true
+                                                            this.mensaje = 'Algo salió mal, si persiste el problema reportarlo con Mejora Continua';
+                                                            setTimeout(()=>{
+                                                                this.mostrar=false
+                                                                this.mensaje = ''
+                                                            },5000);
+                                                        }
+                                                    }).catch(error =>{
+                                                        console.log('Error',error);
+                                                    })
+                                    }else{
+                                    this.mostrar=true
+                                    this.mensaje = 'Todos los puntos deben estar seleccionados';
+                                        setTimeout(()=>{
+                                                    this.mostrar=false
+                                                    this.mensaje = ''
+                                                },5000);
+                                    }
+                    }else{
+                        this.mostrar=true
+                        this.mensaje = 'No ha seleccionado ningún tema.';
+                        setTimeout(()=>{
+                                    this.mostrar=false
+                                    this.mensaje = ''
+                                },5000);
+                        }
             },
             limpiar(){
                 clearInterval(this.temporizador);    
@@ -387,7 +427,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                         this.temasCheck = []
                         this.mostrar=false
                         this.mensaje = ''
-            }
+            },
+
         }
     }
     var mountedApp = Vue.createApp(vue3).mount('#app');
