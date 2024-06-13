@@ -237,6 +237,26 @@
     width:40px;
     color:white;
 }
+
+
+.btn_photo {
+    background-color: #ddf5bf;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    font-size: 18px;
+    border-radius: 50px;
+    width: 100px;
+    height: 100px;
+    transition: 0.3s;
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
+  }
+  
+  .btn_photo:hover {
+    transform: translateY(2px);
+    box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.5);
+    }
 /*APP*/
 
  }

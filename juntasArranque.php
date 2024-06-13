@@ -29,7 +29,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
         <!--Contenido-->
         <link href="https://fonts.googleapis.com/css2?family=Andika&display=swap" rel="stylesheet">
         <!--Incluyendo Estilo-->
-        <link rel="stylesheet" type="text/css" href="estilos/miestilo.css">
+        <link rel="stylesheet" type="text/css" href="estilos/miestilo.css?v=1.0">
         <!--Iconos boostrap-->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
         <title>Sugerencias</title>
@@ -146,24 +146,30 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                 <i class="bi bi-stopwatch-fill"></i> Reiniciar
                             </button>
                         </div>
-                        <? // Verificar si la solicitud viene de la aplicación móvil
-                        if (isset($_GET['app']) && $_GET['app'] === 'true') {
-                            //echo "Movil";
-                        } else {
-                            // Mostrar los botones si no viene de la aplicación móvil
-                            if ($_SESSION['usuario'] == '65799') {
+                        <?php if(isset($_GET['app'])){
                         ?>
-                                <button @click="activarCamara">Activar Cámara (En desarrollo)</button>
-                                <button @click="capturarImagen">Capturar Imagen</button>
-                                <video ref="video" autoplay></video>
+                                <div v-if="existeJuntaYSinFoto=='Junta y Sin Foto'" class="col-12 " style="margin-top:10%">     
+                                    <div class="col-12 offset-lg-4 col-lg-4 d-flex justify-content-center">
+                                        <a href="ejecutarCamaraMovil.php" class="btn_photo"> <img src="img/photo.png" class="img-responsive" width="50"/></a>
+                                    </div>
+                                    <div class="col-12 offset-lg-4 col-lg-4 d-flex justify-content-center">
+                                        <label class="alert alert-info mt-1" style="font-size:0.8em">Tome la fotogragía de hoy {{hoy}}</label>
+                                    </div>
+                                </div>      
                         <?php
+                        }else{
+                            ?>
+                                <div v-if="numero_nomina=='65799' || movil!='true'">
+                                    <!--<button @click="activarCamara">Activar Cámara (En desarrollo)</button>
+                                    <button @click="capturarImagen">Capturar Imagen</button>
+                                    <video ref="video" autoplay></video>-->
+                                </div>
+                            <?php
                             }
-                        } ?>
+                        ?>
                         <div v-show="mostrar" class="alert alert-warning" role="alert">
                             <b class="alert-link">{{mensaje}}</b>
                         </div>
-
-
                     </div>
                 </div>
 
@@ -187,14 +193,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
 
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var video = document.getElementById("video");
 
-            // Verifica si el atributo es nulo
-            if (video.getAttribute("ref") === null) {
-                video.style.display = "none"; // Si es nulo oculta el video
-            }
-        });
         const vue3 = {
             data() {
                 return {
@@ -212,15 +211,137 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     hora_final: '',
                     tiempo_transcurrido: '',
                     mostarBtn: false,
-                    fotografia: null
+                    fotografia: null,
+                    movil:'',
+                    existeJuntaYSinFoto:'Sin junta',
+                    hoy:'',
                 }
             },
             mounted() {
                 this.consultarEAD()
                 this.consultarTemas()
-
+                this.consultarJuntasDeArranque()
             },
             methods: {
+               
+                redireccionar(opciones) {
+                    if (opciones == 'Atras') {
+                        window.location.href = "principalColaborador.php"
+                    }
+                },
+                consultarEAD() {
+                    
+                   
+                    axios.get('consultar_ead.php', {}).then(response => {
+                        if (response.data[0] == true) {
+                            this.integrantesEAD = response.data[1]
+                            this.asistieron = response.data[1].map(integrante => integrante.id)
+                            this.datosEquipo = response.data[2]
+                        } else {
+                            console.log("Algo salio mal en consulta", response.data)
+                        }
+                    }).catch(error => {
+                        console.log('Error en axios', error)
+                    })
+                },
+                consultarTemas() {
+                    axios.get('consultar_temas.php', {}).then(response => {
+                        if (response.data[0] == true) {
+                            this.temas = response.data[1]
+                        } else {
+                            console.log("Algo salio mal en consulta", response.data)
+                        }
+
+                    }).catch(error => {
+                        console.log('Error en axios', error)
+                    })
+                },
+                consultarJuntasDeArranque(){
+                    this.movil=<?php echo isset($_GET['app']) ? 'true' : 'false'; ?>;
+                    axios.get('consultar_juntas_arranque.php',{
+                        params: {
+                            id_ead:this.id_ead
+                        }
+                    }).then(response =>{
+                       
+                        if(response.data[0]==true){
+                            this.juntas_arraque = response.data[1];
+                            var juntas = this.juntas_arraque
+                            const fecha_actual = new Date().toISOString().slice(0, 10); // formato "YYYY-MM-DD"
+                            this.hoy = fecha_actual;
+                            const existeFecha = juntas.some(item => {
+                            const fechaItem = new Date(item.hora_inicial).toISOString().slice(0, 10);
+                            console.log(fechaItem + "==" + fecha_actual);
+                            return fechaItem === fecha_actual;
+                            });
+
+                            if (existeFecha==false) {
+                                this.existeJuntaYSinFoto = "Sin Junta";
+                            } else {
+                                const existeFechaYFotografia = juntas.some(item => {
+                                const fechaItem = new Date(item.hora_inicial).toISOString().slice(0, 10);
+                                return fechaItem === fecha_actual && item.fotografia === "Si";
+                                });
+                                
+                                if (existeFechaYFotografia==true) {
+                                    this.existeJuntaYSinFoto = "Junta y Foto";
+                                } else {
+                                    this.existeJuntaYSinFoto = "Junta y Sin Foto";
+                                }
+                            }
+                        }else{
+                            console.log("No se logro la consulta en juntas de arranque")
+                        }
+                        console.log(this.existeJuntaYSinFoto)
+                    }).catch({
+
+                    })
+                },
+                tomarFechaActual() {
+                    var fecha = new Date();
+                    var anio = fecha.getFullYear();
+                    var mes = fecha.getMonth() + 1; // Se suma 1 porque los meses comienzan en 0
+                    var dia = fecha.getDate();
+
+                    var fecha = new Date();
+                    var hora = fecha.getHours();
+                    var minutos = fecha.getMinutes();
+                    var segundos = fecha.getSeconds();
+
+                    if (this.tiempo_transcurrido != '') {
+                        return
+                    }
+                    this.hora_inicial = anio + "-" + mes + "-" + dia + " " + hora + ":" + minutos + ":" + segundos
+                    console.log('Iniciar', this.hora_inicial)
+                    // Iniciar temporizador
+                    this.temporizador = setInterval(() => {
+                        // Obtener la fecha actual
+                        var fecha_actual = new Date();
+                        var hora_actual = fecha_actual.getHours();
+                        var minutos_actual = fecha_actual.getMinutes();
+                        var segundos_actual = fecha_actual.getSeconds();
+
+                        // Calcular el tiempo transcurrido
+                        var segundos_transcurridos = segundos_actual - segundos;
+                        if (segundos_transcurridos < 0) {
+                            segundos_transcurridos += 60;
+                            minutos_actual--;
+                        }
+                        var minutos_transcurridos = minutos_actual - minutos;
+                        if (minutos_transcurridos < 0) {
+                            minutos_transcurridos += 60;
+                            hora_actual--;
+                        }
+                        var horas_transcurridas = hora_actual - hora;
+
+                        // Mostrar el tiempo transcurrido
+                        this.tiempo_transcurrido = horas_transcurridas + ":" + minutos_transcurridos + ":" + segundos_transcurridos;
+                        console.log('Tiempo transcurrido', this.tiempo_transcurrido);
+                    }, 1000);
+                    // Fin temporizador
+
+
+                },
                 activarCamara() {
                     // Verifica si el atributo es nulo
                     if (video.getAttribute("ref") === null) {
@@ -273,96 +394,6 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     });
                 },
 
-                redireccionar(opciones) {
-                    if (opciones == 'Atras') {
-                        window.location.href = "principalColaborador.php"
-                    }
-                },
-                consultarEAD() {
-                    axios.get('consultar_ead.php', {}).then(response => {
-                        if (response.data[0] == true) {
-                            this.integrantesEAD = response.data[1]
-                            this.asistieron = response.data[1].map(integrante => integrante.id)
-                            this.datosEquipo = response.data[2]
-                        } else {
-                            console.log("Algo salio mal en consulta", response.data)
-                        }
-                    }).catch(error => {
-                        console.log('Error en axios', error)
-                    })
-                },
-                consultarTemas() {
-                    axios.get('consultar_temas.php', {}).then(response => {
-                        if (response.data[0] == true) {
-                            this.temas = response.data[1]
-                        } else {
-                            console.log("Algo salio mal en consulta", response.data)
-                        }
-
-                    }).catch(error => {
-                        console.log('Error en axios', error)
-                    })
-                },
-                tomarFechaActual() {
-                    var fecha = new Date();
-                    var anio = fecha.getFullYear();
-                    var mes = fecha.getMonth() + 1; // Se suma 1 porque los meses comienzan en 0
-                    var dia = fecha.getDate();
-
-                    var fecha = new Date();
-                    var hora = fecha.getHours();
-                    var minutos = fecha.getMinutes();
-                    var segundos = fecha.getSeconds();
-
-                    if (this.tiempo_transcurrido != '') {
-                        return
-                    }
-                    this.hora_inicial = anio + "-" + mes + "-" + dia + " " + hora + ":" + minutos + ":" + segundos
-                    console.log('Iniciar', this.hora_inicial)
-                    // Iniciar temporizador
-                    this.temporizador = setInterval(() => {
-                        // Obtener la fecha actual
-                        var fecha_actual = new Date();
-                        var hora_actual = fecha_actual.getHours();
-                        var minutos_actual = fecha_actual.getMinutes();
-                        var segundos_actual = fecha_actual.getSeconds();
-
-                        // Calcular el tiempo transcurrido
-                        var segundos_transcurridos = segundos_actual - segundos;
-                        if (segundos_transcurridos < 0) {
-                            segundos_transcurridos += 60;
-                            minutos_actual--;
-                        }
-                        var minutos_transcurridos = minutos_actual - minutos;
-                        if (minutos_transcurridos < 0) {
-                            minutos_transcurridos += 60;
-                            hora_actual--;
-                        }
-                        var horas_transcurridas = hora_actual - hora;
-
-                        // Mostrar el tiempo transcurrido
-                        this.tiempo_transcurrido = horas_transcurridas + ":" + minutos_transcurridos + ":" + segundos_transcurridos;
-                        console.log('Tiempo transcurrido', this.tiempo_transcurrido);
-                    }, 1000);
-                    // Fin temporizador
-
-
-                },
-                /*consultarJuntasArranque(){
-                    axios.get('consultar_juntas_arranque.php',{
-                        params: {
-                            id_ead:this.id_ead
-                        }
-                    }).then(response =>{
-                        if(response.data[0]==true){
-                            this.juntas_arraque = response.data[1];
-                        }else{
-                            console.log("No se logro la consulta en juntas de arranque")
-                        }
-                    }).catch({
-
-                    })
-                },*/
                 guardarJunta() {
                     if (this.temasCheck != '') { // verifico que seleccione minimo un tema
                         var todosTrue = this.temasCheck.every(numero => numero == true) // busco que todos sean true
@@ -399,11 +430,12 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                     this.temasCheck = []
                                     this.mostrar = true
                                     this.mensaje = 'Guardada con Éxito';
-                                    this.consultarJuntasArranque()
-                                    setTimeout(() => {
+                                    //this.consultarJuntasDeArranque()
+                                    this.ejecutarCamaraMovil()
+                                    /*setTimeout(() => {
                                         this.mostrar = false
                                         this.mensaje = ''
-                                    }, 10000);
+                                    }, 10000);*/
                                 } else {
                                     this.mostrar = true
                                     this.mensaje = 'Algo salió mal, si persiste el problema reportarlo con Mejora Continua';
@@ -442,6 +474,15 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     this.mostrar = false
                     this.mensaje = ''
                 },
+                ejecutarCamaraMovil(){
+                    console.log("valor movil:",this.movil);
+                        if (this.movil) {
+                        window.location.href = "ejecutarCamaraMovil.php";
+                        } else {
+                        console.log("No es movil");
+                        }
+                    
+                }
 
             }
         }
