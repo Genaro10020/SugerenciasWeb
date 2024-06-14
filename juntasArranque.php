@@ -153,7 +153,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                         <a href="ejecutarCamaraMovil.php" class="btn_photo"> <img src="img/photo.png" class="img-responsive" width="50"/></a>
                                     </div>
                                     <div class="col-12 offset-lg-4 col-lg-4 d-flex justify-content-center">
-                                        <label class="alert alert-info mt-1" style="font-size:0.8em">Tome la fotogragía de hoy {{hoy}}</label>
+                                        <label class="alert alert-info mt-1" style="font-size:0.8em">Fotografía pendiente del día {{hoy}}</label>
                                     </div>
                                 </div>      
                         <?php
