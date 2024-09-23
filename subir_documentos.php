@@ -51,7 +51,7 @@ if (!file_exists($path)) {
                                 $valid_ext = array("png","jpeg","jpg");//entension valida para 
                             }
                             if($cual_documento=="ppt"){
-                                $valid_ext = array("docx","ppt","pptx");
+                                $valid_ext = array("docx","ppt","pptx","xls","xlsx");
                             }
                             if($cual_documento=="nofactibleopcional"){
                                 $valid_ext = array("png","jpeg","jpg","pdf","doc","docx","ppt","pptx");

@@ -74,9 +74,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                             <button class="opciones mx-lg-2 rounded-3 " @click="mostrar('principalMejora')"  v-bind:class="{pintarUno}" >
                                 Principal Mejora
                             </button> 
-                            <button class="opciones mx-lg-2 rounded-3 " @click="mostrar('planesDeTrabajo')"  v-bind:class="{pintarDos}" >
+                            <!--<button class="opciones mx-lg-2 rounded-3 " @click="mostrar('planesDeTrabajo')"  v-bind:class="{pintarDos}" >
                                 Planes de Trabajo
-                            </button>  
+                            </button>  -->
                             <button class="opciones  mx-lg-2 rounded-3" @click="mostrar('concentrado')" v-bind:class="{pintarTres}">
                                 Concentrado de sugerencias
                             </button>  
@@ -397,9 +397,11 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                             <div class="col-12 col-sm-6 d-flex justify-content-center">
                                                                                                 <!-- Mostrando los archivos nuevos y cargados de PPT-->
                                                                                             <div v-show="fileppt.length>0 && cual_documento=='ppt'" >
-                                                                                                    <div v-for= "(fileppts,index) in fileppt">
+                                                                                                    <div v-for= "(fileppts,index) in fileppt">  
+                                                                                                         mostrando resultado {{fileppt}}<br>
+                                                                                                    mostrando resultado {{fileppts}}<br>
                                                                                             
-                                                                                                            <span class="badge bg-secondary">Descargar Presentacion </span><br>
+                                                                                                            <span class="badge bg-secondary">Descargar Presentacion</span>
                                                                                                                 <!--<div class="col-12 col-md-12">
                                                                                                                     <button type="button" class="btn btn-danger" @click="eliminarDocumento(fileppts)" >Eliminar</button>
                                                                                                                 </div>-->
@@ -1515,14 +1517,23 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                          <hr>
                                                                 <div class="col-12" v-for= "(fileppts,index) in fileppt">
                                                                     <div class="row">
-                                                                        <span class="badge bg-secondary">Documento {{index+1}}</span><br>
+                                                                        <span class="badge bg-secondary mt-3">Documento {{index+1}}</span><br>
                                                                             <div class="col-12 col-md-12">
                                                                                 <button type="button" class="btn btn-danger" @click="eliminarDocumento(fileppts)" >Eliminar</button>
                                                                             </div>
-                                                                            <div class="col-12 col-md-12 mt-5">
-                                                                            Descargar<br>
-                                                                                <a :href="fileppts" download="Presentacion.pptx">
-                                                                                    <img src="img/descargar_ppt.png" style="width:100px; height:100px;"></img>
+                                                                            <div class="col-12 col-md-12">
+                                                                            Descargar <br><label style="font-size: 0.8em;">{{fileppts.substr(fileppts.lastIndexOf('/')+1)}}</label><br>
+                                                                                <a :href="fileppts" :download="fileppts.substr(fileppts.lastIndexOf('/') + 1)">
+
+                                                                                    <div v-if="fileppts.substr(fileppts.lastIndexOf('.')+1).trim() =='ppt' || fileppts.substr(fileppts.lastIndexOf('.')+1).trim()=='pptx'">
+                                                                                        <img src="img/descargar_ppt.png" style="width:100px; height:100px;"></img>
+                                                                                     </div>
+                                                                                     <div v-if="fileppts.substr(fileppts.lastIndexOf('.')+1).trim() =='xls' || fileppts.substr(fileppts.lastIndexOf('.')+1).trim()=='xlsx'">
+                                                                                        <img src="img/descargar_excel.png" style="width:100px; height:100px;"></img>
+                                                                                     </div>
+                                                                                     <div v-if="fileppts.substr(fileppts.lastIndexOf('.')+1).trim() =='doc' || fileppts.substr(fileppts.lastIndexOf('.')+1).trim()=='docx'">
+                                                                                        <img src="img/descargar_word.png" style="width:100px; height:100px;"></img>
+                                                                                     </div>
                                                                                 </a>
                                                                             </div>
                                                                     </div>
@@ -3272,7 +3283,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 }else if(this.cual_documento == 'ppt'){
                     this.myModal = new bootstrap.Modal(document.getElementById('modal'))
                     this.myModal.show()
-                    this.extensiones_valida = '(.docx, .ppt, .pptx)'
+                    this.extensiones_valida = '(.docx, .ppt, .pptx,.xls,.xlsx)'
                 }else if(this.cual_documento == 'reto'){
                     this.myModal = new bootstrap.Modal(document.getElementById('modal'))
                     this.myModal.show()
