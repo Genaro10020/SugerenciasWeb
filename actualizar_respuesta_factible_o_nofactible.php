@@ -13,8 +13,9 @@ if ($respuesta=="Factible") {
 }
 
 include "conexionGhoner.php";
+$fecha_plan_aceptado = date('Y-m-d H:i:s');
 
-        $actualizar = " UPDATE concentrado_sugerencias SET respuesta_analista='$respuesta', puntos_factible='$puntos_factible' WHERE id = '$id_concentrado'";
+        $actualizar = " UPDATE concentrado_sugerencias SET respuesta_analista='$respuesta', puntos_factible='$puntos_factible', fecha_factibilidad ='$fecha_plan_aceptado'  WHERE id = '$id_concentrado'";
         $query = mysqli_query( $conexion, $actualizar);
         $resultado = $query;
  
