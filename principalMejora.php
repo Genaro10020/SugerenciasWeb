@@ -3127,35 +3127,34 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 axios.post('consulta_concentrado_sugerencias.php',{
                             }).then(response =>{
                                 this.concentrado_sugerencias = response.data
-                                console.log(this.concentrado_sugerencias);
+                                //console.log(this.concentrado_sugerencias);
                             })
             },
             consultando_plantas(){
                 axios.post('lista_planta.php',{
                 }).then(response =>{
                     this.lista_planta = response.data
-                    console.log(this.lista_planta);
+                    //console.log(this.lista_planta);
                 })
             },
             consultando_area(){
                 axios.post('lista_area.php',{
             }).then(response =>{
                 this.lista_area = response.data
-                console.log(this.lista_area);
+                //console.log(this.lista_area);
             })
             },
             consultando_area_participante(){
                 axios.post('lista_area_participante.php',{
                 }).then(response =>{
                     this.lista_area_participante = response.data
-                    console.log(this.lista_area_participante);
+                    //console.log(this.lista_area_participante);
                 })
             },
             consultando_subarea(){
                 axios.post('lista_subarea.php',{
                 }).then(response =>{
                     this.lista_subarea = response.data
-                    console.log(this.lista_subarea);
                 })
             },
             consultando_impacto(){
@@ -3163,36 +3162,32 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 }).then(response =>{
                     this.lista_impacto_primario = response.data
                     this.lista_impacto_secundario = response.data
-                    console.log(this.lista_impacto_primario);
-                    console.log(this.lista_impacto_secundario);
                 })
             },
             consultando_lista_de_desperdicio(){
                 axios.post('lista_tipo_desperdicio.php',{
                 }).then(response =>{
                     this.lista_tipo_desperdicio = response.data
-                    console.log(this.lista_tipo_desperdicio);
                 })
             },
             consulta_lista_objetivos_calidad_ma(){
                 axios.post('lista_objetivos_calidad_ma.php',{
             }).then(response =>{
                 this.objetivo_de_calidadMA = response.data
-                console.log(this.objetivo_de_calidadMA);
+                //console.log(this.objetivo_de_calidadMA);
             })
             },
             consulta_lista_analista_factibilidad(){
                 axios.post('lista_analista_factibilidad.php',{
             }).then(response =>{
                 this.lista_analista_factibilidad = response.data
-                console.log(this.lista_analista_factibilidad);
+                //console.log(this.lista_analista_factibilidad);
             })
             },
             consulta_lista_usuarios_y_analistas_factibilidad(){
                 axios.post('lista_usuarios_y_analistas_factibilidad.php',{
             }).then(response =>{
                 this.lista_usuarios_y_analistas_factibilidad = response.data
-                console.log(this.lista_usuarios_y_analistas_factibilidad);
             })
             },
             modal_nueva_eliminar(agregar_o_eliminar,tipo,folio){
@@ -3810,7 +3805,6 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 axios.post('consulta_usuarios.php',{
                 }).then(response =>{
                     this.array_usuarios=response.data
-                    console.log(this.array_usuarios)
                 })
             },
             editarUsuarios(bandera,index){
@@ -3847,7 +3841,6 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     id: id,
                     accion: 'actualizar',
                     }).then(response =>{
-                    console.log(response.data);
                    if(response.data=='Bien'){
                         this.bandera_editar_user = false
                         this.id_update = 0
