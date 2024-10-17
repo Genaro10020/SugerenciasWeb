@@ -3468,7 +3468,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 },
                 
             eliminarDocumento(ruta){
-               
+               if(!confirm("Desea eliminar el Documento ¿Esta seguro?")){return true}
                axios.post("eliminar_documento.php",{
                     ruta_eliminar: ruta,
                     id_concentrado: this.id_concentrado,
