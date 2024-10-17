@@ -35,30 +35,30 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
 </head>
 <body>
 <style>
-            .titulo{    
-                    font-family: 'Luckiest Guy', cursive;
-                    color: white; 
-                    /*text-shadow: 0px 0px 2px black;
-                     -webkit-text-stroke: 1px black;*/
-                }
+    .titulo{    
+            font-family: 'Luckiest Guy', cursive;
+            color: white; 
+            /*text-shadow: 0px 0px 2px black;
+                -webkit-text-stroke: 1px black;*/
+        }
 
-               .div_susperior{
-                background: rgb(255,255,255);
-                background: linear-gradient(140deg, rgba(255,255,255,1) 24%, rgba(181,0,0,1) 24%, rgba(181,0,0,1) 76%, rgba(255,255,255,1) 76%); 
-               }
+        .div_susperior{
+        background: rgb(255,255,255);
+        background: linear-gradient(140deg, rgba(255,255,255,1) 24%, rgba(181,0,0,1) 24%, rgba(181,0,0,1) 76%, rgba(255,255,255,1) 76%); 
+        }
 
-               footer{
-                background: rgb(181,0,0);
-                background: linear-gradient(180deg, rgba(181,0,0,1) 12%, rgba(237,193,193,1) 100%); 
-               }
+        footer{
+        background: rgb(181,0,0);
+        background: linear-gradient(180deg, rgba(181,0,0,1) 12%, rgba(237,193,193,1) 100%); 
+        }
 
-                textarea[type]:focus,input[type]:focus, button[type]:focus {
-                border: 2px solid;    
-                border-color: rgb(137, 0, 0);
-                /*box-shadow: 0 0px 0px rgba(0, 133, 180, 1)inset, 0 0 4px rgba( 187, 16, 16, 1);*/
-                outline: 0 none;
-                }
-                
+        textarea[type]:focus,input[type]:focus, button[type]:focus {
+        border: 2px solid;    
+        border-color: rgb(137, 0, 0);
+        /*box-shadow: 0 0px 0px rgba(0, 133, 180, 1)inset, 0 0 4px rgba( 187, 16, 16, 1);*/
+        outline: 0 none;
+        }
+        
     </style>
     <div id="app" class="container-fluid  " >
                 <!--BARRA SUPERIOR-->
@@ -71,32 +71,31 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
             <div class="row" style="height:4vh">
                 <div class="d-flex justify-content-center text-white align-items-center" >
                
-                            <button class="opciones mx-lg-2 rounded-3 " @click="mostrar('principalMejora')"  v-bind:class="{pintarUno}" >
-                                Principal Mejora
-                            </button> 
-                            <!--<button class="opciones mx-lg-2 rounded-3 " @click="mostrar('planesDeTrabajo')"  v-bind:class="{pintarDos}" >
-                                Planes de Trabajo
-                            </button>  -->
-                            <button class="opciones  mx-lg-2 rounded-3" @click="mostrar('concentrado')" v-bind:class="{pintarTres}">
-                                Concentrado de sugerencias
-                            </button>  
-                            <button class="opciones  mx-lg-2  rounded-3" @click="mostrar('premios')" v-bind:class="{pintarCuatro}">
-                                Administración de Premios
-                            </button>
-                            <button class="opciones  mx-lg-2  rounded-3" @click="mostrar('retos')" v-bind:class="{pintarCinco}">
-                                Administración de Retos
-                            </button>
-                            <button class="opciones   mx-lg-2 rounded-3" @click="mostrar('configuracion')" v-bind:class="{pintarSeis}">
-                                Configuración
-                            </button>
-                            <button class="opciones   mx-lg-2 rounded-3" @click="mostrar('solicitados')" v-bind:class="{pintarSiete}">
-                                Premios Solicitados
-                            </button>
-                            <button class="opciones   mx-lg-2 rounded-3" @click="mostrar('colaboradores')" v-bind:class="{pintarOcho}">
-                                Colaborador
-                            </button>
-                </div>
-                
+                    <button class="opciones mx-lg-2 rounded-3 " @click="mostrar('principalMejora')"  v-bind:class="{pintarUno}" >
+                        Principal Mejora
+                    </button> 
+                    <!--<button class="opciones mx-lg-2 rounded-3 " @click="mostrar('planesDeTrabajo')"  v-bind:class="{pintarDos}" >
+                        Planes de Trabajo
+                    </button>  -->
+                    <button class="opciones  mx-lg-2 rounded-3" @click="mostrar('concentrado')" v-bind:class="{pintarTres}">
+                        Concentrado de sugerencias
+                    </button>  
+                    <button class="opciones  mx-lg-2  rounded-3" @click="mostrar('premios')" v-bind:class="{pintarCuatro}">
+                        Administración de Premios
+                    </button>
+                    <button class="opciones  mx-lg-2  rounded-3" @click="mostrar('retos')" v-bind:class="{pintarCinco}">
+                        Administración de Retos
+                    </button>
+                    <button class="opciones   mx-lg-2 rounded-3" @click="mostrar('configuracion')" v-bind:class="{pintarSeis}">
+                        Configuración
+                    </button>
+                    <button class="opciones   mx-lg-2 rounded-3" @click="mostrar('solicitados')" v-bind:class="{pintarSiete}">
+                        Premios Solicitados
+                    </button>
+                    <button class="opciones   mx-lg-2 rounded-3" @click="mostrar('colaboradores')" v-bind:class="{pintarOcho}">
+                        Colaborador
+                    </button>
+                </div>               
             </div>
             <div style=" font-size: 15px;"><b> <?php echo $_SESSION['nombre']; ?></b></div>
                  <!--CUERPO-->
@@ -1403,7 +1402,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
 
                             <!-- Modal Eliminar/Actualizar-->
                             <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-dialog modal-dialog-centered modal-xl">
                                 <div class="modal-content">
                                 <div class="modal-header">
                                     <h6 class="modal-title" id="exampleModalLabel" >{{titulo_modal}} </h6>
@@ -2216,7 +2215,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
 
 
                            <!-- Modal Eliminar/Actualizar-->
-                            <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal fade " id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered modal-xl">
                                 <div class="modal-content">
                                 <div class="modal-header">
