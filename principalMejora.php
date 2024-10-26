@@ -104,9 +104,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                    <div v-if="ventana=='principalMejora'" v-cloak>
                             <!--cinta apartado-->
                             <div class="row justify-content-center align-items-start ">
-                                    <div class="cintilla col-12 text-center">
-                                    <b> PRINCIPAL MEJORA </b>
-                                    </div>
+                                <div class="cintilla col-12 text-center">
+                                <b> PRINCIPAL MEJORA </b>
+                                </div>
                             </div>
                             <!--fin cinta apartado-->
                             <!-- contenido principal gonher-->
@@ -135,48 +135,45 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                         <button  v-show="concentrado.check_mc=='Corregido' && concentrado.status!='Cerrada/Fast Response'  && concentrado.status!='Cerrada/No Factible'" class="btn btn-warning" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalTablaPlan" @click="consultarActividades(concentrado.id,concentrado.status),datosSugerencia(concentrado.id)"><i class="bi bi-table"  ></i> {{concentrado.check_mc}}</button>
                                         <button  v-show="concentrado.check_mc=='Aceptado' && concentrado.status!='Cerrada/Fast Response' && concentrado.status!='Cerrada/No Factible'" class="btn btn-success" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalTablaPlan" @click="consultarActividades(concentrado.id,concentrado.status),datosSugerencia(concentrado.id)"><i class="bi bi-table" ></i> {{concentrado.check_mc}}</button>
                                     </td>
-                                        <td>{{concentrado.folio}}</td>
+                                        <td>{{concentrado.folio}}</td> <!--FOLIO-->
                                         <td>{{concentrado.nombre_sugerencia}}</td>
                                         <td>{{concentrado.fecha_compromiso}}</td>
                                         <td v-if="concentrado.cumplimiento==100" class="text-white bg-success"><b>{{concentrado.cumplimiento}}%</b></td>
                                         <td v-else-if="concentrado.cumplimiento==99" class="text-white bg-warning" ><b>{{concentrado.cumplimiento}}%</b></td>
                                         <td v-else><b>{{concentrado.cumplimiento}}%</b></td>
-                                        <td>
+                                        <td> <!--ES ESTEEEE -->
                                             <!--<a v-if="concentrado.status=='Cerrada/Fast Response' || concentrado.status=='Cerrada/No Factible'" data-bs-toggle="modal" data-bs-target="#modalCambiaraEnFactibilidad" style="cursor: pointer; text-decoration: underline blue;" @click="datos_modal(concentrado.id)" ><p class="fw-bold text-primary">{{concentrado.status}}</p></a>
                                             <a v-else> {{concentrado.status}}</a>-->
-                                            
-                                                <div class="d-inline">
-                                                        <a data-bs-toggle="modal" data-bs-target="#modalCambiaraEnFactibilidad" style="cursor: pointer; text-decoration: underline blue;" @click="datos_modal(concentrado.id)" class="fw-bold text-primary me-2">{{concentrado.status}}</a>
-                                                </div>
-                                                <div class="d-inline">
-                                                        <button  v-show="concentrado.status=='Cerrada/Fast Response' || concentrado.status=='Cerrada/No Factible'" class="btn btn-success" style="font-size:.9em" 
-                                                         @click="datos_modal_detalles(concentrado.id,concentrado.folio,concentrado.numero_nomina,concentrado.causa_no_factibilidad,concentrado.cumplimiento,concentrado.analista_de_factibilidad,concentrado.colaborador,concentrado.idea_propuesta,concentrado.situacion_actual)"><i class="bi bi-table" ></i> Detalles</button>
-                                                </div>
-                                          
+                                            <div class="d-inline">
+                                                <a data-bs-toggle="modal" data-bs-target="#modalCambiaraEnFactibilidad" style="cursor: pointer; text-decoration: underline blue;" @click="datos_modal(concentrado.id)" class="fw-bold text-primary me-2">{{concentrado.status}}</a>
+                                            </div>
+                                            <div class="d-inline">
+                                                <button v-show="concentrado.status=='Cerrada/Fast Response' || concentrado.status=='Cerrada/No Factible'" class="btn btn-success" style="font-size:.9em" @click="datos_modal_detalles(concentrado.id,concentrado.folio,concentrado.numero_nomina,concentrado.causa_no_factibilidad,concentrado.cumplimiento,concentrado.analista_de_factibilidad,concentrado.colaborador,concentrado.idea_propuesta,concentrado.situacion_actual)"><i class="bi bi-table" ></i> Detalles</button>
+                                            </div>  
                                         </td>
                                         <td> 
-                                                <div class="d-flex justify-content-around">
-                                                    <div>
-                                                           <div v-if="concentrado.validacion_de_impacto =='Cuantitativo'"><!--BTN VERDE-->
-                                                                <button v-show="concentrado.status=='Implementada' && concentrado.validacion_calificada!=0" type="button" class="btn btn-success" @click="datos_modal(concentrado.id, concentrado.folio,'Cuantitativo',concentrado.numero_nomina)" style=" font-size:.9em">Impacto Cuantitativo</button>
-                                                                <button v-show="concentrado.status=='Implementada' && concentrado.validacion_calificada==0" type="button" class="btn btn-warning" @click="datos_modal(concentrado.id, concentrado.folio,'Cuantitativo',concentrado.numero_nomina)" style=" font-size:.9em">Impacto Cuantitativo</button>
-                                                                <!--<button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-danger ms-2" @click="vaciarValidaciondeImpacto(concentrado.id,'Cuantitativo')" title="Limpiar impacto" style=" font-size:.9em">x</button>-->
-                                                           </div>
-                                                           <!--<div v-else>                                                          
-                                                                <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-secondary" @click="datos_modal(concentrado.id, concentrado.folio,'Cuantitativo',concentrado.numero_nomina)" style=" font-size:.9em" >Impacto Cuantitativo</button>
-                                                           </div>
+                                            <div class="d-flex justify-content-around">
+                                                <div>
+                                                    <div v-if="concentrado.validacion_de_impacto =='Cuantitativo'"><!--BTN VERDE-->
+                                                        <button v-show="concentrado.status=='Implementada' && concentrado.validacion_calificada!=0" type="button" class="btn btn-success" @click="datos_modal(concentrado.id, concentrado.folio,'Cuantitativo',concentrado.numero_nomina)" style=" font-size:.9em">Impacto Cuantitativo</button>
+                                                        <button v-show="concentrado.status=='Implementada' && concentrado.validacion_calificada==0" type="button" class="btn btn-warning" @click="datos_modal(concentrado.id, concentrado.folio,'Cuantitativo',concentrado.numero_nomina)" style=" font-size:.9em">Impacto Cuantitativo</button>
+                                                        <!--<button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-danger ms-2" @click="vaciarValidaciondeImpacto(concentrado.id,'Cuantitativo')" title="Limpiar impacto" style=" font-size:.9em">x</button>-->
                                                     </div>
-                                                    <div>--> 
-                                                            <div v-if="concentrado.validacion_de_impacto =='Cualitativo'"><!--BTN VERDE-->
-                                                                <button v-show="concentrado.status=='Implementada' && concentrado.validacion_calificada!=0" type="button" class="btn btn-success" @click="datos_modal(concentrado.id, concentrado.folio,'Cualitativo',concentrado.numero_nomina)" style=" font-size:.9em" >Impacto Cualitativo</button>
-                                                                <button v-show="concentrado.status=='Implementada' && concentrado.validacion_calificada==0" type="button" class="btn btn-warning" @click="datos_modal(concentrado.id, concentrado.folio,'Cualitativo',concentrado.numero_nomina)" style=" font-size:.9em" >Impacto Cualitativo</button>
-                                                               <!-- <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-danger ms-2" @click="vaciarValidaciondeImpacto(concentrado.id,'Cualitativo')" title="Limpiar impacto" style=" font-size:.9em">x</button>-->
-                                                            </div>
-                                                           <!-- <div v-else>
-                                                                <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-secondary" @click="datos_modal(concentrado.id, concentrado.folio,'Cualitativo',concentrado.numero_nomina)" style=" font-size:.9em" >Impacto Cualitativo</button>
-                                                            </div> BTN GRIS -->
+                                                    <!--<div v-else>                                                          
+                                                        <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-secondary" @click="datos_modal(concentrado.id, concentrado.folio,'Cuantitativo',concentrado.numero_nomina)" style=" font-size:.9em" >Impacto Cuantitativo</button>
                                                     </div>
-                                                 </div>
+                                                </div>
+                                                <div>--> 
+                                                    <div v-if="concentrado.validacion_de_impacto =='Cualitativo'"><!--BTN VERDE-->
+                                                        <button v-show="concentrado.status=='Implementada' && concentrado.validacion_calificada!=0" type="button" class="btn btn-success" @click="datos_modal(concentrado.id, concentrado.folio,'Cualitativo',concentrado.numero_nomina)" style=" font-size:.9em" >Impacto Cualitativo</button>
+                                                        <button v-show="concentrado.status=='Implementada' && concentrado.validacion_calificada==0" type="button" class="btn btn-warning" @click="datos_modal(concentrado.id, concentrado.folio,'Cualitativo',concentrado.numero_nomina)" style=" font-size:.9em" >Impacto Cualitativo</button>
+                                                        <!-- <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-danger ms-2" @click="vaciarValidaciondeImpacto(concentrado.id,'Cualitativo')" title="Limpiar impacto" style=" font-size:.9em">x</button>-->
+                                                    </div>
+                                                    <!-- <div v-else>
+                                                        <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-secondary" @click="datos_modal(concentrado.id, concentrado.folio,'Cualitativo',concentrado.numero_nomina)" style=" font-size:.9em" >Impacto Cualitativo</button>
+                                                    </div> BTN GRIS -->
+                                                </div>
+                                            </div>
                                         </td>
                                         <td class="text-center">
                                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalImpactoSugerencia" @click="modalImpacto"><i class="bi bi-table"></i></button>
@@ -195,77 +192,75 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                     </div>
                                     <div class="modal-body">
                                         <div class="row" style="font-size:0.7em;">
-                                                <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center" ><div><b>Situación Actual:</b></div></div>
-                                                <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div>{{datos_sugerencia.situacion_actual}}</div></div>
-                                                <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center" ><div><b>Idea Propuesta:</b></div></div>
-                                                <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div>{{datos_sugerencia.idea_propuesta}}</div></div>
-                                                <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center" ><div><b>Impacto Primario:</b></div></div>
-                                                <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div>{{datos_sugerencia.impacto_primario}}</div></div>
-                                                <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div><b>Impacto Secundario:</b></div></div>
-                                                <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div>{{datos_sugerencia.impacto_secundario}}</div></div>
-                                                <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center" ><div><b>Tipo de Desperdicio:</b></div></div>
-                                                <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div>{{datos_sugerencia.tipo_de_desperdicio}}</div></div>
-                                                <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div><b>Objetivos de Calidad y M.A.</b></div></div>
-                                                <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div>{{datos_sugerencia.objetivo_de_calidad_ma}}</div></div>
-                                                <div class="col-12 d-flex justify-content-center p-2 fw-medium"><div>Analista: {{datos_sugerencia.analista_de_factibilidad}} ({{datos_sugerencia.folio}})</div></div>
-                                          
+                                            <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center" ><div><b>Situación Actual:</b></div></div>
+                                            <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div>{{datos_sugerencia.situacion_actual}}</div></div>
+                                            <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center" ><div><b>Idea Propuesta:</b></div></div>
+                                            <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div>{{datos_sugerencia.idea_propuesta}}</div></div>
+                                            <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center" ><div><b>Impacto Primario:</b></div></div>
+                                            <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div>{{datos_sugerencia.impacto_primario}}</div></div>
+                                            <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div><b>Impacto Secundario:</b></div></div>
+                                            <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div>{{datos_sugerencia.impacto_secundario}}</div></div>
+                                            <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center" ><div><b>Tipo de Desperdicio:</b></div></div>
+                                            <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div>{{datos_sugerencia.tipo_de_desperdicio}}</div></div>
+                                            <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div><b>Objetivos de Calidad y M.A.</b></div></div>
+                                            <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div>{{datos_sugerencia.objetivo_de_calidad_ma}}</div></div>
+                                            <div class="col-12 d-flex justify-content-center p-2 fw-medium"><div>Analista: {{datos_sugerencia.analista_de_factibilidad}} ({{datos_sugerencia.folio}})</div></div>
                                         </div>
-                                                        <div class="div-scroll"><!--Scroll-->
-                                                                <table class="tablaMonitoreo-sugerencias table table-striped table-bordered text-center" style=" font-size: 12px">
-                                                                    <thead class="encabezado-tabla text-center text-light ">
-                                                                        <tr>
-                                                                        <th scope="col">No. Actividad</th>
-                                                                        <th scope="col">Descripción Actividad</th>
-                                                                        <th scope="col">Responsable</th>
-                                                                        <th scope="col">Fecha de Inicio</th>
-                                                                        <th scope="col">Fecha de Cierre</th>
-                                                                        <th scope="col">% Porcentaje</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                                <!--Consulta actividades-->
-                                                                        <tr class="align-middle" v-for="(actividades,index) in concentrado_actividades">
-                                                                            <th scope="row">
-                                                                                <label>{{numero_orden_en_select=index+1}}</label>
-                                                                            </th>
-                                                                            <td>    
-                                                                                <label>{{actividades.actividad}}<label></td>
-                                                                            <td>
-                                                                                <label>{{actividades.responsable}}<label>
-                                                                            </td>
-                                                                            <td><label>{{actividades.fecha_inicial}}<label></td>
-                                                                            <td><label>{{actividades.fecha_final}}<label></td>
-                                                                            <td>
-                                                                                <div v-show="actividades.porcentaje != 100">
-                                                                                    <b>Dias restantes: {{actividades.dias_restantes_actividad}}</b>
-                                                                                </div>
-                                                                                <div v-show ="actividades.dias_restantes_actividad > 7 && actividades.porcentaje !=100" class="bg-warning"><!--En curso-->
-                                                                                    <label>{{actividades.porcentaje}}%<label>
-                                                                                </div>
-                                                                                <div v-show ="actividades.dias_restantes_actividad > 0 && actividades.dias_restantes_actividad <= 7 && actividades.porcentaje !=100"  style="background-color: #fd7e14;"><!--Menor Igual a 7-->
-                                                                                    <label>{{actividades.porcentaje}}%<label>
-                                                                                </div>
-                                                                                <div v-show ="actividades.porcentaje == 100" class="bg-success"><!--100% Completadas-->
-                                                                                    <label>{{actividades.porcentaje}}%<label>
-                                                                                </div>
-                                                                                <div v-show ="actividades.dias_restantes_actividad <= 0 && actividades.porcentaje !=100" class="bg-danger"><!--Vencida-->
-                                                                                    <label>{{actividades.porcentaje}}%<label>
-                                                                                </div>
-                                                                              
-                                                                            </td>
-                                                                        </tr><!--Fin consuta actividades-->    
-                                                                    </tbody>
-                                                                </table>
-                                                         </div><!--scroll-->
-                                                <div class="d-flex justify-content-around">
-                                                    <div>
-                                                            <button type="button" class="btn btn-success" @click="actualizarVoBoPlan('Aceptado')" data-bs-dismiss="modal">Aceptado</button> <!--v-show ="datos_sugerencia.check_mc!='Aceptado'"-->
-                                                    </div>
-                                                    <div>
-                                                            <button  type="button" class="btn btn-danger" @click="actualizarVoBoPlan('Rechazado')" data-bs-dismiss="modal">Rechazado</button><!--v-show ="datos_sugerencia.check_mc!='Aceptado'"-->
-                                                     </div>
-                                                 </div>
-                                      
+                                        <div class="div-scroll"><!--Scroll-->
+                                            <table class="tablaMonitoreo-sugerencias table table-striped table-bordered text-center" style=" font-size: 12px">
+                                                <thead class="encabezado-tabla text-center text-light ">
+                                                    <tr>
+                                                    <th scope="col">No. Actividad</th>
+                                                    <th scope="col">Descripción Actividad</th>
+                                                    <th scope="col">Responsable</th>
+                                                    <th scope="col">Fecha de Inicio</th>
+                                                    <th scope="col">Fecha de Cierre</th>
+                                                    <th scope="col">% Porcentaje</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                            <!--Consulta actividades-->
+                                                    <tr class="align-middle" v-for="(actividades,index) in concentrado_actividades">
+                                                        <th scope="row">
+                                                            <label>{{numero_orden_en_select=index+1}}</label>
+                                                        </th>
+                                                        <td>    
+                                                            <label>{{actividades.actividad}}<label></td>
+                                                        <td>
+                                                            <label>{{actividades.responsable}}<label>
+                                                        </td>
+                                                        <td><label>{{actividades.fecha_inicial}}<label></td>
+                                                        <td><label>{{actividades.fecha_final}}<label></td>
+                                                        <td>
+                                                            <div v-show="actividades.porcentaje != 100">
+                                                                <b>Dias restantes: {{actividades.dias_restantes_actividad}}</b>
+                                                            </div>
+                                                            <div v-show ="actividades.dias_restantes_actividad > 7 && actividades.porcentaje !=100" class="bg-warning"><!--En curso-->
+                                                                <label>{{actividades.porcentaje}}%<label>
+                                                            </div>
+                                                            <div v-show ="actividades.dias_restantes_actividad > 0 && actividades.dias_restantes_actividad <= 7 && actividades.porcentaje !=100"  style="background-color: #fd7e14;"><!--Menor Igual a 7-->
+                                                                <label>{{actividades.porcentaje}}%<label>
+                                                            </div>
+                                                            <div v-show ="actividades.porcentaje == 100" class="bg-success"><!--100% Completadas-->
+                                                                <label>{{actividades.porcentaje}}%<label>
+                                                            </div>
+                                                            <div v-show ="actividades.dias_restantes_actividad <= 0 && actividades.porcentaje !=100" class="bg-danger"><!--Vencida-->
+                                                                <label>{{actividades.porcentaje}}%<label>
+                                                            </div>
+                                                            
+                                                        </td>
+                                                    </tr><!--Fin consuta actividades-->    
+                                                </tbody>
+                                            </table>
+                                        </div><!--scroll-->
+                                        <div class="d-flex justify-content-around">
+                                            <div>
+                                                    <button type="button" class="btn btn-success" @click="actualizarVoBoPlan('Aceptado')" data-bs-dismiss="modal">Aceptado</button> <!--v-show ="datos_sugerencia.check_mc!='Aceptado'"-->
+                                            </div>
+                                            <div>
+                                                    <button  type="button" class="btn btn-danger" @click="actualizarVoBoPlan('Rechazado')" data-bs-dismiss="modal">Rechazado</button><!--v-show ="datos_sugerencia.check_mc!='Aceptado'"-->
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -275,25 +270,23 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                        </div><!--Fin Modal tabla actividades-->
 
                        <div class="modal fade" id="modalCambiaraEnFactibilidad" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"><!--modal cambiar a enfactibilida-->
-                                <div class="modal-dialog modal-sm modal-dialog-centered">
-                                    <div class="modal-content">
+                            <div class="modal-dialog modal-sm modal-dialog-centered">
+                                <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="exampleModalLabel">Cambiar STATUS.</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        
-                                             <div class="d-flex justify-content-center">
-                                                            <button type="button" class="btn btn-success" @click="cambiaraEnFactibilidad" data-bs-dismiss="modal" style="font-size:.9em; font-weight:bold">cambiar a <b>"En Factibilidad"</b></button>
-                                             </div>
+                                        <div class="d-flex justify-content-center">
+                                            <button type="button" class="btn btn-success" @click="cambiaraEnFactibilidad" data-bs-dismiss="modal" style="font-size:.9em; font-weight:bold">cambiar a <b>"En Factibilidad"</b></button>
+                                        </div>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                                     </div>
-                                    </div>
                                 </div>
+                            </div>
                        </div><!--Fin Modal cambiar a en factibilidad-->
-
 
                        <div class="modal fade" id="modalDetallesNofactible" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"><!--modal no factible detalles-->
                                 <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -303,61 +296,57 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-
-
-                                                                <div class=" mt-3 text-center ">
-                                                                                    <div class="row text-start" style=" font-size:0.8em;">
-                                                                                      
-                                                                                                    <div class="col-12 col-sm-3  mb-2 "><b>Analista:</b></div>
-                                                                                                    <div class="col-12 col-sm-9  mb-2">{{nombre_analista}}</div>
-                                                                                                    <div class="col-12 col-sm-3  mb-2"><b>Nombre Colaborador:</b></div>
-                                                                                                    <div class="col-12 col-sm-9  mb-2">{{nombre_colaborador}}</div>
-                                                                                                    <div class="col-12 col-sm-3  mb-2"><b>Situación Actual:</b></div>
-                                                                                                    <div class="col-12 col-sm-9  mb-2">{{situacion_actual}}</div>
-                                                                                                    <div class="col-12 col-sm-3  mb-2"><b>Idea Propuesta:</b></div>
-                                                                                                    <div class="col-12 col-sm-9  mb-2">{{idea_propuesta}}</div>
-                                                                                              
-                                                                                    </div> 
-                                                                      
-                                                                                <span class="badge bg-light text-dark mb-1 mt-3">CAUSA DE NO FACTIBILIDAD</span>
-                                                                                <div class="col-12 text-center bg-warning">
-                                                                                    <textarea class="text-area-causa-no-factibilidad my-2" type="text"  style=" font-size:0.9em" disabled>{{causa}}</textarea>
-                                                                                </div>
-                                                                </div>
-                                                                <div class="text-center">
-                                                                   <!-- <span class="badge bg-light text-dark">TIPO DE CIERRE</span><br>
-                                                                            
-                                                                                        <select class="" v-model="var_tipo_de_cierre" required>
-                                                                                                <option value="" disabled>Seleccione una opción..</option>
-                                                                                                <option  v-for=" lista in tipo_de_cierre" :key="lista.id" >{{lista}}</option>
-                                                                                        </select>-->
-                                                                                  
-                                                                </div>
-                                                                <hr>
-                                                                <div class=" mt-3 ">
-                                                                            <!-- Mostrando los archivos cargados -->
-                                                                       <div v-show="fileopcional.length>0">
-                                                                                <div class="col-12 text-center mb-5" v-for= "(ruta_documento,index) in fileopcional">
-                                                                                        <div class="col-12 text-center">
-                                                                                        Descargar {{nombre_de_descarga=ruta_documento.slice((ruta_documento.lastIndexOf('/') - 1) + 2)}}<br><!--obtengo el nombre del documento con extension-->
-                                                                                            <a :href="ruta_documento" :download="nombre_de_descarga">
-                                                                                                <img src="img/descargar_archivo.png" style="width:100px; height:100px;"></img>
-                                                                                            </a>
-                                                                                        </div>
-                                                                                        <!--<div class="col-12 ">
-                                                                                            <button type="button" class="btn btn-danger" @click="eliminarDocumento(ruta_documento)" >Eliminar</button>
-                                                                                        </div>-->
-                                                                                </div>
-                                                                        </div>
-                                                                </div>
-                                                                <div class="d-flex justify-content-center align-items-center">
-                                                                         <div v-if="vistobueno==false" class="col-6 col-sm-3 text-center">  
-                                                                                    <button class="btn btn-success" type="submit" style=" font-size:1em" @click="guardarPuntosnofactible()">Guardar Puntos.</button>
-                                                                         </div>
-                                                                         <div class="col-6 col-sm-3 text-center">  
-                                                                                    <input type="number" min="0" class="form-control" v-model="puntos_no_factible" :disabled="vistobueno"></input>
-                                                                         </div>
-                                                                </div>
+                                        <div class=" mt-3 text-center ">
+                                            <div class="row text-start" style=" font-size:0.8em;">                                                                
+                                                <div class="col-12 col-sm-3  mb-2 "><b>Analista:</b></div>
+                                                <div class="col-12 col-sm-9  mb-2">{{nombre_analista}}</div>
+                                                <div class="col-12 col-sm-3  mb-2"><b>Nombre Colaborador:</b></div>
+                                                <div class="col-12 col-sm-9  mb-2">{{nombre_colaborador}}</div>
+                                                <div class="col-12 col-sm-3  mb-2"><b>Situación Actual:</b></div>
+                                                <div class="col-12 col-sm-9  mb-2">{{situacion_actual}}</div>
+                                                <div class="col-12 col-sm-3  mb-2"><b>Idea Propuesta:</b></div>
+                                                <div class="col-12 col-sm-9  mb-2">{{idea_propuesta}}</div>                                                  
+                                            </div> 
+                                    
+                                            <span class="badge bg-light text-dark mb-1 mt-3">CAUSA DE NO FACTIBILIDAD</span>
+                                            <div class="col-12 text-center bg-warning">
+                                                <textarea class="text-area-causa-no-factibilidad my-2" type="text"  style=" font-size:0.9em" disabled>{{causa}}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="text-center">
+                                            <!-- <span class="badge bg-light text-dark">TIPO DE CIERRE</span><br>
+                                                    
+                                            <select class="" v-model="var_tipo_de_cierre" required>
+                                                    <option value="" disabled>Seleccione una opción..</option>
+                                                    <option  v-for=" lista in tipo_de_cierre" :key="lista.id" >{{lista}}</option>
+                                            </select>-->
+                                                            
+                                        </div>
+                                        <hr>
+                                        <div class=" mt-3 ">
+                                            <!-- Mostrando los archivos cargados -->
+                                            <div v-show="fileopcional.length>0">
+                                                <div class="col-12 text-center mb-5" v-for= "(ruta_documento,index) in fileopcional">
+                                                    <div class="col-12 text-center">
+                                                        Descargar {{nombre_de_descarga=ruta_documento.slice((ruta_documento.lastIndexOf('/') - 1) + 2)}}<br><!--obtengo el nombre del documento con extension-->
+                                                        <a :href="ruta_documento" :download="nombre_de_descarga">
+                                                            <img src="img/descargar_archivo.png" style="width:100px; height:100px;"></img>
+                                                        </a>
+                                                    </div>
+                                                    <!--<div class="col-12 ">
+                                                        <button type="button" class="btn btn-danger" @click="eliminarDocumento(ruta_documento)" >Eliminar</button>
+                                                    </div>-->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-center align-items-center">
+                                            <div v-if="vistobueno==false" class="col-8">
+                                                <button class="btn btn-success col-4" type="submit" style="font-size:0.8em;width:120px;" @click="guardarPuntosnofactible()">Guardar Puntos.</button>
+                                            </div>
+                                            <div class="col-6 col-sm-3 text-center">  
+                                                    <input type="number" min="0" class="form-control" v-model="puntos_no_factible" :disabled="vistobueno"></input>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="modal-footer">
                                                 <div class="col-12 text-center">
@@ -369,7 +358,6 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                     </div>
                                 </div>
                        </div><!--Fin Modal no factible detalles-->
-
 
                        <div class="modal fade" id="modalImpactoCuantitativo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"><!--modal impacto cuantitativo-->
                                 <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -386,32 +374,32 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                     </div>
                                                                     <div class="row">
                                                                             <div class="col-12 col-sm-6">
-                                                                                        <div>
-                                                                                                <label><b>Impacto Primario: </b> {{concentrado.impacto_primario}}</label><br>
-                                                                                                <label><b>Impacto Secundario: </b> {{concentrado.impacto_secundario}}</label><br>
-                                                                                                <label><b>Tipo de Desperdicio:</b> {{concentrado.tipo_de_desperdicio}}</label><br>
-                                                                                                <label><b>Objetivos de Calidad y M.A:</b> {{concentrado.objetivo_de_calidad_ma}}</label><br>
-                                                                                        </div>
+                                                                                <div>
+                                                                                    <label><b>Impacto Primario: </b> {{concentrado.impacto_primario}}</label><br>
+                                                                                    <label><b>Impacto Secundario: </b> {{concentrado.impacto_secundario}}</label><br>
+                                                                                    <label><b>Tipo de Desperdicio:</b> {{concentrado.tipo_de_desperdicio}}</label><br>
+                                                                                    <label><b>Objetivos de Calidad y M.A:</b> {{concentrado.objetivo_de_calidad_ma}}</label><br>
+                                                                                </div>
                                                                             </div>
                                                                             <div class="col-12 col-sm-6 d-flex justify-content-center">
-                                                                                                <!-- Mostrando los archivos nuevos y cargados de PPT-->
-                                                                                            <div v-show="fileppt.length>0 && cual_documento=='ppt'" >
-                                                                                                    <div v-for= "(fileppts,index) in fileppt">  
-                                                                                                         mostrando resultado {{fileppt}}<br>
-                                                                                                    mostrando resultado {{fileppts}}<br>
-                                                                                            
-                                                                                                            <span class="badge bg-secondary">Descargar Presentacion</span>
-                                                                                                                <!--<div class="col-12 col-md-12">
-                                                                                                                    <button type="button" class="btn btn-danger" @click="eliminarDocumento(fileppts)" >Eliminar</button>
-                                                                                                                </div>-->
-                                                                                                                <div class="mb-5">
-                                                                                                                    <a :href="fileppts" download="Presentacion.pptx">
-                                                                                                                        <img src="img/descargar_ppt.png" style="width:100px; height:100px;"></img>
-                                                                                                                    </a>
-                                                                                                                </div>
-                                                                                                        
-                                                                                                    </div>
-                                                                                            </div>
+                                                                                    <!-- Mostrando los archivos nuevos y cargados de PPT-->
+                                                                                <div v-show="fileppt.length>0 && cual_documento=='ppt'" >
+                                                                                    <div v-for= "(fileppts,index) in fileppt">  
+                                                                                            mostrando resultado {{fileppt}}<br>
+                                                                                        mostrando resultado {{fileppts}}<br>
+                                                                                
+                                                                                        <span class="badge bg-secondary">Descargar Presentacion</span>
+                                                                                        <!--<div class="col-12 col-md-12">
+                                                                                            <button type="button" class="btn btn-danger" @click="eliminarDocumento(fileppts)" >Eliminar</button>
+                                                                                        </div>-->
+                                                                                        <div class="mb-5">
+                                                                                            <a :href="fileppts" download="Presentacion.pptx">
+                                                                                                <img src="img/descargar_ppt.png" style="width:100px; height:100px;"></img>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                        
+                                                                                    </div>
+                                                                                </div>
                                                                             </div>
                                                                     </div>
                                                                     <div class="bg-light p-3 border rounded">
@@ -2649,26 +2637,26 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
         },
         methods:{
             mostrar(dato){
-                   this.ventana=dato;
-                   if(dato=='principalMejora'){ this.pintarUno=true}else{this.pintarUno=false}
-                   if(dato=='planesDeTrabajo'){this.pintarDos=true; this.consultar_planes_de_trabajo(); this.consultar_listas_selected_filtrados()}else{this.pintarDos=false}
-                   if(dato=='concentrado'){this.pintarTres=true}else{this.pintarTres=false}
-                   if(dato=='premios'){ this.pintarCuatro=true;  this.consultar_concentrado_premios()}else{this.pintarCuatro=false}
-                   if(dato=='retos'){this.pintarCinco=true; this.consultaConcentradoRetos()}else{this.pintarCinco=false}
-                   if(dato=='configuracion'){this.pintarSeis=true; this. consultar_usuarios()}else{this.pintarSeis=false}
-                   if(dato=='solicitados'){this.pintarSiete=true; this.consultar_premios_solicitados()}else{this.pintarSiete=false}
-                   if(dato=='colaboradores'){this.pintarOcho=true; this.consultar_colaboradores() }else{this.pintarOcho=false}
+                this.ventana=dato;
+                if(dato=='principalMejora'){ this.pintarUno=true}else{this.pintarUno=false}
+                if(dato=='planesDeTrabajo'){this.pintarDos=true; this.consultar_planes_de_trabajo(); this.consultar_listas_selected_filtrados()}else{this.pintarDos=false}
+                if(dato=='concentrado'){this.pintarTres=true}else{this.pintarTres=false}
+                if(dato=='premios'){ this.pintarCuatro=true;  this.consultar_concentrado_premios()}else{this.pintarCuatro=false}
+                if(dato=='retos'){this.pintarCinco=true; this.consultaConcentradoRetos()}else{this.pintarCinco=false}
+                if(dato=='configuracion'){this.pintarSeis=true; this. consultar_usuarios()}else{this.pintarSeis=false}
+                if(dato=='solicitados'){this.pintarSiete=true; this.consultar_premios_solicitados()}else{this.pintarSiete=false}
+                if(dato=='colaboradores'){this.pintarOcho=true; this.consultar_colaboradores() }else{this.pintarOcho=false}
              },
        /*METODOS PRINCIPAL MEJORA*/      
     datosSugerencia(id){
-                axios.post("cunsultar_datos_sugerencia.php",{
-                id_concentrado:id
-                }).then(response =>{
-                    console.log(this.datos_sugerencia = response.data)
-                }).catch(error => {
-                    console.log(error)
-                })
-            },
+        axios.post("cunsultar_datos_sugerencia.php",{
+        id_concentrado:id
+        }).then(response =>{
+            console.log(this.datos_sugerencia = response.data)
+        }).catch(error => {
+            console.log(error)
+        })
+    },
     consultar_planes_de_trabajo(){//consulto al iniar y al seleccionar una opcion de los select
         this.loanding = true;
         axios.post("consultar_planes_de_trabajo.php",{
@@ -2787,6 +2775,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
         this.buscarDocumentos()
         this.buscarDatosValidacionImpacto()
     },
+
     datos_modal_detalles(id_concentrado,folio,nomina,causa,cumplimiento,nombre_analista,nombre_colaborador,idea_propuesta,situacion_actual){
        
         if(cumplimiento==100){
@@ -2813,6 +2802,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
         this.myModal.show()
 
     },
+    
     consultarPuntosNoFactible(){
         this.puntos_no_factible=0;//reinicio la variable para que no me muestre el valor anterior
         axios.post("consultar_puntos_no_factible.php",{
@@ -2824,6 +2814,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
             }
         })
     },
+
     guardarPuntosnofactible(){
         axios.post('guardar_actualizar_puntos_no_factible.php',{
             id_concentrado:this.id_concentrado,

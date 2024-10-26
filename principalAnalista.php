@@ -112,16 +112,20 @@ $incrementar=1;
                                                 </thead>
                                                 <tbody>
                                                     <tr v-for="(concentrado, index) in concentrado_sugerencias_pendiente_factibilidad">
-                                                    <th scope="row" class="text-center">{{index+1}}</th>
-                                                        <td>{{concentrado.folio}}</td>
+                                                        <th scope="row" class="text-center">{{index+1}}</th>
+                                                        <td>
+                                                            {{concentrado.folio}}
+                                                            <br>
+                                                            <span v-if="concentrado.VoBo_gerente == 'SI'" class="badge bg-primary text-white" style="font-size:10px;">
+                                                                Regresada a Factbilidad por Gerencia.
+                                                            </span>
+                                                        </td>
                                                         <td>{{concentrado.nombre_sugerencia}}</td>
                                                         <td>{{concentrado.fecha_de_inicio}}</td>
                                                         <td>{{concentrado.fecha_limite}}</td>
                                                         <td class="text-center">
-                                                            <button v-if="concentrado.status_factibilidad=='Pendiente'" type="button" class="btn btn-warning" style=" font-size: 1em" title="Factible o No Factible" data-bs-toggle="modal" data-bs-target="#modal" 
-                                                            @click="datos_modal_factibilidad('factibilidad',concentrado.id,concentrado.folio,concentrado.numero_nomina, concentrado.status,concentrado.respuesta_analista,concentrado.check_mc,concentrado.validacion_de_impacto)"><i class="bi bi-eye"></i> {{concentrado.status}} </button>
-                                                            <button v-else="concentrado.status_factibilidad=='Vencida'" type="button" class="btn btn-danger" style=" font-size: 1em" title="Factible o No Factible" data-bs-toggle="modal" data-bs-target="#modal" 
-                                                            @click="datos_modal_factibilidad('factibilidad',concentrado.id,concentrado.folio,concentrado.numero_nomina, concentrado.status,concentrado.respuesta_analista,concentrado.check_mc,concentrado.validacion_de_impacto)"><i class="bi bi-eye"></i> {{concentrado.status}} </button>
+                                                            <button v-if="concentrado.status_factibilidad=='Pendiente'" type="button" class="btn btn-warning" style=" font-size: 1em" title="Factible o No Factible" data-bs-toggle="modal" data-bs-target="#modal" @click="datos_modal_factibilidad('factibilidad',concentrado.id,concentrado.folio,concentrado.numero_nomina, concentrado.status,concentrado.respuesta_analista,concentrado.check_mc,concentrado.validacion_de_impacto)"><i class="bi bi-eye"></i> {{concentrado.status}} </button>
+                                                            <button v-else="concentrado.status_factibilidad=='Vencida'" type="button" class="btn btn-danger" style=" font-size: 1em" title="Factible o No Factible" data-bs-toggle="modal" data-bs-target="#modal" @click="datos_modal_factibilidad('factibilidad',concentrado.id,concentrado.folio,concentrado.numero_nomina, concentrado.status,concentrado.respuesta_analista,concentrado.check_mc,concentrado.validacion_de_impacto)"><i class="bi bi-eye"></i> {{concentrado.status}} </button>
                                                         </td>
                                                         <td>
                                                             <label> {{concentrado.check_mc}}</label>
@@ -138,7 +142,7 @@ $incrementar=1;
                                             <div class="div-scroll mt-3">
                                                 <table class="tablaMonitoreo-sugerencias table table-striped table-bordered ">
                                                 <thead class="encabezado-tabla text-center text-light ">
-                                                    <tr >
+                                                    <tr>
                                                     <th scope="col " class="sticky">#</th>
                                                     <th scope="col">Folio</th>
                                                     <th scope="col">Nombre de Sugerencia</th>
@@ -153,14 +157,9 @@ $incrementar=1;
                                                         <td>{{concentrado.nombre_sugerencia}}</td>
                                                         <td class="text-center"><label class="me-2"><b>{{concentrado.cumplimiento}}% </b></label> 
                                                         <!--Amarillo-->
-                                                            <button v-show="concentrado.dias_restantes>7" type="button" class="btn btn-warning" style="font-size: 1em; " data-bs-toggle="modal" data-bs-target="#modal"  title="Ver Plan de Trabajo"
-                                                            @click="datos_modal_factibilidad('En Implementación',concentrado.id,concentrado.folio,concentrado.numero_nomina, concentrado.status,concentrado.respuesta_analista,concentrado.check_mc,concentrado.validacion_de_impacto)"><i class="bi bi-pencil"></i></i> {{concentrado.status}} </button>
-                                                       
-                                                            <button  v-show="concentrado.dias_restantes>=1 && concentrado.dias_restantes<=7 " type="button" class="btn"  style="font-size: 1em; background-color: #fd7e14; border: 1px solid" data-bs-toggle="modal" data-bs-target="#modal"  title="Ver Plan de Trabajo"
-                                                            @click="datos_modal_factibilidad('En Implementación',concentrado.id,concentrado.folio,concentrado.numero_nomina, concentrado.status,concentrado.respuesta_analista,concentrado.check_mc,concentrado.validacion_de_impacto)"><i class="bi bi-pencil"></i></i> {{concentrado.status}} </button>
-                                                     
-                                                            <button v-show="concentrado.dias_restantes<=0"  type="button" class="btn btn-danger" style="font-size: 1em;" data-bs-toggle="modal" data-bs-target="#modal"  title="Ver Plan de Trabajo"
-                                                            @click="datos_modal_factibilidad('En Implementación',concentrado.id,concentrado.folio,concentrado.numero_nomina, concentrado.status,concentrado.respuesta_analista,concentrado.check_mc,concentrado.validacion_de_impacto)"><i class="bi bi-pencil"></i></i> {{concentrado.status}} </button>
+                                                            <button v-show="concentrado.dias_restantes>7" type="button" class="btn btn-warning" style="font-size: 1em; " data-bs-toggle="modal" data-bs-target="#modal"  title="Ver Plan de Trabajo" @click="datos_modal_factibilidad('En Implementación',concentrado.id,concentrado.folio,concentrado.numero_nomina, concentrado.status,concentrado.respuesta_analista,concentrado.check_mc,concentrado.validacion_de_impacto)"><i class="bi bi-pencil"></i></i> {{concentrado.status}} </button>
+                                                            <button  v-show="concentrado.dias_restantes>=1 && concentrado.dias_restantes<=7 " type="button" class="btn"  style="font-size: 1em; background-color: #fd7e14; border: 1px solid" data-bs-toggle="modal" data-bs-target="#modal"  title="Ver Plan de Trabajo" @click="datos_modal_factibilidad('En Implementación',concentrado.id,concentrado.folio,concentrado.numero_nomina, concentrado.status,concentrado.respuesta_analista,concentrado.check_mc,concentrado.validacion_de_impacto)"><i class="bi bi-pencil"></i></i> {{concentrado.status}} </button>
+                                                            <button v-show="concentrado.dias_restantes<=0"  type="button" class="btn btn-danger" style="font-size: 1em;" data-bs-toggle="modal" data-bs-target="#modal"  title="Ver Plan de Trabajo" @click="datos_modal_factibilidad('En Implementación',concentrado.id,concentrado.folio,concentrado.numero_nomina, concentrado.status,concentrado.respuesta_analista,concentrado.check_mc,concentrado.validacion_de_impacto)"><i class="bi bi-pencil"></i></i> {{concentrado.status}} </button>
                                                         </td>
                                                         <td class="text-center " style="vertical-align:middle" >
                                                             <label class=" my-around "><b>{{concentrado.dias_restantes}}</b></label>
@@ -177,42 +176,40 @@ $incrementar=1;
                             <div class="modal-dialog modal-xl modal-dialog-centered " >
                                 <div class="modal-content " >
                                                 <div class="modal-header">        
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                             <div class="d-flex justify-content-center mt-3 ">
                                                                 <span class="badge bg-light text-dark">FACTIBILIDAD DE SUGERENCIA FOLIO: {{folio}}</span>
                                                             </div>
                                                                 <div class="modal-body alert alert-secondary">
-                                                                        <div class="">
-                                                                        
-                                                                            <div class="" v-for="(concentrado,index) in concentrado_sugerencias_pendiente_implementacion">
-                                                                                        <div v-if="concentrado.id==id_concentrado_general">
-                                                                                        <label class=" fw-bold mt-1">Nombre de la sugerencias: </label> {{ concentrado.nombre_sugerencia}}<br>
-                                                                                        <label class=" fw-bold mt-1">Situacion Actual: </label> {{concentrado.situacion_actual}}<br>
-                                                                                        <label class=" fw-bold mt-1">Idea Propuesta: </label> {{concentrado.idea_propuesta}}<br>
-                                                                                        <label class=" fw-bold mt-1">Colaborador: </label> {{concentrado.colaborador}}<br>
-                                                                                        <label class=" fw-bold mt-1">No. de Nomina:</label> {{concentrado.numero_nomina}}<br>
-                                                                                        <label class=" fw-bold mt-1">Puesto: </label> {{concentrado.puesto}}<br>
-                                                                                        <label class=" fw-bold mt-1">Área: </label> {{concentrado.area}}<br>
-                                                                                        <label class=" fw-bold mt-1">Subárea: </label> {{concentrado.subarea}}<br>
-                                                                                        <label class=" fw-bold mt-1">Fecha de Sugerencia: </label> {{concentrado.fecha_de_sugerencia}}<br>
-                                                                                        
-                                                                                        </div>
-                                                                            </div>
-                                                                            <div class="" v-for="(concentrado,index) in concentrado_sugerencias_pendiente_factibilidad">
-                                                                                        <div v-if="concentrado.id==id_concentrado_general">
-                                                                                        <label class=" fw-bold mt-1">Nombre de la sugerencias: </label> {{ concentrado.nombre_sugerencia}}<br>
-                                                                                        <label class=" fw-bold mt-1">Situacion Actual: </label> {{concentrado.situacion_actual}}<br>
-                                                                                        <label class=" fw-bold mt-1">Idea Propuesta: </label> {{concentrado.idea_propuesta}}<br>
-                                                                                        <label class=" fw-bold mt-1">Colaborador: </label> {{concentrado.colaborador}}<br>
-                                                                                        <label class=" fw-bold mt-1">No. de Nomina:</label> {{concentrado.numero_nomina}}<br>
-                                                                                        <label class=" fw-bold mt-1">Puesto: </label> {{concentrado.puesto}}<br>
-                                                                                        <label class=" fw-bold mt-1">Área: </label> {{concentrado.area}}<br>
-                                                                                        <label class=" fw-bold mt-1">Subárea: </label> {{concentrado.subarea}}<br>
-                                                                                        <label class=" fw-bold mt-1">Fecha de Sugerencia: </label> {{concentrado.fecha_de_sugerencia}}<br>
-                                                                                        </div>
+                                                                    <div class="">
+                                                                        <div class="" v-for="(concentrado,index) in concentrado_sugerencias_pendiente_implementacion">
+                                                                            <div v-if="concentrado.id==id_concentrado_general">
+                                                                                <label class=" fw-bold mt-1">Nombre de la sugerencias: </label> {{ concentrado.nombre_sugerencia}}<br>
+                                                                                <label class=" fw-bold mt-1">Situacion Actual: </label> {{concentrado.situacion_actual}}<br>
+                                                                                <label class=" fw-bold mt-1">Idea Propuesta: </label> {{concentrado.idea_propuesta}}<br>
+                                                                                <label class=" fw-bold mt-1">Colaborador: </label> {{concentrado.colaborador}}<br>
+                                                                                <label class=" fw-bold mt-1">No. de Nomina:</label> {{concentrado.numero_nomina}}<br>
+                                                                                <label class=" fw-bold mt-1">Puesto: </label> {{concentrado.puesto}}<br>
+                                                                                <label class=" fw-bold mt-1">Área: </label> {{concentrado.area}}<br>
+                                                                                <label class=" fw-bold mt-1">Subárea: </label> {{concentrado.subarea}}<br>
+                                                                                <label class=" fw-bold mt-1">Fecha de Sugerencia: </label> {{concentrado.fecha_de_sugerencia}}<br>   
                                                                             </div>
                                                                         </div>
+                                                                        <div class="" v-for="(concentrado,index) in concentrado_sugerencias_pendiente_factibilidad">
+                                                                            <div v-if="concentrado.id==id_concentrado_general">
+                                                                                <label class=" fw-bold mt-1">Nombre de la sugerencias: </label> {{ concentrado.nombre_sugerencia}}<br>
+                                                                                <label class=" fw-bold mt-1">Situacion Actual: </label> {{concentrado.situacion_actual}}<br>
+                                                                                <label class=" fw-bold mt-1">Idea Propuesta: </label> {{concentrado.idea_propuesta}}<br>
+                                                                                <label class=" fw-bold mt-1">Colaborador: </label> {{concentrado.colaborador}}<br>
+                                                                                <label class=" fw-bold mt-1">No. de Nomina:</label> {{concentrado.numero_nomina}}<br>
+                                                                                <label class=" fw-bold mt-1">Puesto: </label> {{concentrado.puesto}}<br>
+                                                                                <label class=" fw-bold mt-1">Área: </label> {{concentrado.area}}<br>
+                                                                                <label class=" fw-bold mt-1">Subárea: </label> {{concentrado.subarea}}<br>
+                                                                                <label class=" fw-bold mt-1">Fecha de Sugerencia: </label> {{concentrado.fecha_de_sugerencia}}<br>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
 
                                                 <div class="row" style="font-size:.9em">
@@ -894,6 +891,7 @@ $incrementar=1;
             }
         },
         mounted(){
+        
             //Consultado concentrado de sugerencias.
             this.consultado_concentrado_pendiente_factibilidad(),
               //Consultado concentrado de sugerencias.
@@ -912,12 +910,14 @@ $incrementar=1;
             this.consulta_responsable_plan()
             
         },
+
         methods:{
             mostrar(dato){
                    this.ventana=dato;
                    if(dato=='principalAnalista'){ this.pintarUno=true}else{this.pintarUno=false}
                    if(dato=='impactoSugerencia'){this.pintarDos=true}else{this.pintarDos=false}
              },
+
             consultado_concentrado_pendiente_factibilidad(){
                 axios.post('consulta_concentrado_pendientes_factibilidad.php',{
                             }).then(response =>{
@@ -925,6 +925,7 @@ $incrementar=1;
                                 console.log(this.concentrado_sugerencias_pendiente_factibilidad)
                             })
             },
+
             consultado_concentrado_pendiente_implementacion(){
                 axios.post('consulta_concentrado_pendientes_implementar.php',{
                             }).then(response =>{
@@ -932,6 +933,7 @@ $incrementar=1;
                                 console.log(this.concentrado_sugerencias_pendiente_implementacion)
                             })
             },
+
             consultando_usuarios(){
                 axios.post('consulta_usuario.php',{
                 usuario: this.usuario
@@ -939,6 +941,7 @@ $incrementar=1;
                     this.usuario = response.data.nombre
                 })
             },
+
             consultando_impacto(){
                 axios.post('lista_impacto.php',{
                 }).then(response =>{
@@ -946,6 +949,7 @@ $incrementar=1;
                     console.log(this.lista_impacto);
                 })
             },
+
             datos_modal_factibilidad(tipo,index,folio,numero_nomina,status,respuesta,check_mc,tipo_impacto){
                 this.id_actualizar = ''
                 this.status = status

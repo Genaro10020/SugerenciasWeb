@@ -59,54 +59,48 @@ session_start();
               
     </style>
     <div id="app" class="container-fluid  " >
-            <div class="div_susperior d-flex justify-content-around align-items-center " style="height:10vh">
-                <div class=""><img class="img-fluid" src="img/logo_gonher.png"></img></div>
-                <div class=" titulo fs-2 lh-1 text-center mt-2 mt-sm-0">Sistema de Sugerencias de Mejora</div>
-                <div class=""><img class="img-fluid" style=" max-height: 80px;" src="img/opex.png" ></img></div>
-            </div>
-            <div class="row" style="height:80vh">
-                    <div class="col-12 col-sm-6 d-flex align-items-center justify-content-center rounded-3 mt-2" style="background:#f5f5f5">
-                        <form @submit.prevent="verificar" class="rounded-3 shadow"  style="background: rgb(181,0,0);">
-                                <div class="row rounded-3  d-flex align-items-center m-1 " style="background:#f9f9f9">
-                                   
-                                        <div class="col-12 mt-5" style="color:#920f0f; font-weight:bold">
-                                            No. de Nómina
-                                            <input v-model="username" type="text" class="form-control "  autocomplete="off"></input>
-                                            
-                                        </div>
-                                        <div class="col-12 mt-5" style="color:#920f0f; font-weight:bold" > 
-                                            Contraseña
-                                            <input v-model="password" type="password" class="form-control" autocomplete="off"></input>
-                                        </div>
-                                        <div class="col-12 my-5 text-center"> 
-                                            <button  type="submit" class="btn btn-danger">E n t r a r</button>
-                                                <div v-show="mostrar" class="alert alert-warning ">
-                                                    <b>{{mensaje_negrita}}</b>
-                                                </div> 
-                                        </div>
-                                        
-                                </div>
-                                <div class="form-check">
-                                        <input type="checkbox" id="checkbox" v-model="remember">
-                                        <label class="text-light" for="checkbox">Recordarme</label>
-                                </div>
-                             
-                                
-                        </form>
-                    </div>
-                    
-                    <div class="col-12 col-sm-6 d-flex align-items-center justify-content-center">
-                        <div class="row">
-                            <div class="col-12">
-                                <img class="img-fluid" src="img/img_index.png"></img>
-                            </div>
+        <div class="div_susperior d-flex justify-content-around align-items-center " style="height:10vh">
+            <div class=""><img class="img-fluid" src="img/logo_gonher.png"></img></div>
+            <div class=" titulo fs-2 lh-1 text-center mt-2 mt-sm-0">Sistema de Sugerencias de Mejora</div>
+            <div class=""><img class="img-fluid" style=" max-height: 80px;" src="img/opex.png" ></img></div>
+        </div>
+        <div class="row" style="height:80vh">
+            <div class="col-12 col-sm-6 d-flex align-items-center justify-content-center rounded-3 mt-2" style="background:#f5f5f5">
+                <form @submit.prevent="verificar" class="rounded-3 shadow"  style="background: rgb(181,0,0);">
+                    <div class="row rounded-3  d-flex align-items-center m-1 " style="background:#f9f9f9">          
+                        <div class="col-12 mt-5" style="color:#920f0f; font-weight:bold">
+                            No. de Nómina
+                            <input v-model="username" type="text" class="form-control "  autocomplete="off"></input>
                         </div>
+                        <div class="col-12 mt-5" style="color:#920f0f; font-weight:bold" > 
+                            Contraseña
+                            <input v-model="password" type="password" class="form-control" autocomplete="off"></input>
+                        </div>
+                        <div class="col-12 my-5 text-center"> 
+                            <button  type="submit" class="btn btn-danger">E n t r a r</button>
+                            <div v-show="mostrar" class="alert alert-warning ">
+                                <b>{{mensaje_negrita}}</b>
+                            </div> 
+                        </div>   
                     </div>
-                    
+                    <div class="form-check">
+                        <input type="checkbox" id="checkbox" v-model="remember">
+                        <label class="text-light" for="checkbox">Recordarme</label>
+                    </div> 
+                </form>
             </div>
-            <div class="row d-none d-sm-block" style="height:10vh;   background: url(img/pie.jpg); background-repeat: repeat-x; background-size: 8% 100%;">
-          
+            <div class="col-12 col-sm-6 d-flex align-items-center justify-content-center">
+                <div class="row">
+                    <div class="col-12">
+                        <img class="img-fluid" src="img/img_index.png"></img>
+                    </div>
+                </div>
             </div>
+                
+        </div>
+        <div class="row d-none d-sm-block" style="height:10vh;   background: url(img/pie.jpg); background-repeat: repeat-x; background-size: 8% 100%;">
+        
+        </div>
         
     </div>
     
@@ -139,16 +133,21 @@ session_start();
                 }).then(response =>{
                     console.log(response.data)
                    if(response.data=='Admin'){
-                      window.location.href = "principalMejora.php"
+
+                        window.location.href = "principalMejora.php"
                     }else if(response.data=='Analista') {
+
                         window.location.href = "principalAnalista.php"
                     }else if(response.data=='Colaborador'){
 
-                           window.location.href = "principalColaborador.php"
-                        
-                    }else{
-                            this.mostrar=true;
-                            this.mensaje_negrita= 'Usuario/Contraseña Incorrecta'
+                        window.location.href = "principalColaborador.php"
+                    }else if(response.data == 'Gerente'){
+
+                        window.location.href = "principalGerente.php"
+                    }
+                    else{
+                        this.mostrar=true;
+                        this.mensaje_negrita= 'Usuario/Contraseña Incorrecta'
                         setTimeout(()=>{
                             this.mostrar=false;
                         },3000);
