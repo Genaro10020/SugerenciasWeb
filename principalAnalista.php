@@ -349,7 +349,7 @@ $incrementar=1;
                                                                                             <textarea class="inputs-concentrado text-area" type="text"   v-model="descripcion_actividad"></textarea></td>
                                                                                         <td>
                                                                                         <select class="inputs-concentrado" v-model="responsable_plan" >
-                                                                                            <option value="" disabled>Seleccione Analista..</option>
+                                                                                            <option value="" disabled>Seleccione Responsable...</option>
                                                                                             <option v-for="responsable in lista_responsable_plan" :key="responsable.nombre" :value="responsable.nombre">{{responsable.nombre}}</option>
                                                                                         </select>
                                                                                         </td>

@@ -37,92 +37,93 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
     <style>
         
 
-            /* #app{
-                font-family: 'Andika', sans-serif;
-            }*/
-            .titulo{
-                    color: white; 
-                    font-family: 'Fjalla One', sans-serif;
+        /* #app{
+            font-family: 'Andika', sans-serif;
+        }*/
+        .titulo{
+                color: white; 
+                font-family: 'Fjalla One', sans-serif;
 
-                }
-            .subtitulo{
-                
-                font-family: 'Stint Ultra Condensed', cursive;
+            }
+        .subtitulo{
+            
+            font-family: 'Stint Ultra Condensed', cursive;
 
-            }    
-            .btn_principal_coloborador{
-                border-radius:100px;
-                height:50px;
-                width:50px;
-                box-shadow: 0px 0px 2px black;
-                background-color: rgb(158, 0, 0);
-                
-            }
-            .btn_principal_coloborador:hover{
-                border-radius:100px;
-                height:50px;
-                width:50px;
-                box-shadow: 0px 0px 10px rgb(0, 0, 0);
-                background-color: rgb(35, 54, 226);
-            }
-            .folio{
-                color:blue;
-                cursor: pointer;
-            }
-            .folio:hover{
-                color:purple;
-                cursor: pointer;
-            }
-           
-           /* #opciones{
-                box-shadow: 0px 2px 10px black;
-                background-color:#fda4a4
-            }
+        }    
+        .btn_principal_coloborador{
+            border-radius:100px;
+            height:50px;
+            width:50px;
+            box-shadow: 0px 0px 2px black;
+            background-color: rgb(158, 0, 0);
+            
+        }
+        .btn_principal_coloborador:hover{
+            border-radius:100px;
+            height:50px;
+            width:50px;
+            box-shadow: 0px 0px 10px rgb(0, 0, 0);
+            background-color: rgb(35, 54, 226);
+        }
+        .folio{
+            color:blue;
+            cursor: pointer;
+        }
+        .folio:hover{
+            color:purple;
+            cursor: pointer;
+        }
+        
+        /* #opciones{
+            box-shadow: 0px 2px 10px black;
+            background-color:#fda4a4
+        }
 
-            #opciones:hover{
-                    background-color: #901313;
-                    color: white;
-            }*/
+        #opciones:hover{
+                background-color: #901313;
+                color: white;
+        }*/
 
-            .div_susperior{
-            background: rgb(255,255,255);
-            background: linear-gradient(140deg, rgba(255,255,255,1) 24%, rgba(181,0,0,1) 24%, rgba(181,0,0,1) 76%, rgba(255,255,255,1) 76%); 
-            }
+        .div_susperior{
+        background: rgb(255,255,255);
+        background: linear-gradient(140deg, rgba(255,255,255,1) 24%, rgba(181,0,0,1) 24%, rgba(181,0,0,1) 76%, rgba(255,255,255,1) 76%); 
+        }
 
-            textarea[type]:focus,input[type]:focus, button[type]:focus {
-            border: 2px solid;    
-            border-color: rgb(137, 0, 0);
-            /*box-shadow: 0 0px 0px rgba(0, 133, 180, 1)inset, 0 0 4px rgba( 187, 16, 16, 1);*/
-            outline: 0 none;
-            } 
+        textarea[type]:focus,input[type]:focus, button[type]:focus {
+        border: 2px solid;    
+        border-color: rgb(137, 0, 0);
+        /*box-shadow: 0 0px 0px rgba(0, 133, 180, 1)inset, 0 0 4px rgba( 187, 16, 16, 1);*/
+        outline: 0 none;
+        }
+
     </style>        
         <div id="app" class="container-fluid  " ><!--BODY-->
                 <!--BARRA SUPERIOR-->
                     <div class="row  d-flex justify-content-around align-items-center" style="height:10vh; background-color: rgba(181,0,0,1); box-shadow: 0px 0px 12px -2px black;" >
-                            <div class="row align-items-center bg-white"  >
-                            <!--style="box-shadow: 0px 0px 10px -2px black"-->
-                                <div class="col-2 d-flex align-items-center rounded-end" style=" height:45.8833px;"><img class="img-fluid" src="img/logo_gonher.png"></img></div>
-                                    <div class="col-8 d-flex align-items-center justify-content-center">
-                                                <div>
-                                                    <div class="titulo lh-1 mt-3 text-dark fs-2 fw-bold text-center">Mis sugerencias</div>
-                                                    <div class="subtitulo fs-5 lh-1  text-center mt-1 text-secondary mb-3" ><?php echo $_SESSION['nombre']; ?></div>
-                                                </div>
+                        <div class="row align-items-center bg-white"  >
+                        <!--style="box-shadow: 0px 0px 10px -2px black"-->
+                            <div class="col-2 d-flex align-items-center rounded-end" style=" height:45.8833px;"><img class="img-fluid" src="img/logo_gonher.png"></img></div>
+                                <div class="col-8 d-flex align-items-center justify-content-center">
+                                    <div>
+                                        <div class="titulo lh-1 mt-3 text-dark fs-2 fw-bold text-center">Mis sugerencias</div>
+                                        <div class="subtitulo fs-5 lh-1  text-center mt-1 text-secondary mb-3"><?php echo $_SESSION['nombre']; ?></div>
                                     </div>
-                                <div class=" col-2 d-flex align-items-center rounded-start" style="height:45.8833px"><img class="img-fluid ms-2" style=" max-height:80px;" src="img/logo_opex.jpg"></img></div>
-                            </div>
+                                </div>
+                            <div class=" col-2 d-flex align-items-center rounded-start" style="height:45.8833px"><img class="img-fluid ms-2" style=" max-height:80px;" src="img/logo_opex.jpg"></img></div>
+                        </div>
                     </div>
                     <!--CUERPO-->
                     <div class="row justify-content-center" style="min-height:80vh">
                                 <div v-if="seguimiento==false">
                                         <div class="div-scroll-vertial"><!--scroll-->
                                             <table class="table table-striped mt-3" style=" font-size: 0.8em;">
-                                            <thead >
-                                                <tr style="background:rgb(137, 0, 0); height:5px; color:white; font-size: 1em;">
-                                                    <th scope="col">#</th>
-                                                    <th scope="col">Folio</th>
-                                                    <th scope="col">Descripción</th>
-                                                </tr>
-                                            </thead>
+                                                <thead>
+                                                    <tr style="background:rgb(137, 0, 0); height:5px; color:white; font-size: 1em;">
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">Folio</th>
+                                                        <th scope="col">Descripción</th>
+                                                    </tr>
+                                                </thead>
                                                 <tbody>
                                                     <tr v-for="(concentrado, index) in concentrado_sugerencias">
                                                         <td>{{index+1}}</td>
@@ -130,7 +131,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                         <td>{{concentrado.nombre_sugerencia}}</td>
                                                     </tr>
                                                 </tbody>
-                                                </table>
+                                            </table>
                                         </div><!--scroll-->
                                 </div>    
                                 <!--Seguimiento-->
@@ -292,6 +293,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                 if(this.sugerencia.length > 0){
                                     this.seguimiento=true
                                     this.consultadoPuntosSugerencia(this.sugerencia[0].id)
+                                    console.log(this.sugerencia[0].id,'puntooos')
                                     this.concentrado_impacto_id(this.sugerencia[0].id)
                                     
                                 }else{
@@ -314,8 +316,11 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                         id_concentrado:id_concentrado
                             }).then(response =>{
                                 this.puntos_sugerencia = response.data
+                                
+                            console.log('los puntos son: ', response.data)
                                 console.log(this.puntos_sugerencia)
                             })
+
             }
         }
     }

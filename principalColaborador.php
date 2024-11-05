@@ -115,32 +115,32 @@ $_COOKIE["PHPSESSID"]="0";
             outline: 0 none;
             } 
     </style>        
-        <div id="app" class="container-fluid  " ><!--BODY-->
+        <div id="app" class="container-fluid"><!--BODY-->
                 <!--BARRA SUPERIOR-->
                     <div class="row  d-flex justify-content-around align-items-center" style="height:10vh; background-color: rgba(181,0,0,1); box-shadow: 0px 0px 12px -2px black;" >
-                            <div class="row align-items-center bg-white"  >
-                            <!--style="box-shadow: 0px 0px 10px -2px black"-->
-                                <div class="col-2 d-flex align-items-center rounded-end" style=" height:45.8833px;"><img class="img-fluid" src="img/logo_gonher.png"></img></div>
-                                    <div class="col-8 d-flex align-items-center justify-content-center">
-                                                <div>
-                                                    <div class="titulo lh-1 mt-3 text-dark fs-2 fw-bold text-center">Bienvenido</div>
-                                                    <div class="subtitulo fs-5 lh-1  text-center mt-1 text-secondary mb-3" ><?php echo $_SESSION['nombre']; ?></div>
-                                                </div>
+                        <div class="row align-items-center bg-white"  >
+                        <!--style="box-shadow: 0px 0px 10px -2px black"-->
+                            <div class="col-2 d-flex align-items-center rounded-end" style=" height:45.8833px;"><img class="img-fluid" src="img/logo_gonher.png"></img></div>
+                                <div class="col-8 d-flex align-items-center justify-content-center">
+                                    <div>
+                                        <div class="titulo lh-1 mt-3 text-dark fs-2 fw-bold text-center">Bienvenido</div>
+                                        <div class="subtitulo fs-5 lh-1  text-center mt-1 text-secondary mb-3" ><?php echo $_SESSION['nombre']; ?></div>
                                     </div>
-                                <div class=" col-2 d-flex align-items-center rounded-start" style="height:45.8833px"><img class="img-fluid ms-2" style="max-height: 80px;" src="img/logo_opex.jpg"></img></div>
-                            </div>
+                                </div>
+                            <div class=" col-2 d-flex align-items-center rounded-start" style="height:45.8833px"><img class="img-fluid ms-2" style="max-height: 80px;" src="img/logo_opex.jpg"></img></div>
+                        </div>
                     </div>
                     <!--CUERPO-->
                     <div class="row justify-content-center" style="min-height:80vh">
                         <div class="col-6 col-lg-4 d-flex align-items-center justify-content-center" >
-                                    <div id="opciones" style="width: 18rem;" class=" d-flex align-items-center justify-content-center ">
-                                        <div class="row text-center mb-2 d-flex justify-content-center align-items-center" style="min-height: 132px;">
-                                                <div class="text-center col-12"><label class="card-text mt-2 text-black">1.- Mis Sugerencias.</label></div>
-                                                <div @click="redireccionar(sug)" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer">
-                                                    <img src="img/app_sugerencias.png" class="img-fluid" alt="..." style=" width: 50px;">
-                                                </div>
-                                        </div>
-                                     </div>
+                            <div id="opciones" style="width: 18rem;" class=" d-flex align-items-center justify-content-center ">
+                                <div class="row text-center mb-2 d-flex justify-content-center align-items-center" style="min-height: 132px;">
+                                    <div class="text-center col-12"><label class="card-text mt-2 text-black">1.- Mis Sugerencias.</label></div>
+                                        <div @click="redireccionar(sug)" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer">
+                                        <img src="img/app_sugerencias.png" class="img-fluid" alt="..." style=" width: 50px;">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-6  col-lg-4 d-flex align-items-center justify-content-center" >
                                     <div id="opciones" style="width: 18rem; " class=" d-flex align-items-center justify-content-center ">

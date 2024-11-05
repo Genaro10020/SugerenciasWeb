@@ -113,7 +113,7 @@ include "conexionGhoner.php";
         situacion_actual = '$situacion_actual', idea_propuesta =  '$idea_propuesta', numero_nomina = '$nomina', colaborador =  '$colaborador', puesto = '$puesto', planta = '$planta', 
         area = '$area', area_participante = '$area_participante', subarea = '$subarea', impacto_primario = '$impacto_primario', impacto_secundario = '$impacto_secundario',
         tipo_de_desperdicio = '$tipo_desperdicio', objetivo_de_calidad_ma = '$objetivo_de_calidadMA_cadena', fecha_de_sugerencia =  '$fecha_sugerencia', 
-        fecha_de_inicio = '$fecha_inicio', fecha_limite= '$fecha_limite', fecha_compromiso = '$fecha_compromiso', fecha_real_cierre =  '$fecha_real_de_cierre', analista_de_factibilidad  = '$analista_de_factibilidad', 
+        fecha_de_inicio = '$fecha_inicio', fecha_limite= '$fecha_limite', fecha_real_cierre =  '$fecha_real_de_cierre', analista_de_factibilidad  = '$analista_de_factibilidad', 
         impacto_planeado = '$impacto_planeado', impacto_real = '$impacto_real', modificado_por = '$creado_por_o_modificado_por', modificado = '$creado_o_modificado'  WHERE id='$id'";
         
         $query = mysqli_query( $conexion, $consulta);

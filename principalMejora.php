@@ -428,10 +428,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                                         <div class="col-12 col-sm-5">
                                                                                             <label>Tipo de impacto:</label>
                                                                                             <select v-model="tipo_de_impacto" class=" form-control" style="font-size:.8em" required>
-                                                                                                        <option value="" disabled>Seleccione una opción..</option>
-                                                                                                        <option value="Bajo">Bajo</option>
-                                                                                                        <option value="Medio">Medio</option>
-                                                                                                        <option value="Alto">Alto</option>
+                                                                                                <option value="" disabled>Seleccione una opción..</option>
+                                                                                                <option value="Bajo">Bajo</option>
+                                                                                                <option value="Medio">Medio</option>
+                                                                                                <option value="Alto">Alto</option>
                                                                                             </select>
                                                                                         </div>
                                                                                 </div>

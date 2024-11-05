@@ -84,8 +84,8 @@ $incrementar=1;
                         <span class="badge bg-light text-dark">Pendientes de Revision</span>
                     </div>
                     <div class="div-scroll mt-3">
-                        <table class="tablaMonitoreo-sugerencias table table-striped table-bordered ">
-                            <thead class="encabezado-tabla text-center text-light ">
+                        <table class="tablaMonitoreo-sugerencias table table-striped table-bordered">
+                            <thead class="encabezado-tabla text-center text-light">
                                 <tr>
                                     <th scope="col" class="sticky">#</th>
                                     <th scope="col">Folio</th>
@@ -123,10 +123,40 @@ $incrementar=1;
                         <div class="d-flex justify-content-center mt-3 ">
                             <span class="badge bg-light text-dark">FACTIBILIDAD DE SUGERENCIA FOLIO: {{folio}}</span>
                         </div>
+
+                        <div class="modal-body alert alert-secondary">
+                            <div class="">
+                                <div class="" v-for="(concentrado,index) in sugerencias_no_factibles">
+                                    <div v-if="concentrado.id==id_concentrado_general">
+                                        <label class=" fw-bold mt-1">Nombre de la sugerencias: </label> {{ concentrado.nombre_sugerencia}}<br>
+                                        <label class=" fw-bold mt-1">Situacion Actual: </label> {{concentrado.situacion_actual}}<br>
+                                        <label class=" fw-bold mt-1">Idea Propuesta: </label> {{concentrado.idea_propuesta}}<br>
+                                        <label class=" fw-bold mt-1">Colaborador: </label> {{concentrado.colaborador}}<br>
+                                        <label class=" fw-bold mt-1">No. de Nomina:</label> {{concentrado.numero_nomina}}<br>
+                                        <label class=" fw-bold mt-1">Puesto: </label> {{concentrado.puesto}}<br>
+                                        <label class=" fw-bold mt-1">Área: </label> {{concentrado.area}}<br>
+                                        <label class=" fw-bold mt-1">Subárea: </label> {{concentrado.subarea}}<br>
+                                        <label class=" fw-bold mt-1">Fecha de Sugerencia: </label> {{concentrado.fecha_de_sugerencia}}<br>   
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12" v-for= "(documento,index) in documentos"><!--Espacio Vista Documentos-->
+                            <div class="col-12 alert alert-secondary">
+                                <div class="col-12 text-center">
+                                    <span class="badge bg-secondary ">Documento {{index+1}}</span><br>
+                                </div>
+                                <div>
+                                    <iframe :src="documentos[index]" style="width:100%;height:500px;"></iframe>
+                                </div>
+                            <!-- <iframe src="https://vvnorth.com/Sugerencias/documentos/pdf.pdf" style="width:100%;height:500px;"></iframe>-->
+                            </div>
+                        </div><!--Fin Vista Documentos--->
             <!--FIN ESPACIO FACTIBLE-->
                             
                         <!--ESPACIO NO FACTIBLE-->
                         <div v-show="no_factible==true">
+
                             <form  @submit.prevent="guardarNofactibilidad()">
                                 <div class="mt-3">
                                     <span class="badge bg-light text-dark mb-1">CAUSA DE NO FACTIBILIDAD</span>
@@ -145,7 +175,19 @@ $incrementar=1;
                             <hr>
                         </div>   
                         <!--FIN ESPACIO NO FACTIBLE-->
-                        
+
+                        <!-- Mostrando los archivos cargados -->
+                        <hr>
+                        <div class="col-12 text-center mb-5" v-for= "(ruta_documento,index) in documento_opcional">
+                            <div class="col-12 text-center">
+                                Descargar {{nombre_de_descarga=ruta_documento.slice((ruta_documento.lastIndexOf('/') - 1) + 2)}}<br><!--obtengo el nombre del documento con extension-->
+                                <a :href="ruta_documento" :download="nombre_de_descarga">
+                                    <img src="img/descargar_archivo.png" style="width:100px; height:100px;"></img>
+                                </a>
+                            </div>
+                            <!--<iframe  :src="documento_opcional[index]" style="width:100%;height:500px;"></iframe>-->                                        
+                            <!-- <iframe src="https://vvnorth.com/Sugerencias/documentos/pdf.pdf" style="width:100%;height:500px;"></iframe>-->
+                        </div> 
                         <div class="12 modal-footer" style="font-size:.9em"> 
                             <div class="col-12 text-center">
                                 <button type="button" class="btn btn-success btn-sm me-2 " @click="respuesta('Factible', status)">Factible</button> 
@@ -175,7 +217,8 @@ $incrementar=1;
 
                 /*varibles en modal factibilidad*/
                 check_mc:'',
-
+                concentrado_sugerencias_pendiente_factibilidad:[],
+                concentrado_sugerencias_pendiente_implementacion:[],
                 factible: false,
                 no_factible: false,
                 
@@ -217,6 +260,10 @@ $incrementar=1;
             this.consultado_concentrado_pendiente_impacto(),
             //Consultado concentrado impacto Midiendo
             this.consultado_concentrado_impacto_sugerencias(),
+            //Consultado concentrado de sugerencias.
+            this.consultado_concentrado_pendiente_factibilidad(),
+            //Consultado concentrado de sugerencias.
+            this.consultado_concentrado_pendiente_implementacion(),
              //Consultado usuarios.
             this.consultando_usuarios(),
             //Consultado impacto
@@ -224,7 +271,24 @@ $incrementar=1;
             this.consulta_responsable_plan()
             this.consulta_no_factibles();
         },
+
         methods:{
+
+            consultado_concentrado_pendiente_factibilidad(){
+                axios.post('consulta_concentrado_pendientes_factibilidad.php',{
+                            }).then(response =>{
+                                this.concentrado_sugerencias_pendiente_factibilidad = response.data
+                                console.log('ENTRAMOSSS',this.concentrado_sugerencias_pendiente_factibilidad)
+                            })
+            },
+
+            consultado_concentrado_pendiente_implementacion(){
+                axios.post('consulta_concentrado_pendientes_implementar.php',{
+                            }).then(response =>{
+                                this.concentrado_sugerencias_pendiente_implementacion = response.data
+                                console.log('ONO',this.concentrado_sugerencias_pendiente_implementacion)
+                            })
+            },
             consulta_no_factibles(){
 
                 this.causa_no_factibilidad = [];
@@ -258,6 +322,7 @@ $incrementar=1;
                 this.status = status
                 this.check_mc = check_mc
                 this.comentario_nf = comentario_nf
+                
                 if(this.check_mc=="Aceptado" || this.check_mc=="Pendiente" | this.check_mc=="Corregido"){
                     this.deshabilitar = true
                 }else{
@@ -273,6 +338,8 @@ $incrementar=1;
                     this.no_factible=true
                 }
                 this.folio=folio
+                this.buscarDocumentos()
+                this.buscarDocumentos_analista()
                 this.numero_nomina = numero_nomina
                 this.id_concentrado_general=index
                 this.tipo_impacto = tipo_impacto
@@ -295,7 +362,7 @@ $incrementar=1;
                 })
                 .then(response => {
                 this.documentos = response.data;
-                console.log(response.data);
+                console.log('doccc',response.data);
                 if(this.documentos.length>0){
                     /*console.log(this.documentos.length + "Archivos encontrados.")*/
                 }else{
