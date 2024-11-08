@@ -2880,7 +2880,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
             id_concentrado: this.id_concentrado
         }).then(response =>{
             if(response.data=="correcto"){
-                this.consultado_concentrado()
+                this.acomodarSugerencias()
             }else{
                 alert('algo salio mal.')
             }
