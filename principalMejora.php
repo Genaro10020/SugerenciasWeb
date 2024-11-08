@@ -71,13 +71,13 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
             <div class="row" style="height:4vh">
                 <div class="d-flex justify-content-center text-white align-items-center" >
                
-                    <button class="opciones mx-lg-2 rounded-3 " @click="mostrar('principalMejora')"  v-bind:class="{pintarUno}" >
+                    <button class="opciones mx-lg-2 rounded-3 " @click="mostrar('principalMejora'),acomodarSugerencias()"  v-bind:class="{pintarUno}" >
                         Principal Mejora
                     </button> 
                     <!--<button class="opciones mx-lg-2 rounded-3 " @click="mostrar('planesDeTrabajo')"  v-bind:class="{pintarDos}" >
                         Planes de Trabajo
                     </button>  -->
-                    <button class="opciones  mx-lg-2 rounded-3" @click="mostrar('concentrado')" v-bind:class="{pintarTres}">
+                    <button class="opciones  mx-lg-2 rounded-3" @click="mostrar('concentrado'),consultado_concentrado()" v-bind:class="{pintarTres}">
                         Concentrado de sugerencias
                     </button>  
                     <button class="opciones  mx-lg-2  rounded-3" @click="mostrar('premios')" v-bind:class="{pintarCuatro}">
@@ -112,9 +112,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                             <!-- contenido principal gonher-->
                             <div class="text-center mt-3 "><span class="badge bg-light text-dark">Implementación y validación de impactos de sugerencias:</span></div>
                             <div class="div-scroll mt-3">
-                                <table class="tablaMonitoreo-sugerencias table table-striped table-bordered ">
+                                <table class="tablaMonitoreo-sugerencias table table-bordered">
                                 <thead class="encabezado-tabla text-center text-light ">
-                                    <tr >
+                                    <tr>
                                     <th scope="col " class="sticky">#</th>
                                     <th scope="col">Plan de Trabajo</th>
                                     <th scope="col">Folio</th>
@@ -126,8 +126,16 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                     <th scope="col">Impacto de sugerencias</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr v-for="(concentrado, index) in concentrado_sugerencias">
+                                <tbody v-if="loanding === false">
+                                    <tr v-for="(concentrado, index) in concentrado_sugerencias"
+                                    :style="{ backgroundColor: 
+                                        concentrado.status === 'En Factibilidad' && concentrado.check_mc === '' ? '#e2f3ff' :
+                                        concentrado.cumplimiento === '0' && (concentrado.check_mc === 'Pendiente' || concentrado.check_mc === 'Rechazado' || concentrado.check_mc === 'Corregido') ? '#ffe9e2' :
+                                        concentrado.cumplimiento === '99' && (concentrado.status === 'Cerrada/No Factible' || concentrado.status === 'Cerrada/Fast Response')  ? '#ffe9e2' :
+                                        concentrado.status === 'En Implementación' ? '#eefaec' :
+                                        concentrado.validacion_calificada === '0' && concentrado.status === 'Implementada' && (concentrado.validacion_de_impacto === 'Cuantitativo' || concentrado.validacion_de_impacto === 'Cualitativo') ? '#fff5e2' :
+                                        concentrado.validacion_de_impacto === '' && concentrado.status === 'Implementada' ? '#f9eeff':
+                                    '' }">
                                     <th scope="row" class="text-center">{{index+1}}</th>
                                     <td>
                                         <button  v-show="concentrado.check_mc=='Pendiente' && concentrado.status!='Cerrada/Fast Response'  && concentrado.status!='Cerrada/No Factible'" class="btn btn-secondary" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalTablaPlan" @click="consultarActividades(concentrado.id,concentrado.status),datosSugerencia(concentrado.id)"><i class="bi bi-table" ></i> {{concentrado.check_mc}}</button>
@@ -181,6 +189,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                     </tr>
                                 </tbody>
                                 </table>
+                                <div v-if="loanding===true" class="d-flex justify-content-center w-100">
+                                        <img src="img/loading.gif">
+                                </div>
                             </div>
 
                       <div class="modal fade" id="modalTablaPlan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"><!--modal tabla actividades-->
@@ -1165,7 +1176,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                             <!--<th scope="col">Eliminar</th>-->
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody v-if="loanding===false">
+
                                             <!--Nueva Sugerencia-->
                                             <tr v-show="nueva_sugerencia" class="align-middle bg-info">
                                                 
@@ -1383,6 +1395,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                             </tr>
                                         </tbody>
                                     </table>
+                                    <div v-if="loanding===true" class="d-flex justify-content-center w-100">
+                                        <img src="img/loading.gif">
+                                    </div>
                                 </div>
                             </div>
 
@@ -1927,35 +1942,35 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                 </div>
                                 <div class="modal-body">
                                         <div class="text-center" v-if="contenido_modal_agregar_eliminar=='Subir'">
-                                                <form @submit.prevent="uploadFile()">
-                                                    <!--Subir Documento Sugerencia-->
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <div class="custom-file my-5"> 
-                                                                <input type="file" id="input_file_subir"  ref="archivosydocumentos" multiple required/>{{extensiones_valida}}</input>
-                                                            </div>
+                                            <form @submit.prevent="uploadFile()">
+                                                <!--Subir Documento Sugerencia-->
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="custom-file my-5"> 
+                                                            <input type="file" id="input_file_subir"  ref="archivosydocumentos" multiple required/>{{extensiones_valida}}</input>
                                                         </div>
-                                                        <div class="col-12">
-                                                            <button  type="submit" name="upload" class="btn btn-primary">Subir Archivos </button>
-                                                        </div>
-                                                    </div> 
-                                                       
-                                                          <!-- Mostrando los archivos cargados -->
-                                                        <div v-show="filereto.length>0 && cual_documento=='reto'" >
-                                                        <hr>
-                                                                <div class="col-12" v-for= "(fileimgreto,index) in filereto">
-                                                                    <div class="row">
-                                                                        <span class="badge bg-secondary">Documento {{index+1}}</span><br>
-                                                                            <div class="">
-                                                                                <button type="button" class="btn btn-danger" @click="eliminarDocumento(fileimgreto)" >Eliminar</button>
-                                                                            </div>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <button  type="submit" name="upload" class="btn btn-primary">Subir Archivos </button>
+                                                    </div>
+                                                </div> 
+                                                    
+                                                    <!-- Mostrando los archivos cargados -->
+                                                <div v-show="filereto.length>0 && cual_documento=='reto'" >
+                                                <hr>
+                                                        <div class="col-12" v-for= "(fileimgreto,index) in filereto">
+                                                            <div class="row">
+                                                                <span class="badge bg-secondary">Documento {{index+1}}</span><br>
+                                                                    <div class="">
+                                                                        <button type="button" class="btn btn-danger" @click="eliminarDocumento(fileimgreto)" >Eliminar</button>
                                                                     </div>
-                                                                    <img  :src="filereto[index]" style="width:100%;width:100%"></img>
-                                                                    
-                                                                   <!-- <iframe src="https://vvnorth.com/Sugerencias/documentos/pdf.pdf" style="width:100%;height:500px;"></iframe>-->
-                                                                </div>
+                                                            </div>
+                                                            <img  :src="filereto[index]" style="width:100%;width:100%"></img>
+                                                            
+                                                            <!-- <iframe src="https://vvnorth.com/Sugerencias/documentos/pdf.pdf" style="width:100%;height:500px;"></iframe>-->
                                                         </div>
-                                                </form>
+                                                </div>
+                                            </form>
                                         </div>
                                 </div>
                                 <div class="modal-footer">
@@ -2264,26 +2279,24 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                             <div class="text-center pt-3 ">
                                                                 <span class="badge bg-light text-dark" style="font-size:0.7em;">Listado de Colaboradores Registrados: {{ concentrado_colaboradores.Registrados}}</span><br>
                                                                 <span class="badge bg-light text-dark" style="font-size:0.7em;">No Registrados: {{ concentrado_colaboradores.NoRegistrados}}</span>
-                                                              
                                                             </div>
-
-                                                                <div>
-                                                                                <div class="row">
-                                                                                    <div class="col-12 col-md-12"> 
-                                                                                    <!-- Contenido -->
-                                                                                             <div class="outer-container" style=" font-size:1em">
-                                                                                                    <form @submit.prevent="subirExcelNuevosColaboradores" style="font-size:0.7em;">
-                                                                                                        <div>
-                                                                                                           
-                                                                                                            <input type="file"  ref="documentoExcel" accept=".csv" required/></input>
-                                                                                                            <button type="submit" class="btn btn-primary" style=" font-size: 0.8em" >Importar Registros</button>
-                                                                                                        </div>
-                                                                                                    </form>
-                                                                                             </div>
-                                                                                         </div>
-                                                                                     </div>
-                                                                    <!-- Fin Contenido --> 
+                                                            <div>
+                                                                <div class="row">
+                                                                    <div class="col-12 col-md-12"> 
+                                                                    <!-- Contenido -->
+                                                                        <div class="outer-container" style=" font-size:1em">
+                                                                            <form @submit.prevent="subirExcelNuevosColaboradores" style="font-size:0.7em;">
+                                                                                <div>
+                                                                                    
+                                                                                    <input type="file"  ref="documentoExcel" accept=".csv" required/></input>
+                                                                                    <button type="submit" class="btn btn-primary" style=" font-size: 0.8em" >Importar Registros</button>
+                                                                                </div>
+                                                                            </form>
+                                                                        </div>
                                                                     </div>
+                                                                </div>
+                                                            <!-- Fin Contenido --> 
+                                                            </div>
 
                                                             <!---->
                                                             <div class="" style="height:70vh; overflow-x: scroll;">
@@ -2595,36 +2608,39 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 suma:0,
                 sumatotal:0,
                 cambio_contrasenia:[],
-             
+                valor:'acomodar',
             }
         },
         mounted(){
 
             //Consultado concentrado de sugerencias.
-            this.consultado_concentrado(),
+            //this.consultado_concentrado(),
             //consultado lista status
            axios.post('lista_status.php',{
             }).then(response =>{
                 this.lista_status = response.data
                 console.log(this.lista_status);
             }),
-             //consultado lista planta
-             this.consultando_plantas(),
-             //consultado lista area
-             this.consultando_area(),
-             //consultado lista participante
-             this.consultando_area_participante(),
-             //consultado lista subareas
-             this.consultando_subarea(),
-             //consultado lista impacto primario y secuandario
-             this.consultando_impacto(),
-             //consultado lista tipo desperdicio
-             this.consultando_lista_de_desperdicio(),
-             //consultado lista objetivo de calidad MA
-             this.consulta_lista_objetivos_calidad_ma(),
-             //consultado lista analistas de factibilidad
-             this.consulta_lista_analista_factibilidad(),
-             this.consulta_lista_usuarios_y_analistas_factibilidad(),
+
+            this.acomodarSugerencias(),
+
+            //consultado lista planta
+            this.consultando_plantas(),
+            //consultado lista area
+            this.consultando_area(),
+            //consultado lista participante
+            this.consultando_area_participante(),
+            //consultado lista subareas
+            this.consultando_subarea(),
+            //consultado lista impacto primario y secuandario
+            this.consultando_impacto(),
+            //consultado lista tipo desperdicio
+            this.consultando_lista_de_desperdicio(),
+            //consultado lista objetivo de calidad MA
+            this.consulta_lista_objetivos_calidad_ma(),
+            //consultado lista analistas de factibilidad
+            this.consulta_lista_analista_factibilidad(),
+            this.consulta_lista_usuarios_y_analistas_factibilidad(),
  
                 axios.post('consulta_usuario.php',{
                     usuario: this.usuario
@@ -2647,6 +2663,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 if(dato=='solicitados'){this.pintarSiete=true; this.consultar_premios_solicitados()}else{this.pintarSiete=false}
                 if(dato=='colaboradores'){this.pintarOcho=true; this.consultar_colaboradores() }else{this.pintarOcho=false}
              },
+
        /*METODOS PRINCIPAL MEJORA*/      
     datosSugerencia(id){
         axios.post("cunsultar_datos_sugerencia.php",{
@@ -2657,6 +2674,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
             console.log(error)
         })
     },
+
     consultar_planes_de_trabajo(){//consulto al iniar y al seleccionar una opcion de los select
         this.loanding = true;
         axios.post("consultar_planes_de_trabajo.php",{
@@ -2743,7 +2761,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
             }).then(response =>{
                 console.log(response.data)
                 if(response.data==true){
-                    this.consultado_concentrado();
+                    this.acomodarSugerencias();
                 }else{
                     alert("Problemas para actualizar.")
                 }
@@ -2848,7 +2866,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     vistobueno:valor,
                 }).then(response =>{
                     if(response.data==true){
-                        this.consultado_concentrado()
+                       this.acomodarSugerencias()
                     }else{
                         alert("Error al actualizar el porcentaje en el check.")
                     }
@@ -2914,7 +2932,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                         console.log(response.data)
                         if(response.data[0]== true && response.data[1]== true){
                            alert("Los datos se guardaron/actualizaron correctamente.")
-                           this.consultado_concentrado()
+                           this.acomodarSugerencias()
                            this.myModal.hide()
                         }else{
                             alert("Fallo al guardar en una tabla o ambas")
@@ -2938,7 +2956,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                         console.log(response.data)
                         if(response.data[0]== true && response.data[1]== true){
                             alert("Los datos se guardaron/actualizaron correctamente.")
-                            this.consultado_concentrado()
+                            this.acomodarSugerencias()
                             this.myModal.hide()
                         }else{
                             alert("Fallo al guardar en una tabla o ambas")
@@ -3114,12 +3132,34 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 })
             },
             consultado_concentrado(){
+                this.loanding = true;
                 axios.post('consulta_concentrado_sugerencias.php',{
-                            }).then(response =>{
-                                this.concentrado_sugerencias = response.data
-                                //console.log(this.concentrado_sugerencias);
-                            })
+                    accion:''
+                }).then(response =>{
+                    this.concentrado_sugerencias = response.data
+                    //console.log(this.concentrado_sugerencias);
+                }).catch(error => {
+                console.log(error);
+                }).finally(() =>{
+                    this.loanding = false;
+                })
             },
+
+            acomodarSugerencias(){
+                this.loanding = true;
+                this.valor = 'acomodar'
+                axios.post('consulta_concentrado_sugerencias.php',{
+                    accion: this.valor
+                }).then(response =>{
+                    this.concentrado_sugerencias = response.data
+                    //console.log(this.concentrado_sugerencias);
+                }).catch(error => {
+                    console.log(error);
+                }).finally(() =>{
+                    this.loanding = false;
+                })
+            },
+
             consultando_plantas(){
                 axios.post('lista_planta.php',{
                 }).then(response =>{
@@ -3408,7 +3448,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                             }else{
                                                 //alert("Sin Documentos agregados.")
                                             }
-                                            this.consultado_concentrado()
+                                            //this.acomodarSugerencias()
                                     }
                                 if(this.cual_documento=="reto"){
                                             this.filereto = response.data
@@ -3572,10 +3612,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                             }
 
                     }
-                    
-                        
-                      
                 },
+
                 eliminarPremio(id_premio, ruta, cant_doc){
                if(!confirm('Seguro de elimiar Premio del Catálogo')) return 
                 axios.post("eliminar_premio.php",{
@@ -3596,8 +3634,6 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                             }else{
                                 alert("Error al eliminar Premio.")
                             }
-
-                    
                 }).catch(error =>{
 
                 })
@@ -3957,7 +3993,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                }).finally(() => {
                     
                });
-          }
+          },
+
         }   
     }
     var mountedApp = Vue.createApp(vue3).mount('#app');
