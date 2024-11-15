@@ -231,7 +231,6 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                 },
                 consultarEAD() {
                     
-                   
                     axios.get('consultar_ead.php', {}).then(response => {
                         if (response.data[0] == true) {
                             this.integrantesEAD = response.data[1]
@@ -241,13 +240,22 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                             console.log("Algo salio mal en consulta", response.data)
                         }
                     }).catch(error => {
-                        console.log('Error en axios', error)
+                            console.log('Error en axios', error)
                     })
                 },
                 consultarTemas() {
                     axios.get('consultar_temas.php', {}).then(response => {
                         if (response.data[0] == true) {
-                            this.temas = response.data[1]
+                            let temas = response.data[1]
+                            if (this.datosEquipo.area !== "Inyección") {
+                                const index = temas.findIndex(item => item.tema === "Revisión de Guantes");
+                                // Si se encuentra el índice
+                                if (index !== -1) {
+                                    // Elimina el elemento en esa posición
+                                    temas.splice(index, 1);
+                                }
+                            }
+                            this.temas = temas;
                         } else {
                             console.log("Algo salio mal en consulta", response.data)
                         }
