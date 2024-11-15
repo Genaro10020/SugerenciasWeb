@@ -144,7 +144,13 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                         <button  v-show="concentrado.check_mc=='Aceptado' && concentrado.status!='Cerrada/Fast Response' && concentrado.status!='Cerrada/No Factible'" class="btn btn-success" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalTablaPlan" @click="consultarActividades(concentrado.id,concentrado.status),datosSugerencia(concentrado.id)"><i class="bi bi-table" ></i> {{concentrado.check_mc}}</button>
                                     </td>
                                         <td>{{concentrado.folio}}</td> <!--FOLIO-->
-                                        <td>{{concentrado.nombre_sugerencia}}</td>
+                                        <td>
+                                            {{concentrado.nombre_sugerencia}}
+                                            <br>
+                                            <span  v-show="concentrado.respuesta_analista == 'No Factible' && concentrado.VoBo_gerente == '' && (concentrado.status =='Cerrada/Fast Response' || concentrado.status == 'Cerrada/No Factible')" class="badge bg-primary text-white" style="font-size:10px;">
+                                                Esta sugerencia está siendo revisada por Gerente
+                                            </span>
+                                        </td>
                                         <td>{{concentrado.fecha_compromiso}}</td>
                                         <td v-if="concentrado.cumplimiento==100" class="text-white bg-success"><b>{{concentrado.cumplimiento}}%</b></td>
                                         <td v-else-if="concentrado.cumplimiento==99" class="text-white bg-warning" ><b>{{concentrado.cumplimiento}}%</b></td>
@@ -1285,7 +1291,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                     <button v-show="concentrado.cantidadDOC == 0" type="button" class="btn btn-secondary  ms-2" title="Subir Sugerencia"  @click="modal_subir_ver_documentos('Subir',concentrado.id,concentrado.folio,'sugerencia',concentrado.cantidadDOC)"><i class="bi bi-paperclip"></i>{{concentrado.cantidadDOC}}</button>
                                                     <button v-show="concentrado.cantidadDOC != 0" type="button" class="btn btn-success  ms-2" title="Subir Sugerencia"  @click="modal_subir_ver_documentos('Subir',concentrado.id,concentrado.folio,'sugerencia',concentrado.cantidadDOC)"><i class="bi bi-paperclip"></i>{{concentrado.cantidadDOC}}</button>
                                                     <!--Deshabilitar btn si no esta al 99% el plan (100% actividades)-->
-                                                    <button v-show="concentrado.cumplimiento < 99 || concentrado.cumplimiento =='' || concentrado.status!='En Implementación' && concentrado.status!='Implementada'" type="button" class="btn btn-secondary  ms-2" title="Subir PPT(Deshabilitado)" disabled ><i class="bi bi-paperclip"></i>{{concentrado.cantidadPPT}}</button >
+                                                    <button v-show="concentrado.cumplimiento < 99 || concentrado.cumplimiento =='' || concentrado.status!='En Implementación' && concentrado.status!='Implementada'" type="button" class="btn btn-secondary  ms-2" title="Subir PPT(Deshabilitado)" disabled><i class="bi bi-paperclip"></i>{{concentrado.cantidadPPT}}</button>
                                                     <button v-show="concentrado.cantidadPPT == 0 && concentrado.cumplimiento >= 99 && concentrado.status=='En Implementación' || concentrado.cantidadPPT == 0 && concentrado.cumplimiento >= 99 && concentrado.status=='Implementada'"  type="button" class="btn btn-secondary  ms-2" title="Subir PPT"  @click="modal_subir_ver_documentos('Subir',concentrado.id,concentrado.folio,'ppt',concentrado.cantidadPPT)"><i class="bi bi-paperclip"></i>{{concentrado.cantidadPPT}}</button>
                                                     <button v-show="concentrado.cantidadPPT != 0 && concentrado.cumplimiento >= 99 && concentrado.status=='En Implementación' || concentrado.cantidadPPT != 0 && concentrado.cumplimiento >= 99 && concentrado.status=='Implementada'" type="button" class="btn btn-success  ms-2" title="Subir PPT"  @click="modal_subir_ver_documentos('Subir',concentrado.id,concentrado.folio,'ppt',concentrado.cantidadPPT)"><i class="bi bi-paperclip"></i>{{concentrado.cantidadPPT}}</button>
                                                 </td>
@@ -3297,6 +3303,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 }
                })
             },
+
             modal_subir_ver_documentos(tipo,id_concentrado,folio,cual_documento,cantidad){
                 this.id_concentrado = id_concentrado
                 this.cual_documento = cual_documento
@@ -3329,6 +3336,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 this.contenido_modal_agregar_eliminar=tipo // contenido a mostrar
                 this.buscarDocumentos()
             },
+
             uploadFile(){
                 let formData = new FormData();
                

@@ -59,7 +59,7 @@ $incrementar=1;
                 }
                 
     </style>
-    <div id="app" class="container-fluid  " >
+    <div id="app" class="container-fluid" >
                 <!--BARRA SUPERIOR-->
             <div class="div_susperior d-flex justify-content-around align-items-center" style="height:10vh">
                 <div class=""><img class="img-fluid" src="img/logo_gonher.png"></img></div>
@@ -100,7 +100,7 @@ $incrementar=1;
                                             <div class="div-scroll mt-3">
                                                 <table class="tablaMonitoreo-sugerencias table table-striped table-bordered ">
                                                 <thead class="encabezado-tabla text-center text-light ">
-                                                    <tr >
+                                                    <tr>
                                                     <th scope="col " class="sticky">#</th>
                                                     <th scope="col">Folio</th>
                                                     <th scope="col">Nombre de Sugerencia</th>
@@ -155,7 +155,9 @@ $incrementar=1;
                                                     <th scope="row" class="text-center">{{index+1}}</th>
                                                         <td>{{concentrado.folio}}</td>  
                                                         <td>{{concentrado.nombre_sugerencia}}</td>
-                                                        <td class="text-center"><label class="me-2"><b>{{concentrado.cumplimiento}}% </b></label> 
+                                                        <td class="text-center"><label class="me-2"><b>{{concentrado.cumplimiento}}% </b></label>
+                                                        <!--<button v-show="concentrado.cumplimiento >= 99 && concentrado.status=='En Implementación' || concentrado.cumplimiento >= 99 && concentrado.status=='Implementada'" type="button" class="btn btn-success  ms-2" title="Subir PPT"  @click="modal_subir_ver_documentos(concentrado.id,concentrado.folio,'ppt',concentrado.cantidadPPT)"><i class="bi bi-paperclip"></i>{{concentrado.cantidadPPT}}</button>
+            -->
                                                         <!--Amarillo-->
                                                             <button v-show="concentrado.dias_restantes>7" type="button" class="btn btn-warning" style="font-size: 1em; " data-bs-toggle="modal" data-bs-target="#modal"  title="Ver Plan de Trabajo" @click="datos_modal_factibilidad('En Implementación',concentrado.id,concentrado.folio,concentrado.numero_nomina, concentrado.status,concentrado.respuesta_analista,concentrado.check_mc,concentrado.validacion_de_impacto)"><i class="bi bi-pencil"></i></i> {{concentrado.status}} </button>
                                                             <button  v-show="concentrado.dias_restantes>=1 && concentrado.dias_restantes<=7 " type="button" class="btn"  style="font-size: 1em; background-color: #fd7e14; border: 1px solid" data-bs-toggle="modal" data-bs-target="#modal"  title="Ver Plan de Trabajo" @click="datos_modal_factibilidad('En Implementación',concentrado.id,concentrado.folio,concentrado.numero_nomina, concentrado.status,concentrado.respuesta_analista,concentrado.check_mc,concentrado.validacion_de_impacto)"><i class="bi bi-pencil"></i></i> {{concentrado.status}} </button>
@@ -178,6 +180,7 @@ $incrementar=1;
                                                 <div class="modal-header">        
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
+                                               
                                                             <div class="d-flex justify-content-center mt-3 ">
                                                                 <span class="badge bg-light text-dark">FACTIBILIDAD DE SUGERENCIA FOLIO: {{folio}}</span>
                                                             </div>
@@ -327,7 +330,7 @@ $incrementar=1;
                                                                         <div class="div-scroll"><!--Scroll-->
                                                                             <table class="tablaMonitoreo-sugerencias table table-striped table-bordered text-center" style=" font-size: 12px">
                                                                                 <thead class="encabezado-tabla text-center text-light ">
-                                                                                    <tr >
+                                                                                    <tr>
                                                                                     <th scope="col" class="sticky"></th>
                                                                                     <th scope="col">No. Actividad</th>
                                                                                     <th scope="col">Descripción Actividad</th>
@@ -507,10 +510,63 @@ $incrementar=1;
                                                             </div>  
                                                        <!--btn salir -->           
                                                     </div>
-                                    </div>
+                                            
+                
+                                 </div>
                                 </div>
                         </div>
                              <!--fin modal-->
+                            <!--modal PPT-->
+                            <div class="modal fade " id="modalPPT" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-xl">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h6 class="modal-title" id="exampleModalLabel" >{{titulo_modal}} </h6>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                            <div class="text-center">
+                                                <form @submit.prevent="SubirPPT()">
+                                                    <!--Subir Documento Sugerencia-->
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <div class="custom-file my-5"> 
+                                                                <input type="file" id="input_file_subir"  ref="archivosydocumentos" multiple required/>{{extensiones_valida}}</input>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <button  type="submit" name="upload" class="btn btn-primary">Subir Archivos </button>
+                                                        </div>
+                                                    </div> 
+                                                    
+                                                    <!-- Mostrando los archivos cargados -->
+                                                    <div class="div" v-show="fileentregado.length>0 && cual_documento=='entregado'" >
+                                                    <hr>
+                                                        <div v-for= "(fileimgreto,index) in fileentregado" :key="index"  class="col-12 text-center">
+                                                            <div class="row">
+                                                            <span class="badge bg-secondary">Documento {{index+1}}</span><br>
+                                                                <div class=" d-flex justify-content-center mt-3">
+                                                                    <div>
+                                                                        <button type="button" class="btn btn-danger" @click="eliminarDocumento(fileimgreto)" >Eliminar</button><br>
+                                                                    </div>
+                                                                </div>
+                                                                <img class="centered-iframe" :src="fileentregado[index]" style="width:100%; height:100%;"></img>
+                                                            </div>
+                                                        
+                                                        <!-- <iframe src="https://vvnorth.com/Sugerencias/documentos/pdf.pdf" style="width:100%;height:500px;"></iframe>-->
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                    </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
                    </div>
                        <!--/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////VENTANA IMPACTO DE SUGERENCIAS-->
                     <div v-if="ventana=='impactoSugerencia'">
@@ -791,7 +847,9 @@ $incrementar=1;
                                                            </div>
                                         </div><!-- contenido impacto de sugerencia-->
                                         
-                    </div>  
+                                        
+                    </div>
+
             </div>
 
 
@@ -799,6 +857,8 @@ $incrementar=1;
             <div class="row" style="height:10vh; background: url(img/pie.jpg); background-repeat: repeat-x; background-size: 8% 100%;">
 
             </div>
+
+
     </div>
 
 <script>
@@ -844,6 +904,7 @@ $incrementar=1;
                 lista_responsable_plan:[],
                 responsable_plan:'',
                 //porcentaje:0,
+                fileentregado: [],
                 documentos:[],
                 nueva_actividad: false,
                 actualizar: false,
@@ -907,8 +968,7 @@ $incrementar=1;
             //Consulta desperdiciones
             this.consultando_lista_de_desperdicio(),
             this.consulta_lista_objetivos_calidad_ma(),
-            this.consulta_responsable_plan()
-            
+            this.consulta_responsable_plan()            
         },
 
         methods:{
@@ -950,6 +1010,22 @@ $incrementar=1;
                 })
             },
 
+            modal_subir_ver_documentos(id_concentrado,folio,cual_documento,cantidad){
+                this.id_concentrado = id_concentrado
+                this.cual_documento = cual_documento
+                this.cantidadDOCFILE = cantidad
+                if(this.cual_documento == 'ppt'){
+                    this.myModal = new bootstrap.Modal(document.getElementById('modalPPT'))
+                    this.myModal.show()
+                    this.extensiones_valida = '(.docx, .ppt, .pptx,.xls,.xlsx)'
+                }else{
+                    this.extensiones_valida = ''
+                }
+                this.folio_carpeta_doc = folio
+                this.titulo_modal="Subir/Ver Documentos." //creando titulo modal // contenido a mostrar
+                this.buscarDocPPT()
+            },
+            
             datos_modal_factibilidad(tipo,index,folio,numero_nomina,status,respuesta,check_mc,tipo_impacto){
                 this.id_actualizar = ''
                 this.status = status
@@ -988,9 +1064,9 @@ $incrementar=1;
                     this.consultarActividades()
                     this.buscarDocumentos()
                     this.buscarDatosValidacionImpacto()
-                }else{
+                }/*else{
 
-                }
+                }*/
             },
             consultando_lista_de_desperdicio(){
                 axios.post('lista_tipo_desperdicio.php',{
@@ -1371,6 +1447,7 @@ $incrementar=1;
                 })
             },
             buscarDocumentos(){
+                
                     axios.post("buscar_documentos.php",{
                         folio_carpeta_doc:this.folio,
                         cual_documento:"nofactibleopcional"
@@ -1403,18 +1480,139 @@ $incrementar=1;
                     })
                     .then(response => {
 
-                        if(response.data.length>0){
+                       
+                        if(this.fileppt.length>0){
+                            this.myModal.hide()
                             document.getElementById("input_file_subir").value=""
+                            alert(this.fileppt.length + " archivo/s se han subido.")
                             this.buscarDocumentos()
                         }else{
                             alert("Verifique la extension del archivo o Intente nuevamente.")
                         }
+
+                     
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+
+            SubirPPT(){
+                let formData = new FormData();
+               
+                if(this.cual_documento=="premio"){
+                    var files = this.$refs.ref_premio.files;
+                    var totalfiles = this.$refs.ref_premio.files.length;
+                }else{
+                    var files = this.$refs.archivosydocumentos.files;
+                    var totalfiles = this.$refs.archivosydocumentos.files.length;
+                } 
+               
+                for (var index = 0; index < totalfiles; index++) {
+                 formData.append("files[]", files[index]);//arreglo de documentos
+                }
+                formData.append("folio", this.folio_carpeta_doc);
+                formData.append("cual_documento", this.cual_documento);
+                formData.append("id_concentrado", this.id_concentrado);
+                formData.append("cantidad", this.cantidadDOCFILE);
+                axios.post("subir_documentos.php", formData,
+                    {
+                    headers: {"Content-Type": "multipart/form-data"}
+                    })
+                    .then(response => {
+                        console.log(response.data);
+                     if(this.cual_documento=="ppt"){
+                        this.fileppt = response.data;
+                        if(this.fileppt.length>0){
+                            this.myModal.hide()
+                            document.getElementById("input_file_subir").value=""
+                            alert(this.fileppt.length + " archivo/s se han subido.")
+                            this.buscarDocumentos()
+                        }else{
+                            alert("Verifique la extension del archivo o Intente nuevamente.")
+                        }
+
+                     }
+                     if(this.cual_documento=="sugerencia"){
+                        this.filedoc = response.data;
+                        if(this.filedoc.length>0){
+                            this.myModal.hide()
+                            document.getElementById("input_file_subir").value=""
+                            alert(this.filedoc.length + " archivo/s se han subido.")
+                            this.buscarDocumentos()
+                        }else{
+                            alert("Verifique la extension del archivo o Intente nuevamente.")
+                        }
+                     }   
+                     if(this.cual_documento=="reto"){
+                        this.filereto = response.data;
+                        if(this.filereto.length>0){
+                            this.myModal.hide()
+                            document.getElementById("input_file_subir").value=""
+                            alert(this.filereto.length + " archivo/s se han subido.")
+                            this.buscarDocumentos()
+                        }else{
+                            alert("Verifique la extension del archivo o Intente nuevamente.")
+                        }
+                     }  
+                     if(this.cual_documento=="premio"){
+                        this.filepremio = response.data;
+                        if(this.filepremio.length>0){
+                            this.myModal.hide()
+                            document.getElementById("input_file_subir").value=""
+                            alert(this.filepremio.length + " archivo/s se han subido.")
+                            this.buscarDocumentos()
+                        }else{
+                            alert("Verifique la extension del archivo o Intente nuevamente.")
+                        }
+                     }   
+                     if(this.cual_documento=="entregado"){
+                        this.fileentregado = response.data;
+                        if(this.fileentregado.length>0){
+                            this.myModal.hide()
+                            document.getElementById("input_file_subir").value=""
+                            alert(this.fileentregado.length + " archivo/s se han subido.")
+                            this.buscarDocumentos()
+                        }else{
+                            alert("Verifique la extension del archivo o Intente nuevamente.")
+                        }
+                     }   
+                    
                      
                     })
                     .catch(error => {
                         console.log(error);
                     });
                 },
+
+            buscarDocPPT(){
+                //alert(this.cual_documento+""+this.folio_carpeta_doc)
+                this.filenames=[] //limpiado vista del documento subido en modal 
+                this.fileppt=[]//limpiado vista del documento bajada en modal
+                if(this.folio_carpeta_doc!=undefined){
+                    axios.post("buscar_documentos.php",{
+                        folio_carpeta_doc:this.folio_carpeta_doc,
+                        cual_documento:this.cual_documento
+                    })
+                    .then(response => {
+                    if(this.cual_documento=="ppt"){
+                        this.fileppt = response.data
+                        this.cantidadDOCFILE = this.fileppt.length
+                        if(this.fileppt.length>0){
+                            console.log(this.fileppt.length + "Archivos encontrados.")
+                            console.log('sooon',fileppts);
+                        }else{
+                            //alert("Sin Documentos agregados.")
+                        }
+                        //this.acomodarSugerencias()
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+                    }
+            },
+
                 eliminarDocumento(ruta){
                     axios.post("eliminar_documento.php",{
                             ruta_eliminar: ruta,

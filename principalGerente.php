@@ -90,7 +90,7 @@ $incrementar=1;
                                     <th scope="col" class="sticky">#</th>
                                     <th scope="col">Folio</th>
                                     <th scope="col">Nombre de Sugerencia</th>
-                                    <th scope="col">Fecha de Inicio </th>
+                                    <th scope="col">Fecha de No Factibilidad</th>
                                     <th scope="col "> Nombre del analista</th>
                                     <th scope="col">Status de Factibilidad</th>
                                 </tr>
@@ -100,7 +100,7 @@ $incrementar=1;
                                     <th scope="row" class="text-center">{{index+1}}</th>
                                     <td>{{no_factibles.folio}}</td>
                                     <td>{{no_factibles.nombre_sugerencia}}</td>
-                                    <td>{{no_factibles.fecha_de_inicio}}</td>
+                                    <td>{{no_factibles.fecha_factibilidad.split(' ')[0]}}</td>
                                     <td> {{no_factibles.analista_de_factibilidad}}</td>
                                     <td class="text-center">
                                         <button type="button" class="btn btn-warning" style=" font-size: 1em" title="Factible o No Factible" @click="datos_modal_factibilidad('factibilidad',no_factibles.id,no_factibles.folio,no_factibles.numero_nomina, no_factibles.status,no_factibles.respuesta_analista,no_factibles.check_mc,no_factibles.validacion_de_impacto,no_factibles.causa_no_factibilidad)"><i class="bi bi-eye"></i> {{no_factibles.status}} </button>
