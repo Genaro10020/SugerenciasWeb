@@ -1291,12 +1291,18 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                     <button v-show="concentrado.cantidadDOC == 0" type="button" class="btn btn-secondary  ms-2" title="Subir Sugerencia"  @click="modal_subir_ver_documentos('Subir',concentrado.id,concentrado.folio,'sugerencia',concentrado.cantidadDOC)"><i class="bi bi-paperclip"></i>{{concentrado.cantidadDOC}}</button>
                                                     <button v-show="concentrado.cantidadDOC != 0" type="button" class="btn btn-success  ms-2" title="Subir Sugerencia"  @click="modal_subir_ver_documentos('Subir',concentrado.id,concentrado.folio,'sugerencia',concentrado.cantidadDOC)"><i class="bi bi-paperclip"></i>{{concentrado.cantidadDOC}}</button>
                                                     <!--Deshabilitar btn si no esta al 99% el plan (100% actividades)-->
-                                                    <button v-show="concentrado.cumplimiento < 99 || concentrado.cumplimiento =='' || concentrado.status!='En Implementación' && concentrado.status!='Implementada'" type="button" class="btn btn-secondary  ms-2" title="Subir PPT(Deshabilitado)" disabled><i class="bi bi-paperclip"></i>{{concentrado.cantidadPPT}}</button>
-                                                    <button v-show="concentrado.cantidadPPT == 0 && concentrado.cumplimiento >= 99 && concentrado.status=='En Implementación' || concentrado.cantidadPPT == 0 && concentrado.cumplimiento >= 99 && concentrado.status=='Implementada'"  type="button" class="btn btn-secondary  ms-2" title="Subir PPT"  @click="modal_subir_ver_documentos('Subir',concentrado.id,concentrado.folio,'ppt',concentrado.cantidadPPT)"><i class="bi bi-paperclip"></i>{{concentrado.cantidadPPT}}</button>
-                                                    <button v-show="concentrado.cantidadPPT != 0 && concentrado.cumplimiento >= 99 && concentrado.status=='En Implementación' || concentrado.cantidadPPT != 0 && concentrado.cumplimiento >= 99 && concentrado.status=='Implementada'" type="button" class="btn btn-success  ms-2" title="Subir PPT"  @click="modal_subir_ver_documentos('Subir',concentrado.id,concentrado.folio,'ppt',concentrado.cantidadPPT)"><i class="bi bi-paperclip"></i>{{concentrado.cantidadPPT}}</button>
+                                                    <button v-show="concentrado.cumplimiento < 99 || concentrado.cumplimiento =='' || concentrado.status!='En Implementación' && concentrado.status!='Implementada'" type="button" class="btn btn-secondary  ms-2" title="Subir PPT(Deshabilitado)" disabled><i class="bi bi-paperclip"></i>{{concentrado.cantidadPPT}}</button> <!--AQUII-->
+                                                    <button v-show="concentrado.cantidadPPT == 0 && concentrado.cumplimiento >= 99 && concentrado.status=='En Implementación' || concentrado.cantidadPPT == 0 && concentrado.cumplimiento >= 99 && concentrado.status=='Implementada'"  type="button" class="btn btn-secondary  ms-2" title="Subir PPT"  @click="modal_subir_ver_documentos('Subir',concentrado.id,concentrado.folio,'ppt',concentrado.cantidadPPT,concentrado.cumplimiento,index,concentrado.status_PPT)"><i class="bi bi-paperclip"></i>{{concentrado.cantidadPPT}}</button>
+                                                    <button v-show="concentrado.cantidadPPT != 0 && concentrado.status=='En Implementación' || concentrado.cantidadPPT != 0 && concentrado.cumplimiento >= 99 && concentrado.status=='Implementada'" type="button" class="btn btn-success  ms-2" title="Subir PPT"  @click="modal_subir_ver_documentos('Subir',concentrado.id,concentrado.folio,'ppt',concentrado.cantidadPPT,concentrado.cumplimiento,index,concentrado.status_PPT)"><i class="bi bi-paperclip"></i>{{concentrado.cantidadPPT}}</button>
                                                 </td>
                                                 <th scope="row">{{index+1}}<br><!--{{concentrado.id}}--></th>
-                                                <td><label>{{concentrado.cumplimiento}}%</label></td>
+                                                <td>
+                                                    <label>{{concentrado.cumplimiento}}%</label>
+                                                    <br>
+                                                    <span v-show="concentrado.status_PPT == 'Por Validar' && concentrado.cumplimiento == '99'" class="badge bg-primary text-white">Pendiente por Revisar</span>
+                                                    <span v-show="concentrado.status_PPT == 'Corregido' && concentrado.cumplimiento == '99'" class="badge bg-primary text-white">Corregido por Analista</span>
+                                                    <span v-show="concentrado.status_PPT == 'Rechazado' && concentrado.cumplimiento == '99'" class="badge bg-warning text-dark">Rechazado. Pendiente a corregir por Analista</span>
+                                                </td>
                                                 <td>
                                                     <select class="inputs-concentrado" v-model="var_sindicalizado_empleado"  v-if="actualizar_sugerencia==index+1">
                                                         <option>Sindicalizado</option>
@@ -1476,7 +1482,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                         </div>
 
                                         <div class="text-center" v-if="contenido_modal_agregar_eliminar=='Subir'">
-                                                <form @submit.prevent="uploadFile()">
+                                                <form @submit.prevent="uploadFile('admin')">
                                                     <!--Subir Documento Sugerencia-->
                                                     <div class="row">
                                                         <div class="col-12">
@@ -1521,13 +1527,13 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                         </div>
 
                                                          <!-- Mostrando los archivos nuevos y cargados de PPT-->
-                                                         <div v-show="fileppt.length>0 && cual_documento=='ppt'" >
+                                                         <div v-show="fileppt.length>0 && cual_documento=='ppt'">
                                                          <hr>
                                                                 <div class="col-12" v-for= "(fileppts,index) in fileppt">
                                                                     <div class="row">
                                                                         <span class="badge bg-secondary mt-3">Documento {{index+1}}</span><br>
                                                                             <div class="col-12 col-md-12">
-                                                                                <button type="button" class="btn btn-danger" @click="eliminarDocumento(fileppts)" >Eliminar</button>
+                                                                                <button type="button" class="btn btn-danger" @click="eliminarDocumento(fileppts,tipo_usuario)" >Eliminar</button>
                                                                             </div>
                                                                             <div class="col-12 col-md-12">
                                                                             Descargar <br><label style="font-size: 0.8em;">{{fileppts.substr(fileppts.lastIndexOf('/')+1)}}</label><br>
@@ -1543,17 +1549,21 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                                         <img src="img/descargar_word.png" style="width:100px; height:100px;"></img>
                                                                                      </div>
                                                                                 </a>
+                                                                                <!--aceptar y rechazar documentos de analista-->
                                                                             </div>
                                                                     </div>
                                                                 </div>
                                                          </div>
-                                                        <hr>
                                                     <!---->
                                                     <!---->
                                                 </form>
                                         </div>
                                 </div>
                                 <div class="modal-footer">
+                                    <div v-show="cumplimientoPPT != 100 && (status_ppt == 'Corregido' || status_ppt == 'Por Validar')"> <!-- cuando el analista no ha subido documentos-->
+                                        <button type="button" class="btn btn-success me-2" @click="aceptarRechazar_DocAnalista('aceptar')" >Aceptar</button>
+                                        <button type="button" class="btn btn-warning" @click="aceptarRechazar_DocAnalista('rechazar')" >Rechazar</button>
+                                    </div>
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                                     <button v-if="contenido_modal_agregar_eliminar=='Agregar'" type="button" class="btn btn-primary "  data-bs-dismiss="modal" @click="agregar_nuevo_lista">Guardar</button>
                                 </div>
@@ -1578,7 +1588,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                         <div class="div-scroll">
                                             <table class="tablaMonitoreo-sugerencias table table-striped table-bordered ">
                                             <thead class="encabezado-tabla text-center text-light ">
-                                                <tr >
+                                                <tr>
                                                     <th scope="col " class="sticky">Agregar</th>
                                                     <th scope="col">Código<span class="badge bg-primary">*</span></th>
                                                     <th scope="col">Descripción <span  class="badge bg-primary">*</span></th>
@@ -1674,7 +1684,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                 </div>
                                 <div class="modal-body">
                                         <div class="text-center" v-if="contenido_modal_agregar_eliminar=='Subir'">
-                                                <form @submit.prevent="uploadFile()">
+                                                <form @submit.prevent="uploadFile('admin')">
                                                     <!--Subir Documento Sugerencia-->
                                                     <div class="row">
                                                         <div class="col-12">
@@ -1727,7 +1737,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                 </div>
                                 <div class="modal-body">
                                         <div class="text-center" v-if="contenido_modal_agregar_eliminar=='Subir'">
-                                                <form @submit.prevent="uploadFile()">
+                                                <form @submit.prevent="uploadFile('admin')">
                                                     <!--Subir Documento Sugerencia-->
                                                     <div class="row">
                                                         <div class="col-12">
@@ -1948,7 +1958,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                 </div>
                                 <div class="modal-body">
                                         <div class="text-center" v-if="contenido_modal_agregar_eliminar=='Subir'">
-                                            <form @submit.prevent="uploadFile()">
+                                            <form @submit.prevent="uploadFile('admin')">
                                                 <!--Subir Documento Sugerencia-->
                                                 <div class="row">
                                                     <div class="col-12">
@@ -2233,7 +2243,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                 </div>
                                 <div class="modal-body">
                                         <div class="text-center">
-                                                <form @submit.prevent="uploadFile()">
+                                                <form @submit.prevent="uploadFile('admin')">
                                                     <!--Subir Documento Sugerencia-->
                                                     <div class="row">
                                                         <div class="col-12">
@@ -2615,6 +2625,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 sumatotal:0,
                 cambio_contrasenia:[],
                 valor:'acomodar',
+                usuarioT:'',
+                cumplimientoPPT:'',
+                indexPPT:'',
             }
         },
         mounted(){
@@ -3304,7 +3317,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                })
             },
 
-            modal_subir_ver_documentos(tipo,id_concentrado,folio,cual_documento,cantidad){
+            modal_subir_ver_documentos(tipo,id_concentrado,folio,cual_documento,cantidad,cumplimiento,index,statusPPT){
                 this.id_concentrado = id_concentrado
                 this.cual_documento = cual_documento
                 this.cantidadDOCFILE = cantidad
@@ -3313,6 +3326,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     this.myModal.show()
                     this.extensiones_valida = '(.png, .jpeg, .jpg, .pdf)'
                 }else if(this.cual_documento == 'ppt'){
+                    this.cumplimientoPPT = cumplimiento;
+                    this.indexPPT = index;
+                    this.status_ppt = statusPPT;
                     this.myModal = new bootstrap.Modal(document.getElementById('modal'))
                     this.myModal.show()
                     this.extensiones_valida = '(.docx, .ppt, .pptx,.xls,.xlsx)'
@@ -3337,9 +3353,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 this.buscarDocumentos()
             },
 
-            uploadFile(){
+            uploadFile(tipo_usuario){
                 let formData = new FormData();
-               
+
+                this.usuarioT = tipo_usuario;
                 if(this.cual_documento=="premio"){
                     var files = this.$refs.ref_premio.files;
                     var totalfiles = this.$refs.ref_premio.files.length;
@@ -3355,6 +3372,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 formData.append("cual_documento", this.cual_documento);
                 formData.append("id_concentrado", this.id_concentrado);
                 formData.append("cantidad", this.cantidadDOCFILE);
+                formData.append("tipo_usuario", this.usuarioT);
                 axios.post("subir_documentos.php", formData,
                     {
                     headers: {"Content-Type": "multipart/form-data"}
@@ -3506,19 +3524,24 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 },
                 
             eliminarDocumento(ruta){
-               if(!confirm("Desea eliminar el Documento ¿Esta seguro?")){return true}
+               if(!confirm("Desea eliminar el Documento ¿Esta seguro?"))
+               {
+                return true
+               }
                axios.post("eliminar_documento.php",{
                     ruta_eliminar: ruta,
                     id_concentrado: this.id_concentrado,
                     cual_documento:this.cual_documento,
                     cantidad: this.cantidadDOCFILE-1,
-                }).then( reponse=>{
-                    if(reponse.data=="Archivo Eliminado"){
+                }).then( response=>{
+                    if(response.data=="Archivo Eliminado"){
                         this.buscarDocumentos()
+                        this.myModal.hide();
                         alert("Archivo/Documento Eliminado con Éxito")
-                    }else if(reponse.data=="No Eliminado"){
+                    }else if(response.data=="No Eliminado"){
                         alert("Algo no salio bien no se logro Eliminar.")
                     }else{
+                        console.log('mostrar',response.data)
                         alert("Error al eliminar el Documento.")
                     }
 
@@ -3536,7 +3559,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                  
                 })
                    
-                },  
+            },  
                 /*METODOS DE PREMIOS*/
                 consultar_concentrado_premios(){
                     axios.post("consulta_concentrado_premios.php",{
@@ -3545,7 +3568,37 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     }).catch(arror =>{
 
                     })
+            },
+
+                aceptarRechazar_DocAnalista(accion,id){
+
+                    if(accion == "aceptar" || accion == "rechazar"){
+
+                        console.log(accion);
+
+                        let formData = new FormData();
+
+                        formData.append("accion_", accion);
+                        formData.append("id_concentrado", this.id_concentrado);
+                        formData.append("folio_", this.folio_carpeta_doc);
+
+                        axios.post("aceptar_rechazar_doc_analista.php", formData,
+                        {
+                            headers: {"Content-Type": "multipart/form-data"}
+                        })
+                        .then(response => {
+                            console.log('obtuve',response.data);
+                            this.consultado_concentrado();
+                            this.myModal.hide();
+
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+
+                    }
                 },
+
                 guardarActualizarPremios(index,id_premio,insertar_actualizar){
 
                     if(insertar_actualizar=="Insertar"){

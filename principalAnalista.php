@@ -154,14 +154,24 @@ $incrementar=1;
                                                     <tr  v-for="(concentrado, index) in concentrado_sugerencias_pendiente_implementacion">
                                                     <th scope="row" class="text-center">{{index+1}}</th>
                                                         <td>{{concentrado.folio}}</td>  
-                                                        <td>{{concentrado.nombre_sugerencia}}</td>
+                                                        <td>
+                                                            {{concentrado.nombre_sugerencia}}
+                                                            <br>
+                                                            <span v-show="concentrado.status_PPT == 'Rechazado' && concentrado.cumplimiento == 99" class="badge bg-warning text-dark" style="font-size:10px;">Rechazado por Mejora Continua</span>
+                                                            <span v-show="concentrado.status_PPT == 'Por Validar' && concentrado.cumplimiento == 99" class="badge bg-primary text-white" style="font-size:10px;">Pendiente a Validar por Mejora Continua</span>
+                                                            <span v-show="concentrado.status_PPT == 'Corregido' && concentrado.cumplimiento == 99" class="badge bg-primary text-white" style="font-size:10px;">Documento Corregido. Pendiente por Aceptar</span>
+                                                            <span v-show="concentrado.status_PPT == 'Eliminado' && concentrado.cantidadPPT == '0' && concentrado.cumplimiento == 99" class="badge bg-secondary text-white" style="font-size:10px;">El administrador eliminó los documentos</span>
+                                                        </td>
                                                         <td class="text-center"><label class="me-2"><b>{{concentrado.cumplimiento}}% </b></label>
-                                                        <!--<button v-show="concentrado.cumplimiento >= 99 && concentrado.status=='En Implementación' || concentrado.cumplimiento >= 99 && concentrado.status=='Implementada'" type="button" class="btn btn-success  ms-2" title="Subir PPT"  @click="modal_subir_ver_documentos(concentrado.id,concentrado.folio,'ppt',concentrado.cantidadPPT)"><i class="bi bi-paperclip"></i>{{concentrado.cantidadPPT}}</button>
-            -->
+
+                                                        <button v-show="concentrado.cumplimiento < 99 || concentrado.cumplimiento =='' || concentrado.status!='En Implementación' && concentrado.status!='Implementada'" type="button" class="btn btn-secondary ms-2" title="Subir PPT(Deshabilitado)" disabled><i class="bi bi-paperclip"></i>{{concentrado.cantidadPPT}}</button>
+                                                        <button v-show="concentrado.cantidadPPT == 0 && concentrado.cumplimiento >= 99 && concentrado.status=='En Implementación' || concentrado.cantidadPPT == 0 && concentrado.cumplimiento >= 99 && concentrado.status=='Implementada'"  type="button" class="btn btn-primary  ms-2" title="Subir PPT"  @click="modal_subir_ver_documentos('Subir',concentrado.id,concentrado.folio,'ppt',concentrado.cantidadPPT)"><i class="bi bi-paperclip"></i>{{concentrado.cantidadPPT}}</button>
+                                                        <button v-show="concentrado.cantidadPPT != 0 && concentrado.cumplimiento >= 99 && concentrado.status=='En Implementación' || concentrado.cantidadPPT != 0 && concentrado.cumplimiento >= 99 && concentrado.status=='Implementada'" type="button" class="btn btn-success  ms-2" title="Subir PPT"  @click="modal_subir_ver_documentos('Subir',concentrado.id,concentrado.folio,'ppt',concentrado.cantidadPPT)"><i class="bi bi-paperclip"></i>{{concentrado.cantidadPPT}}</button>
+
                                                         <!--Amarillo-->
-                                                            <button v-show="concentrado.dias_restantes>7" type="button" class="btn btn-warning" style="font-size: 1em; " data-bs-toggle="modal" data-bs-target="#modal"  title="Ver Plan de Trabajo" @click="datos_modal_factibilidad('En Implementación',concentrado.id,concentrado.folio,concentrado.numero_nomina, concentrado.status,concentrado.respuesta_analista,concentrado.check_mc,concentrado.validacion_de_impacto)"><i class="bi bi-pencil"></i></i> {{concentrado.status}} </button>
-                                                            <button  v-show="concentrado.dias_restantes>=1 && concentrado.dias_restantes<=7 " type="button" class="btn"  style="font-size: 1em; background-color: #fd7e14; border: 1px solid" data-bs-toggle="modal" data-bs-target="#modal"  title="Ver Plan de Trabajo" @click="datos_modal_factibilidad('En Implementación',concentrado.id,concentrado.folio,concentrado.numero_nomina, concentrado.status,concentrado.respuesta_analista,concentrado.check_mc,concentrado.validacion_de_impacto)"><i class="bi bi-pencil"></i></i> {{concentrado.status}} </button>
-                                                            <button v-show="concentrado.dias_restantes<=0"  type="button" class="btn btn-danger" style="font-size: 1em;" data-bs-toggle="modal" data-bs-target="#modal"  title="Ver Plan de Trabajo" @click="datos_modal_factibilidad('En Implementación',concentrado.id,concentrado.folio,concentrado.numero_nomina, concentrado.status,concentrado.respuesta_analista,concentrado.check_mc,concentrado.validacion_de_impacto)"><i class="bi bi-pencil"></i></i> {{concentrado.status}} </button>
+                                                            <button v-show="concentrado.dias_restantes>7" type="button" class="btn btn-warning ms-2" style="font-size: 1em; " data-bs-toggle="modal" data-bs-target="#modal"  title="Ver Plan de Trabajo" @click="datos_modal_factibilidad('En Implementación',concentrado.id,concentrado.folio,concentrado.numero_nomina, concentrado.status,concentrado.respuesta_analista,concentrado.check_mc,concentrado.validacion_de_impacto)"><i class="bi bi-pencil"></i></i> {{concentrado.status}} </button>
+                                                            <button v-show="concentrado.dias_restantes>=1 && concentrado.dias_restantes<=7 " type="button" class="btn ms-2"  style="font-size: 1em; background-color: #fd7e14; border: 1px solid" data-bs-toggle="modal" data-bs-target="#modal"  title="Ver Plan de Trabajo" @click="datos_modal_factibilidad('En Implementación',concentrado.id,concentrado.folio,concentrado.numero_nomina, concentrado.status,concentrado.respuesta_analista,concentrado.check_mc,concentrado.validacion_de_impacto)"><i class="bi bi-pencil"></i></i> {{concentrado.status}} </button>
+                                                            <button v-show="concentrado.dias_restantes<=0"  type="button" class="btn btn-danger ms-2" style="font-size: 1em;" data-bs-toggle="modal" data-bs-target="#modal"  title="Ver Plan de Trabajo" @click="datos_modal_factibilidad('En Implementación',concentrado.id,concentrado.folio,concentrado.numero_nomina, concentrado.status,concentrado.respuesta_analista,concentrado.check_mc,concentrado.validacion_de_impacto)"><i class="bi bi-pencil"></i></i> {{concentrado.status}} </button>
                                                         </td>
                                                         <td class="text-center " style="vertical-align:middle" >
                                                             <label class=" my-around "><b>{{concentrado.dias_restantes}}</b></label>
@@ -280,7 +290,7 @@ $incrementar=1;
                                                                                          Objetivos de Calidad y M.A.(*):<br>
                                                                                             <div  class="inputs-concentrado" style="overflow-y: scroll; height:80px" >
                                                                                                     <label>{{var_objetivo_de_calidadMA}}</label>
-                                                                                                        <ul >
+                                                                                                        <ul>
                                                                                                             <li v-for="objetivo_de_calidad in objetivo_de_calidadMA">
                                                                                                                 <input type="checkbox" :value="objetivo_de_calidad.objetivos_de_calidad" v-model="var_objetivo_de_calidadMA" :disabled="deshabilitar">
                                                                                                                 <label for="objetivo_de_calidad">{{objetivo_de_calidad.objetivos_de_calidad}}</label>
@@ -342,10 +352,10 @@ $incrementar=1;
                                                                                 </thead>
                                                                                 <tbody>
                                                                                     <tr class="align-middle bg-info" v-show="nueva_actividad"><!--Nueva Actividad Fila-->
-                                                                                            <td class="sticky"> 
-                                                                                                <button type="button" class="btn btn-danger  me-2" title="Cancelar" @click="nueva_actividad=false"><i class="bi bi-x-circle" ></i></button>
-                                                                                                <button type="button" class="btn btn-primary" title="Guardar" @click="guardarEditarActividad('nuevo','')"><i class="bi bi-check-circle"></i></button>
-                                                                                            </td> 
+                                                                                        <td class="sticky"> 
+                                                                                            <button type="button" class="btn btn-danger  me-2" title="Cancelar" @click="nueva_actividad=false"><i class="bi bi-x-circle" ></i></button>
+                                                                                            <button type="button" class="btn btn-primary" title="Guardar" @click="guardarEditarActividad('nuevo','')"><i class="bi bi-check-circle"></i></button>
+                                                                                        </td> 
                                                                                         <th scope="row">
                                                                                             <label>{{numero_nueva_actividad}}</label></th>
                                                                                         <td>
@@ -362,39 +372,37 @@ $incrementar=1;
                                                                                             <input class="inputs-concentrado" type="date" v-model="fecha_final_actividad"></input></td>
                                                                                         <td>0</td>
                                                                                     </tr><!--Fin Nueva Actividad-->
-                                                                                         <!--Consulta actividades-->
-                                                                                        <tr class="align-middle" v-for="(actividades, index) in concentrado_actividades">
-                                                                                           
-                                                                                        <td> 
+
+                                                                                        <!--Consulta actividades-->
+                                                                                    <tr class="align-middle" v-for="(actividades, index) in concentrado_actividades">
+                                                                                        <td>
                                                                                             <button v-show="deshabilitar==false" type="button" class="btn btn-danger me-2" title="Eliminar" @click="eliminarActividad(actividades.id)"><i class="bi bi-trash3-fill"></i></button>
                                                                                             <button type="button" class="btn btn-danger me-2" title="Cancelar" @click="editarActividad('')" v-if="id_actualizar==index+1"><i class="bi bi-x-circle" ></i></button>
                                                                                             <button v-show="deshabilitar==false" type="button" class="btn btn-warning me-2" title="Editar" @click="editarActividad(index+1)"><i class="bi bi-pen" ></i></button>
                                                                                             <button type="button" class="btn btn-primary " title="Guardar" @click="guardarEditarActividad('actualizar',actividades.id)" v-if="id_actualizar==index+1"><i class="bi bi-check-circle"></i></button>
-                                                                                        </td> 
-                                                                                            <th scope="row">
-                                                                                                <label v-show="actualizar==true || check_mc=='Aceptado' || deshabilitar==true">{{index+1}}</label>
-                                                                                                   <!-- <select  v-model="numero_orden_en_select" v-show="actualizar==false && check_mc!='Aceptado'" title="Cambiar posición">
-                                                                                                        <option  value="0" disabled>{{index+1}}</option>
-                                                                                                        <option :value="index+1" v-for="numero in numero_actividad" @click="ordenarActividades(index,numero-1,numero_orden_en_select=0)">{{numero}}</option>
-                                                                                                    </select>-->
-                                                                                                    
-                                                                                                    <select :id="'select'+index" v-show="actualizar==false && check_mc!='Aceptado'  && deshabilitar!=true" @change="ordenarActividades(index)" title="Cambiar posición">
-                                                                                                        <option  value="{{index+1}}" disabled selected>{{index+1}}</option>
-                                                                                                        <option :value="numero-1" v-for="numero in numero_actividad" >{{numero}}</option>
-                                                                                                    </select>  
-                                                                                                     
-                                                                                            </th>
+                                                                                        </td>
+                                                                                        <th scope="row">
+                                                                                            <label v-show="actualizar==true || check_mc=='Aceptado' || deshabilitar==true">{{index+1}}</label>
+                                                                                            <!-- <select  v-model="numero_orden_en_select" v-show="actualizar==false && check_mc!='Aceptado'" title="Cambiar posición">
+                                                                                                <option  value="0" disabled>{{index+1}}</option>
+                                                                                                <option :value="index+1" v-for="numero in numero_actividad" @click="ordenarActividades(index,numero-1,numero_orden_en_select=0)">{{numero}}</option>
+                                                                                            </select>-->
+                                                                                            
+                                                                                            <select :id="'select'+index" v-show="actualizar==false && check_mc!='Aceptado'  && deshabilitar!=true" @change="ordenarActividades(index)" title="Cambiar posición">
+                                                                                                <option  value="{{index+1}}" disabled selected>{{index+1}}</option>
+                                                                                                <option :value="numero-1" v-for="numero in numero_actividad" >{{numero}}</option>
+                                                                                            </select>  
+                                                                                        </th>
                                                                                         <td>   
                                                                                             <textarea v-model="descripcion_actividad" v-if="id_actualizar==index+1" class="inputs-concentrado text-area" type="text"  ></textarea> 
                                                                                             <label v-else>{{actividades.actividad}}<label>
-                                                                                                
                                                                                         </td>
                                                                                         
-                                                                                       <td>
-                                                                                        <select v-if="id_actualizar==index+1" class="inputs-concentrado" v-model="responsable_plan" >
-                                                                                            <option value="" disabled>Seleccione responsable..</option>
-                                                                                            <option v-for="responsable in lista_responsable_plan" :key="responsable.nombre" :value="responsable.nombre">{{responsable.nombre}}</option>
-                                                                                        </select>
+                                                                                        <td>
+                                                                                            <select v-if="id_actualizar==index+1" class="inputs-concentrado" v-model="responsable_plan" >
+                                                                                                <option value="" disabled>Seleccione responsable..</option>
+                                                                                                <option v-for="responsable in lista_responsable_plan" :key="responsable.nombre" :value="responsable.nombre">{{responsable.nombre}}</option>
+                                                                                            </select>
                                                                                             <label v-else>{{actividades.responsable}}<label>
                                                                                         </td>
                                                                                         <td><input v-if="id_actualizar==index+1" class="inputs-concentrado" v-model="fecha_inicial_actividad" type="date" ></input><label v-else>{{actividades.fecha_inicial}}<label></td>
@@ -442,7 +450,7 @@ $incrementar=1;
                                                    
                                                     <div v-show="no_factible==true"><!--ESPACIO NO FACTIBLE-->
                                                     <span class="badge bg-light text-dark mb-1">ADJUNTAR EVIDENCIA DE NO FACTIBILIDAD (OPCIONAL)</span>
-                                                        <form @submit.prevent="uploadFile()">
+                                                        <form @submit.prevent="uploadFile('admin')">
                                                                         <div class="row">
                                                                             <div class="col-12">
                                                                                 <div class="custom-file my-2 ms-2"> 
@@ -517,16 +525,16 @@ $incrementar=1;
                         </div>
                              <!--fin modal-->
                             <!--modal PPT-->
-                            <div class="modal fade " id="modalPPT" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered modal-xl">
-                                    <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h6 class="modal-title" id="exampleModalLabel" >{{titulo_modal}} </h6>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                            <div class="text-center">
-                                                <form @submit.prevent="SubirPPT()">
+                            <div class="modal fade" id="modalPPT" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-xl">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h6 class="modal-title" id="exampleModalLabel" >{{titulo_modal}} </h6>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                        <div class="text-center" v-if="contenido_modal_agregar_eliminar=='Subir'">
+                                                <form @submit.prevent="SubirPPT('analista')">
                                                     <!--Subir Documento Sugerencia-->
                                                     <div class="row">
                                                         <div class="col-12">
@@ -538,32 +546,45 @@ $incrementar=1;
                                                             <button  type="submit" name="upload" class="btn btn-primary">Subir Archivos </button>
                                                         </div>
                                                     </div> 
-                                                    
-                                                    <!-- Mostrando los archivos cargados -->
-                                                    <div class="div" v-show="fileentregado.length>0 && cual_documento=='entregado'" >
-                                                    <hr>
-                                                        <div v-for= "(fileimgreto,index) in fileentregado" :key="index"  class="col-12 text-center">
-                                                            <div class="row">
-                                                            <span class="badge bg-secondary">Documento {{index+1}}</span><br>
-                                                                <div class=" d-flex justify-content-center mt-3">
-                                                                    <div>
-                                                                        <button type="button" class="btn btn-danger" @click="eliminarDocumento(fileimgreto)" >Eliminar</button><br>
+
+                                                         <!-- Mostrando los archivos nuevos y cargados de PPT-->
+                                                         <div v-show="fileppt.length> 0 && cual_documento=='ppt'" >
+                                                         <hr>
+                                                                <div class="col-12" v-for= "(fileppts,index) in fileppt">
+                                                                    <div class="row">
+                                                                        <span class="badge bg-secondary mt-3">Documento {{index+1}}</span><br>
+                                                                            <div class="col-12 col-md-12">
+                                                                                <button type="button" class="btn btn-danger" @click="eliminarPPT(fileppts)" >Eliminar</button>
+                                                                            </div>
+                                                                            <div class="col-12 col-md-12">
+                                                                            Descargar <br><label style="font-size: 0.8em;">{{fileppts.substr(fileppts.lastIndexOf('/')+1)}}</label><br>
+                                                                                <a :href="fileppts" :download="fileppts.substr(fileppts.lastIndexOf('/') + 1)">
+
+                                                                                    <div v-if="fileppts.substr(fileppts.lastIndexOf('.')+1).trim() =='ppt' || fileppts.substr(fileppts.lastIndexOf('.')+1).trim()=='pptx'">
+                                                                                        <img src="img/descargar_ppt.png" style="width:100px; height:100px;"></img>
+                                                                                     </div>
+                                                                                     <div v-if="fileppts.substr(fileppts.lastIndexOf('.')+1).trim() =='xls' || fileppts.substr(fileppts.lastIndexOf('.')+1).trim()=='xlsx'">
+                                                                                        <img src="img/descargar_excel.png" style="width:100px; height:100px;"></img>
+                                                                                     </div>
+                                                                                     <div v-if="fileppts.substr(fileppts.lastIndexOf('.')+1).trim() =='doc' || fileppts.substr(fileppts.lastIndexOf('.')+1).trim()=='docx'">
+                                                                                        <img src="img/descargar_word.png" style="width:100px; height:100px;"></img>
+                                                                                     </div>
+                                                                                </a>
+                                                                            </div>
                                                                     </div>
                                                                 </div>
-                                                                <img class="centered-iframe" :src="fileentregado[index]" style="width:100%; height:100%;"></img>
-                                                            </div>
-                                                        
-                                                        <!-- <iframe src="https://vvnorth.com/Sugerencias/documentos/pdf.pdf" style="width:100%;height:500px;"></iframe>-->
-                                                        </div>
-                                                    </div>
+                                                         </div>
+                                                    <!---->
+                                                    <!---->
                                                 </form>
-                                            </div>
-                                    </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                                         </div>
-                                    </div>
                                 </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                    <button v-if="contenido_modal_agregar_eliminar=='Agregar'" type="button" class="btn btn-primary "  data-bs-dismiss="modal" @click="agregar_nuevo_lista">Guardar</button>
+                                </div>
+                                </div>
+                            </div>
                             </div>
 
 
@@ -586,7 +607,7 @@ $incrementar=1;
                                                                             <div class="div-scroll mt-3 "><!--Scroll-->
                                                                             <table class="tablaMonitoreo-sugerencias table table-striped table-bordered text-center">
                                                                                 <thead class="encabezado-tabla text-center text-light ">
-                                                                                    <tr >
+                                                                                    <tr>
                                                                                     <th scope="col" class="sticky">Editar/Guardar</th>
                                                                                     <!--<th scope="col">Status</th>-->
                                                                                     <th scope="col">Folio</th>
@@ -949,6 +970,8 @@ $incrementar=1;
                 id_actualiza:'',
                 colorgreen:'background: url("img/verde2.jpg"); color:white; font-weight:bold;',
                 colorgris:'background-color: #fbfbfb ',
+                usuarioT:'',
+                fileppt: [],
             }
         },
         mounted(){
@@ -968,7 +991,8 @@ $incrementar=1;
             //Consulta desperdiciones
             this.consultando_lista_de_desperdicio(),
             this.consulta_lista_objetivos_calidad_ma(),
-            this.consulta_responsable_plan()            
+            this.consulta_responsable_plan(),
+            this.buscarDocPPT()          
         },
 
         methods:{
@@ -1010,10 +1034,11 @@ $incrementar=1;
                 })
             },
 
-            modal_subir_ver_documentos(id_concentrado,folio,cual_documento,cantidad){
+            modal_subir_ver_documentos(tipo,id_concentrado,folio,cual_documento,cantidad){
                 this.id_concentrado = id_concentrado
                 this.cual_documento = cual_documento
                 this.cantidadDOCFILE = cantidad
+
                 if(this.cual_documento == 'ppt'){
                     this.myModal = new bootstrap.Modal(document.getElementById('modalPPT'))
                     this.myModal.show()
@@ -1021,9 +1046,20 @@ $incrementar=1;
                 }else{
                     this.extensiones_valida = ''
                 }
+
                 this.folio_carpeta_doc = folio
-                this.titulo_modal="Subir/Ver Documentos." //creando titulo modal // contenido a mostrar
-                this.buscarDocPPT()
+                this.titulo_modal="Subir/Ver Documentos." //creando titulo modal
+                this.contenido_modal_agregar_eliminar=tipo // contenido a mostrar
+                this.buscarDocPPT(),
+               /* this.consultado_concentrado_pendiente_factibilidad(),*/
+                this.consultado_concentrado_pendiente_implementacion()
+               /* this.consultado_concentrado_pendiente_impacto(),
+                this.consultado_concentrado_impacto_sugerencias(),
+                this.consultando_usuarios(),
+                this.consultando_impacto(),
+                this.consultando_lista_de_desperdicio(),
+                this.consulta_lista_objetivos_calidad_ma(),
+                this.consulta_responsable_plan()*/
             },
             
             datos_modal_factibilidad(tipo,index,folio,numero_nomina,status,respuesta,check_mc,tipo_impacto){
@@ -1242,8 +1278,8 @@ $incrementar=1;
                     this.fecha_final_actividad = this.concentrado_actividades[posicion-1].fecha_final
                    // this.porcentaje = this.concentrado_actividades[posicion-1].porcentaje
                 }
-               
             },
+
             consultarActividades(){
                     axios.post("consultando_actividades.php",{
                         id_concentrado:this.id_concentrado_general
@@ -1465,8 +1501,11 @@ $incrementar=1;
                         console.log(error);
                     });
                 },
-            uploadFile(){
+
+            uploadFile(tipo_usuario){
                 let formData = new FormData();
+
+                this.usuarioT = tipo_usuario;
                 var files = this.$refs.docopcionalnofactibilidad.files;//guarda los archivos
                 var totalfiles = this.$refs.docopcionalnofactibilidad.files.length;// tamanio de archivos a subir
                 for (var index = 0; index < totalfiles; index++) {
@@ -1474,6 +1513,7 @@ $incrementar=1;
                 }
                 formData.append("folio", this.folio);
                 formData.append("cual_documento", "nofactibleopcional");
+                formData.append("tipo_usuario", this.usuarioT);
                 axios.post("subir_documentos.php", formData,
                     {
                     headers: {"Content-Type": "multipart/form-data"}
@@ -1497,16 +1537,13 @@ $incrementar=1;
                     });
             },
 
-            SubirPPT(){
+            SubirPPT(tipo_usuario){
                 let formData = new FormData();
                
-                if(this.cual_documento=="premio"){
-                    var files = this.$refs.ref_premio.files;
-                    var totalfiles = this.$refs.ref_premio.files.length;
-                }else{
+                this.usuarioT = tipo_usuario;
                     var files = this.$refs.archivosydocumentos.files;
                     var totalfiles = this.$refs.archivosydocumentos.files.length;
-                } 
+                    console.log('fiiles:',files)
                
                 for (var index = 0; index < totalfiles; index++) {
                  formData.append("files[]", files[index]);//arreglo de documentos
@@ -1515,6 +1552,7 @@ $incrementar=1;
                 formData.append("cual_documento", this.cual_documento);
                 formData.append("id_concentrado", this.id_concentrado);
                 formData.append("cantidad", this.cantidadDOCFILE);
+                formData.append("tipo_usuario", this.usuarioT);
                 axios.post("subir_documentos.php", formData,
                     {
                     headers: {"Content-Type": "multipart/form-data"}
@@ -1525,70 +1563,31 @@ $incrementar=1;
                         this.fileppt = response.data;
                         if(this.fileppt.length>0){
                             this.myModal.hide()
-                            document.getElementById("input_file_subir").value=""
-                            alert(this.fileppt.length + " archivo/s se han subido.")
-                            this.buscarDocumentos()
+                            document.getElementById("input_file_subir").value="",
+                            alert(this.fileppt.length + " archivo/s se han subido."),
+                            this.buscarDocPPT(),
+                          /*  this.consultado_concentrado_pendiente_factibilidad(),*/
+                            this.consultado_concentrado_pendiente_implementacion()
+                            /*this.consultado_concentrado_pendiente_impacto(),
+                            this.consultado_concentrado_impacto_sugerencias(),
+                            this.consultando_usuarios(),*/
                         }else{
                             alert("Verifique la extension del archivo o Intente nuevamente.")
                         }
 
-                     }
-                     if(this.cual_documento=="sugerencia"){
-                        this.filedoc = response.data;
-                        if(this.filedoc.length>0){
-                            this.myModal.hide()
-                            document.getElementById("input_file_subir").value=""
-                            alert(this.filedoc.length + " archivo/s se han subido.")
-                            this.buscarDocumentos()
-                        }else{
-                            alert("Verifique la extension del archivo o Intente nuevamente.")
-                        }
-                     }   
-                     if(this.cual_documento=="reto"){
-                        this.filereto = response.data;
-                        if(this.filereto.length>0){
-                            this.myModal.hide()
-                            document.getElementById("input_file_subir").value=""
-                            alert(this.filereto.length + " archivo/s se han subido.")
-                            this.buscarDocumentos()
-                        }else{
-                            alert("Verifique la extension del archivo o Intente nuevamente.")
-                        }
-                     }  
-                     if(this.cual_documento=="premio"){
-                        this.filepremio = response.data;
-                        if(this.filepremio.length>0){
-                            this.myModal.hide()
-                            document.getElementById("input_file_subir").value=""
-                            alert(this.filepremio.length + " archivo/s se han subido.")
-                            this.buscarDocumentos()
-                        }else{
-                            alert("Verifique la extension del archivo o Intente nuevamente.")
-                        }
-                     }   
-                     if(this.cual_documento=="entregado"){
-                        this.fileentregado = response.data;
-                        if(this.fileentregado.length>0){
-                            this.myModal.hide()
-                            document.getElementById("input_file_subir").value=""
-                            alert(this.fileentregado.length + " archivo/s se han subido.")
-                            this.buscarDocumentos()
-                        }else{
-                            alert("Verifique la extension del archivo o Intente nuevamente.")
-                        }
-                     }   
-                    
+                     }           
                      
                     })
                     .catch(error => {
                         console.log(error);
                     });
-                },
+            },
 
             buscarDocPPT(){
                 //alert(this.cual_documento+""+this.folio_carpeta_doc)
-                this.filenames=[] //limpiado vista del documento subido en modal 
                 this.fileppt=[]//limpiado vista del documento bajada en modal
+                this.fileopcional=[]//limpiado vista del documento bajada en modal 
+                this.fileentregado=[]//limpiado vista del documento bajada en modal 
                 if(this.folio_carpeta_doc!=undefined){
                     axios.post("buscar_documentos.php",{
                         folio_carpeta_doc:this.folio_carpeta_doc,
@@ -1600,7 +1599,7 @@ $incrementar=1;
                         this.cantidadDOCFILE = this.fileppt.length
                         if(this.fileppt.length>0){
                             console.log(this.fileppt.length + "Archivos encontrados.")
-                            console.log('sooon',fileppts);
+                            console.log('sooon',fileppt);
                         }else{
                             //alert("Sin Documentos agregados.")
                         }
@@ -1610,27 +1609,58 @@ $incrementar=1;
                     .catch(error => {
                         console.log(error);
                     });
-                    }
+                }
             },
 
-                eliminarDocumento(ruta){
-                    axios.post("eliminar_documento.php",{
-                            ruta_eliminar: ruta,
-                            cual_documento: "nofactibleopcional"
-                        }).then( response=>{
-                            console.log(response.data)
-                            if(response.data=="Archivo Eliminado"){
-                                this.buscarDocumentos()
-                                alert("Eliminado con Éxito")
-                            }else if(response.data=="No Eliminado"){
-                                alert("Algo no salio bien no se logro Eliminar.")
-                            }else{
-                                alert("Error al eliminar el Documento.")
-                            }
-                        }).catch(error =>{
-                            console.log(error)
-                        })
-                },
+            eliminarDocumento(ruta){
+                axios.post("eliminar_documento.php",{
+                    ruta_eliminar: ruta,
+                    cual_documento: "nofactibleopcional"
+                }).then( response=>{
+                    console.log(response.data)
+                    if(response.data=="Archivo Eliminado"){
+                        this.buscarDocumentos()
+                        alert("Eliminado con Éxito")
+                    }else if(response.data=="No Eliminado"){
+                        alert("Algo no salio bien no se logro Eliminar.")
+                    }else{
+                        alert("Error al eliminar el Documento.")
+                    }
+                }).catch(error =>{
+                    console.log(error)
+                })
+            },
+
+            eliminarPPT(ruta){
+                if(!confirm("Desea eliminar el Documento ¿Esta seguro?")){
+                    return true
+                }
+                axios.post("eliminar_documento.php",{
+                    ruta_eliminar: ruta,
+                    id_concentrado: this.id_concentrado,
+                    cual_documento:this.cual_documento,
+                    cantidad: this.cantidadDOCFILE-1,
+                }).then( response=>{
+                    if(response.data=="Archivo Eliminado"){
+                       /* document.getElementById('input_file_subir').value='';
+                        let archivosydocumentos_ = documento.getElementById('archivosydocumentos');
+                        archivosydocumentos_[0].contex*/
+                        this.buscarDocPPT();
+                        this.myModal.hide();
+                        this.consultado_concentrado_pendiente_implementacion();
+                        alert("Archivo/Documento Eliminado con Éxito")
+                    }else if(response.data=="No Eliminado"){
+                        alert("Algo no salio bien no se logro Eliminar.")
+                    }else{
+                        alert("Error al eliminar el Documento.")
+                    }
+                    
+                }).catch(error =>{
+                
+                })
+
+            },
+                
                 actualizarPorcentajeEnActividad(id_actividad){
                     var selector = "select"+id_actividad
                     var porcentaje_actividad= document.getElementById(selector).value;
@@ -1651,6 +1681,7 @@ $incrementar=1;
                         }).catch(error =>{
                             console.log(error)
                         })
+                    //console.log('el porcentaje es:', porcentaje_actividad);
                 },  
                 /*METODOS IMPACTO DE SUGERENCIA*/
                 consultado_concentrado_pendiente_impacto(){//consulto datos del concentrado de sugerencias midiendo

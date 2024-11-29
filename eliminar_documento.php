@@ -1,4 +1,5 @@
 <?php
+session_start();
 header('Content-Type: application/json');
 $respuesta ="";
 $variables = json_decode(file_get_contents('php://input'), true);
@@ -32,20 +33,17 @@ if(unlink($ruta_eliminar_doc)){
        
         if($cantidad=="0" || $cantidad==0)
         {// si ya no habra documentos
-            $actualizar = "UPDATE concentrado_sugerencias SET cumplimiento ='99', status='En Implementación',  cantidadPPT='$cantidad', status_impacto = '' 
+
+            $actualizar = "UPDATE concentrado_sugerencias SET cumplimiento ='99', status='En Implementación',  cantidadPPT='$cantidad', status_impacto = ''
             WHERE id = '$id_concentrado'";
             $query = mysqli_query($conexion,$actualizar);
 
-                                /*$hay_fecha_cierre="";
-                                $consulta = "SELECT * FROM concentrado_sugerencias WHERE id = '$id_concentrado'";
-                                $query = mysqli_query($conexion,$consulta);
-                                while($datos = mysqli_fetch_array($query)){
-                                    $hay_fecha_cierre=$datos['fecha_real_cierre'];
-                                }
-                                if(empty($hay_fecha_cierre)){// si no hay fecha cierre agregar
-                                    $actualizar = "UPDATE concentrado_sugerencias SET cumplimiento ='99', status='En Implementación',  cantidadPPT='$cantidad', status_impacto = '' WHERE id = '$id_concentrado'";
-                                    $query = mysqli_query($conexion,$actualizar);
-                                }*/
+            if( $_SESSION["tipo"] == 'Admin'){
+                $actualizar = "UPDATE concentrado_sugerencias SET status_PPT = 'Eliminado'
+                WHERE id = '$id_concentrado'";
+                $query = mysqli_query($conexion,$actualizar);     
+            }
+         
             
         }else{
             $actualizar = "UPDATE concentrado_sugerencias SET cantidadPPT='$cantidad' WHERE id = '$id_concentrado'";
