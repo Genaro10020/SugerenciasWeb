@@ -147,7 +147,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                         <td>
                                             {{concentrado.nombre_sugerencia}}
                                             <br>
-                                            <span  v-show="concentrado.respuesta_analista == 'No Factible' && concentrado.VoBo_gerente == '' && (concentrado.status =='Cerrada/Fast Response' || concentrado.status == 'Cerrada/No Factible')" class="badge bg-primary text-white" style="font-size:10px;">
+                                            <span  v-show="concentrado.respuesta_analista == 'No Factible' && concentrado.VoBo_gerente == '' && concentrado.cumplimiento == '99' && (concentrado.status =='Cerrada/Fast Response' || concentrado.status == 'Cerrada/No Factible')" class="badge bg-primary text-white" style="font-size:10px;">
                                                 Esta sugerencia está siendo revisada por Gerente
                                             </span>
                                         </td>

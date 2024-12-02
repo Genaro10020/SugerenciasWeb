@@ -117,7 +117,7 @@ $incrementar=1;
                                                             {{concentrado.folio}}
                                                             <br>
                                                             <span v-if="concentrado.VoBo_gerente == 'SI'" class="badge bg-primary text-white" style="font-size:10px;">
-                                                                Regresada a Factbilidad por Gerencia.
+                                                                Regresada a Factibilidad por Gerencia.
                                                             </span>
                                                         </td>
                                                         <td>{{concentrado.nombre_sugerencia}}</td>
