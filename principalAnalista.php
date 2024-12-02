@@ -525,7 +525,7 @@ $incrementar=1;
                         </div>
                              <!--fin modal-->
                             <!--modal PPT-->
-                            <div class="modal fade" id="modalPPT" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="modalPPT" tabindex="-1" aria-labelledby="exampleModalLabel"> <!--aria-hidden="true"-->
                             <div class="modal-dialog modal-dialog-centered modal-xl">
                                 <div class="modal-content">
                                 <div class="modal-header">
@@ -550,29 +550,29 @@ $incrementar=1;
                                                          <!-- Mostrando los archivos nuevos y cargados de PPT-->
                                                          <div v-show="fileppt.length> 0 && cual_documento=='ppt'" >
                                                          <hr>
-                                                                <div class="col-12" v-for= "(fileppts,index) in fileppt">
-                                                                    <div class="row">
-                                                                        <span class="badge bg-secondary mt-3">Documento {{index+1}}</span><br>
-                                                                            <div class="col-12 col-md-12">
-                                                                                <button type="button" class="btn btn-danger" @click="eliminarPPT(fileppts)" >Eliminar</button>
-                                                                            </div>
-                                                                            <div class="col-12 col-md-12">
-                                                                            Descargar <br><label style="font-size: 0.8em;">{{fileppts.substr(fileppts.lastIndexOf('/')+1)}}</label><br>
-                                                                                <a :href="fileppts" :download="fileppts.substr(fileppts.lastIndexOf('/') + 1)">
+                                                            <div class="col-12" v-for= "(fileppts,index) in fileppt">
+                                                                <div class="row">
+                                                                    <span class="badge bg-secondary mt-3">Documento {{index+1}}</span><br>
+                                                                    <div class="col-12 col-md-12">
+                                                                        <button type="button" class="btn btn-danger" @click="eliminarPPT(fileppts)" >Eliminar</button>
+                                                                    </div>
+                                                                    <div class="col-12 col-md-12">
+                                                                        Descargar <br><label style="font-size: 0.8em;">{{fileppts.substr(fileppts.lastIndexOf('/')+1)}}</label><br>
+                                                                        <a :href="fileppts" :download="fileppts.substr(fileppts.lastIndexOf('/') + 1)">
 
-                                                                                    <div v-if="fileppts.substr(fileppts.lastIndexOf('.')+1).trim() =='ppt' || fileppts.substr(fileppts.lastIndexOf('.')+1).trim()=='pptx'">
-                                                                                        <img src="img/descargar_ppt.png" style="width:100px; height:100px;"></img>
-                                                                                     </div>
-                                                                                     <div v-if="fileppts.substr(fileppts.lastIndexOf('.')+1).trim() =='xls' || fileppts.substr(fileppts.lastIndexOf('.')+1).trim()=='xlsx'">
-                                                                                        <img src="img/descargar_excel.png" style="width:100px; height:100px;"></img>
-                                                                                     </div>
-                                                                                     <div v-if="fileppts.substr(fileppts.lastIndexOf('.')+1).trim() =='doc' || fileppts.substr(fileppts.lastIndexOf('.')+1).trim()=='docx'">
-                                                                                        <img src="img/descargar_word.png" style="width:100px; height:100px;"></img>
-                                                                                     </div>
-                                                                                </a>
-                                                                            </div>
+                                                                            <div v-if="fileppts.substr(fileppts.lastIndexOf('.')+1).trim() =='ppt' || fileppts.substr(fileppts.lastIndexOf('.')+1).trim()=='pptx'">
+                                                                                <img src="img/descargar_ppt.png" style="width:100px; height:100px;"></img>
+                                                                                </div>
+                                                                                <div v-if="fileppts.substr(fileppts.lastIndexOf('.')+1).trim() =='xls' || fileppts.substr(fileppts.lastIndexOf('.')+1).trim()=='xlsx'">
+                                                                                <img src="img/descargar_excel.png" style="width:100px; height:100px;"></img>
+                                                                                </div>
+                                                                                <div v-if="fileppts.substr(fileppts.lastIndexOf('.')+1).trim() =='doc' || fileppts.substr(fileppts.lastIndexOf('.')+1).trim()=='docx'">
+                                                                                <img src="img/descargar_word.png" style="width:100px; height:100px;"></img>
+                                                                                </div>
+                                                                        </a>
                                                                     </div>
                                                                 </div>
+                                                            </div>
                                                          </div>
                                                     <!---->
                                                     <!---->
@@ -972,6 +972,8 @@ $incrementar=1;
                 colorgris:'background-color: #fbfbfb ',
                 usuarioT:'',
                 fileppt: [],
+                titulo_modal:'',
+                contenido_modal_agregar_eliminar:'',
             }
         },
         mounted(){
@@ -1006,7 +1008,7 @@ $incrementar=1;
                 axios.post('consulta_concentrado_pendientes_factibilidad.php',{
                             }).then(response =>{
                                 this.concentrado_sugerencias_pendiente_factibilidad = response.data
-                                console.log(this.concentrado_sugerencias_pendiente_factibilidad)
+                            //    console.log(this.concentrado_sugerencias_pendiente_factibilidad)
                             })
             },
 
@@ -1014,7 +1016,7 @@ $incrementar=1;
                 axios.post('consulta_concentrado_pendientes_implementar.php',{
                             }).then(response =>{
                                 this.concentrado_sugerencias_pendiente_implementacion = response.data
-                                console.log(this.concentrado_sugerencias_pendiente_implementacion)
+                            //    console.log(this.concentrado_sugerencias_pendiente_implementacion)
                             })
             },
 
@@ -1030,7 +1032,7 @@ $incrementar=1;
                 axios.post('lista_impacto.php',{
                 }).then(response =>{
                     this.lista_impacto = response.data
-                    console.log(this.lista_impacto);
+                //    console.log(this.lista_impacto);
                 })
             },
 
@@ -1120,7 +1122,7 @@ $incrementar=1;
                 axios.post('lista_responsables_y_analistas_factibilidad.php',{
                 }).then(response =>{
                     this.lista_responsable_plan = response.data
-                    console.log(this.lista_responsable_plan);
+                //    console.log(this.lista_responsable_plan);
                 })
             },
             buscarDocumentos_analista(){
@@ -1131,7 +1133,7 @@ $incrementar=1;
                     })
                     .then(response => {
                     this.documentos = response.data;
-                    console.log(response.data);
+                //    console.log(response.data);
                     if(this.documentos.length>0){
                         /*console.log(this.documentos.length + "Archivos encontrados.")*/
                     }else{
@@ -1149,7 +1151,7 @@ $incrementar=1;
                     respuesta: respuesta
                     }).then(response =>{
                         if(response.data == true){
-                            console.log("BIEN")
+                        //    console.log("BIEN")
                             this.consultado_concentrado_pendiente_factibilidad() /*es para refrescar el concentrado y el btn de En factibilidad, retome si es factible o no para mostra en la modal segun factible o no. 
                                                                                 cuando se vuelva a presionar se mantenga a la vista el plan de actividades o sinplement no se muestre.*/
                             
@@ -1181,7 +1183,7 @@ $incrementar=1;
                                 this.var_objetivo_de_calidadMA[0] = arr[0]
                             }
                         }else{
-                            console.log("0 POSICIONES")
+                        //    console.log("0 POSICIONES")
                         }
                     
                        
@@ -1224,7 +1226,7 @@ $incrementar=1;
                            // porcentaje:this.porcentaje,
                             check_mc: this.check_mc
                         }).then(response =>{
-                                console.log(response.data)
+                            //    console.log(response.data)
                                     if(response.data=="si"){
                                     this.id_actualizar='' // ocultando inputs de actualizar
                                     this.nueva_actividad = false //guardando y ocultando fila nuevo
@@ -1598,8 +1600,8 @@ $incrementar=1;
                         this.fileppt = response.data
                         this.cantidadDOCFILE = this.fileppt.length
                         if(this.fileppt.length>0){
-                            console.log(this.fileppt.length + "Archivos encontrados.")
-                            console.log('sooon',fileppt);
+                         //   console.log(this.fileppt.length + "Archivos encontrados.")
+                           // console.log('sooon',this.fileppt);
                         }else{
                             //alert("Sin Documentos agregados.")
                         }
@@ -1617,7 +1619,7 @@ $incrementar=1;
                     ruta_eliminar: ruta,
                     cual_documento: "nofactibleopcional"
                 }).then( response=>{
-                    console.log(response.data)
+                //    console.log(response.data)
                     if(response.data=="Archivo Eliminado"){
                         this.buscarDocumentos()
                         alert("Eliminado con Éxito")
@@ -1688,21 +1690,21 @@ $incrementar=1;
                 axios.post('consulta_concentrado_pendientes_impacto.php',{
                             }).then(response =>{
                                 this.concentrado_sugerencias_pendiente_impacto = response.data
-                                console.log(this.concentrado_sugerencias_pendiente_impacto,'ARREGLO FINAL')
+                            //    console.log(this.concentrado_sugerencias_pendiente_impacto,'ARREGLO FINAL')
                             })
                 },
                 consultado_concentrado_impacto_sugerencias(){//consulto datos del concentrado impacto midiendo
                     axios.post('consulta_concentrado_impacto_midiendo.php',{
                     }).then(response =>{
                         this.concentrado_impacto_sugerencias_midiendo = response.data
-                        console.log(this.concentrado_impacto_sugerencias_midiendo)
+                     //   console.log(this.concentrado_impacto_sugerencias_midiendo)
                     }).catch(error =>{
 
                     })
                 },
                 editarIndicador(id,index_actualizar,ordenar){
                    // console.log(this.concentrado_impacto_sugerencias_midiendo)
-                        console.log(index_actualizar)
+                    //    console.log(index_actualizar)
 
                         if(index_actualizar==""){ //accion del boton cancelar.
                             this.btn_actualizar = false
@@ -1780,7 +1782,7 @@ $incrementar=1;
                     }
                 },
                 guardarEditarIndicador(id_concentrado,folio,orden){
-                    console.log(id_concentrado+""+orden)
+                //    console.log(id_concentrado+""+orden)
                     axios.post('guardar_actualizar_datos_impacto.php',{
                     id_concentrado: id_concentrado,
                     indicador: this.indicador,
@@ -1802,7 +1804,7 @@ $incrementar=1;
                     mes12:this.mes12,
                     orden:orden
                     }).then(response =>{
-                        console.log(response.data)
+                    //    console.log(response.data)
                         if(response.data== true){
                             this.btn_actualizar = false//oculta btn guardar
                             this.id_actualiza = ''//ocular inpust 
@@ -2243,17 +2245,17 @@ $incrementar=1;
                                     }
                                 }
                         var arr = Object.entries(array);       
-                        console.log(arr[56][1]=sumar+1,'ARREGLO')
+                    //    console.log(arr[56][1]=sumar+1,'ARREGLO')
                         var array = Object.fromEntries(arr);
                         array_completo.splice(0, 0, array)//lo agrego en la siguiente posicion donde gue en contrada la posicion.
-                        console.log(array_completo,'ARRAY TRABAJANDO')
+                    //    console.log(array_completo,'ARRAY TRABAJANDO')
                     },
                     finalizarMedicionImpacto(id_concentrado){
                         if(!confirm("¿Desea finalizar ?")) return;
                       axios.post("actualizar_medicion_status.php",{
                         id_concentrado:id_concentrado
                       }).then(response =>{
-                            console.log(response.data)
+                       //     console.log(response.data)
                             this.consultado_concentrado_pendiente_impacto()
                       })
                     },

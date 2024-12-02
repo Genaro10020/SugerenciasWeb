@@ -2628,6 +2628,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 usuarioT:'',
                 cumplimientoPPT:'',
                 indexPPT:'',
+                status_ppt:'',
             }
         },
         mounted(){
