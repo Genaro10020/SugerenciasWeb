@@ -147,7 +147,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                         <td>
                                             {{concentrado.nombre_sugerencia}}
                                             <br>
-                                            <span  v-show="concentrado.respuesta_analista == 'No Factible' && concentrado.VoBo_gerente != 'SI' && concentrado.cumplimiento == '99' && concentrado.fecha_factibilidad  > '2024-10-01 00:00:00' && (concentrado.status =='Cerrada/Fast Response' || concentrado.status == 'Cerrada/No Factible')" class="badge bg-primary text-white" style="font-size:10px;">
+                                            <span  v-show="concentrado.VoBo_gerente != 'SI' && concentrado.fecha_factibilidad  > '2024-10-01 00:00:00' && concentrado.respuesta_analista == 'No Factible' && (concentrado.status =='Cerrada/Fast Response' || concentrado.status == 'Cerrada/No Factible')" class="badge bg-primary text-white" style="font-size:10px;">
                                                 Esta sugerencia está siendo revisada por Gerente {{concentrado.planta}}
                                             </span>
                                         </td>

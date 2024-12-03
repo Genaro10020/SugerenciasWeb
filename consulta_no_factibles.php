@@ -8,7 +8,8 @@
     $planta= $_SESSION["planta"];
 
     $consulta = "SELECT * FROM concentrado_sugerencias 
-    WHERE (status='Cerrada/No Factible' OR status= 'Cerrada/Fast Response')  AND respuesta_analista = 'No Factible' AND planta = '$planta' AND VoBo_gerente != 'SI' AND fecha_factibilidad > '2024-10-01 00:00:00'
+    WHERE (status='Cerrada/No Factible' OR status= 'Cerrada/Fast Response')  AND respuesta_analista = 'No Factible'  AND planta = '$planta' AND VoBo_gerente != 'SI' AND fecha_factibilidad > '2024-10-01 00:00:00'
+    
     ORDER BY id DESC";
     $query = mysqli_query($conexion,$consulta);
     while ($fila=$query -> fetch_array()) {
