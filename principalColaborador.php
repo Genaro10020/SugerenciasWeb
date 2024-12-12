@@ -204,6 +204,18 @@ $_COOKIE["PHPSESSID"]="0";
                                      </div>
                         </div>
                         <?php } ?>
+
+                        <div class="col-6 col-lg-4 d-flex align-items-center justify-content-center">
+                            <div id="opciones" style="width: 18rem;" class=" d-flex align-items-center justify-content-center">
+                                <div class="row text-center mb-2 d-flex justify-content-center align-items-center">
+                                    <div class="text-center col-12"> <label class="card-text mt-2 text-black ">Seguridad</label></div>
+                                    <div @click="redireccionar(sec)" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer"> 
+                                        <img src="img/logoSyma.png" class="img-fluid" alt="..." style=" width: 50px;" >
+                                    </div>        
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="col-6 col-lg-4 d-flex align-items-center justify-content-center" >
                                     <div id="opciones" style="width: 18rem;" class=" d-flex align-items-center justify-content-center " >
                                         <div class="row text-center mb-2 d-flex justify-content-center align-items-center">
@@ -238,7 +250,8 @@ $_COOKIE["PHPSESSID"]="0";
                 cam:'',
                 enc:'',
                 ead:'',
-                sal:''
+                sec:'',
+                sal:'',
             }
         },
         mounted(){
@@ -262,6 +275,8 @@ $_COOKIE["PHPSESSID"]="0";
                             window.location.href="encuestaApp.php"
                         }else if(opciones=='ead'){
                             window.location.href = "juntasArranque.php?id_equipo=<?php echo $_SESSION["id_ead"]; ?>";
+                        }else if(opciones == 'seguridad'){
+                            window.location.href="seguridadColaborador.php"
                         }else if(opciones=='Salir'){
                             window.location.href="index.php"
                         }
@@ -282,6 +297,7 @@ $_COOKIE["PHPSESSID"]="0";
                             this.cam='Cambiar Password',
                             this.enc='Encuesta',
                             this.ead='ead',
+                            this.sec='seguridad',
                             this.sal='Salir'
                         }
                 })
