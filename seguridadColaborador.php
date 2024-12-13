@@ -176,7 +176,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
 
                         <!-- TABLA DE CONCENTRADO DE HALLAZGOS PROPIOS -->
                         <div class="div-scroll-vertial"><!--scroll-->
-                            <table  v-if="concentrado_hallazgos.lenght>0" class="table table-striped " style=" font-size: 0.8em;">
+                                
+                            <table v-if="concentrado_hallazgos.length>0" class="table table-striped " style=" font-size: 0.8em;">
                                 <thead>
                                     <tr style="background:rgb(137, 0, 0); height:5px; color:white; font-size: 1em;">
                                         <th scope="col">#</th>
@@ -193,10 +194,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                 </tbody>
                             </table>
                             <div v-else class="d-flex  justify-content-center">
-                                            <span class="alert bg-warning ">No cuenta con hallazgos reportados, esperamos tu participación.</span>
+                                <span class="alert bg-warning ">No cuenta con hallazgos reportados, esperamos tu participación.</span>
                             </div>
                         </div><!--scroll-->
-
                     
                     </div><!--FIN CUERPO-->
 
