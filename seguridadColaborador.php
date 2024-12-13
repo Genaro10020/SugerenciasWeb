@@ -93,7 +93,23 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                         </div>
                     </div>
                     <!--CUERPO-->
-                    <div class="row justify-content-center" style="min-height:75vh;">
+
+                <!--ESTO SOLO LE APARECE AL ADMIN -->
+                <?php if($_SESSION["usuario"] == "60083"): ?>
+                    <div class="text-center pt-3">
+                        <button class="btn btn-danger btn-sm me-1" @click="misHallazgos()">
+                            Mis Hallazgos
+                        </button>
+                        <button class="btn btn-danger btn-sm" @click="concentradoHallazgos()">
+                            Concentrado
+                        </button>
+                    </div>
+                <?php endif; ?>
+
+                    <!--APARTADO PARA ENVIAR Y VER HALLAZGOS PROPIOS-->
+                    <div v-show="bandera_misHallazgosOconcentrado == true" class="row justify-content-center" style="min-height:75vh;">
+
+
                         <div class="contenedorHallazgo mt-3 pb-2 row justify-content-center">
                             <div class="form-group mb-3">
                                 <label for="descripcionHallazgo">Descripción del hallazago:</label>
@@ -178,8 +194,42 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                             </table>
                         </div><!--scroll-->
 
+                    
+                    </div><!--FIN CUERPO-->
+
+                    <!-- CONCENTRADO DE HALLAZGOS SOLO PARA EL ADMINISTRADOR -->
+                    
+                    <div v-show="bandera_misHallazgosOconcentrado == false" class="row justify-content-center pt-2" style="min-height:75vh;">
+
+                        <!-- TABLA DE CONCENTRADO DE HALLAZGOS PROPIOS -->
+                        <div class="div-scroll-vertial"><!--scroll-->
+                            <table class="table table-striped" style=" font-size: 0.8em;">
+                                <thead>
+                                    <tr style="background:rgb(137, 0, 0); height:5px; color:white; font-size: 1em;">
+                                        <th scope="col">#</th>
+                                        <th scope="col">Colaborador</th>
+                                        <th scope="col">Tipo</th>
+                                        <th scope="col">Descripción</th>
+                                        <th scope="col">Planta</th>
+                                        <th scope="col">Área</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(concentrado, index) in concentrado_hallazgos">
+                                        <td>{{index+1}}</td>
+                                        <td>{{concentrado.colaborador}} </td>
+                                        <td>{{concentrado.tipo_hallazgo}} </td>
+                                        <td>{{concentrado.descripcion_hallazgo}}</td>
+                                        <td>{{concentrado.planta}} </td>
+                                        <td>{{concentrado.area}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div><!--scroll-->
+
 
                     </div><!--FIN CUERPO-->
+                    
 
                     <!-- BOTON ATRAS -->
                     <div id="opciones" style="min-height:5vh; max-height:5vh;" class=" d-flex align-items-center justify-content-center " >
@@ -211,6 +261,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                 descripcion:false,
                 bandera_msj_hallazgo: false,
                 concentrado_hallazgos:[],
+                bandera_misHallazgosOconcentrado: true,
 
                 areas_enerya:[
                     'Placas',
@@ -273,8 +324,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
             }
         },
         mounted(){
-            this.consultar_hallazgos()
-            
+            this.consultar_hallazgos()            
         },
         methods:{
 
@@ -308,16 +358,27 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                     this.select_planta='';
                     this.select_area='';
                     this.bandera_msj_hallazgo = true;
+                    this.consultar_hallazgos()
                     setTimeout(()=>{this.bandera_msj_hallazgo=false},4000)
                 })
-                this.consultar_hallazgos()
+
             },
 
             consultar_hallazgos(){
                 axios.post('consultar_hallazgos_syma.php',{
+                    tipo: 'usuarios'
                 }).then(response =>{
                     this.concentrado_hallazgos = response.data
-                    console.log(response.data);
+                    //console.log(response.data);
+                })
+            },
+            
+            consultar_hallazgos_concentrado(){
+                axios.post('consultar_hallazgos_syma.php',{
+                    tipo:'admin'
+                }).then(response =>{
+                    this.concentrado_hallazgos = response.data
+                    //console.log('lo que llega es:',response.data);
                 })
             },
 
@@ -329,6 +390,16 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                     window.location.href="principalColaborador.php"
                 }
                
+            },
+
+            misHallazgos(){
+                this.bandera_misHallazgosOconcentrado = true;
+                this.consultar_hallazgos();
+            },
+
+            concentradoHallazgos(){
+                this.bandera_misHallazgosOconcentrado = false;
+                this.consultar_hallazgos_concentrado();
             },
 
         }
