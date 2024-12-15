@@ -390,7 +390,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                         if (this.movil) { //Saber si se guardo desde APP
                             <?php if ($_SESSION['usuario'] == '65799') {
                             ?>
-                                alert("Se guardao desde la APP")
+                                alert("Se guardao desde la APP.")
                             <?php
                             } ?>
                         } else { //Saber si se guardo desde Movil
@@ -401,7 +401,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
 
                             <?php if ($_SESSION['usuario'] == '65799') {
                             ?>
-                                alert("Se guardado desde la Web")
+                                alert("Se guardado desde la Web.")
                             <?php
                             } ?>
 
