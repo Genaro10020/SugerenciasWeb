@@ -344,6 +344,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                         'Osmosis'
                     ],
                     movil: false,
+                    ultimo_id: '',
                 }
             },
             mounted() {
@@ -384,17 +385,16 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                         this.select_area = '';
                         this.bandera_msj_hallazgo = true;
 
-
                         this.movil = <?php echo isset($_GET['app']) ? 'true' : 'false'; ?>;
-
-                        if (this.movil) { //Saber si se guardo desde APP
+                        alert(this.movil);
+                        if (this.movil === true) { //Saber si se guardo desde APP
                             <?php if ($_SESSION['usuario'] == '65799') {
                             ?>
-                                alert("Se guardao desde la APP.")
+                                this.ultimo_id = response.data.ultimo_id;
+                                window.location.href = "ejecutarCamaraMovilSeguridad.php?UltimoID=" + this.ultimo_id;
                             <?php
                             } ?>
                         } else { //Saber si se guardo desde Movil
-                            this.consultar_hallazgos()
                             setTimeout(() => {
                                 this.bandera_msj_hallazgo = false
                             }, 4000)
@@ -404,8 +404,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                 alert("Se guardado desde la Web.")
                             <?php
                             } ?>
-
                         }
+                        this.consultar_hallazgos()
 
                     })
 
