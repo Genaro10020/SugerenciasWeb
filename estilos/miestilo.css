@@ -305,3 +305,15 @@
 @media (min-width: 1400px) { 
 
 }
+
+/* comentario de motivo factibilidad */
+.txt-area_motivo{
+    background: rgb(255, 255, 255);
+    border: 1px solid;
+    border-color: rgb(137, 0, 0);
+    border-radius: 5px;
+    height: 3em;
+    width: 95%;
+    min-height: 100px;
+    min-width: 100px;
+}

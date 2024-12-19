@@ -13,8 +13,11 @@ $incrementar=1;
      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <!--Bootstrap 5 js-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-     <!--VUE 3-->
-     <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
+    <!--Bootstrap Separadors-->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    <!--VUE 3-->
+    <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
     <!--Axios--> 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <!--Titulo fuente-->
@@ -177,7 +180,6 @@ $incrementar=1;
                         <!--FIN ESPACIO NO FACTIBLE-->
 
                         <!-- Mostrando los archivos cargados -->
-                        <hr>
                         <div class="col-12 text-center mb-5" v-for= "(ruta_documento,index) in documento_opcional">
                             <div class="col-12 text-center">
                                 Descargar {{nombre_de_descarga=ruta_documento.slice((ruta_documento.lastIndexOf('/') - 1) + 2)}}<br><!--obtengo el nombre del documento con extension-->
@@ -187,11 +189,22 @@ $incrementar=1;
                             </div>
                             <!--<iframe  :src="documento_opcional[index]" style="width:100%;height:500px;"></iframe>-->                                        
                             <!-- <iframe src="https://vvnorth.com/Sugerencias/documentos/pdf.pdf" style="width:100%;height:500px;"></iframe>-->
-                        </div> 
+                        </div>
+                        <div v-show="bandera_motivo_por_gerente == true"> 
+                            <form @submit.prevent="respuesta(status)">
+                                <span class="badge bg-light text-dark mb-1">MOTIVO</span>
+                                <div class="col-12 text-center">
+                                    <textarea class="txt-area_motivo my-2" v-model="motivo_factiblenofactible" style="font-size:0.9em;" required></textarea>
+                                </div>
+                                <div class="pt-1 pb-2 text-center">
+                                    <button type="submit" class="btn btn-success btn-sm me-2">Guardar</button> 
+                                </div>
+                            </form>
+                        </div>
                         <div class="12 modal-footer" style="font-size:.9em"> 
                             <div class="col-12 text-center">
-                                <button type="button" class="btn btn-success btn-sm me-2 " @click="respuesta('Factible', status)">Factible</button> 
-                                <button type="button" class="btn btn-warning btn-sm" @click="respuesta('No Factible', status)">No factible</button> 
+                                <button type="button" class="btn btn-success btn-sm me-2 " @click="confirmarFactibilidad('Factible')">Factible</button> 
+                                <button type="button" class="btn btn-warning btn-sm" @click="confirmarFactibilidad('No Factible')">No factible</button> 
                             </div>                               
                             <!--btn salir --> 
                         </div>
@@ -252,6 +265,8 @@ $incrementar=1;
                 sugerencias_no_factibles: [],
                 modal:'',
                 comentario_nf: '',
+                bandera_motivo_por_gerente:false,
+                motivo_factiblenofactible:'',
             }
         },
         mounted(){
@@ -375,50 +390,82 @@ $incrementar=1;
                 });
             },
 
-                respuesta(factibilidad, status){
-                    
-                    if(factibilidad == 'Factible'){ 
-                        if(!confirm("Esta sugerencia pasará a Factible. ¿Desea continuar?")){return}
-                    }
-                    if(factibilidad == 'No Factible'){
-                        if(!confirm("Esta sugerencia pasará a No Factible. ¿Desea continuar?")){return}
-                    }
+            confirmarFactibilidad(factibilidad){
+                this.bandera_motivo_por_gerente = true;
 
-                    axios.post("actualizar_factibilidad_gerente.php",{
-                    id:this.id_concentrado_general,
-                    respuesta: factibilidad,
-                    status_actual: status
-                    }).then(response =>{
-                        console.log(response.data)
-                        if(response.data == true){
-                            if(factibilidad == 'Factible'){
-                            //let confirmarcion = confirm("Esta sugerencia pasará a Factible. ¿Desea continuar?");
+                if(factibilidad == 'Factible'){
+                    this.factible_nofactible = 'Factible';
+                }
+                if(factibilidad == 'No Factible'){
+                    this.factible_nofactible = 'No Factible';
+                }
+            },
 
-                                alert("La sugerencia se asignó como factible.");
-                                this.factible=true
-                                this.no_factible=false
-                                this.modal.hide();
-                           
+            respuesta(status){
 
-                            }else if(factibilidad == 'No Factible'){
-  
-                                    alert("La sugerencia pasará a No factible.");
-                                    this.factible=false
-                                    this.no_factible=true
-                                    this.modal.hide();
-                                
-                            }
-                            this.consulta_no_factibles();
+                console.log('el comentario es:', this.motivo_factiblenofactible);
+                if(this.factible_nofactible == 'Factible'){
+                    if(!confirm("Esta sugerencia pasará a Factible. ¿Desea continuar?")){return}
+                }
+                if(this.factible_nofactible == 'No Factible'){
+                    if(!confirm("Esta sugerencia pasará a No Factible. ¿Desea continuar?")){return}
+                }
+
+                axios.post("actualizar_factibilidad_gerente.php",{
+                id:this.id_concentrado_general,
+                respuesta: this.factible_nofactible,
+                status_actual: status,
+                motivo: this.motivo_factiblenofactible,
+                }).then(response =>{
+                    console.log(response.data)
+                    if(response.data == true){
+                        if(this.factible_nofactible == 'Factible'){
+                        //let confirmarcion = confirm("Esta sugerencia pasará a Factible. ¿Desea continuar?");
+
+                            alert("La sugerencia se asignó como factible.");
+                            this.factible=true
+                            this.no_factible=false
+                            this.modal.hide();
+
+                        }else if(this.factible_nofactible == 'No Factible'){
+
+                            alert("La sugerencia pasará a No factible.");
+                            this.factible=false
+                            this.no_factible=true
+                            this.modal.hide();
                             
-                        }else{
-                            alert("Algo salio mal.")
-
-                        }  
+                        }
+                        this.consulta_no_factibles();
                         
-                    }).catch(error => {
-                        console.log(error)
-                    })
-                },
+                    }else{
+                        alert("Algo salio mal.")
+
+                    }
+                    
+                }).catch(error => {
+                    console.log(error)
+                })
+            },
+
+        /*    motivo_gerente(){
+                let tipoConsulta = 'texto';
+                axios.post("actualizar_factibilidad_gerente.php",{
+                respuesta: this.factible_nofactible,
+                motivo: this.motivo_factiblenofactible,
+                tipoConsulta: tipoConsulta,
+                }).then(response =>{
+                    console.log(response.data)
+                    /*if(response.data == true){
+
+                    }else{
+                        alert("Algo salio mal.")
+                    }  
+                    this.modal.hide();
+
+                }).catch(error => {
+                    console.log(error)
+                })
+            },*/
 
             buscarDocumentos(){
                     axios.post("buscar_documentos.php",{

@@ -6,7 +6,7 @@ $variables = json_decode(file_get_contents('php://input'), true);
 $id=$variables['id'];
 $respuesta=$variables['respuesta'];
 $status_actual = $variables['status_actual'];
-
+$motivo = $variables['motivo'];
 
 include "conexionGhoner.php";
 
@@ -18,7 +18,7 @@ if($respuesta == "Factible"){
         $puntos_factibilidad = 0;
 }
 
-$update = "UPDATE concentrado_sugerencias SET respuesta_analista='$respuesta',  VoBo_gerente = 'SI', status = '$status_nuevo', puntos_factible = '$puntos_factibilidad'
+$update = "UPDATE concentrado_sugerencias SET motivo_gerente = '$motivo', respuesta_analista='$respuesta',  VoBo_gerente = 'SI', status = '$status_nuevo', puntos_factible = '$puntos_factibilidad'
 WHERE id = '$id'";
 $query = mysqli_query( $conexion, $update);
 $resultado = $query;

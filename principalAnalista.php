@@ -115,10 +115,17 @@ $incrementar=1;
                                                         <th scope="row" class="text-center">{{index+1}}</th>
                                                         <td>
                                                             {{concentrado.folio}}
-                                                            <br>
-                                                            <span v-if="concentrado.VoBo_gerente == 'SI'" class="badge bg-primary text-white" style="font-size:10px;">
-                                                                Regresada a Factibilidad por Gerencia.
-                                                            </span>
+                                                            <div v-if="concentrado.VoBo_gerente == 'SI'"  :title="concentrado.motivo_gerente" class="col-12 d-flex align-items-center">
+                                                                <span class="badge bg-primary text-white" style="font-size:10px;">
+                                                                    Regresada a Factibilidad por Gerencia.
+                                                                </span>
+                                                                <div v-if="concentrado.motivo_gerente != ''" class="align-items-center justify-content-center d-flex" style="padding:0px;width:20px;height:20px;">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-left-text-fill" viewBox="0 0 16 16">
+                                                                    <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414a1 1 0 0 0-.707.293L.854 15.146A.5.5 0 0 1 0 14.793zm3.5 1a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1zm0 2.5a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1zm0 2.5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1z"/>
+                                                                    </svg>
+                                                                </div>
+                                                            </div>
+
                                                         </td>
                                                         <td>{{concentrado.nombre_sugerencia}}</td>
                                                         <td>{{concentrado.fecha_de_inicio}}</td>
@@ -467,20 +474,18 @@ $incrementar=1;
                                                         <form  @submit.prevent="guardarNofactibilidad()">
                                                                 
                                                                 <div class=" mt-3 ">
-                                                                    
-                                                                                <span class="badge bg-light text-dark mb-1">CAUSA DE NO FACTIBILIDAD</span>
-                                                                                <div class="col-12 text-center bg-warning">
-                                                                                    <textarea class="text-area-causa-no-factibilidad my-2" type="text" v-model="causa_no_factibilidad" style=" font-size:0.9em" required></textarea>
-                                                                                </div>
+                                                                    <span class="badge bg-light text-dark mb-1">CAUSA DE NO FACTIBILIDAD</span>
+                                                                    <div class="col-12 text-center bg-warning">
+                                                                        <textarea class="text-area-causa-no-factibilidad my-2" type="text" v-model="causa_no_factibilidad" style=" font-size:0.9em" required></textarea>
+                                                                    </div>
                                                                 </div>
                                                                 <div class="text-center">
                                                                     <span class="badge bg-light text-dark">TIPO DE CIERRE</span><br>
                                                                             
-                                                                                        <select class="" v-model="var_tipo_de_cierre" required>
-                                                                                                <option value="" disabled>Seleccione una opción..</option>
-                                                                                                <option  v-for=" lista in tipo_de_cierre" :key="lista.id" >{{lista}}</option>
-                                                                                        </select>
-                                                                                  
+                                                                    <select class="" v-model="var_tipo_de_cierre" required>
+                                                                        <option value="" disabled>Seleccione una opción..</option>
+                                                                        <option  v-for=" lista in tipo_de_cierre" :key="lista.id" >{{lista}}</option>
+                                                                    </select>
                                                                 </div>
                                                                 <!--<div class="alert alert-warning ">Una vez presionado "GUARDAR", esta sugerencia ya no aparecerá en la tabla de PENDIENTES DE FACTIBILIDAD.</div>-->
                                                                 <div class="col-12 text-center"> <button type="submit" class="btn btn-success mt-4" style="font-size:0.9em" >Guardar</button></div>
@@ -491,21 +496,21 @@ $incrementar=1;
                                                                     
                                                                     <!-- Mostrando los archivos cargados -->
                                                                     <div v-show="documento_opcional.length>0 " >
-                                                                    <hr>
-                                                                            <div class="col-12 text-center mb-5" v-for= "(ruta_documento,index) in documento_opcional">
-                                                                                    <div class="col-12 text-center">
-                                                                                    Descargar {{nombre_de_descarga=ruta_documento.slice((ruta_documento.lastIndexOf('/') - 1) + 2)}}<br><!--obtengo el nombre del documento con extension-->
-                                                                                        <a :href="ruta_documento" :download="nombre_de_descarga">
-                                                                                            <img src="img/descargar_archivo.png" style="width:100px; height:100px;"></img>
-                                                                                        </a>
-                                                                                    </div>
-                                                                                    <div class="col-12 ">
-                                                                                        <button type="button" class="btn btn-danger" @click="eliminarDocumento(ruta_documento)" >Eliminar</button>
-                                                                                    </div>
-                                                                                    <!--<iframe  :src="documento_opcional[index]" style="width:100%;height:500px;"></iframe>-->
-                                                                                        
-                                                                                    <!-- <iframe src="https://vvnorth.com/Sugerencias/documentos/pdf.pdf" style="width:100%;height:500px;"></iframe>-->
+                                                                        <hr>
+                                                                        <div class="col-12 text-center mb-5" v-for= "(ruta_documento,index) in documento_opcional">
+                                                                            <div class="col-12 text-center">
+                                                                            Descargar {{nombre_de_descarga=ruta_documento.slice((ruta_documento.lastIndexOf('/') - 1) + 2)}}<br><!--obtengo el nombre del documento con extension-->
+                                                                                <a :href="ruta_documento" :download="nombre_de_descarga">
+                                                                                    <img src="img/descargar_archivo.png" style="width:100px; height:100px;"></img>
+                                                                                </a>
                                                                             </div>
+                                                                            <div class="col-12 ">
+                                                                                <button type="button" class="btn btn-danger" @click="eliminarDocumento(ruta_documento)" >Eliminar</button>
+                                                                            </div>
+                                                                            <!--<iframe  :src="documento_opcional[index]" style="width:100%;height:500px;"></iframe>-->
+                                                                                
+                                                                            <!-- <iframe src="https://vvnorth.com/Sugerencias/documentos/pdf.pdf" style="width:100%;height:500px;"></iframe>-->
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                                
@@ -1819,6 +1824,19 @@ $incrementar=1;
                     })
                     
                 },
+
+               /* motivo_gerente(posicion){
+                    axios.post('guardar_actualizar_datos_impacto.php',{
+                    id_concentrado: id_concentrado,
+
+                    }).then(response =>{
+                        console.log(response.data)
+
+                    }).catch(error =>{
+
+                    })
+                },*/
+
                 vaciarMeses(id){
 
                     if(this.periodo_de_medicion==1){
@@ -2232,6 +2250,7 @@ $incrementar=1;
                             }
 
                 },
+
                 duplicarImpacto(folio_duplicar){
                         var array = []
                         var array_completo = []
