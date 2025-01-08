@@ -191,19 +191,17 @@ $incrementar=1;
                             <!-- <iframe src="https://vvnorth.com/Sugerencias/documentos/pdf.pdf" style="width:100%;height:500px;"></iframe>-->
                         </div>
                         <div v-show="bandera_motivo_por_gerente == true"> 
-                            <form @submit.prevent="respuesta(status)">
+                            <!--form @submit.prevent="respuesta(status)"-->
                                 <span class="badge bg-light text-dark mb-1">MOTIVO</span>
                                 <div class="col-12 text-center">
-                                    <textarea class="txt-area_motivo my-2" v-model="motivo_factiblenofactible" style="font-size:0.9em;" required></textarea>
+                                    <textarea class="txt-area_motivo" v-model="motivo_factiblenofactible" style="font-size:0.9em; max-width:95%; min-width:95% ; max-height:20em; min-height:10em;" required></textarea>
                                 </div>
-                                <div class="pt-1 pb-2 text-center">
-                                    <button type="submit" class="btn btn-success btn-sm me-2">Guardar</button> 
-                                </div>
-                            </form>
+                            <!--/form-->
                         </div>
                         <div class="12 modal-footer" style="font-size:.9em"> 
                             <div class="col-12 text-center">
-                                <button type="button" class="btn btn-success btn-sm me-2 " @click="confirmarFactibilidad('Factible')">Factible</button> 
+                                <button type="button" @click="respuesta(status)" v-show = "bandera_motivo_por_gerente == true" class="btn btn-success btn-sm me-2">Guardar</button> 
+                                <button type="button" v-show = "bandera_motivo_por_gerente == false" class="btn btn-success btn-sm me-2 " @click="confirmarFactibilidad('Factible')">Factible</button> 
                                 <button type="button" class="btn btn-warning btn-sm" @click="confirmarFactibilidad('No Factible'), respuesta(status)">No factible</button> 
                             </div>                               
                             <!--btn salir --> 
