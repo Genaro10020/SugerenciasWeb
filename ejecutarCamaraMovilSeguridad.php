@@ -105,7 +105,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
 
                 <div class="col-12 " style="margin-top:10%">
                     <div class="col-12 offset-lg-4 col-lg-4 d-flex justify-content-center">
-                        <a href="ejecutarCamaraMovilSeguridad.php" class="btn_photo"> <img src="img/photo.png" class="img-responsive" width="50" /></a>
+                        <a href="ejecutarCamaraMovilSeguridad.php?UltimoID=<?php echo $_GET['UltimoID'];?>&&NumeroNomina=<?php echo $_SESSION['usuario'];?>" class="btn_photo"> <img src="img/photo.png" class="img-responsive" width="50" /></a>
                     </div>
                     <div class="col-12 offset-lg-4 col-lg-4 d-flex justify-content-center">
                         <label class="alert alert-info mt-1" style="font-size:0.8em">Tomar nuevamente fotografía al hallazgo inseguro.</label>
@@ -134,8 +134,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                 return {
                     mostrar: false,
                     mensaje: '',
-                    concentrado_premios_entregar: [],
-                    numero_nomina: <?php echo $_SESSION['usuario']; ?>
+                    concentrado_premios_entregar: []
                 }
             },
             mounted() {

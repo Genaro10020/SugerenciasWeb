@@ -1,6 +1,10 @@
 <?php
 session_start();
 if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
+    $fotoTomada = "false"; 
+    if(isset($_GET["FotoTomada"])){
+        $fotoTomada = $_GET["FotoTomada"];
+    }
 ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -186,6 +190,11 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                             Su hallazgo fue enviado
                         </span>
                     </div>
+                    <div class=" d-flex justify-content-center">
+                        <span v-show="foto_tomada=='true'" class="badge bg-primary text-white mt-2" style="font-size:10px;">
+                            La fotografía se guardo con éxito.
+                        </span>
+                    </div>
                 </div>
 
                 <div style="height:1em;">
@@ -197,16 +206,33 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
 
                     <table v-if="concentrado_hallazgos.length>0" class="table table-striped " style=" font-size: 0.8em;">
                         <thead>
-                            <tr style="background:rgb(137, 0, 0); height:5px; color:white; font-size: 1em;">
+                            <tr class="align-middle text-center" style="background:rgb(137, 0, 0); height:5px; color:white; font-size: 1em;">
                                 <th scope="col">#</th>
+                                <th v-if="movil==true" scope="col">Fotografía</th>
                                 <th scope="col">Tipo</th>
                                 <th scope="col">Descripción</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(concentrado, index) in concentrado_hallazgos">
-                                <td>{{index+1}}</td>
-                                <td>{{concentrado.tipo_hallazgo}} </td>
+                            <tr class="align-middle" v-for="(concentrado, index) in concentrado_hallazgos">
+                                <td class="text-center">{{index+1}}</td>
+                                <td v-if="movil==true" class="text-center">
+                                    <div v-if="concentrado.existe_foto==1">
+                                        <img :src="'fotografiaSeguridad/' + numero_nomina + '/' + concentrado.id + '/fotografia.jpeg?'+Math.random()"  class="img-responsive" width="50" alt="Sin Fotografía" />
+                                    </div>
+                                    <div v-else class="d-flex text-center">
+                                        <div class="col-12 d-flex justify-content-center">
+                                            <div class="col-12 d-flex-colum justify-content-center text-center">
+                                                <a :href="'ejecutarCamaraMovilSeguridad.php?UltimoID=' + concentrado.id+'&&NumeroNomina='+numero_nomina" class="btn_photo mx-auto">
+                                               
+                                                    <img src="img/photo.png" class="img-responsive" width="50"/>
+                                                </a>
+                                                <span class="badge alert-warning">Tomar Fotografía</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="text-center">{{concentrado.tipo_hallazgo}} </td>
                                 <td>{{concentrado.descripcion_hallazgo}}</td>
                             </tr>
                         </tbody>
@@ -343,15 +369,16 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                         'Cuarto de Compresores',
                         'Osmosis'
                     ],
-                    movil: false,
+                    movil: <?php echo isset($_GET['app']) ? 'true' : 'false'; ?>,
                     ultimo_id: '',
+                    numero_nomina: <?php echo $_SESSION["usuario"]; ?>,
+                    foto_tomada: <?php echo $fotoTomada; ?>
                 }
             },
             mounted() {
                 this.consultar_hallazgos()
             },
             methods: {
-
                 hayTextoHallazgo() {
                     let hallazgo = document.getElementById("descripcionHallazgo").value
                     hallazgo = hallazgo.trim();
@@ -385,25 +412,15 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                         this.select_area = '';
                         this.bandera_msj_hallazgo = true;
 
-                        this.movil = <?php echo isset($_GET['app']) ? 'true' : 'false'; ?>;
-                        alert(this.movil);
+                        
+                        //alert(this.movil);
                         if (this.movil === true) { //Saber si se guardo desde APP
-                            <?php if ($_SESSION['usuario'] == '65799') {
-                            ?>
-                                this.ultimo_id = response.data.ultimo_id;
-                                window.location.href = "ejecutarCamaraMovilSeguridad.php?UltimoID=" + this.ultimo_id;
-                            <?php
-                            } ?>
+                            this.ultimo_id = response.data.ultimo_id;
+                            window.location.href = "ejecutarCamaraMovilSeguridad.php?UltimoID=" + this.ultimo_id+"&&NumeroNomina="+this.numero_nomina;
                         } else { //Saber si se guardo desde Movil
                             setTimeout(() => {
                                 this.bandera_msj_hallazgo = false
-                            }, 4000)
-
-                            <?php if ($_SESSION['usuario'] == '65799') {
-                            ?>
-                                alert("Se guardado desde la Web.")
-                            <?php
-                            } ?>
+                            }, 7000)
                         }
                         this.consultar_hallazgos()
 
@@ -412,6 +429,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                 },
 
                 consultar_hallazgos() {
+                    setTimeout(()=>{
+                        this.foto_tomada = 'false';
+                    },7000)
+
                     axios.post('consultar_hallazgos_syma.php', {
                         tipo: 'usuarios'
                     }).then(response => {
