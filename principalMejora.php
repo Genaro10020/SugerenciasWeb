@@ -136,7 +136,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                         concentrado.validacion_calificada === '0' && concentrado.status === 'Implementada' && (concentrado.validacion_de_impacto === 'Cuantitativo' || concentrado.validacion_de_impacto === 'Cualitativo') ? '#fff5e2' :
                                         concentrado.validacion_de_impacto === '' && concentrado.status === 'Implementada' ? '#f9eeff':
                                     '' }">
-                                    <th scope="row" class="text-center">{{index+1}}</th>
+                                    <th scope="row" class="text-center">{{(arregloPosicionPagina*cantidad_p_pagina)+(index+1)}}</th>
                                     <td>
                                         <button  v-show="concentrado.check_mc=='Pendiente' && concentrado.status!='Cerrada/Fast Response'  && concentrado.status!='Cerrada/No Factible'" class="btn btn-secondary" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalTablaPlan" @click="consultarActividades(concentrado.id,concentrado.status),datosSugerencia(concentrado.id)"><i class="bi bi-table" ></i> {{concentrado.check_mc}}</button>
                                         <button  v-show="concentrado.check_mc=='Rechazado' && concentrado.status!='Cerrada/Fast Response'  && concentrado.status!='Cerrada/No Factible'" class="btn btn-danger" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalTablaPlan" @click="consultarActividades(concentrado.id,concentrado.status),datosSugerencia(concentrado.id)"><i class="bi bi-table" ></i> {{concentrado.check_mc}}</button>
@@ -1307,7 +1307,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                     <button v-show="concentrado.cantidadPPT == 0 && concentrado.cumplimiento >= 99 && concentrado.status=='En Implementación' || concentrado.cantidadPPT == 0 && concentrado.cumplimiento >= 99 && concentrado.status=='Implementada'"  type="button" class="btn btn-secondary  ms-2" title="Subir PPT"  @click="modal_subir_ver_documentos('Subir',concentrado.id,concentrado.folio,'ppt',concentrado.cantidadPPT,concentrado.cumplimiento,index,concentrado.status_PPT)"><i class="bi bi-paperclip"></i>{{concentrado.cantidadPPT}}</button>
                                                     <button v-show="concentrado.cantidadPPT != 0 && concentrado.status=='En Implementación' || concentrado.cantidadPPT != 0 && concentrado.cumplimiento >= 99 && concentrado.status=='Implementada'" type="button" class="btn btn-success  ms-2" title="Subir PPT"  @click="modal_subir_ver_documentos('Subir',concentrado.id,concentrado.folio,'ppt',concentrado.cantidadPPT,concentrado.cumplimiento,index,concentrado.status_PPT)"><i class="bi bi-paperclip"></i>{{concentrado.cantidadPPT}}</button>
                                                 </td>
-                                                <th scope="row">{{index+1}}<br><!--{{concentrado.id}}--></th>
+                                                <th scope="row">{{(arregloPosicionPagina*cantidad_p_pagina)+(index+1)}}<br><!--{{concentrado.id}}--></th> <!--1904371-->
                                                 <td>
                                                     <label>{{concentrado.cumplimiento}}%</label>
                                                     <br>
@@ -2416,13 +2416,45 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
 
 
             </div>
+            <!--FOOTER-->
+            <div v-if="ventana == 'principalMejora' || ventana == 'concentrado'">
+                <div class="text-center pt-2" v-if="bandera_paginacion == true" style="height:5vh; width:100%; background-color: #ffffff">
 
+                    <div class="d-flex justify-content-start" style="position:absolute; padding-top:10px; padding-left:10px;">
+                        <div class="form-check form-switch"  v-if="bandera_verTodo == true">
+                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" v-model="ver_todo" @change="verTodo()" checked>
+                            <label class="form-check-label" for="flexSwitchCheckChecked">Ver todo</label>
+                        </div>
+                    </div>
 
-                <!--FOOTER-->
-            <div class="row" style="height:10vh; background: url(img/pie.jpg); background-repeat: repeat-x; background-size: 8% 100%;">
-           
+                    <button type="button" class="btn btn-primary me-1 ms-1 btn-sm" :disabled="arregloPosicionPagina < 1 || (ver_todo == true && ventana == 'concentrado')" @click="primerPagina()"> <!--1904371-->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-bar-left" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M11.854 3.646a.5.5 0 0 1 0 .708L8.207 8l3.647 3.646a.5.5 0 0 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 0 1 .708 0M4.5 1a.5.5 0 0 0-.5.5v13a.5.5 0 0 0 1 0v-13a.5.5 0 0 0-.5-.5"/>
+                        </svg>
+                    </button>
+                    <button type="button" class="btn btn-primary me-1 btn-sm" :disabled="arregloPosicionPagina < 1 || (ver_todo == true && ventana == 'concentrado')" @click="retrocederPagina()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>
+                        </svg>
+                    </button>
+                    <button type="button" class="btn btn-primary me-1 btn-sm" :disabled="arregloPosicionPagina == total_paginas-1 || (ver_todo == true && ventana == 'concentrado')" @click="avanzarPagina()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
+                        </svg>
+                    </button>
+                    <button type="button" class="btn btn-primary me-1 btn-sm" :disabled="arregloPosicionPagina == total_paginas-1 || (ver_todo == true && ventana == 'concentrado')" @click="ultimaPagina()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-bar-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M4.146 3.646a.5.5 0 0 0 0 .708L7.793 8l-3.647 3.646a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708 0M11.5 1a.5.5 0 0 1 .5.5v13a.5.5 0 0 1-1 0v-13a.5.5 0 0 1 .5-.5"/>
+                        </svg>
+                    </button>
+                    <div v-if="bandera_paginacion == true"class="text-center" style="font-color:#0000FF;"><u>{{arregloPosicionPagina+1}}</u></div>
+
+                </div>
+                <div class="row" style="height:3vh; background: url(img/pie.jpg); background-repeat: repeat-x; background-size: 8% 100%;"></div>
             </div>
-        
+            <div v-else>
+                <div class="row" style="height:10vh; background: url(img/pie.jpg); background-repeat: repeat-x; background-size: 8% 100%;"></div>
+            </div>
     </div>
 
 <script>
@@ -2641,6 +2673,16 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 cumplimientoPPT:'',
                 indexPPT:'',
                 status_ppt:'',
+                total_sugerencias: '',
+                cantidad_p_pagina: 50,
+                total_paginas: '',
+                arregloPosicionPagina: 0,
+                cant_paginas:'',
+                valorBtnPag: 'ordenar',
+                bandera_paginacion: true,
+                bandera_verTodo: false,
+                ver_todo: false,
+                //size_paginacion: 50,
             }
         },
         mounted(){
@@ -2651,11 +2693,11 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
            axios.post('lista_status.php',{
             }).then(response =>{
                 this.lista_status = response.data
-                console.log(this.lista_status);
+                //console.log(this.lista_status);
             }),
 
             this.acomodarSugerencias(),
-
+            this.consultando_total_sugerencias(),
             //consultado lista planta
             this.consultando_plantas(),
             //consultado lista area
@@ -2684,17 +2726,22 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 })
         },
         methods:{
-            mostrar(dato){
-                this.ventana=dato;
-                if(dato=='principalMejora'){ this.pintarUno=true}else{this.pintarUno=false}
-                if(dato=='planesDeTrabajo'){this.pintarDos=true; this.consultar_planes_de_trabajo(); this.consultar_listas_selected_filtrados()}else{this.pintarDos=false}
-                if(dato=='concentrado'){this.pintarTres=true}else{this.pintarTres=false}
-                if(dato=='premios'){ this.pintarCuatro=true;  this.consultar_concentrado_premios()}else{this.pintarCuatro=false}
-                if(dato=='retos'){this.pintarCinco=true; this.consultaConcentradoRetos()}else{this.pintarCinco=false}
-                if(dato=='configuracion'){this.pintarSeis=true; this. consultar_usuarios()}else{this.pintarSeis=false}
-                if(dato=='solicitados'){this.pintarSiete=true; this.consultar_premios_solicitados()}else{this.pintarSiete=false}
-                if(dato=='colaboradores'){this.pintarOcho=true; this.consultar_colaboradores() }else{this.pintarOcho=false}
-             },
+
+    mostrar(dato){
+        this.ventana=dato;
+        if(dato=='principalMejora'){ this.pintarUno=true; this.valorBtnPag = 'ordenar'; this.arregloPosicionPagina = 0; this.bandera_paginacion = true; this.bandera_verTodo = false; } else{this.pintarUno=false}
+        if(dato=='planesDeTrabajo'){ this.pintarDos=true; this.consultar_planes_de_trabajo(); this.consultar_listas_selected_filtrados(), this.bandera_paginacion = false; this.bandera_verTodo = false; this.ver_todo = false;}else{this.pintarDos=false}
+        if(dato=='concentrado'){
+            this.pintarTres=true; this.valorBtnPag = 'no ordenar'; this.arregloPosicionPagina = 0; this.bandera_paginacion = true; this.bandera_verTodo = true; this.ver_todo = false;
+        }else{
+            this.pintarTres=false
+        }
+        if(dato=='premios'){ this.pintarCuatro=true;  this.consultar_concentrado_premios(); this.bandera_paginacion = false; this.bandera_verTodo = false; this.ver_todo = false;}else{this.pintarCuatro=false;}
+        if(dato=='retos'){this.pintarCinco=true; this.consultaConcentradoRetos(); this.bandera_paginacion = false; this.bandera_verTodo = false; this.ver_todo = false;}else{this.pintarCinco=false;}
+        if(dato=='configuracion'){this.pintarSeis=true; this. consultar_usuarios(); this.bandera_paginacion = false; this.bandera_verTodo = false; this.ver_todo = false;}else{this.pintarSeis=false;}
+        if(dato=='solicitados'){this.pintarSiete=true; this.consultar_premios_solicitados(); this.bandera_paginacion = false; this.bandera_verTodo = false; this.ver_todo = false;}else{this.pintarSiete=false;}
+        if(dato=='colaboradores'){this.pintarOcho=true; this.consultar_colaboradores(); this.bandera_paginacion = false; this.bandera_verTodo = false; this.ver_todo = false;}else{this.pintarOcho=false; }
+    },
 
        /*METODOS PRINCIPAL MEJORA*/      
     datosSugerencia(id){
@@ -3079,8 +3126,14 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                             impacto_real: this.var_impacto_real,
                             usuario: this.usuario
                         }).then(response =>{
-                            console.log(response.data);
-                            this.consultado_concentrado()
+                            console.log(response.data); //1904371
+                            /*if(this.ver_todo == false){
+                                this.consultado_concentrado()
+
+                            }else{
+                                this.consultando_total_sugerencias()
+                            }*/
+                           this.verTodo();
                         })
                 }else{
                     alert('todos los campos marcados con: (*) son requeridos.')
@@ -3153,6 +3206,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     }
                 }
             },
+
             eliminar_sugerencia(id_eliminar){
                 if(!confirm("¿Desea eliminar la sugerencia?")) return;
                 axios.post('eliminar_sugerencia.php',{
@@ -3163,10 +3217,12 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     }
                 })
             },
+
             consultado_concentrado(){
                 this.loanding = true;
                 axios.post('consulta_concentrado_sugerencias.php',{
-                    accion:''
+                    accion:'',
+                    numero_pagina: this.arregloPosicionPagina
                 }).then(response =>{
                     this.concentrado_sugerencias = response.data
                     //console.log(this.concentrado_sugerencias);
@@ -3177,11 +3233,35 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 })
             },
 
-            acomodarSugerencias(){
-                this.loanding = true;
-                this.valor = 'acomodar'
+            consultando_total_sugerencias(){
                 axios.post('consulta_concentrado_sugerencias.php',{
-                    accion: this.valor
+                    accion:'total',
+                    numero_pagina: this.arregloPosicionPagina
+                }).then(response =>{
+                    this.total_sugerencias = response.data.length
+                    //console.log('El total de sugerencias es:', this.total_sugerencias)
+                   
+                    this.cant_paginas = (this.total_sugerencias/this.cantidad_p_pagina)
+                    //console.log('la cantidad es:', this.cant_paginas)
+
+                    if((this.total_sugerencias%this.cantidad_p_pagina)!= 0){
+                        this.total_paginas = Math.floor(this.cant_paginas) + 1
+                    }else{
+                        this.total_paginas = this.cant_paginas 
+                    }
+                    //console.log('La cantidad de paginas es:', this.total_paginas)
+
+                }).catch(error => {
+                console.log(error);
+                })
+            },
+
+            acomodarSugerencias(){
+                this.loanding = true,
+                this.valor = 'acomodar',
+                axios.post('consulta_concentrado_sugerencias.php',{
+                    accion: this.valor,
+                    numero_pagina: this.arregloPosicionPagina
                 }).then(response =>{
                     this.concentrado_sugerencias = response.data
                     //console.log(this.concentrado_sugerencias);
@@ -3190,6 +3270,128 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 }).finally(() =>{
                     this.loanding = false;
                 })
+            },
+
+            retrocederPagina(){
+                this.loanding = true;
+                this.arregloPosicionPagina--;
+                let pagina = (this.arregloPosicionPagina) * this.cantidad_p_pagina;
+
+                //console.log('la posicion en la que esta es', pagina);
+
+                if(this.valorBtnPag == 'ordenar'){
+                    this.valor = 'acomodar';
+                }else if(this.valorBtnPag == 'no ordenar'){
+                    this.valor = '';
+                }
+                axios.post('consulta_concentrado_sugerencias.php',{
+                    numero_pagina: pagina,
+                    accion: this.valor
+
+                }).then(response =>{
+                    this.concentrado_sugerencias = response.data
+                }).catch(error => {
+                    console.log(error);
+                }).finally(() =>{
+                    this.loanding = false;
+                })
+            },
+            
+            primerPagina(){
+                this.loanding = true;
+                this.arregloPosicionPagina = 0;
+                
+                if(this.valorBtnPag == 'ordenar'){
+                    this.valor = 'acomodar';
+                }else if(this.valorBtnPag == 'no ordenar'){
+                    this.valor = '';
+                }
+
+                axios.post('consulta_concentrado_sugerencias.php',{
+                    numero_pagina: 0,
+                    accion: this.valor
+
+                }).then(response =>{
+                    this.concentrado_sugerencias = response.data
+                }).catch(error => {
+                    console.log(error);
+                }).finally(() =>{
+                    this.loanding = false;
+                })
+                //console.log('la posicion esss',this.arregloPosicionPagina)
+            },
+
+            avanzarPagina(){
+                this.loanding = true;
+                let pagina = ((this.arregloPosicionPagina+1) * this.cantidad_p_pagina);
+                this.arregloPosicionPagina++;
+
+                if(this.valorBtnPag == 'ordenar'){
+                    this.valor = 'acomodar';
+                }else if(this.valorBtnPag == 'no ordenar'){
+                    this.valor = '';
+                }
+
+                axios.post('consulta_concentrado_sugerencias.php',{
+                    numero_pagina: pagina,
+                    accion: this.valor
+
+                }).then(response =>{
+                    this.concentrado_sugerencias = response.data
+                    //console.log('el concentrado es:',this.concentrado_sugerencias)
+                }).catch(error => {
+                    console.log(error);
+                }).finally(() =>{
+                    this.loanding = false;
+                })
+                //console.log('la posicion esss',this.arregloPosicionPagina)
+            },
+
+            ultimaPagina(){
+                this.loanding = true;
+                this.arregloPosicionPagina = this.total_paginas-1;
+                let pagina = ((this.arregloPosicionPagina) * this.cantidad_p_pagina);
+
+                if(this.valorBtnPag == 'ordenar'){
+                    this.valor = 'acomodar';
+                }else if(this.valorBtnPag == 'no ordenar'){
+                    this.valor = '';
+                }
+
+                axios.post('consulta_concentrado_sugerencias.php',{
+                    numero_pagina: pagina,
+                    accion: this.valor
+
+                }).then(response =>{
+                    this.concentrado_sugerencias = response.data
+                    //console.log('el concentrado es:',this.concentrado_sugerencias)
+                }).catch(error => {
+                    console.log(error);
+                }).finally(() =>{
+                    this.loanding = false;
+                })
+            },
+
+            verTodo(){
+                this.loanding = true;
+
+                if(this.ver_todo == true){
+                        this.arregloPosicionPagina = 0;
+                    axios.post('consulta_concentrado_sugerencias.php',{
+                        accion:'total',
+                        numero_pagina: this.arregloPosicionPagina
+                    }).then(response =>{
+                        this.concentrado_sugerencias = response.data
+
+                    }).catch(error => {
+                    console.log(error);
+                    }).finally(() =>{
+                        this.loanding = false;
+                    })
+                }else if(this.ver_todo == false){
+                    this.consultado_concentrado();
+                    this.arregloPosicionPagina = 0;
+                }
             },
 
             consultando_plantas(){
@@ -3364,6 +3566,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 this.titulo_modal="Subir/Ver Documentos." //creando titulo modal
                 this.contenido_modal_agregar_eliminar=tipo // contenido a mostrar
                 this.buscarDocumentos()
+                //this.verTodo()
+                //73491
             },
 
             uploadFile(tipo_usuario){
@@ -3399,6 +3603,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                             document.getElementById("input_file_subir").value=""
                             alert(this.fileppt.length + " archivo/s se han subido.")
                             this.buscarDocumentos()
+                            this.verTodo()
                         }else{
                             alert("Verifique la extension del archivo o Intente nuevamente.")
                         }
@@ -3411,6 +3616,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                             document.getElementById("input_file_subir").value=""
                             alert(this.filedoc.length + " archivo/s se han subido.")
                             this.buscarDocumentos()
+                            this.verTodo()
                         }else{
                             alert("Verifique la extension del archivo o Intente nuevamente.")
                         }
@@ -3454,7 +3660,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     .catch(error => {
                         console.log(error);
                     });
-                },
+            },
+
             buscarDocumentos(){
                 //alert(this.cual_documento+""+this.folio_carpeta_doc)
                 this.filenames=[] //limpiado vista del documento subido en modal 
@@ -3477,7 +3684,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                             }else{
                                                 //alert("Sin Documentos agregados.")
                                             }
-                                            this.consultado_concentrado()
+                                            //this.verTodo();
+                                            //this.consultado_concentrado()
                                 }
                                 if(this.cual_documento=="ppt"){
                                             this.fileppt = response.data
@@ -3487,7 +3695,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                             }else{
                                                 //alert("Sin Documentos agregados.")
                                             }
-                                            //this.acomodarSugerencias()
+                                            //this.verTodo();
                                     }
                                 if(this.cual_documento=="reto"){
                                             this.filereto = response.data
@@ -3565,7 +3773,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     }else if(this.cual_documento=="entregado"){
                         this.consultar_premios_solicitados()
                     }else{
-                        this.consultado_concentrado()
+                        this.verTodo()
                     }
                     
                 }).catch(error =>{
