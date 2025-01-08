@@ -5,6 +5,8 @@
     $producto = [];
     $variables = json_decode(file_get_contents('php://input'), true);
     $accion = $variables['accion'];
+    $pagina = $variables['numero_pagina'];
+
     include "conexionGhoner.php";
 
     if($accion == 'acomodar'){
@@ -19,10 +21,17 @@
             ELSE 7
         END,
         id DESC
-            ";
+        LIMIT 50 OFFSET $pagina
+        ";
         $query = mysqli_query($conexion,$consulta);
 
     }else if($accion==''){
+        $consulta = "SELECT * FROM concentrado_sugerencias ORDER BY id DESC
+        LIMIT 50 OFFSET $pagina
+        ";
+        $query = mysqli_query($conexion,$consulta);
+
+    }else if($accion == 'total'){
         $consulta = "SELECT * FROM concentrado_sugerencias ORDER BY id DESC";
         $query = mysqli_query($conexion,$consulta);
     }

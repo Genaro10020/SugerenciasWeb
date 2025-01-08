@@ -204,7 +204,7 @@ $incrementar=1;
                         <div class="12 modal-footer" style="font-size:.9em"> 
                             <div class="col-12 text-center">
                                 <button type="button" class="btn btn-success btn-sm me-2 " @click="confirmarFactibilidad('Factible')">Factible</button> 
-                                <button type="button" class="btn btn-warning btn-sm" @click="confirmarFactibilidad('No Factible')">No factible</button> 
+                                <button type="button" class="btn btn-warning btn-sm" @click="confirmarFactibilidad('No Factible'), respuesta(status)">No factible</button> 
                             </div>                               
                             <!--btn salir --> 
                         </div>
@@ -391,13 +391,14 @@ $incrementar=1;
             },
 
             confirmarFactibilidad(factibilidad){
-                this.bandera_motivo_por_gerente = true;
 
                 if(factibilidad == 'Factible'){
                     this.factible_nofactible = 'Factible';
+                    this.bandera_motivo_por_gerente = true;
                 }
                 if(factibilidad == 'No Factible'){
                     this.factible_nofactible = 'No Factible';
+                    this.bandera_motivo_por_gerente = false;
                 }
             },
 
@@ -408,6 +409,7 @@ $incrementar=1;
                     if(!confirm("Esta sugerencia pasará a Factible. ¿Desea continuar?")){return}
                 }
                 if(this.factible_nofactible == 'No Factible'){
+                    this.motivo_factiblenofactible = '';
                     if(!confirm("Esta sugerencia pasará a No Factible. ¿Desea continuar?")){return}
                 }
 
