@@ -120,7 +120,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
 
                 <div class="contenedorHallazgo mt-3 pb-2 row justify-content-center">
                     <div class="form-group mb-3">
-                        <label for="descripcionHallazgo">Descripción del hallazago:</label>
+                        <label for="descripcionHallazgo">Descripción del hallazgo:</label>
                         <textarea @keyup="hayTextoHallazgo()" class="form-control" id="descripcionHallazgo" rows="3"></textarea>
                     </div>
 
