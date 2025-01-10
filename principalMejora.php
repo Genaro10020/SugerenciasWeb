@@ -110,7 +110,40 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                             </div>
                             <!--fin cinta apartado-->
                             <!-- contenido principal gonher-->
-                            <div class="text-center mt-3 "><span class="badge bg-light text-dark">Implementación y validación de impactos de sugerencias:</span></div>
+                            <div class="text-center row pt-1">
+                                <div class="d-flex justify-content-start col-3"> <!--style=" padding-top:10px; padding-left:10px;"-->
+                                    <div class="form-check form-switch" v-if="bandera_paginacion == true" > <!-- -->
+                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" v-model="ver_todo" @change="verTodo()" checked>
+                                        <label class="form-check-label" for="flexSwitchCheckChecked" style="font-size:13px;">Ver todo</label>
+                                    </div>
+                                </div>
+                                <span class="badge bg-light text-dark col-6 d-flex justify-content-center align-items-center">Implementación y validación de impactos de sugerencias:</span>
+                                <div class="col-3" v-if="ventana == 'principalMejora' || ventana == 'concentrado'">
+                                    <div class="text-center" v-if="bandera_paginacion == true" style="height:5vh; width:100%; background-color: #ffffff">
+                                        <button type="button" class="btn btn-primary me-1" :disabled="arregloPosicionPagina < 1 || ((ver_todo == true && ventana == 'concentrado') || (ver_todo == true && ventana == 'principalMejora'))" @click="primerPagina()" style="height:20px; padding:0px; width:20px;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="d-flex align-items-center bi bi-chevron-bar-left" viewBox="0 0 15 15">
+                                            <path fill-rule="evenodd" d="M11.854 3.646a.5.5 0 0 1 0 .708L8.207 8l3.647 3.646a.5.5 0 0 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 0 1 .708 0M4.5 1a.5.5 0 0 0-.5.5v13a.5.5 0 0 0 1 0v-13a.5.5 0 0 0-.5-.5"/>
+                                            </svg>
+                                        </button>
+                                        <button type="button" class="btn btn-primary me-1" :disabled="arregloPosicionPagina < 1 || ((ver_todo == true && ventana == 'concentrado') || (ver_todo == true && ventana == 'principalMejora'))" @click="retrocederPagina()" style="height:20px; padding:0px; width:20px;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="d-flex align-items-center bi bi-chevron-left" viewBox="0 0 14 14">
+                                            <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>
+                                            </svg>
+                                        </button>
+                                        <button type="button" class="btn btn-primary me-1" :disabled="arregloPosicionPagina == total_paginas-1 || ((ver_todo == true && ventana == 'concentrado') || (ver_todo == true && ventana == 'principalMejora'))" @click="avanzarPagina()" style="height:20px; padding:0px; width:20px;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="d-flex align-items-center bi bi-chevron-right" viewBox="0 0 14 14">
+                                            <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
+                                            </svg>
+                                        </button>
+                                        <button type="button" class="btn btn-primary me-1" :disabled="arregloPosicionPagina == total_paginas-1 || ((ver_todo == true && ventana == 'concentrado') || (ver_todo == true && ventana == 'principalMejora'))" @click="ultimaPagina()" style="height:20px; padding:0px; width:20px;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="d-flex align-items-center bi bi-chevron-bar-right" viewBox="0 0 15 15">
+                                            <path fill-rule="evenodd" d="M4.146 3.646a.5.5 0 0 0 0 .708L7.793 8l-3.647 3.646a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708 0M11.5 1a.5.5 0 0 1 .5.5v13a.5.5 0 0 1-1 0v-13a.5.5 0 0 1 .5-.5"/>
+                                            </svg>
+                                        </button>
+                                        <div v-if="bandera_paginacion == true"class="text-center" style="font-color:#0000FF;font-size:13px;"><u><b>{{arregloPosicionPagina+1}}</b></u></div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="div-scroll mt-3">
                                 <table class="tablaMonitoreo-sugerencias table table-bordered">
                                 <thead class="encabezado-tabla text-center text-light ">
@@ -1128,13 +1161,46 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                 </div>
                             </div>
                         <!--fin cinta apartado-->
-                            <!-- contenido principal gonher-->
-                            <div class="row m-lg-2">
-                                <div class="col-12 text-center inline-block">
+                        <div class="text-center row pt-1">
+                            <div class="d-flex justify-content-start col-3"> <!--style=" padding-top:10px; padding-left:10px;"-->
+                                <div class="form-check form-switch" v-if="bandera_paginacion == true" > <!-- -->
+                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" v-model="ver_todo" @change="verTodo()" checked>
+                                    <label class="form-check-label" for="flexSwitchCheckChecked" style="font-size:13px;">Ver todo</label>
+                                </div>
+                            </div>
+                            <div class="col-6 text-center inline-block">
                                     <div>
                                         <button class="boton-nuevo" @click="agregar_nueva_sugerencia, mostrar_id(0)"><i class="bi bi-plus-circle"></i> Nueva Sugerencia</button>
                                     </div>
                                 </div>
+                            <div class="col-3" v-if="ventana == 'principalMejora' || ventana == 'concentrado'">
+                                <div class="text-center" v-if="bandera_paginacion == true" style="height:5vh; width:100%; background-color: #ffffff">
+                                    <button type="button" class="btn btn-primary me-1" :disabled="arregloPosicionPagina < 1 || (ver_todo == true && ventana == 'concentrado')" @click="primerPagina()" style="height:20px; padding:0px; width:20px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="d-flex align-items-center bi bi-chevron-bar-left" viewBox="0 0 15 15">
+                                        <path fill-rule="evenodd" d="M11.854 3.646a.5.5 0 0 1 0 .708L8.207 8l3.647 3.646a.5.5 0 0 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 0 1 .708 0M4.5 1a.5.5 0 0 0-.5.5v13a.5.5 0 0 0 1 0v-13a.5.5 0 0 0-.5-.5"/>
+                                        </svg>
+                                    </button>
+                                    <button type="button" class="btn btn-primary me-1" :disabled="arregloPosicionPagina < 1 || (ver_todo == true && ventana == 'concentrado')" @click="retrocederPagina()" style="height:20px; padding:0px; width:20px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="d-flex align-items-center bi bi-chevron-left" viewBox="0 0 14 14">
+                                        <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>
+                                        </svg>
+                                    </button>
+                                    <button type="button" class="btn btn-primary me-1" :disabled="arregloPosicionPagina == total_paginas-1 || (ver_todo == true && ventana == 'concentrado')" @click="avanzarPagina()" style="height:20px; padding:0px; width:20px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="d-flex align-items-center bi bi-chevron-right" viewBox="0 0 14 14">
+                                        <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
+                                        </svg>
+                                    </button>
+                                    <button type="button" class="btn btn-primary me-1" :disabled="arregloPosicionPagina == total_paginas-1 || (ver_todo == true && ventana == 'concentrado')" @click="ultimaPagina()" style="height:20px; padding:0px; width:20px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="d-flex align-items-center bi bi-chevron-bar-right" viewBox="0 0 15 15">
+                                        <path fill-rule="evenodd" d="M4.146 3.646a.5.5 0 0 0 0 .708L7.793 8l-3.647 3.646a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708 0M11.5 1a.5.5 0 0 1 .5.5v13a.5.5 0 0 1-1 0v-13a.5.5 0 0 1 .5-.5"/>
+                                        </svg>
+                                    </button>
+                                    <div v-if="bandera_paginacion == true"class="text-center" style="font-color:#0000FF;font-size:13px;"><u><b>{{arregloPosicionPagina+1}}</b></u></div>
+                                </div>
+                            </div>
+                        </div>
+                            <!-- contenido principal gonher-->
+                            <div class="row m-lg-2">
                             <div class="div-scroll mt-3 ">
                                     <table class="table tablaConcentrado table-striped table-bordered" style="height:10px; ">
                                         <thead class="encabezado-tabla text-center">
@@ -2417,44 +2483,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
 
             </div>
             <!--FOOTER-->
-            <div v-if="ventana == 'principalMejora' || ventana == 'concentrado'">
-                <div class="text-center pt-2" v-if="bandera_paginacion == true" style="height:5vh; width:100%; background-color: #ffffff">
-
-                    <div class="d-flex justify-content-start" style="position:absolute; padding-top:10px; padding-left:10px;">
-                        <div class="form-check form-switch"  v-if="bandera_verTodo == true">
-                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" v-model="ver_todo" @change="verTodo()" checked>
-                            <label class="form-check-label" for="flexSwitchCheckChecked">Ver todo</label>
-                        </div>
-                    </div>
-
-                    <button type="button" class="btn btn-primary me-1 ms-1 btn-sm" :disabled="arregloPosicionPagina < 1 || (ver_todo == true && ventana == 'concentrado')" @click="primerPagina()"> <!--1904371-->
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-bar-left" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M11.854 3.646a.5.5 0 0 1 0 .708L8.207 8l3.647 3.646a.5.5 0 0 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 0 1 .708 0M4.5 1a.5.5 0 0 0-.5.5v13a.5.5 0 0 0 1 0v-13a.5.5 0 0 0-.5-.5"/>
-                        </svg>
-                    </button>
-                    <button type="button" class="btn btn-primary me-1 btn-sm" :disabled="arregloPosicionPagina < 1 || (ver_todo == true && ventana == 'concentrado')" @click="retrocederPagina()">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>
-                        </svg>
-                    </button>
-                    <button type="button" class="btn btn-primary me-1 btn-sm" :disabled="arregloPosicionPagina == total_paginas-1 || (ver_todo == true && ventana == 'concentrado')" @click="avanzarPagina()">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
-                        </svg>
-                    </button>
-                    <button type="button" class="btn btn-primary me-1 btn-sm" :disabled="arregloPosicionPagina == total_paginas-1 || (ver_todo == true && ventana == 'concentrado')" @click="ultimaPagina()">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-bar-right" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M4.146 3.646a.5.5 0 0 0 0 .708L7.793 8l-3.647 3.646a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708 0M11.5 1a.5.5 0 0 1 .5.5v13a.5.5 0 0 1-1 0v-13a.5.5 0 0 1 .5-.5"/>
-                        </svg>
-                    </button>
-                    <div v-if="bandera_paginacion == true"class="text-center" style="font-color:#0000FF;"><u>{{arregloPosicionPagina+1}}</u></div>
-
-                </div>
-                <div class="row" style="height:3vh; background: url(img/pie.jpg); background-repeat: repeat-x; background-size: 8% 100%;"></div>
-            </div>
-            <div v-else>
                 <div class="row" style="height:10vh; background: url(img/pie.jpg); background-repeat: repeat-x; background-size: 8% 100%;"></div>
-            </div>
     </div>
 
 <script>
@@ -2680,9 +2709,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 cant_paginas:'',
                 valorBtnPag: 'ordenar',
                 bandera_paginacion: true,
-                bandera_verTodo: false,
+                //bandera_verTodo: true,
                 ver_todo: false,
                 //size_paginacion: 50,
+                ventana_actual:'principalMejora',
             }
         },
         mounted(){
@@ -2695,7 +2725,6 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 this.lista_status = response.data
                 //console.log(this.lista_status);
             }),
-
             this.acomodarSugerencias(),
             this.consultando_total_sugerencias(),
             //consultado lista planta
@@ -2724,23 +2753,20 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     //this.objetivo_de_calidadMA = response.data
                     //console.log(this.objetivo_de_calidadMA);
                 })
+
         },
         methods:{
 
     mostrar(dato){
         this.ventana=dato;
-        if(dato=='principalMejora'){ this.pintarUno=true; this.valorBtnPag = 'ordenar'; this.arregloPosicionPagina = 0; this.bandera_paginacion = true; this.bandera_verTodo = false; } else{this.pintarUno=false}
-        if(dato=='planesDeTrabajo'){ this.pintarDos=true; this.consultar_planes_de_trabajo(); this.consultar_listas_selected_filtrados(), this.bandera_paginacion = false; this.bandera_verTodo = false; this.ver_todo = false;}else{this.pintarDos=false}
-        if(dato=='concentrado'){
-            this.pintarTres=true; this.valorBtnPag = 'no ordenar'; this.arregloPosicionPagina = 0; this.bandera_paginacion = true; this.bandera_verTodo = true; this.ver_todo = false;
-        }else{
-            this.pintarTres=false
-        }
-        if(dato=='premios'){ this.pintarCuatro=true;  this.consultar_concentrado_premios(); this.bandera_paginacion = false; this.bandera_verTodo = false; this.ver_todo = false;}else{this.pintarCuatro=false;}
-        if(dato=='retos'){this.pintarCinco=true; this.consultaConcentradoRetos(); this.bandera_paginacion = false; this.bandera_verTodo = false; this.ver_todo = false;}else{this.pintarCinco=false;}
-        if(dato=='configuracion'){this.pintarSeis=true; this. consultar_usuarios(); this.bandera_paginacion = false; this.bandera_verTodo = false; this.ver_todo = false;}else{this.pintarSeis=false;}
-        if(dato=='solicitados'){this.pintarSiete=true; this.consultar_premios_solicitados(); this.bandera_paginacion = false; this.bandera_verTodo = false; this.ver_todo = false;}else{this.pintarSiete=false;}
-        if(dato=='colaboradores'){this.pintarOcho=true; this.consultar_colaboradores(); this.bandera_paginacion = false; this.bandera_verTodo = false; this.ver_todo = false;}else{this.pintarOcho=false; }
+        if(dato=='principalMejora'){ this.pintarUno=true; this.valorBtnPag = 'ordenar'; this.arregloPosicionPagina = 0; this.bandera_paginacion = true; this.ver_todo = false;} else{this.pintarUno=false}
+        if(dato=='planesDeTrabajo'){ this.pintarDos=true; this.consultar_planes_de_trabajo(); this.consultar_listas_selected_filtrados(), this.bandera_paginacion = false;this.ver_todo = false;}else{this.pintarDos=false}
+        if(dato=='concentrado'){ this.pintarTres=true; this.valorBtnPag = 'no ordenar'; this.arregloPosicionPagina = 0; this.bandera_paginacion = true; this.ver_todo = false;}else{this.pintarTres=false}
+        if(dato=='premios'){this.pintarCuatro=true;  this.consultar_concentrado_premios(); this.bandera_paginacion = false;  this.ver_todo = false;}else{this.pintarCuatro=false;}
+        if(dato=='retos'){this.pintarCinco=true; this.consultaConcentradoRetos(); this.bandera_paginacion = false;  this.ver_todo = false;}else{this.pintarCinco=false;}
+        if(dato=='configuracion'){this.pintarSeis=true; this. consultar_usuarios(); this.bandera_paginacion = false; this.ver_todo = false;}else{this.pintarSeis=false;}
+        if(dato=='solicitados'){this.pintarSiete=true; this.consultar_premios_solicitados(); this.bandera_paginacion = false; this.ver_todo = false;}else{this.pintarSiete=false;}
+        if(dato=='colaboradores'){this.pintarOcho=true; this.consultar_colaboradores(); this.bandera_paginacion = false; this.ver_todo = false;}else{this.pintarOcho=false; }
     },
 
        /*METODOS PRINCIPAL MEJORA*/      
@@ -2840,7 +2866,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
             }).then(response =>{
                 console.log(response.data)
                 if(response.data==true){
-                    this.acomodarSugerencias();
+                    this.verTodo();
+                   // this.acomodarSugerencias();
                 }else{
                     alert("Problemas para actualizar.")
                 }
@@ -3231,6 +3258,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 }).finally(() =>{
                     this.loanding = false;
                 })
+                //console.log('la ventana en la que estamos es:', this.ventana)
+
+
             },
 
             consultando_total_sugerencias(){
@@ -3259,6 +3289,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
             acomodarSugerencias(){
                 this.loanding = true,
                 this.valor = 'acomodar',
+                //console.log('estamos en la pantalla:',this.mostrar())
                 axios.post('consulta_concentrado_sugerencias.php',{
                     accion: this.valor,
                     numero_pagina: this.arregloPosicionPagina
@@ -3270,6 +3301,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 }).finally(() =>{
                     this.loanding = false;
                 })
+                //console.log('la ventana en la que estamos es:', this.ventana)
             },
 
             retrocederPagina(){
@@ -3375,7 +3407,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
             verTodo(){
                 this.loanding = true;
 
-                if(this.ver_todo == true){
+                if(this.ventana=="concentrado"){
+                    if(this.ver_todo == true){
+                    //734911
                         this.arregloPosicionPagina = 0;
                     axios.post('consulta_concentrado_sugerencias.php',{
                         accion:'total',
@@ -3388,10 +3422,32 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     }).finally(() =>{
                         this.loanding = false;
                     })
-                }else if(this.ver_todo == false){
-                    this.consultado_concentrado();
-                    this.arregloPosicionPagina = 0;
+                    }else if(this.ver_todo == false){
+                        this.consultado_concentrado();
+                        this.arregloPosicionPagina = 0;
+                    }
+                }else if(this.ventana=="principalMejora"){
+                    if(this.ver_todo == true){
+                        //734911
+                        this.arregloPosicionPagina = 0;
+                    axios.post('consulta_concentrado_sugerencias.php',{
+                        accion:'principalSinPaginacion',
+                        numero_pagina: this.arregloPosicionPagina
+                    }).then(response =>{
+                        this.concentrado_sugerencias = response.data
+
+                    }).catch(error => {
+                    console.log(error);
+                    }).finally(() =>{
+                        this.loanding = false;
+                    })
+                    }else if(this.ver_todo == false){
+                        this.acomodarSugerencias();
+                        this.arregloPosicionPagina = 0;
+                    }
                 }
+
+
             },
 
             consultando_plantas(){
