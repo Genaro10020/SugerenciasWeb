@@ -2972,7 +2972,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     vistobueno:valor,
                 }).then(response =>{
                     if(response.data==true){
-                       this.acomodarSugerencias()
+                       //this.acomodarSugerencias()
+                       this.verTodo();
                     }else{
                         alert("Error al actualizar el porcentaje en el check.")
                     }
@@ -2986,7 +2987,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
             id_concentrado: this.id_concentrado
         }).then(response =>{
             if(response.data=="correcto"){
-                this.acomodarSugerencias()
+                //this.acomodarSugerencias()
+                this.verTodo();
             }else{
                 alert('algo salio mal.')
             }
@@ -3038,7 +3040,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                         console.log(response.data)
                         if(response.data[0]== true && response.data[1]== true){
                            alert("Los datos se guardaron/actualizaron correctamente.")
-                           this.acomodarSugerencias()
+                           //this.acomodarSugerencias()
+                           this.verTodo();
                            this.myModal.hide()
                         }else{
                             alert("Fallo al guardar en una tabla o ambas")
@@ -3062,7 +3065,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                         console.log(response.data)
                         if(response.data[0]== true && response.data[1]== true){
                             alert("Los datos se guardaron/actualizaron correctamente.")
-                            this.acomodarSugerencias()
+                            //this.acomodarSugerencias()
+                            this.verTodo()
                             this.myModal.hide()
                         }else{
                             alert("Fallo al guardar en una tabla o ambas")
