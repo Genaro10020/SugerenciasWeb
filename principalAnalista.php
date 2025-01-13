@@ -1,6 +1,6 @@
 <?php
 session_start();
-if ($_SESSION["usuario"] ){ 
+if ($_SESSION["usuario"]){
 $incrementar=1;
 ?>
 <!DOCTYPE html>
@@ -504,7 +504,7 @@ $incrementar=1;
                                                                                     <img src="img/descargar_archivo.png" style="width:100px; height:100px;"></img>
                                                                                 </a>
                                                                             </div>
-                                                                            <div class="col-12 ">
+                                                                            <div class="col-12">
                                                                                 <button type="button" class="btn btn-danger" @click="eliminarDocumento(ruta_documento)" >Eliminar</button>
                                                                             </div>
                                                                             <!--<iframe  :src="documento_opcional[index]" style="width:100%;height:500px;"></iframe>-->
@@ -1465,21 +1465,23 @@ $incrementar=1;
                 }else{
                     if(!confirm("¿No subirá archivo opcional?\n \nNota: esta sugerencia ya no aparecera en el tablero de Pendientes de Factibilidad, si realmente no es factible.")) return
                 }
+                    let folio = "";
+                    let nombre_sugerencia = "";
+                    //console.log(this.concentrado_sugerencias_pendiente_factibilidad[])
+                    let datos_sugerencias = this.concentrado_sugerencias_pendiente_factibilidad.filter(items => items.id ==this.id_concentrado_general);
+                    folio = datos_sugerencias[0].folio
+                    nombre_sugerencia = datos_sugerencias[0].nombre_sugerencia
             
                axios.post("guardar_actualizar_causa_no_factibilidad.php",{
                     var_tipo_de_cierre: this.var_tipo_de_cierre,
                     causa_no_factibilidad: this.causa_no_factibilidad, 
-                    id_concentrado: this.id_concentrado_general
+                    id_concentrado: this.id_concentrado_general,
+                    no_factible:this.no_factible,
+                    folio:folio,
+                    nombre_sugerencia:nombre_sugerencia
                 }).then(response =>{
-                    if(response.data=="correcto"){
-                       // window.location.reload()//recargo nuevamente pagina cuestion de MODAL
-                           /* bootstrap.Modal.getOrCreateInstance(document.getElementById('modalImpactoCuantitativo')).hide()//oculto contenido
-                           const items = document.getElementsByClassName("modal-backdrop fade show")// obtengo div con estas clases
-                           items[0].className = ""; // sustituyo y elimino a nada. */
-                        //this.consultado_concentrado_pendiente_factibilidad()
-                       // this.consultado_concentrado_pendiente_implementacion()
+                    if(response.data[0]=="correcto"){
                        window.location.reload()
-                        
                     }else if(response.data=="mal"){
                         alert("No se guarda NO FACTIBLE, pongase en contacto con Mejora Continua.")
                     }else{
