@@ -110,41 +110,62 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                             </div>
                             <!--fin cinta apartado-->
                             <!-- contenido principal gonher-->
-                            <div class="text-center row pt-1">
-                                <div class="d-flex justify-content-start col-3"> <!--style=" padding-top:10px; padding-left:10px;"-->
+                            <span class="badge bg-light text-dark col-12 d-flex justify-content-center align-items-center">Implementación y validación de impactos de sugerencias:</span>
+                            <div class="text-center d-flex col-12 pt-1">
+                                <div class="col-2 text-start"> <!-- d-flex   style=" padding-top:10px; padding-left:10px;"-->
                                     <div class="form-check form-switch" v-if="bandera_paginacion == true" > <!-- -->
                                         <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" v-model="ver_todo" @change="verTodo()" checked>
                                         <label class="form-check-label" for="flexSwitchCheckChecked" style="font-size:13px;">Ver todo</label>
                                     </div>
                                 </div>
-                                <span class="badge bg-light text-dark col-6 d-flex justify-content-center align-items-center">Implementación y validación de impactos de sugerencias:</span>
-                                <div class="col-3" v-if="ventana == 'principalMejora' || ventana == 'concentrado'">
-                                    <div class="text-center" v-if="bandera_paginacion == true" style="height:5vh; width:100%; background-color: #ffffff">
-                                        <button type="button" class="btn btn-primary me-1" :disabled="arregloPosicionPagina < 1 || ((ver_todo == true && ventana == 'concentrado') || (ver_todo == true && ventana == 'principalMejora'))" @click="primerPagina()" style="height:20px; padding:0px; width:20px;">
+
+                                <!--buscador-->
+                                <div class="input-group col-7" style="width:40%;height:20px;"> <!--style="max-width:350px;"-->
+                                    <div class="input-group">
+                                        <input type="text" id="inputBuscar" class="form-control" placeholder="Buscar" aria-label="Recipient's username" v-model="palabra" aria-describedby="basic-addon2" autocomplate="off" >
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary" type="button" @click="buscadorSugerencia()">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                                </svg>
+                                            </button>
+                                            <button title="limpiar filtro" :disabled="palabra== ''" class="btn btn-outline-secondary" type="button" @click="limpiarFiltro()">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-eraser" viewBox="0 0 16 16">
+                                                <path d="M8.086 2.207a2 2 0 0 1 2.828 0l3.879 3.879a2 2 0 0 1 0 2.828l-5.5 5.5A2 2 0 0 1 7.879 15H5.12a2 2 0 0 1-1.414-.586l-2.5-2.5a2 2 0 0 1 0-2.828zm2.121.707a1 1 0 0 0-1.414 0L4.16 7.547l5.293 5.293 4.633-4.633a1 1 0 0 0 0-1.414zM8.746 13.547 3.453 8.254 1.914 9.793a1 1 0 0 0 0 1.414l2.5 2.5a1 1 0 0 0 .707.293H7.88a1 1 0 0 0 .707-.293z"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <span v-if="bandera_inputVacio" class="badge text-danger mb-1">*El campo está vacio </span>
+                                </div>
+
+                                <div class="col-5 d-flex justify-content-end" v-if="ventana == 'principalMejora' || ventana == 'concentrado'">
+                                    <div class="" v-if="bandera_paginacion == true" style="height:5vh; background-color: #ffffff">
+                                        <button type="button" id="btn1" class="btn btn-primary me-1" :disabled="arregloPosicionPagina < 1 || ver_todo == true" @click="primerPagina()" style="height:20px; padding:0px; width:20px;">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="d-flex align-items-center bi bi-chevron-bar-left" viewBox="0 0 15 15">
                                             <path fill-rule="evenodd" d="M11.854 3.646a.5.5 0 0 1 0 .708L8.207 8l3.647 3.646a.5.5 0 0 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 0 1 .708 0M4.5 1a.5.5 0 0 0-.5.5v13a.5.5 0 0 0 1 0v-13a.5.5 0 0 0-.5-.5"/>
                                             </svg>
                                         </button>
-                                        <button type="button" class="btn btn-primary me-1" :disabled="arregloPosicionPagina < 1 || ((ver_todo == true && ventana == 'concentrado') || (ver_todo == true && ventana == 'principalMejora'))" @click="retrocederPagina()" style="height:20px; padding:0px; width:20px;">
+                                        <button type="button" id="btn2" class="btn btn-primary me-1" :disabled="arregloPosicionPagina < 1 || ver_todo == true" @click="retrocederPagina()" style="height:20px; padding:0px; width:20px;">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="d-flex align-items-center bi bi-chevron-left" viewBox="0 0 14 14">
                                             <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>
                                             </svg>
                                         </button>
-                                        <button type="button" class="btn btn-primary me-1" :disabled="arregloPosicionPagina == total_paginas-1 || ((ver_todo == true && ventana == 'concentrado') || (ver_todo == true && ventana == 'principalMejora'))" @click="avanzarPagina()" style="height:20px; padding:0px; width:20px;">
+                                        <button type="button" id="btn3" class="btn btn-primary me-1" :disabled="arregloPosicionPagina == total_paginas-1 || ver_todo == true || bandera_buscador == true" @click="avanzarPagina()" style="height:20px; padding:0px; width:20px;">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="d-flex align-items-center bi bi-chevron-right" viewBox="0 0 14 14">
                                             <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
                                             </svg>
                                         </button>
-                                        <button type="button" class="btn btn-primary me-1" :disabled="arregloPosicionPagina == total_paginas-1 || ((ver_todo == true && ventana == 'concentrado') || (ver_todo == true && ventana == 'principalMejora'))" @click="ultimaPagina()" style="height:20px; padding:0px; width:20px;">
+                                        <button type="button" id="btn4" class="btn btn-primary me-1" :disabled="arregloPosicionPagina == total_paginas-1 || ver_todo == true || bandera_buscador == true" @click="ultimaPagina()" style="height:20px; padding:0px; width:20px;">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="d-flex align-items-center bi bi-chevron-bar-right" viewBox="0 0 15 15">
                                             <path fill-rule="evenodd" d="M4.146 3.646a.5.5 0 0 0 0 .708L7.793 8l-3.647 3.646a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708 0M11.5 1a.5.5 0 0 1 .5.5v13a.5.5 0 0 1-1 0v-13a.5.5 0 0 1 .5-.5"/>
                                             </svg>
                                         </button>
-                                        <div v-if="bandera_paginacion == true"class="text-center" style="font-color:#0000FF;font-size:13px;"><u><b>{{arregloPosicionPagina+1}}</b></u></div>
+                                        <div v-if="bandera_paginacion == true"class="" style="font-color:#0000FF;font-size:13px;"><u><b>{{arregloPosicionPagina+1}}</b></u></div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="div-scroll mt-3">
+                            <div class="div-scroll mt-4">
                                 <table class="tablaMonitoreo-sugerencias table table-bordered">
                                 <thead class="encabezado-tabla text-center text-light ">
                                     <tr>
@@ -2713,6 +2734,11 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 ver_todo: false,
                 //size_paginacion: 50,
                 ventana_actual:'principalMejora',
+                palabra:'',
+                coincidencias:'',
+                bandera_inputVacio: false,
+                desactivarbtnLimpiar: true,
+                bandera_buscador: false,
             }
         },
         mounted(){
@@ -2757,6 +2783,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
         },
         methods:{
 
+
+
     mostrar(dato){
         this.ventana=dato;
         if(dato=='principalMejora'){ this.pintarUno=true; this.valorBtnPag = 'ordenar'; this.arregloPosicionPagina = 0; this.bandera_paginacion = true; this.ver_todo = false;} else{this.pintarUno=false}
@@ -2778,6 +2806,70 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
         }).catch(error => {
             console.log(error)
         })
+    },
+
+    buscadorSugerencia(){
+        this.arregloPosicionPagina = 0;
+        if(this.palabra == ''){
+            this.bandera_inputVacio = true;
+            document.getElementById('inputBuscar').style.borderColor  = '#ff0000';
+            //this.palabra = 'vacio';
+            //this.bandera_inputVacio = true;
+
+            setTimeout(() => {
+                document.getElementById('inputBuscar').style.borderColor  = '#bdbdbd';
+                this.bandera_inputVacio = false;
+            }, 3000);
+
+        }else{
+            this.loanding = true;
+            this.ver_todo = false;
+            this.bandera_buscador = true;
+
+            /*if(this.ver_todo == false){
+                const button3 = document.getElementById('btn3');
+                button3.disabled = true;
+                const button4 = document.getElementById('btn4');
+                button4.disabled = true;
+            }else{
+                const button1 = document.getElementById('btn1');
+                button1.disabled = true;
+                const button2 = document.getElementById('btn2');
+                button2.disabled = true;
+            }*/
+
+            console.log('buscar:',this.palabra)
+            axios.post("consulta_concentrado_sugerencias.php",{
+                accion:'buscar',
+                numero_pagina: '',
+                palabra:this.palabra
+            }).then(response =>{
+                //console.log(response.data)
+                this.coincidencias = response.data
+                    this.concentrado_sugerencias = response.data
+                    console.log('las coincidencias son:',this.concentrado_sugerencias);
+            }).catch(error => {
+                console.log(error);
+            }).finally(() =>{
+                this.loanding = false;
+            })
+            //this.bandera_inputVacio = false;
+        }
+        
+    },
+
+    limpiarFiltro(){
+        this.acomodarSugerencias();
+        this.palabra = '';
+        this.bandera_buscador = false;
+       // this.bandera_limpiarFiltro = true;
+        //this.bandera_inputVacio = false;
+        document.getElementById('inputBuscar').style.borderColor  = '#bdbdbd';
+
+        this.ver_todo = false;
+        this.arregloPosicionPagina= 0;
+        this.acomodarSugerencias();
+
     },
 
     consultar_planes_de_trabajo(){//consulto al iniar y al seleccionar una opcion de los select
@@ -3119,516 +3211,535 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 },
       /*FIN METODOS PRINCIPAL MEJORA*/
       /*METODOS CONCENTRADO SUGERENCIAS*/
-            guardar_nueva_sugerencia_y_actualizar(nueva_o_actualizar,id_registro){
+    guardar_nueva_sugerencia_y_actualizar(nueva_o_actualizar,id_registro){
 
-                if(this.var_sindicalizado_empleado!='' && this.var_nombre_sugerencias!='' && this.var_folio!='' && this.var_situacion_actual!='' && 
-                    this.var_idea_propuesta!='' && this.var_nomina!='' && this.var_colaborador!='' && this.var_puesto!='' && this.var_planta!='' && 
-                    this.var_area!='' && this.var_area_participante!='' && this.var_subarea!='' && this.var_fecha_sugerencia!='' && this.var_fecha_inicio!='' && this.var_usuario_y_analista_de_factibilidad!='' ){
-                    this.actualizar_sugerencia="";//desactivar editar o actualizar
-                    this.nueva_sugerencia=false;//desactivar nueva sugerencia
-                        axios.post('guardar_nueva_sugerencia_y_actualizar.php',{
-                            id: id_registro,
-                            tipo_nueva_o_actualizar: nueva_o_actualizar,
-                            cumplimiento: this.var_cumplimiento,
-                            sindicalizado_empleado:this.var_sindicalizado_empleado,
-                            nombre_sugerencia: this.var_nombre_sugerencias,
-                            folio: this.var_folio,
-                            status: this.var_status,
-                            //causa_no_factibilidad: this.var_causa_no_factibilidad,
-                            situacion_actual: this.var_situacion_actual,
-                            idea_propuesta: this.var_idea_propuesta,
-                            nomina: this.var_nomina,
-                            colaborador: this.var_colaborador,
-                            puesto: this.var_puesto,
-                            planta: this.var_planta,
-                            area: this.var_area,
-                            area_participante: this.var_area_participante,
-                            subarea: this.var_subarea,
-                            impacto_primario: this.var_impacto_primario,
-                            impacto_secundario: this.var_impacto_secundario,
-                            tipo_desperdicio: this.var_tipo_desperdicio,
-                            objetivo_de_calidadMA: this.var_objetivo_de_calidadMA,
-                            fecha_sugerencia: this.var_fecha_sugerencia,
-                            fecha_inicio: this.var_fecha_inicio,
-                            fecha_compromiso: this.var_fecha_compromiso,
-                            fecha_real_de_cierre: this.var_fecha_real_de_cierre,
-                            analista_de_factibilidad: this.var_usuario_y_analista_de_factibilidad,
-                            impacto_planeado: this.var_impacto_planeado,
-                            impacto_real: this.var_impacto_real,
-                            usuario: this.usuario
-                        }).then(response =>{
-                            console.log(response.data); //1904371
-                            /*if(this.ver_todo == false){
-                                this.consultado_concentrado()
-
-                            }else{
-                                this.consultando_total_sugerencias()
-                            }*/
-                           this.verTodo();
-                        })
-                }else{
-                    alert('todos los campos marcados con: (*) son requeridos.')
-                }
-            },
-            mostrar_id(id){
-                    var posicion=id
-                    console.log(posicion)
-                    this.actualizar_sugerencia = posicion
-                if(id=="0"){// nueva sugerencia
-                    this.var_sindicalizado_empleado=''
-                    this.var_nombre_sugerencias=''
-                    this.var_folio=''
-                    //this.var_causa_no_factibilidad=''
-                    this.var_situacion_actual = ''
-                    this.var_idea_propuesta = ''
-                    this.var_nomina = ''
-                    this.var_colaborador = ''
-                    this.var_puesto = ''
-                    this.var_planta = ''
-                    this.var_area = ''
-                    this.var_area_participante = ''
-                    this.var_subarea = ''
-                    this.var_usuario_y_analista_de_factibilidad=''
-                    this.var_impacto_primario = ''
-                    this.var_impacto_secundario = ''
-                    this.var_tipo_desperdicio = ''
-                    this.var_objetivo_de_calidadMA.splice(0,15)
-                    this.var_fecha_sugerencia = ''
-                    this.var_fecha_inicio = ''
-                    this.nueva_sugerencia=true
-                } else if (id==""){//cacelar actualizar
-
-                } else {//llenado campos de actualizar asignandolos a las variables
-                    this.nueva_sugerencia=false;
-                    this.var_sindicalizado_empleado=this.concentrado_sugerencias[posicion-1].sindicalizado_empleado
-                    this.var_nombre_sugerencias=this.concentrado_sugerencias[posicion-1].nombre_sugerencia
-                    this.var_folio=this.concentrado_sugerencias[posicion-1].folio
-                    this.var_status=this.concentrado_sugerencias[posicion-1].status
-                    this.var_causa_no_factibilidad=this.concentrado_sugerencias[posicion-1].causa_no_factibilidad
-                    this.var_situacion_actual = this.concentrado_sugerencias[posicion-1].situacion_actual
-                    this.var_idea_propuesta = this.concentrado_sugerencias[posicion-1].idea_propuesta
-                    this.var_nomina = this.concentrado_sugerencias[posicion-1].numero_nomina
-                    this.var_colaborador = this.concentrado_sugerencias[posicion-1].colaborador
-                    this.var_puesto = this.concentrado_sugerencias[posicion-1].puesto
-                    this.var_planta = this.concentrado_sugerencias[posicion-1].planta
-                    this.var_area = this.concentrado_sugerencias[posicion-1].area
-                    this.var_area_participante = this.concentrado_sugerencias[posicion-1].area_participante
-                    this.var_subarea = this.concentrado_sugerencias[posicion-1].subarea
-                    this.var_impacto_primario = this.concentrado_sugerencias[posicion-1].impacto_primario
-                    this.var_impacto_secundario = this.concentrado_sugerencias[posicion-1].impacto_secundario
-                    this.var_tipo_desperdicio = this.concentrado_sugerencias[posicion-1].tipo_de_desperdicio
-                    this.var_fecha_sugerencia = this.concentrado_sugerencias[posicion-1].fecha_de_sugerencia
-                    this.var_fecha_inicio = this.concentrado_sugerencias[posicion-1].fecha_de_inicio
-                    this.var_usuario_y_analista_de_factibilidad = this.concentrado_sugerencias[posicion-1].analista_de_factibilidad
-                    var arr = this.concentrado_sugerencias[posicion-1].objetivo_de_calidad_ma.split(',')
-                    var longitud = arr.length
-                    this.var_objetivo_de_calidadMA.splice(0,15);
-                    //console.log(longitud)
-                    if(arr.length>1){
-                        for (var i = 0; i < arr.length; i++){
-                                    this.var_objetivo_de_calidadMA[i] = arr[i]
-                        }
-                    }else if(arr.length==1){
-                        if(arr!="" || arr!=""){
-                            this.var_objetivo_de_calidadMA[0] = arr[0]
-                        }
-                    }else{
-                        console.log("0 POSICIONES")
-                    }
-                }
-            },
-
-            eliminar_sugerencia(id_eliminar){
-                if(!confirm("¿Desea eliminar la sugerencia?")) return;
-                axios.post('eliminar_sugerencia.php',{
-                    eliminar_sugerencia:id_eliminar
+        if(this.var_sindicalizado_empleado!='' && this.var_nombre_sugerencias!='' && this.var_folio!='' && this.var_situacion_actual!='' && 
+            this.var_idea_propuesta!='' && this.var_nomina!='' && this.var_colaborador!='' && this.var_puesto!='' && this.var_planta!='' && 
+            this.var_area!='' && this.var_area_participante!='' && this.var_subarea!='' && this.var_fecha_sugerencia!='' && this.var_fecha_inicio!='' && this.var_usuario_y_analista_de_factibilidad!='' ){
+            this.actualizar_sugerencia="";//desactivar editar o actualizar
+            this.nueva_sugerencia=false;//desactivar nueva sugerencia
+                axios.post('guardar_nueva_sugerencia_y_actualizar.php',{
+                    id: id_registro,
+                    tipo_nueva_o_actualizar: nueva_o_actualizar,
+                    cumplimiento: this.var_cumplimiento,
+                    sindicalizado_empleado:this.var_sindicalizado_empleado,
+                    nombre_sugerencia: this.var_nombre_sugerencias,
+                    folio: this.var_folio,
+                    status: this.var_status,
+                    //causa_no_factibilidad: this.var_causa_no_factibilidad,
+                    situacion_actual: this.var_situacion_actual,
+                    idea_propuesta: this.var_idea_propuesta,
+                    nomina: this.var_nomina,
+                    colaborador: this.var_colaborador,
+                    puesto: this.var_puesto,
+                    planta: this.var_planta,
+                    area: this.var_area,
+                    area_participante: this.var_area_participante,
+                    subarea: this.var_subarea,
+                    impacto_primario: this.var_impacto_primario,
+                    impacto_secundario: this.var_impacto_secundario,
+                    tipo_desperdicio: this.var_tipo_desperdicio,
+                    objetivo_de_calidadMA: this.var_objetivo_de_calidadMA,
+                    fecha_sugerencia: this.var_fecha_sugerencia,
+                    fecha_inicio: this.var_fecha_inicio,
+                    fecha_compromiso: this.var_fecha_compromiso,
+                    fecha_real_de_cierre: this.var_fecha_real_de_cierre,
+                    analista_de_factibilidad: this.var_usuario_y_analista_de_factibilidad,
+                    impacto_planeado: this.var_impacto_planeado,
+                    impacto_real: this.var_impacto_real,
+                    usuario: this.usuario
                 }).then(response =>{
-                    if(response.data==true){// si se elimina consultar concentrado nuevamente
+                    console.log(response.data); //1904371
+                    /*if(this.ver_todo == false){
                         this.consultado_concentrado()
-                    }
+
+                    }else{
+                        this.consultando_total_sugerencias()
+                    }*/
+                    this.verTodo();
                 })
-            },
+        }else{
+            alert('todos los campos marcados con: (*) son requeridos.')
+        }
+    },
+    mostrar_id(id){
+            var posicion=id
+            console.log(posicion)
+            this.actualizar_sugerencia = posicion
+        if(id=="0"){// nueva sugerencia
+            this.var_sindicalizado_empleado=''
+            this.var_nombre_sugerencias=''
+            this.var_folio=''
+            //this.var_causa_no_factibilidad=''
+            this.var_situacion_actual = ''
+            this.var_idea_propuesta = ''
+            this.var_nomina = ''
+            this.var_colaborador = ''
+            this.var_puesto = ''
+            this.var_planta = ''
+            this.var_area = ''
+            this.var_area_participante = ''
+            this.var_subarea = ''
+            this.var_usuario_y_analista_de_factibilidad=''
+            this.var_impacto_primario = ''
+            this.var_impacto_secundario = ''
+            this.var_tipo_desperdicio = ''
+            this.var_objetivo_de_calidadMA.splice(0,15)
+            this.var_fecha_sugerencia = ''
+            this.var_fecha_inicio = ''
+            this.nueva_sugerencia=true
+        } else if (id==""){//cacelar actualizar
 
-            consultado_concentrado(){
-                this.loanding = true;
-                axios.post('consulta_concentrado_sugerencias.php',{
-                    accion:'',
-                    numero_pagina: this.arregloPosicionPagina
-                }).then(response =>{
-                    this.concentrado_sugerencias = response.data
-                    //console.log(this.concentrado_sugerencias);
-                }).catch(error => {
-                console.log(error);
-                }).finally(() =>{
-                    this.loanding = false;
-                })
-                //console.log('la ventana en la que estamos es:', this.ventana)
+        } else {//llenado campos de actualizar asignandolos a las variables
+            this.nueva_sugerencia=false;
+            this.var_sindicalizado_empleado=this.concentrado_sugerencias[posicion-1].sindicalizado_empleado
+            this.var_nombre_sugerencias=this.concentrado_sugerencias[posicion-1].nombre_sugerencia
+            this.var_folio=this.concentrado_sugerencias[posicion-1].folio
+            this.var_status=this.concentrado_sugerencias[posicion-1].status
+            this.var_causa_no_factibilidad=this.concentrado_sugerencias[posicion-1].causa_no_factibilidad
+            this.var_situacion_actual = this.concentrado_sugerencias[posicion-1].situacion_actual
+            this.var_idea_propuesta = this.concentrado_sugerencias[posicion-1].idea_propuesta
+            this.var_nomina = this.concentrado_sugerencias[posicion-1].numero_nomina
+            this.var_colaborador = this.concentrado_sugerencias[posicion-1].colaborador
+            this.var_puesto = this.concentrado_sugerencias[posicion-1].puesto
+            this.var_planta = this.concentrado_sugerencias[posicion-1].planta
+            this.var_area = this.concentrado_sugerencias[posicion-1].area
+            this.var_area_participante = this.concentrado_sugerencias[posicion-1].area_participante
+            this.var_subarea = this.concentrado_sugerencias[posicion-1].subarea
+            this.var_impacto_primario = this.concentrado_sugerencias[posicion-1].impacto_primario
+            this.var_impacto_secundario = this.concentrado_sugerencias[posicion-1].impacto_secundario
+            this.var_tipo_desperdicio = this.concentrado_sugerencias[posicion-1].tipo_de_desperdicio
+            this.var_fecha_sugerencia = this.concentrado_sugerencias[posicion-1].fecha_de_sugerencia
+            this.var_fecha_inicio = this.concentrado_sugerencias[posicion-1].fecha_de_inicio
+            this.var_usuario_y_analista_de_factibilidad = this.concentrado_sugerencias[posicion-1].analista_de_factibilidad
+            var arr = this.concentrado_sugerencias[posicion-1].objetivo_de_calidad_ma.split(',')
+            var longitud = arr.length
+            this.var_objetivo_de_calidadMA.splice(0,15);
+            //console.log(longitud)
+            if(arr.length>1){
+                for (var i = 0; i < arr.length; i++){
+                            this.var_objetivo_de_calidadMA[i] = arr[i]
+                }
+            }else if(arr.length==1){
+                if(arr!="" || arr!=""){
+                    this.var_objetivo_de_calidadMA[0] = arr[0]
+                }
+            }else{
+                console.log("0 POSICIONES")
+            }
+        }
+    },
+
+    eliminar_sugerencia(id_eliminar){
+        if(!confirm("¿Desea eliminar la sugerencia?")) return;
+        axios.post('eliminar_sugerencia.php',{
+            eliminar_sugerencia:id_eliminar
+        }).then(response =>{
+            if(response.data==true){// si se elimina consultar concentrado nuevamente
+                this.consultado_concentrado()
+            }
+        })
+    },
+
+    consultado_concentrado(){
+        this.loanding = true;
+        axios.post('consulta_concentrado_sugerencias.php',{
+            accion:'',
+            numero_pagina: this.arregloPosicionPagina,
+            palabra:''
+        }).then(response =>{
+            this.concentrado_sugerencias = response.data
+            //console.log(this.concentrado_sugerencias);
+        }).catch(error => {
+        console.log(error);
+        }).finally(() =>{
+            this.loanding = false;
+        })
+        //console.log('la ventana en la que estamos es:', this.ventana)
 
 
-            },
+    },
 
-            consultando_total_sugerencias(){
+    consultando_total_sugerencias(){
+        axios.post('consulta_concentrado_sugerencias.php',{
+            accion:'total',
+            numero_pagina: this.arregloPosicionPagina,
+            palabra:''
+        }).then(response =>{
+            this.total_sugerencias = response.data.length
+            //console.log('El total de sugerencias es:', this.total_sugerencias)
+            
+            this.cant_paginas = (this.total_sugerencias/this.cantidad_p_pagina)
+            //console.log('la cantidad es:', this.cant_paginas)
+
+            if((this.total_sugerencias%this.cantidad_p_pagina)!= 0){
+                this.total_paginas = Math.floor(this.cant_paginas) + 1
+            }else{
+                this.total_paginas = this.cant_paginas 
+            }
+            //console.log('La cantidad de paginas es:', this.total_paginas)
+
+        }).catch(error => {
+        console.log(error);
+        })
+    },
+
+    acomodarSugerencias(){
+        this.loanding = true,
+        this.valor = 'acomodar',
+        //console.log('estamos en la pantalla:',this.mostrar())
+        axios.post('consulta_concentrado_sugerencias.php',{
+            accion: this.valor,
+            numero_pagina: this.arregloPosicionPagina,
+            palabra:''
+        }).then(response =>{
+            this.concentrado_sugerencias = response.data
+            //console.log(this.concentrado_sugerencias);
+        }).catch(error => {
+            console.log(error);
+        }).finally(() =>{
+            this.loanding = false;
+        })
+        //console.log('la ventana en la que estamos es:', this.ventana)
+    },
+
+    retrocederPagina(){
+        this.loanding = true;
+        this.arregloPosicionPagina--;
+        let pagina = (this.arregloPosicionPagina) * this.cantidad_p_pagina;
+
+        //console.log('la posicion en la que esta es', pagina);
+
+        if(this.valorBtnPag == 'ordenar'){
+            this.valor = 'acomodar';
+        }else if(this.valorBtnPag == 'no ordenar'){
+            this.valor = '';
+        }
+        axios.post('consulta_concentrado_sugerencias.php',{
+            numero_pagina: pagina,
+            accion: this.valor,
+            palabra:''
+
+        }).then(response =>{
+            this.concentrado_sugerencias = response.data
+        }).catch(error => {
+            console.log(error);
+        }).finally(() =>{
+            this.loanding = false;
+        })
+    },
+            
+    primerPagina(){
+        this.loanding = true;
+        this.arregloPosicionPagina = 0;
+        
+        if(this.valorBtnPag == 'ordenar'){
+            this.valor = 'acomodar';
+        }else if(this.valorBtnPag == 'no ordenar'){
+            this.valor = '';
+        }
+
+        axios.post('consulta_concentrado_sugerencias.php',{
+            numero_pagina: 0,
+            accion: this.valor,
+            palabra:''
+
+        }).then(response =>{
+            this.concentrado_sugerencias = response.data
+        }).catch(error => {
+            console.log(error);
+        }).finally(() =>{
+            this.loanding = false;
+        })
+        //console.log('la posicion esss',this.arregloPosicionPagina)
+    },
+
+    avanzarPagina(){
+        this.loanding = true;
+        this.palabra = '';
+        let pagina = ((this.arregloPosicionPagina+1) * this.cantidad_p_pagina);
+        this.arregloPosicionPagina++;
+
+        if(this.valorBtnPag == 'ordenar'){
+            this.valor = 'acomodar';
+        }else if(this.valorBtnPag == 'no ordenar'){
+            this.valor = '';
+        }
+
+        axios.post('consulta_concentrado_sugerencias.php',{
+            numero_pagina: pagina,
+            accion: this.valor,
+            palabra:''
+
+        }).then(response =>{
+            this.concentrado_sugerencias = response.data
+            //console.log('el concentrado es:',this.concentrado_sugerencias)
+        }).catch(error => {
+            console.log(error);
+        }).finally(() =>{
+            this.loanding = false;
+        })
+        //console.log('la posicion esss',this.arregloPosicionPagina)
+    },
+
+    ultimaPagina(){
+        this.loanding = true;
+        this.palabra = '';
+        this.arregloPosicionPagina = this.total_paginas-1;
+        let pagina = ((this.arregloPosicionPagina) * this.cantidad_p_pagina);
+
+        if(this.valorBtnPag == 'ordenar'){
+            this.valor = 'acomodar';
+        }else if(this.valorBtnPag == 'no ordenar'){
+            this.valor = '';
+        }
+
+        axios.post('consulta_concentrado_sugerencias.php',{
+            numero_pagina: pagina,
+            accion: this.valor,
+            palabra:''
+
+        }).then(response =>{
+            this.concentrado_sugerencias = response.data
+            //console.log('el concentrado es:',this.concentrado_sugerencias)
+        }).catch(error => {
+            console.log(error);
+        }).finally(() =>{
+            this.loanding = false;
+        })
+    },
+
+    verTodo(){
+        this.loanding = true;
+        this.palabra = '';
+        this.bandera_buscador = false;
+
+        if(this.ventana=="concentrado"){
+            if(this.ver_todo == true){
+                /*const button1 = document.getElementById('btn1');
+                button1.disabled = true;
+                const button2 = document.getElementById('btn2');
+                button2.disabled = true;
+                const button3 = document.getElementById('btn3');
+                button3.disabled = true;
+                const button4 = document.getElementById('btn4');
+                button4.disabled = true;*/
+
+                this.arregloPosicionPagina = 0;
                 axios.post('consulta_concentrado_sugerencias.php',{
                     accion:'total',
-                    numero_pagina: this.arregloPosicionPagina
+                    numero_pagina: this.arregloPosicionPagina,
+                    palabra:''
                 }).then(response =>{
-                    this.total_sugerencias = response.data.length
-                    //console.log('El total de sugerencias es:', this.total_sugerencias)
-                   
-                    this.cant_paginas = (this.total_sugerencias/this.cantidad_p_pagina)
-                    //console.log('la cantidad es:', this.cant_paginas)
-
-                    if((this.total_sugerencias%this.cantidad_p_pagina)!= 0){
-                        this.total_paginas = Math.floor(this.cant_paginas) + 1
-                    }else{
-                        this.total_paginas = this.cant_paginas 
-                    }
-                    //console.log('La cantidad de paginas es:', this.total_paginas)
+                    this.concentrado_sugerencias = response.data
 
                 }).catch(error => {
                 console.log(error);
-                })
-            },
-
-            acomodarSugerencias(){
-                this.loanding = true,
-                this.valor = 'acomodar',
-                //console.log('estamos en la pantalla:',this.mostrar())
-                axios.post('consulta_concentrado_sugerencias.php',{
-                    accion: this.valor,
-                    numero_pagina: this.arregloPosicionPagina
-                }).then(response =>{
-                    this.concentrado_sugerencias = response.data
-                    //console.log(this.concentrado_sugerencias);
-                }).catch(error => {
-                    console.log(error);
                 }).finally(() =>{
                     this.loanding = false;
                 })
-                //console.log('la ventana en la que estamos es:', this.ventana)
-            },
-
-            retrocederPagina(){
-                this.loanding = true;
-                this.arregloPosicionPagina--;
-                let pagina = (this.arregloPosicionPagina) * this.cantidad_p_pagina;
-
-                //console.log('la posicion en la que esta es', pagina);
-
-                if(this.valorBtnPag == 'ordenar'){
-                    this.valor = 'acomodar';
-                }else if(this.valorBtnPag == 'no ordenar'){
-                    this.valor = '';
-                }
-                axios.post('consulta_concentrado_sugerencias.php',{
-                    numero_pagina: pagina,
-                    accion: this.valor
-
-                }).then(response =>{
-                    this.concentrado_sugerencias = response.data
-                }).catch(error => {
-                    console.log(error);
-                }).finally(() =>{
-                    this.loanding = false;
-                })
-            },
-            
-            primerPagina(){
-                this.loanding = true;
+            }else if(this.ver_todo == false){
+                this.consultado_concentrado();
                 this.arregloPosicionPagina = 0;
-                
-                if(this.valorBtnPag == 'ordenar'){
-                    this.valor = 'acomodar';
-                }else if(this.valorBtnPag == 'no ordenar'){
-                    this.valor = '';
-                }
+            }
+        }else if(this.ventana=="principalMejora"){
+            if(this.ver_todo == true){
 
+                this.arregloPosicionPagina = 0;
                 axios.post('consulta_concentrado_sugerencias.php',{
-                    numero_pagina: 0,
-                    accion: this.valor
-
+                    accion:'principalSinPaginacion',
+                    numero_pagina: this.arregloPosicionPagina,
+                    palabra:''
                 }).then(response =>{
                     this.concentrado_sugerencias = response.data
+
                 }).catch(error => {
-                    console.log(error);
+                console.log(error);
                 }).finally(() =>{
                     this.loanding = false;
                 })
-                //console.log('la posicion esss',this.arregloPosicionPagina)
-            },
+            }else if(this.ver_todo == false){
+                this.acomodarSugerencias();
+                this.arregloPosicionPagina = 0;
+            }
+        }
+    },
 
-            avanzarPagina(){
-                this.loanding = true;
-                let pagina = ((this.arregloPosicionPagina+1) * this.cantidad_p_pagina);
-                this.arregloPosicionPagina++;
+    consultando_plantas(){
+        axios.post('lista_planta.php',{
+        }).then(response =>{
+            this.lista_planta = response.data
+            //console.log(this.lista_planta);
+        })
+    },
+    consultando_area(){
+        axios.post('lista_area.php',{
+    }).then(response =>{
+        this.lista_area = response.data
+        //console.log(this.lista_area);
+    })
+    },
+    consultando_area_participante(){
+        axios.post('lista_area_participante.php',{
+        }).then(response =>{
+            this.lista_area_participante = response.data
+            //console.log(this.lista_area_participante);
+        })
+    },
+    consultando_subarea(){
+        axios.post('lista_subarea.php',{
+        }).then(response =>{
+            this.lista_subarea = response.data
+        })
+    },
+    consultando_impacto(){
+        axios.post('lista_impacto.php',{
+        }).then(response =>{
+            this.lista_impacto_primario = response.data
+            this.lista_impacto_secundario = response.data
+        })
+    },
+    consultando_lista_de_desperdicio(){
+        axios.post('lista_tipo_desperdicio.php',{
+        }).then(response =>{
+            this.lista_tipo_desperdicio = response.data
+        })
+    },
+    consulta_lista_objetivos_calidad_ma(){
+        axios.post('lista_objetivos_calidad_ma.php',{
+    }).then(response =>{
+        this.objetivo_de_calidadMA = response.data
+        //console.log(this.objetivo_de_calidadMA);
+    })
+    },
+    consulta_lista_analista_factibilidad(){
+        axios.post('lista_analista_factibilidad.php',{
+    }).then(response =>{
+        this.lista_analista_factibilidad = response.data
+        //console.log(this.lista_analista_factibilidad);
+    })
+    },
+    consulta_lista_usuarios_y_analistas_factibilidad(){
+        axios.post('lista_usuarios_y_analistas_factibilidad.php',{
+    }).then(response =>{
+        this.lista_usuarios_y_analistas_factibilidad = response.data
+    })
+    },
+    modal_nueva_eliminar(agregar_o_eliminar,tipo,folio){
+        this.folio_carpeta_doc = folio
+        this.tipo_agregar_eliminar = tipo
+        this.titulo_modal=agregar_o_eliminar+" "+tipo //creando titulo modal
+        this.contenido_modal_agregar_eliminar=agregar_o_eliminar // contenido a mostrar
+    },
+    agregar_nuevo_lista(){
+        axios.post('agregar_nuevo_en_lista.php',{
+            nuevo_registro: this.nueva_opcion,
+            tipo: this.tipo_agregar_eliminar,
+            correo: this.correo_analista
+        }).then(response =>{
+            this.nueva_opcion = ''
+            if(response.data=='planta agregada'){
+                alert("Se agrego la Planta con Éxito.")
+                this.consultando_plantas()
+            }else if(response.data=='area agregada'){
+                alert("Se agrego la Area con Éxito.")
+                this.consultando_area()
+            }else if(response.data=='area participante agregada'){
+                alert("Se agrego la Area con Éxito.")
+                this.consultando_area_participante()
+            }else if(response.data=='subarea agregada'){
+                alert("Se agrego la Subarea con Éxito.")
+                this.consultando_subarea()
+            }else if(response.data=='impacto agregada'){
+                alert("Se agrego Impacto primario con Éxito.")
+                this.consultando_impacto()
+            }else if(response.data=='desperdicio agregada'){
+                alert("Se agrego nuevo tipo de desperdicio con Éxito.")
+                this.consultando_lista_de_desperdicio()
+            }else if(response.data=='calidad agregada'){
+                alert("Se agrego nuevo objetivo de calidad MA con Éxito.")
+                this.consulta_lista_objetivos_calidad_ma()
+            }else if(response.data=='analista agregada'){
+                alert("Se agrego Analista y correo con Éxito.")
+                this.consulta_lista_analista_factibilidad()
+            }else{
+                alert("Algo salio mal al agregar.")
+            }
+        })
+    },
+    eliminar_elementos_lista(id_eliminar){
+        //console.log("ID ELIMINAR"+id_eliminar+"TIPO:"+this.tipo_agregar_eliminar)
+        axios.post('eliminar_elementos_lista.php',{
+        id_eliminar: id_eliminar,
+        tipo: this.tipo_agregar_eliminar
+        }).then(response =>{
+        if(response.data=='planta eliminada'){
+                alert("Se elimino con Éxito.")
+                this.consultando_plantas()
+        }else if (response.data=='area eliminada'){
+                alert("Se elimino con Éxito.")
+                this.consultando_area()
+        }else if (response.data=='area participante eliminada'){
+                alert("Se elimino con Éxito.")
+                this.consultando_area_participante()
+        }else if (response.data=='subarea eliminada'){
+                alert("Se elimino con Éxito.")
+                this.consultando_subarea()
+        }else if (response.data=='impacto eliminada'){
+                alert("Se elimino con Éxito.")
+                this.consultando_impacto()
+        }else if (response.data=='desperdicio eliminada'){
+                alert("Se elimino con Éxito.")
+                this.consultando_lista_de_desperdicio()
+        }else if (response.data=='calidad eliminada'){
+                alert("Se elimino con Éxito.")
+                this.consulta_lista_objetivos_calidad_ma()
+        }else if (response.data=='analista eliminada'){
+                alert("Se elimino con Éxito.")
+                this.consulta_lista_analista_factibilidad()
+        }else{
+            alert("Algo salio mal al eliminar.")
+        }
+        })
+    },
 
-                if(this.valorBtnPag == 'ordenar'){
-                    this.valor = 'acomodar';
-                }else if(this.valorBtnPag == 'no ordenar'){
-                    this.valor = '';
-                }
-
-                axios.post('consulta_concentrado_sugerencias.php',{
-                    numero_pagina: pagina,
-                    accion: this.valor
-
-                }).then(response =>{
-                    this.concentrado_sugerencias = response.data
-                    //console.log('el concentrado es:',this.concentrado_sugerencias)
-                }).catch(error => {
-                    console.log(error);
-                }).finally(() =>{
-                    this.loanding = false;
-                })
-                //console.log('la posicion esss',this.arregloPosicionPagina)
-            },
-
-            ultimaPagina(){
-                this.loanding = true;
-                this.arregloPosicionPagina = this.total_paginas-1;
-                let pagina = ((this.arregloPosicionPagina) * this.cantidad_p_pagina);
-
-                if(this.valorBtnPag == 'ordenar'){
-                    this.valor = 'acomodar';
-                }else if(this.valorBtnPag == 'no ordenar'){
-                    this.valor = '';
-                }
-
-                axios.post('consulta_concentrado_sugerencias.php',{
-                    numero_pagina: pagina,
-                    accion: this.valor
-
-                }).then(response =>{
-                    this.concentrado_sugerencias = response.data
-                    //console.log('el concentrado es:',this.concentrado_sugerencias)
-                }).catch(error => {
-                    console.log(error);
-                }).finally(() =>{
-                    this.loanding = false;
-                })
-            },
-
-            verTodo(){
-                this.loanding = true;
-
-                if(this.ventana=="concentrado"){
-                    if(this.ver_todo == true){
-                    //734911
-                        this.arregloPosicionPagina = 0;
-                    axios.post('consulta_concentrado_sugerencias.php',{
-                        accion:'total',
-                        numero_pagina: this.arregloPosicionPagina
-                    }).then(response =>{
-                        this.concentrado_sugerencias = response.data
-
-                    }).catch(error => {
-                    console.log(error);
-                    }).finally(() =>{
-                        this.loanding = false;
-                    })
-                    }else if(this.ver_todo == false){
-                        this.consultado_concentrado();
-                        this.arregloPosicionPagina = 0;
-                    }
-                }else if(this.ventana=="principalMejora"){
-                    if(this.ver_todo == true){
-                        //734911
-                        this.arregloPosicionPagina = 0;
-                    axios.post('consulta_concentrado_sugerencias.php',{
-                        accion:'principalSinPaginacion',
-                        numero_pagina: this.arregloPosicionPagina
-                    }).then(response =>{
-                        this.concentrado_sugerencias = response.data
-
-                    }).catch(error => {
-                    console.log(error);
-                    }).finally(() =>{
-                        this.loanding = false;
-                    })
-                    }else if(this.ver_todo == false){
-                        this.acomodarSugerencias();
-                        this.arregloPosicionPagina = 0;
-                    }
-                }
-
-
-            },
-
-            consultando_plantas(){
-                axios.post('lista_planta.php',{
-                }).then(response =>{
-                    this.lista_planta = response.data
-                    //console.log(this.lista_planta);
-                })
-            },
-            consultando_area(){
-                axios.post('lista_area.php',{
-            }).then(response =>{
-                this.lista_area = response.data
-                //console.log(this.lista_area);
-            })
-            },
-            consultando_area_participante(){
-                axios.post('lista_area_participante.php',{
-                }).then(response =>{
-                    this.lista_area_participante = response.data
-                    //console.log(this.lista_area_participante);
-                })
-            },
-            consultando_subarea(){
-                axios.post('lista_subarea.php',{
-                }).then(response =>{
-                    this.lista_subarea = response.data
-                })
-            },
-            consultando_impacto(){
-                axios.post('lista_impacto.php',{
-                }).then(response =>{
-                    this.lista_impacto_primario = response.data
-                    this.lista_impacto_secundario = response.data
-                })
-            },
-            consultando_lista_de_desperdicio(){
-                axios.post('lista_tipo_desperdicio.php',{
-                }).then(response =>{
-                    this.lista_tipo_desperdicio = response.data
-                })
-            },
-            consulta_lista_objetivos_calidad_ma(){
-                axios.post('lista_objetivos_calidad_ma.php',{
-            }).then(response =>{
-                this.objetivo_de_calidadMA = response.data
-                //console.log(this.objetivo_de_calidadMA);
-            })
-            },
-            consulta_lista_analista_factibilidad(){
-                axios.post('lista_analista_factibilidad.php',{
-            }).then(response =>{
-                this.lista_analista_factibilidad = response.data
-                //console.log(this.lista_analista_factibilidad);
-            })
-            },
-            consulta_lista_usuarios_y_analistas_factibilidad(){
-                axios.post('lista_usuarios_y_analistas_factibilidad.php',{
-            }).then(response =>{
-                this.lista_usuarios_y_analistas_factibilidad = response.data
-            })
-            },
-            modal_nueva_eliminar(agregar_o_eliminar,tipo,folio){
-                this.folio_carpeta_doc = folio
-                this.tipo_agregar_eliminar = tipo
-                this.titulo_modal=agregar_o_eliminar+" "+tipo //creando titulo modal
-                this.contenido_modal_agregar_eliminar=agregar_o_eliminar // contenido a mostrar
-            },
-            agregar_nuevo_lista(){
-                axios.post('agregar_nuevo_en_lista.php',{
-                    nuevo_registro: this.nueva_opcion,
-                    tipo: this.tipo_agregar_eliminar,
-                    correo: this.correo_analista
-                }).then(response =>{
-                    this.nueva_opcion = ''
-                    if(response.data=='planta agregada'){
-                        alert("Se agrego la Planta con Éxito.")
-                        this.consultando_plantas()
-                    }else if(response.data=='area agregada'){
-                        alert("Se agrego la Area con Éxito.")
-                        this.consultando_area()
-                    }else if(response.data=='area participante agregada'){
-                        alert("Se agrego la Area con Éxito.")
-                        this.consultando_area_participante()
-                    }else if(response.data=='subarea agregada'){
-                        alert("Se agrego la Subarea con Éxito.")
-                        this.consultando_subarea()
-                    }else if(response.data=='impacto agregada'){
-                        alert("Se agrego Impacto primario con Éxito.")
-                        this.consultando_impacto()
-                    }else if(response.data=='desperdicio agregada'){
-                        alert("Se agrego nuevo tipo de desperdicio con Éxito.")
-                        this.consultando_lista_de_desperdicio()
-                    }else if(response.data=='calidad agregada'){
-                        alert("Se agrego nuevo objetivo de calidad MA con Éxito.")
-                        this.consulta_lista_objetivos_calidad_ma()
-                    }else if(response.data=='analista agregada'){
-                        alert("Se agrego Analista y correo con Éxito.")
-                        this.consulta_lista_analista_factibilidad()
-                    }else{
-                        alert("Algo salio mal al agregar.")
-                    }
-                })
-            },
-            eliminar_elementos_lista(id_eliminar){
-                //console.log("ID ELIMINAR"+id_eliminar+"TIPO:"+this.tipo_agregar_eliminar)
-               axios.post('eliminar_elementos_lista.php',{
-                id_eliminar: id_eliminar,
-                tipo: this.tipo_agregar_eliminar
-               }).then(response =>{
-                if(response.data=='planta eliminada'){
-                        alert("Se elimino con Éxito.")
-                        this.consultando_plantas()
-                }else if (response.data=='area eliminada'){
-                        alert("Se elimino con Éxito.")
-                        this.consultando_area()
-                }else if (response.data=='area participante eliminada'){
-                        alert("Se elimino con Éxito.")
-                        this.consultando_area_participante()
-                }else if (response.data=='subarea eliminada'){
-                        alert("Se elimino con Éxito.")
-                        this.consultando_subarea()
-                }else if (response.data=='impacto eliminada'){
-                        alert("Se elimino con Éxito.")
-                        this.consultando_impacto()
-                }else if (response.data=='desperdicio eliminada'){
-                        alert("Se elimino con Éxito.")
-                        this.consultando_lista_de_desperdicio()
-                }else if (response.data=='calidad eliminada'){
-                        alert("Se elimino con Éxito.")
-                        this.consulta_lista_objetivos_calidad_ma()
-                }else if (response.data=='analista eliminada'){
-                        alert("Se elimino con Éxito.")
-                        this.consulta_lista_analista_factibilidad()
-                }else{
-                    alert("Algo salio mal al eliminar.")
-                }
-               })
-            },
-
-            modal_subir_ver_documentos(tipo,id_concentrado,folio,cual_documento,cantidad,cumplimiento,index,statusPPT){
-                this.id_concentrado = id_concentrado
-                this.cual_documento = cual_documento
-                this.cantidadDOCFILE = cantidad
-                if(this.cual_documento == 'sugerencia'){
-                    this.myModal = new bootstrap.Modal(document.getElementById('modal'))
-                    this.myModal.show()
-                    this.extensiones_valida = '(.png, .jpeg, .jpg, .pdf)'
-                }else if(this.cual_documento == 'ppt'){
-                    this.cumplimientoPPT = cumplimiento;
-                    this.indexPPT = index;
-                    this.status_ppt = statusPPT;
-                    this.myModal = new bootstrap.Modal(document.getElementById('modal'))
-                    this.myModal.show()
-                    this.extensiones_valida = '(.docx, .ppt, .pptx,.xls,.xlsx)'
-                }else if(this.cual_documento == 'reto'){
-                    this.myModal = new bootstrap.Modal(document.getElementById('modal'))
-                    this.myModal.show()
-                    this.extensiones_valida = '(.png, .jpeg, .jpg, .pdf)'
-                }else if(this.cual_documento == 'premio'){
-                    this.myModal = new bootstrap.Modal(document.getElementById('modal'))
-                    this.myModal.show()
-                    this.extensiones_valida = '(.png, .jpeg, .jpg)'
-                }else if(this.cual_documento == 'entregado'){
-                    this.myModal = new bootstrap.Modal(document.getElementById('modal'))
-                    this.myModal.show()
-                    this.extensiones_valida = '(.png, .jpeg, .jpg)'
-                }else{
-                    this.extensiones_valida = ''
-                }
-                this.folio_carpeta_doc = folio
-                this.titulo_modal="Subir/Ver Documentos." //creando titulo modal
-                this.contenido_modal_agregar_eliminar=tipo // contenido a mostrar
-                this.buscarDocumentos()
-                //this.verTodo()
-                //73491
-            },
+    modal_subir_ver_documentos(tipo,id_concentrado,folio,cual_documento,cantidad,cumplimiento,index,statusPPT){
+        this.id_concentrado = id_concentrado
+        this.cual_documento = cual_documento
+        this.cantidadDOCFILE = cantidad
+        if(this.cual_documento == 'sugerencia'){
+            this.myModal = new bootstrap.Modal(document.getElementById('modal'))
+            this.myModal.show()
+            this.extensiones_valida = '(.png, .jpeg, .jpg, .pdf)'
+        }else if(this.cual_documento == 'ppt'){
+            this.cumplimientoPPT = cumplimiento;
+            this.indexPPT = index;
+            this.status_ppt = statusPPT;
+            this.myModal = new bootstrap.Modal(document.getElementById('modal'))
+            this.myModal.show()
+            this.extensiones_valida = '(.docx, .ppt, .pptx,.xls,.xlsx)'
+        }else if(this.cual_documento == 'reto'){
+            this.myModal = new bootstrap.Modal(document.getElementById('modal'))
+            this.myModal.show()
+            this.extensiones_valida = '(.png, .jpeg, .jpg, .pdf)'
+        }else if(this.cual_documento == 'premio'){
+            this.myModal = new bootstrap.Modal(document.getElementById('modal'))
+            this.myModal.show()
+            this.extensiones_valida = '(.png, .jpeg, .jpg)'
+        }else if(this.cual_documento == 'entregado'){
+            this.myModal = new bootstrap.Modal(document.getElementById('modal'))
+            this.myModal.show()
+            this.extensiones_valida = '(.png, .jpeg, .jpg)'
+        }else{
+            this.extensiones_valida = ''
+        }
+        this.folio_carpeta_doc = folio
+        this.titulo_modal="Subir/Ver Documentos." //creando titulo modal
+        this.contenido_modal_agregar_eliminar=tipo // contenido a mostrar
+        this.buscarDocumentos()
+        //this.verTodo()
+        //73491
+    },
 
             uploadFile(tipo_usuario){
                 let formData = new FormData();

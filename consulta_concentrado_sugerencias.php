@@ -6,6 +6,7 @@
     $variables = json_decode(file_get_contents('php://input'), true);
     $accion = $variables['accion'];
     $pagina = $variables['numero_pagina'];
+    $palabra = $variables['palabra'];
 
     include "conexionGhoner.php";
 
@@ -47,6 +48,14 @@
 
     }else if($accion == 'total'){
         $consulta = "SELECT * FROM concentrado_sugerencias ORDER BY id DESC";
+        $query = mysqli_query($conexion,$consulta);
+
+    }else if($accion == 'buscar'){
+        $consulta = "SELECT * FROM concentrado_sugerencias 
+        WHERE folio LIKE '%$palabra%'
+            OR nombre_sugerencia LIKE '%$palabra%'
+            ORDER BY id DESC
+        ";
         $query = mysqli_query($conexion,$consulta);
     }
     
