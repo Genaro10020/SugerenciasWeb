@@ -255,20 +255,26 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                             <tr style="background:rgb(137, 0, 0); height:5px; color:white; font-size: 1em;">
                                 <th scope="col">#</th>
                                 <th scope="col">Colaborador</th>
+                                <th scope="col">Nomina</th>
                                 <th scope="col">Tipo</th>
                                 <th scope="col">Descripción</th>
                                 <th scope="col">Planta</th>
                                 <th scope="col">Área</th>
+                                <th scope="col">Img</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="(concentrado, index) in concentrado_hallazgos">
                                 <td>{{index+1}}</td>
                                 <td>{{concentrado.colaborador}} </td>
+                                <td>{{concentrado.numero_nomina}}</td>
                                 <td>{{concentrado.tipo_hallazgo}} </td>
                                 <td>{{concentrado.descripcion_hallazgo}}</td>
                                 <td>{{concentrado.planta}} </td>
                                 <td>{{concentrado.area}}</td>
+                                <td> 
+                                    <img :id="'Imagen'+index" alt="" style="border: 1px solid black; width: 200px; height: 200px;" :src="'fotografiaSeguridad/'+'concentrado.numero_nomina'+'/'+'concentrado.id'+'/'+'fotografia.jpeg'"></img>  <!--@error="(event) => hola(event,index,'')"-->                          
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -297,6 +303,25 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
             <div class="row" style="height:10vh; background-color: rgba(181,0,0,1); box-shadow: 0px 0px 12px -2px black;">
             </div><!--FIN FOOTER-->
         </div> <!--FIN DIV CONTENEDOR-->
+
+        <!-- MODAL AMPLIAR IMAGEN DE HALLAZGO --------------------------------------------->
+
+       <!-- <div v-for="(recorrido,index) in recorridos" class="modal" id="modal_hallazgo" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Hallazgo: {{hallazgo}}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center d-flex align-items-center justify-content-center">
+                    <img class="" alt="" style="border: 1px solid black; width: 600px; height: 600px;" :src="ruta"></img>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div> -->
     </body>
 
     <script>
@@ -379,6 +404,25 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                 this.consultar_hallazgos()
             },
             methods: {
+
+                /*ampliarImgHallazgo(index){
+                    this.id_ = this.recorridos[index].id;
+                    this.idHallazgo_ = this.recorridos[index].idHallazgo;
+                    this.auditor_ = this.recorridos[index].auditor;
+
+                    this.hallazgo= this.recorridos[index].hallazgo;
+
+                    this.ruta = '../5sGhoner/FotosRecorridos/'+this.auditor_+'/'+this.id_+'/'+this.idHallazgo_+'.jpeg?' + Math.random();
+                    //console.log('rutaaa',this.ruta);
+                    
+                    this.myModal = new bootstrap.Modal(document.getElementById('modal_hallazgo'))
+                    this.myModal.show();
+                },*/
+
+                consultar_foto(){
+
+                },
+
                 hayTextoHallazgo() {
                     let hallazgo = document.getElementById("descripcionHallazgo").value
                     hallazgo = hallazgo.trim();
@@ -446,7 +490,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                         tipo: 'admin'
                     }).then(response => {
                         this.concentrado_hallazgos = response.data
-                        //console.log('lo que llega es:',response.data);
+                        console.log('lo que llega es:',response.data);
                     })
                 },
 

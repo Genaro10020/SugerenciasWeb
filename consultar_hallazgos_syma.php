@@ -8,7 +8,7 @@
     $tipo = $variables['tipo'];
 
     if($tipo == "admin"){
-        $consulta = "SELECT usuarios_colocaboradores_sugerencias.colaborador, seguridad_syma.descripcion_hallazgo, seguridad_syma.tipo_hallazgo, seguridad_syma.planta,seguridad_syma.area
+        $consulta = "SELECT usuarios_colocaboradores_sugerencias.colaborador, usuarios_colocaboradores_sugerencias.numero_nomina, usuarios_colocaboradores_sugerencias.id, seguridad_syma.descripcion_hallazgo, seguridad_syma.tipo_hallazgo, seguridad_syma.planta,seguridad_syma.area
         FROM usuarios_colocaboradores_sugerencias
         INNER JOIN seguridad_syma
         ON usuarios_colocaboradores_sugerencias.numero_nomina = seguridad_syma.numero_nomina
