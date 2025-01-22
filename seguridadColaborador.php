@@ -273,7 +273,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                 <td>{{concentrado.planta}} </td>
                                 <td>{{concentrado.area}}</td>
                                 <td> 
-                                    <img :id="'Imagen'+index" alt="" style="border: 1px solid black; width: 200px; height: 200px;" :src="'fotografiaSeguridad/'+'concentrado.numero_nomina'+'/'+'concentrado.id'+'/'+'fotografia.jpeg'"></img>  <!--@error="(event) => hola(event,index,'')"-->                          
+                                    <img  alt="" style="border: 1px solid black; width: 200px; height: 200px;" :src="'fotografiaSeguridad/'+concentrado.numero_nomina+'/'+concentrado.id+'/'+'fotografia.jpeg'"></img>  <!--@error="(event) => hola(event,index,'')" :id="'Imagen'+index"-->                          
                                 </td>
                             </tr>
                         </tbody>
