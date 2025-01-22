@@ -11,10 +11,11 @@ $tipoHallazgo = $variables['tipo'];
 $planta = $variables['planta'];
 $area = $variables['area'];
 $user = $_SESSION['usuario'];
+$fechaHoy = date('Y-m-d H:m:s');
 
 
-$insertar = "INSERT INTO seguridad_syma (numero_nomina, descripcion_hallazgo, tipo_hallazgo, planta, area) 
-    VALUES ('$user','$descripcion','$tipoHallazgo','$planta','$area')";
+$insertar = "INSERT INTO seguridad_syma (numero_nomina, descripcion_hallazgo, tipo_hallazgo, planta, area, fecha_hallazgo) 
+    VALUES ('$user','$descripcion','$tipoHallazgo','$planta','$area','$fechaHoy')";
 $query = mysqli_query($conexion, $insertar);
 if ($query) {
     
