@@ -274,8 +274,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                 <td>{{concentrado.descripcion_hallazgo}}</td>
                                 <td>{{concentrado.planta}} </td>
                                 <td>{{concentrado.area}}</td>
-                                <td> 
-                                    <img  alt="" style="border: 1px solid black; width: 200px; height: 200px;" :src="'fotografiaSeguridad/'+concentrado.numero_nomina+'/'+concentrado.id+'/'+'fotografia.jpeg'"></img>  <!--@error="(event) => hola(event,index,'')" :id="'Imagen'+index"-->                          
+                                <td>
+                                    <button type="button" :id="'boton'+index" class="btn btn-sm me-2" @click="ampliarImgHallazgo(index)" style="padding:0px;"> <!--v-show="bandera_ampliarImg == 'existe'+index"-->
+                                        <img  alt="" style="border: 1px solid black; width: 200px; height: 200px;" :src="'fotografiaSeguridad/'+concentrado.numero_nomina+'/'+concentrado.id+'/'+'fotografia.jpeg'" @error="(event) => hola(event,index,'')" :id="'Imagen'+index"></img>                         
+                                    </button>
                                 </td>
                             </tr>
                         </tbody>
@@ -304,26 +306,27 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
             <!--FOOTER-->
             <div class="row" style="height:10vh; background-color: rgba(181,0,0,1); box-shadow: 0px 0px 12px -2px black;">
             </div><!--FIN FOOTER-->
-        </div> <!--FIN DIV CONTENEDOR-->
 
-        <!-- MODAL AMPLIAR IMAGEN DE HALLAZGO --------------------------------------------->
+            
+            <!-- MODAL AMPLIAR IMAGEN DE HALLAZGO --------------------------------------------->
 
-       <!-- <div v-for="(recorrido,index) in recorridos" class="modal" id="modal_hallazgo" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Hallazgo: {{hallazgo}}</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body text-center d-flex align-items-center justify-content-center">
-                    <img class="" alt="" style="border: 1px solid black; width: 600px; height: 600px;" :src="ruta"></img>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            <div v-for="(concentrado,index) in concentrado_hallazgos" class="modal" id="modal_hallazgo" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Hallazgo: {{hallazgo}}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body text-center d-flex align-items-center justify-content-center">
+                            <img class="" alt="" style="border: 1px solid black; width: 90%; height: 90%;" :src="ruta"></img>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div> -->
+        </div> <!--FIN DIV CONTENEDOR-->
     </body>
 
     <script>
@@ -338,6 +341,13 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     bandera_msj_hallazgo: false,
                     concentrado_hallazgos: [],
                     bandera_misHallazgosOconcentrado: true,
+
+                    id_ : '',
+                    idHallazgo_:'',
+                    nomina:'',
+                    ruta:'',
+                    hallazgo:'',
+                    hay_imagen: [],
 
                     areas_enerya: [
                         'Placas',
@@ -407,23 +417,33 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
             },
             methods: {
 
-                /*ampliarImgHallazgo(index){
-                    this.id_ = this.recorridos[index].id;
-                    this.idHallazgo_ = this.recorridos[index].idHallazgo;
-                    this.auditor_ = this.recorridos[index].auditor;
+                hola(event,numero,idHallazgo){
+                    event.target.src = 'fotografiaSeguridad/sinFoto.png';
+                    this.hay_imagen = false;
+                    // console.log('no tiene imagen: boton'+idHallazgo+numero);
+                    let deshabilitarBoton =  document.getElementById('boton' + idHallazgo + numero);
+                    if (deshabilitarBoton !== null) {
+                        //deshabilitarBoton.addAtribute(disabled);
+                        deshabilitarBoton.disabled =  true;
+                    }
+                    //cosole.log("No hay Imagen",'boton' + idHallazgo + numero)
+                },
 
-                    this.hallazgo= this.recorridos[index].hallazgo;
+                ampliarImgHallazgo(index){
+                    this.id_ = this.concentrado_hallazgos[index].id;
+                    this.nomina = this.concentrado_hallazgos[index].numero_nomina;
 
-                    this.ruta = '../5sGhoner/FotosRecorridos/'+this.auditor_+'/'+this.id_+'/'+this.idHallazgo_+'.jpeg?' + Math.random();
-                    //console.log('rutaaa',this.ruta);
+                    this.ruta = 'fotografiaSeguridad/'+this.nomina+'/'+this.id_+'/'+'fotografia.jpeg?'+ Math.random();
+
+                    this.hallazgo= this.concentrado_hallazgos[index].descripcion_hallazgo;
                     
+                    console.log(this.id_,this.idHallazgo_,this.nomina)
+                    console.log('la ruta es:',this.ruta)
+
                     this.myModal = new bootstrap.Modal(document.getElementById('modal_hallazgo'))
                     this.myModal.show();
-                },*/
-
-                consultar_foto(){
-
                 },
+
 
                 hayTextoHallazgo() {
                     let hallazgo = document.getElementById("descripcionHallazgo").value
@@ -493,6 +513,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     }).then(response => {
                         this.concentrado_hallazgos = response.data
                         console.log('lo que llega es:',response.data);
+                        //console.log('los id son:',this.concentrado_hallazgos[index][2])
+
                     })
                 },
 
