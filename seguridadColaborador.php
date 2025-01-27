@@ -276,7 +276,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                 <td>{{concentrado.area}}</td>
                                 <td>
                                     <button type="button" :id="'boton'+index" class="btn btn-sm me-2" @click="ampliarImgHallazgo(index)" style="padding:0px;"> <!--v-show="bandera_ampliarImg == 'existe'+index"-->
-                                        <img  alt="" style="border: 1px solid black; width: 200px; height: 200px;" :src="'fotografiaSeguridad/'+concentrado.numero_nomina+'/'+concentrado.id+'/'+'fotografia.jpeg'" @error="(event) => hola(event,index,'')" :id="'Imagen'+index"></img>                         
+                                        <img  alt="" style="border: 1px solid black; width: 200px; height: 200px;" :src="'fotografiaSeguridad/'+concentrado.numero_nomina+'/'+concentrado.id+'/'+'fotografia.jpeg'" :id="'Imagen'+index" @error="(event) => hola(event,index,'')"></img> <!--"-->                    
                                     </button>
                                 </td>
                             </tr>
@@ -314,7 +314,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                 <div class="modal-dialog modal-dialog-centered modal-xl">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Hallazgo: {{hallazgo}}</h5>
+                            <h5 class="modal-title">Hallazgo:</h5>
+                            {{hallazgo}}
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body text-center d-flex align-items-center justify-content-center">
@@ -419,7 +420,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
 
                 hola(event,numero,idHallazgo){
                     event.target.src = 'fotografiaSeguridad/sinFoto.png';
-                    this.hay_imagen = false;
+                    //this.hay_imagen = false;
                     // console.log('no tiene imagen: boton'+idHallazgo+numero);
                     let deshabilitarBoton =  document.getElementById('boton' + idHallazgo + numero);
                     if (deshabilitarBoton !== null) {
