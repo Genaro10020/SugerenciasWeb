@@ -496,6 +496,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                 },
 
                 consultar_hallazgos() {
+                    this.concentrado_hallazgos = []
                     setTimeout(()=>{
                         this.foto_tomada = 'false';
                     },7000)
@@ -509,6 +510,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                 },
 
                 consultar_hallazgos_concentrado() {
+                    this.concentrado_hallazgos = []
                     axios.post('consultar_hallazgos_syma.php', {
                         tipo: 'admin'
                     }).then(response => {
