@@ -120,20 +120,25 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
 
                 <div class="contenedorHallazgo mt-3 pb-2 row justify-content-center">
                     <label for="descripcionHallazgo">Descripción del hallazgo:</label>
-                    <div class="form-group row">
-                        <div class="col-11">
-                            <textarea @keyup="hayTextoHallazgo()" style="outline:none; resize:none"v-model="texto" class="form-control d-flex" id="descripcionHallazgo" rows="3"></textarea>
+                        <div class="form-group row">
+                           
+                            <div class="col-12">
+                                <textarea @keyup="hayTextoHallazgo()" style="outline:none; resize:none" v-model="texto" class="form-control d-flex" id="descripcionHallazgo" rows="3"></textarea>
+                            </div>
+                           
+                            <div class="col-1 d-flex align-items-center">
+                                <?php if($_SESSION["usuario"] == "65799"){ ?>
+                                    <button :class="{'btn btn-danger': capturando_voz !== true,'btn btn-success': capturando_voz === true}" @click="btnVoz()">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-mic" viewBox="0 0 16 16">
+                                        <path d="M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5"/>
+                                        <path d="M10 8a2 2 0 1 1-4 0V3a2 2 0 1 1 4 0zM8 0a3 3 0 0 0-3 3v5a3 3 0 0 0 6 0V3a3 3 0 0 0-3-3"/>
+                                        </svg>
+                                    </button>
+                                    <span v-if="listo_micro==true"class="badge alert-info">El micro esta lista, manifieste su hallazgo...</span>
+                                <?php } ?>
+                            </div>
                         </div>
-                        <div class="col-1 d-flex align-items-center">
-                            <button class="btn btn-danger" style="border-radious:50px;" @click="btnVoz()">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-mic" viewBox="0 0 16 16">
-                                <path d="M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5"/>
-                                <path d="M10 8a2 2 0 1 1-4 0V3a2 2 0 1 1 4 0zM8 0a3 3 0 0 0-3 3v5a3 3 0 0 0 6 0V3a3 3 0 0 0-3-3"/>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-
+                    
                     <!--<div class="text-center" style="border:1px solid red; height:30%; width:100%;">
                             <?php if (isset($_GET['app'])) { ?>
                                  <div class="col-12 " style="margin-top:10%">     
@@ -423,7 +428,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     movil: <?php echo isset($_GET['app']) ? 'true' : 'false'; ?>,
                     ultimo_id: '',
                     numero_nomina: <?php echo $_SESSION["usuario"]; ?>,
-                    foto_tomada: <?php echo $fotoTomada; ?>
+                    foto_tomada: <?php echo $fotoTomada; ?>,
+                    capturando_voz: false,
+                    listo_micro: false,
                 }
             },
             mounted() {
@@ -466,7 +473,6 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     } else {
                         this.descripcion = false;
                     }
-
                 },
 
                 enviarHallazgo() {
@@ -554,22 +560,26 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                 },
 
                 btnVoz() {
+
+                    this.listo_micro= true
                     const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-
-                    recognition.lang = 'es-ES'; // Establece el idioma a español
-                    recognition.interimResults = true; // Muestra resultados en tiempo real
-
-                    recognition.start();
-
+                    recognition.lang = 'es-ES'; 
+                    recognition.interimResults = true; 
+                    recognition.start()
                     recognition.onresult = (event) => {
+                        this.capturando_voz = true;
                         let result = event.results[event.resultIndex];
-                        if (result.isFinal) {
-                            this.texto += result[0].transcript;
-                        }
+                            if (result.isFinal) {
+                                //alert("insertando");
+                                this.texto += result[0].transcript;
+                                this.capturando_voz = false;
+                                this.listo_micro= true;
+                            }
                     };
 
                     recognition.onerror = (event) => {
                         console.error("Error en el reconocimiento de voz: ", event.error);
+                        alert("Error en el reconocimiento de voz:",event.error)
                     };
                 },
 
