@@ -1,8 +1,8 @@
 <?php
 session_start();
 if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
-    $fotoTomada = "false"; 
-    if(isset($_GET["FotoTomada"])){
+    $fotoTomada = "false";
+    if (isset($_GET["FotoTomada"])) {
         $fotoTomada = $_GET["FotoTomada"];
     }
 ?>
@@ -120,25 +120,29 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
 
                 <div class="contenedorHallazgo mt-3 pb-2 row justify-content-center">
                     <label for="descripcionHallazgo">Descripción del hallazgo:</label>
-                        <div class="form-group row">
-                           
-                            <div class="col-12">
-                                <textarea @keyup="hayTextoHallazgo()" style="outline:none; resize:none" v-model="texto" class="form-control d-flex" id="descripcionHallazgo" rows="3"></textarea>
-                            </div>
-                           
-                            <div class="col-1 d-flex align-items-center">
-                                <?php if($_SESSION["usuario"] == "65799"){ ?>
-                                    <button :class="{'btn btn-danger': capturando_voz !== true,'btn btn-success': capturando_voz === true}" @click="btnVoz()">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-mic" viewBox="0 0 16 16">
-                                        <path d="M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5"/>
-                                        <path d="M10 8a2 2 0 1 1-4 0V3a2 2 0 1 1 4 0zM8 0a3 3 0 0 0-3 3v5a3 3 0 0 0 6 0V3a3 3 0 0 0-3-3"/>
-                                        </svg>
-                                    </button>
-                                    <span v-if="listo_micro==true"class="badge alert-info">El micro esta lista, manifieste su hallazgo...</span>
-                                <?php } ?>
-                            </div>
+                    <div class="form-group row">
+
+                        <div class="col-11">
+                            <textarea inputmode="text" @keyup="hayTextoHallazgo()" style="outline:none; resize:none" v-model="texto" class="form-control d-flex" id="descripcionHallazgo" rows="3"></textarea>
                         </div>
-                    
+
+                        <div class="col-1 d-flex align-items-center">
+                            <?php if ($_SESSION["usuario"] == "65799") { ?>
+                                <button :class="{'btn btn-danger': listo_micro !== true,'btn btn-success': listo_micro === true}" @click="btnVoz()">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-mic" viewBox="0 0 16 16">
+                                        <path d="M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5" />
+                                        <path d="M10 8a2 2 0 1 1-4 0V3a2 2 0 1 1 4 0zM8 0a3 3 0 0 0-3 3v5a3 3 0 0 0 6 0V3a3 3 0 0 0-3-3" />
+                                    </svg>
+                                </button>
+                                <span v-if="listo_micro==true" class="badge alert-info">El micro esta lista, manifieste su hallazgo...</span>
+                                <?php if (isset($_GET['app'])) { ?>
+                                    <span class="badge alert-info">Micro</span>
+                                <?php } ?>
+
+                            <?php } ?>
+                        </div>
+                    </div>
+
                     <!--<div class="text-center" style="border:1px solid red; height:30%; width:100%;">
                             <?php if (isset($_GET['app'])) { ?>
                                  <div class="col-12 " style="margin-top:10%">     
@@ -196,7 +200,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
 
                     <!--boton de enviar-->
                     <div class="d-flex justify-content-center pt-2">
-                        <button class="btn btn-success" :disabled="select_tipo=='' || select_planta=='' || select_area == '' || descripcion == false" @click="enviarHallazgo()">
+                        <button class="btn btn-success" :disabled="select_tipo=='' || select_planta=='' || select_area == '' || texto.trim()==''" @click="enviarHallazgo()">
                             enviar
                         </button>
                     </div>
@@ -233,14 +237,14 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                 <td class="text-center">{{index+1}}</td>
                                 <td v-if="movil==true" class="text-center">
                                     <div v-if="concentrado.existe_foto==1">
-                                        <img :src="'fotografiaSeguridad/' + numero_nomina + '/' + concentrado.id + '/fotografia.jpeg?'+Math.random()"  class="img-responsive" width="50" alt="Sin Fotografía" />
+                                        <img :src="'fotografiaSeguridad/' + numero_nomina + '/' + concentrado.id + '/fotografia.jpeg?'+Math.random()" class="img-responsive" width="50" alt="Sin Fotografía" />
                                     </div>
                                     <div v-else class="d-flex text-center">
                                         <div class="col-12 d-flex justify-content-center">
                                             <div class="col-12 d-flex-colum justify-content-center text-center">
                                                 <a :href="'ejecutarCamaraMovilSeguridad.php?UltimoID=' + concentrado.id+'&&NumeroNomina='+numero_nomina" class="btn_photo mx-auto">
-                                               
-                                                    <img src="img/photo.png" class="img-responsive" width="50"/>
+
+                                                    <img src="img/photo.png" class="img-responsive" width="50" />
                                                 </a>
                                                 <span class="badge alert-warning">Tomar Fotografía</span>
                                             </div>
@@ -291,7 +295,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                 <td>{{concentrado.area}}</td>
                                 <td>
                                     <button type="button" :id="'boton'+index" class="btn btn-sm me-2" @click="ampliarImgHallazgo(index)" style="padding:0px;"> <!--v-show="bandera_ampliarImg == 'existe'+index"-->
-                                        <img  alt="" style="border: 1px solid black; width: 200px; height: 200px;" :src="'fotografiaSeguridad/'+concentrado.numero_nomina+'/'+concentrado.id+'/'+'fotografia.jpeg'" :id="'Imagen'+index" @error="(event) => hola(event,index,'')"></img> <!--"-->                    
+                                        <img alt="" style="border: 1px solid black; width: 200px; height: 200px;" :src="'fotografiaSeguridad/'+concentrado.numero_nomina+'/'+concentrado.id+'/'+'fotografia.jpeg'" :id="'Imagen'+index" @error="(event) => hola(event,index,'')"></img> <!--"-->
                                     </button>
                                 </td>
                             </tr>
@@ -322,7 +326,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
             <div class="row" style="height:10vh; background-color: rgba(181,0,0,1); box-shadow: 0px 0px 12px -2px black;">
             </div><!--FIN FOOTER-->
 
-            
+
             <!-- MODAL AMPLIAR IMAGEN DE HALLAZGO --------------------------------------------->
 
             <div v-for="(concentrado,index) in concentrado_hallazgos" class="modal" id="modal_hallazgo" tabindex="-1">
@@ -357,15 +361,14 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     bandera_msj_hallazgo: false,
                     concentrado_hallazgos: [],
                     bandera_misHallazgosOconcentrado: true,
-
-                    id_ : '',
-                    idHallazgo_:'',
-                    nomina:'',
-                    ruta:'',
-                    hallazgo:'',
+                    id_: '',
+                    idHallazgo_: '',
+                    nomina: '',
+                    ruta: '',
+                    hallazgo: '',
                     hay_imagen: [],
-                    texto: '', 
-                    escuchando: false, 
+                    texto: <?php echo isset($_GET['app']) && isset($_GET['dictado']) ? json_encode(urldecode($_GET['dictado'])) : "''"; ?>,
+                    escuchando: false,
                     reconocer_voz: null,
 
                     areas_enerya: [
@@ -431,6 +434,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     foto_tomada: <?php echo $fotoTomada; ?>,
                     capturando_voz: false,
                     listo_micro: false,
+
                 }
             },
             mounted() {
@@ -438,28 +442,26 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
             },
             methods: {
 
-                hola(event,numero,idHallazgo){
+                hola(event, numero, idHallazgo) {
                     event.target.src = 'fotografiaSeguridad/sinFoto.png';
-                    //this.hay_imagen = false;
-                    // console.log('no tiene imagen: boton'+idHallazgo+numero);
-                    let deshabilitarBoton =  document.getElementById('boton' + idHallazgo + numero);
+                    let deshabilitarBoton = document.getElementById('boton' + idHallazgo + numero);
                     if (deshabilitarBoton !== null) {
                         //deshabilitarBoton.addAtribute(disabled);
-                        deshabilitarBoton.disabled =  true;
+                        deshabilitarBoton.disabled = true;
                     }
                     //cosole.log("No hay Imagen",'boton' + idHallazgo + numero)
                 },
 
-                ampliarImgHallazgo(index){
+                ampliarImgHallazgo(index) {
                     this.id_ = this.concentrado_hallazgos[index].id;
                     this.nomina = this.concentrado_hallazgos[index].numero_nomina;
 
-                    this.ruta = 'fotografiaSeguridad/'+this.nomina+'/'+this.id_+'/'+'fotografia.jpeg?'+ Math.random();
+                    this.ruta = 'fotografiaSeguridad/' + this.nomina + '/' + this.id_ + '/' + 'fotografia.jpeg?' + Math.random();
 
-                    this.hallazgo= this.concentrado_hallazgos[index].descripcion_hallazgo;
-                    
-                    console.log(this.id_,this.idHallazgo_,this.nomina)
-                    console.log('la ruta es:',this.ruta)
+                    this.hallazgo = this.concentrado_hallazgos[index].descripcion_hallazgo;
+
+                    console.log(this.id_, this.idHallazgo_, this.nomina)
+                    console.log('la ruta es:', this.ruta)
 
                     this.myModal = new bootstrap.Modal(document.getElementById('modal_hallazgo'))
                     this.myModal.show();
@@ -474,6 +476,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                         this.descripcion = false;
                     }
                 },
+
 
                 enviarHallazgo() {
 
@@ -497,11 +500,11 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                         this.select_area = '';
                         this.bandera_msj_hallazgo = true;
 
-                        
+
                         //alert(this.movil);
                         if (this.movil === true) { //Saber si se guardo desde APP
                             this.ultimo_id = response.data.ultimo_id;
-                            window.location.href = "ejecutarCamaraMovilSeguridad.php?UltimoID=" + this.ultimo_id+"&&NumeroNomina="+this.numero_nomina;
+                            window.location.href = "ejecutarCamaraMovilSeguridad.php?UltimoID=" + this.ultimo_id + "&&NumeroNomina=" + this.numero_nomina;
                         } else { //Saber si se guardo desde Movil
                             setTimeout(() => {
                                 this.bandera_msj_hallazgo = false
@@ -515,9 +518,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
 
                 consultar_hallazgos() {
                     this.concentrado_hallazgos = []
-                    setTimeout(()=>{
+                    setTimeout(() => {
                         this.foto_tomada = 'false';
-                    },7000)
+                    }, 7000)
 
                     axios.post('consultar_hallazgos_syma.php', {
                         tipo: 'usuarios'
@@ -533,7 +536,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                         tipo: 'admin'
                     }).then(response => {
                         this.concentrado_hallazgos = response.data
-                        console.log('lo que llega es:',response.data);
+                        console.log('lo que llega es:', response.data);
                         //console.log('los id son:',this.concentrado_hallazgos[index][2])
 
                     })
@@ -560,29 +563,39 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                 },
 
                 btnVoz() {
+                    <?php if (isset($_GET['app'])) { ?>
+                        window.location.href = "ejecutarDictadoVozSeguridad.php";
+                    <?php
+                    } else {
+                    ?>
+                        const recognition = new(window.SpeechRecognition || window.webkitSpeechRecognition)();
+                        recognition.lang = 'es-ES';
+                        recognition.interimResults = true;
+                        recognition.start()
+                        this.listo_micro = true; // Micrófono listo para escuchar
 
-                    this.listo_micro= true
-                    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-                    recognition.lang = 'es-ES'; 
-                    recognition.interimResults = true; 
-                    recognition.start()
-                    recognition.onresult = (event) => {
-                        this.capturando_voz = true;
-                        let result = event.results[event.resultIndex];
+
+                        recognition.onresult = (event) => {
+                            this.capturando_voz = true;
+                            let result = event.results[event.resultIndex];
                             if (result.isFinal) {
                                 //alert("insertando");
                                 this.texto += result[0].transcript;
                                 this.capturando_voz = false;
-                                this.listo_micro= true;
+                                this.listo_micro = false;
                             }
-                    };
+                        };
 
-                    recognition.onerror = (event) => {
-                        console.error("Error en el reconocimiento de voz: ", event.error);
-                        alert("Error en el reconocimiento de voz:",event.error)
-                    };
+                        recognition.onerror = (event) => {
+                            console.error("Error en el reconocimiento de voz: ", event.error);
+                            alert("Acepte los permisos en el navegador " + event.error)
+                            this.capturando_voz = false;
+                            this.listo_micro = false;
+                        };
+
+                    <?php } ?>
+
                 },
-
             }
         }
         var mountedApp = Vue.createApp(vue3).mount('#app');
