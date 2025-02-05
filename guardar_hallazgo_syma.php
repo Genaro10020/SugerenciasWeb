@@ -14,8 +14,8 @@ $user = $_SESSION['usuario'];
 $fechaHoy = date('Y-m-d H:m:s');
 
 
-$insertar = "INSERT INTO seguridad_syma (numero_nomina, descripcion_hallazgo, tipo_hallazgo, planta, area, fecha_hallazgo) 
-    VALUES ('$user','$descripcion','$tipoHallazgo','$planta','$area','$fechaHoy')";
+$insertar = "INSERT INTO seguridad_syma (numero_nomina, descripcion_hallazgo, tipo_hallazgo, planta, area, fecha_hallazgo,status) 
+    VALUES ('$user','$descripcion','$tipoHallazgo','$planta','$area','$fechaHoy','Sin Atender')";
 $query = mysqli_query($conexion, $insertar);
 if ($query) {
     
