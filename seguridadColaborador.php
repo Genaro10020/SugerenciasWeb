@@ -221,6 +221,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                 <th v-if="movil==true" scope="col">Fotografía</th>
                                 <th scope="col">Tipo</th>
                                 <th scope="col">Descripción</th>
+                                <th scope="col">Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -244,6 +245,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                 </td>
                                 <td class="text-center">{{concentrado.tipo_hallazgo}} </td>
                                 <td>{{concentrado.descripcion_hallazgo}}</td>
+                                <td>{{concentrado.status}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -272,6 +274,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                 <th scope="col">Planta</th>
                                 <th scope="col">Área</th>
                                 <th scope="col">Evidencia</th>
+                                <th scope="col">Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -288,6 +291,30 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                     <button type="button" :id="'boton'+index" class="btn btn-sm me-2" @click="ampliarImgHallazgo(index)" style="padding:0px;"> <!--v-show="bandera_ampliarImg == 'existe'+index"-->
                                         <img  alt="" style="border: 1px solid black; width: 200px; height: 200px;" :src="'fotografiaSeguridad/'+concentrado.numero_nomina+'/'+concentrado.id+'/'+'fotografia.jpeg'" :id="'Imagen'+index" @error="(event) => hola(event,index,'')"></img> <!--"-->                    
                                     </button>
+                                </td>
+                                <td style="min-width:120px; vertical-align:middle;">
+                                    <div class="d-flex justify-content-center">
+                                        <div class="row d-flex justify-content-center align-items-center" style="width:100%;height:100%;">
+                                            <span v-if="concentrado.status == 'Sin Atender' || concentrado.status == 'En Proceso' || concentrado.status == 'Atendido'" class="badge rounded-pill bg-danger mb-1">{{concentrado.status}}</span>
+                                            <span v-if="concentrado.status == 'Finalizar'" class="badge rounded-pill bg-danger mb-1">Atendido</span>
+                                            <button v-if="concentrado.status == 'Sin Atender'" class="col-5 me-1 btn btn-sm btn-success d-flex justify-content-center align-items-center" style="font-size:10px;" @click="btnStatus('En Proceso',index)">
+                                                Atender
+                                            </button>
+                                            <button v-if="concentrado.status == 'Sin Atender'" class="col-5 btn btn-sm btn-warning d-flex justify-content-center align-items-center" style="font-size:10px;" @click="btnStatus('Finalizar',index)">
+                                                Finalizar
+                                            </button>
+
+                                            <button v-if="concentrado.status == 'En Proceso'" class="col-12 btn btn-sm btn-primary d-flex justify-content-center align-items-center" style="font-size:10px;" @click="btnStatus('Atendido',index)">
+                                                Atendido
+                                            </button>
+                                            <button v-if="concentrado.status == 'Atendido' || concentrado.status == 'Finalizar'" class="col-12 btn btn-sm btn-primary d-flex justify-content-center align-items-center" style="font-size:10px;" @click="modal_comentario(concentrado.id,concentrado.status,index)">
+                                                Comentario
+                                            </button>
+                                            <button v-if="concentrado.status != 'Atendido' && concentrado.status != 'Sin Atender' && concentrado.status != 'En Proceso' && concentrado.status != 'Finalizar'" class="col-12 btn btn-sm btn-success d-flex justify-content-center align-items-center" style="font-size:10px;" @click="modal_comentario(concentrado.id,concentrado.status,index)">
+                                                Comentario
+                                            </button>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
@@ -337,6 +364,28 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     </div>
                 </div>
             </div>
+
+            <!--MODAL COMENTARIO --->
+            <div v-for="(concentrado, index) in concentrado_hallazgos" class="modal fade" id="mimodal_comentario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Comentario</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="textarea_comentario" class="form-label">Escriba su comentario</label>
+                        <textarea class="form-control" id="textarea_comentario" v-model="comentario" rows="3" style="outline:none;resize:none"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" @click="guardar_comentario(comentario,concentrado.id)">Guardar</button>
+                </div>
+                </div>
+            </div>
+            </div>
         </div> <!--FIN DIV CONTENEDOR-->
     </body>
 
@@ -362,6 +411,12 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     texto: '', 
                     escuchando: false, 
                     reconocer_voz: null,
+                    status_hallazgos:[],
+
+                    //status de cada hallazgo
+                    status:'',
+                    comentario:'',
+                    posicion:'',
 
                     areas_enerya: [
                         'Placas',
@@ -451,7 +506,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
 
                     this.hallazgo= this.concentrado_hallazgos[index].descripcion_hallazgo;
                     
-                    console.log(this.id_,this.idHallazgo_,this.nomina)
+                    //console.log(this.id_,this.idHallazgo_,this.nomina)
                     console.log('la ruta es:',this.ruta)
 
                     this.myModal = new bootstrap.Modal(document.getElementById('modal_hallazgo'))
@@ -517,7 +572,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                         tipo: 'usuarios'
                     }).then(response => {
                         this.concentrado_hallazgos = response.data
-                        console.log(response.data);
+                        //console.log(response.data);
                     })
                 },
 
@@ -528,8 +583,6 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     }).then(response => {
                         this.concentrado_hallazgos = response.data
                         console.log('lo que llega es:',response.data);
-                        //console.log('los id son:',this.concentrado_hallazgos[index][2])
-
                     })
                 },
 
@@ -573,6 +626,80 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     };
                 },
 
+                btnStatus(accion,posicion){
+                    this.status = accion;
+                    let id = this.concentrado_hallazgos[posicion].id;
+                    //console.log('mi id es:',id);
+                    switch (accion){
+  
+                        case 'En Proceso':{
+                            //console.log('estamos en proceso')
+                            break;
+                        }
+                        case "Finalizar":{
+                            //console.log('estamos en finalizar')
+                            break;
+                        }
+                        case "Atendido":{
+                            //console.log('estamos en atendido')
+                            break;
+                        }
+                        case "Comentario":{
+                            //console.log('estamos en comentario')
+                            break;
+                        }
+                        default:{
+                            //console.log('estamos en default')
+                            break;
+                        }
+                    }
+
+                    axios.post('actualizar_status_hallazgo_syma.php', {
+                        accion: this.status,
+                        id: id,
+                    }).then(response => {
+                        this.status_hallazgos = response.data
+                        this.concentrado_hallazgos[posicion].status = this.status
+                        //console.log(this.concentrado_hallazgos[posicion].status = this.status);
+                    })
+                },
+
+                guardar_comentario(comentario,posicion){
+
+                    if(comentario != ''){
+                        this.comentario = comentario;
+                        //console.log('Mi id es:',this.id);
+
+                        axios.post('actualizar_status_hallazgo_syma.php', {
+                            accion: this.comentario,
+                            id: this.id,
+                        }).then(response => {
+                            this.concentrado_hallazgos[this.posicion].status = this.comentario
+                        })
+                    }/*else{
+                        console.log('esta vacio')
+                    }*/
+                    this.myModal.hide();
+                },
+
+                modal_comentario(id,comentario,index){
+                    this.posicion = index;
+                    this.id = id;
+
+                    if(comentario == 'Atendido' || comentario == 'Finalizar'){
+                        this.comentario = '';
+                    }else{
+                        this.comentario = comentario;
+                    }
+
+                   // this.comentario = comentario;
+                    //console.log('Mi comentario es:',comentario)
+                    //console.log('Mi posicion es:',this.posicion)
+                   // console.log('Mi id es:',id);
+                    this.myModal = new bootstrap.Modal(document.getElementById('mimodal_comentario'))
+                    this.myModal.show();
+                },
+                
             }
         }
         var mountedApp = Vue.createApp(vue3).mount('#app');
