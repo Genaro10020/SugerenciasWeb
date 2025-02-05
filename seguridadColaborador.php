@@ -127,22 +127,19 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                         </div>
 
                         <div class="col-1 d-flex align-items-center">
-                            <?php if ($_SESSION["usuario"] == "65799") { ?>
                                 <button :class="{'btn btn-danger': listo_micro !== true,'btn btn-success': listo_micro === true}" @click="btnVoz()">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-mic" viewBox="0 0 16 16">
                                         <path d="M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5" />
                                         <path d="M10 8a2 2 0 1 1-4 0V3a2 2 0 1 1 4 0zM8 0a3 3 0 0 0-3 3v5a3 3 0 0 0 6 0V3a3 3 0 0 0-3-3" />
                                     </svg>
                                 </button>
-                                <span v-if="listo_micro==true" class="badge alert-info">El micro esta lista, manifieste su hallazgo...</span>
-                                <?php if (isset($_GET['app'])) { ?>
-                                    <span class="badge alert-info">Micro</span>
-                                <?php } ?>
-
-                            <?php } ?>
                         </div>
                     </div>
-
+                    <div class="col-12 d-flex justify-content-center">
+                    <?php if (isset($_GET['app'])) { ?>
+                        <span class="badge alert-info">Si el boton micro no realiza ninguna acción actualice su App.</span>
+                    <?php } ?>
+                    </div>
                     <!--<div class="text-center" style="border:1px solid red; height:30%; width:100%;">
                             <?php if (isset($_GET['app'])) { ?>
                                  <div class="col-12 " style="margin-top:10%">     
