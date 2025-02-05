@@ -137,7 +137,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     </div>
                     <div class="col-12 d-flex justify-content-center">
                     <?php if (isset($_GET['app'])) { ?>
-                        <span class="badge alert-info">Si el boton micro no realiza ninguna acción actualice su App.</span>
+                        <span class="badge alert-info">Si el botón micrófono no realiza ninguna acción actualice su App.</span>
                     <?php } ?>
                     </div>
                     <!--<div class="text-center" style="border:1px solid red; height:30%; width:100%;">
@@ -647,6 +647,80 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
 
                     <?php } ?>
 
+                },
+
+                btnStatus(accion,posicion){
+                    this.status = accion;
+                    let id = this.concentrado_hallazgos[posicion].id;
+                    //console.log('mi id es:',id);
+                    switch (accion){
+  
+                        case 'En Proceso':{
+                            //console.log('estamos en proceso')
+                            break;
+                        }
+                        case "Finalizar":{
+                            //console.log('estamos en finalizar')
+                            break;
+                        }
+                        case "Atendido":{
+                            //console.log('estamos en atendido')
+                            break;
+                        }
+                        case "Comentario":{
+                            //console.log('estamos en comentario')
+                            break;
+                        }
+                        default:{
+                            //console.log('estamos en default')
+                            break;
+                        }
+                    }
+
+                    axios.post('actualizar_status_hallazgo_syma.php', {
+                        accion: this.status,
+                        id: id,
+                    }).then(response => {
+                        this.status_hallazgos = response.data
+                        this.concentrado_hallazgos[posicion].status = this.status
+                        //console.log(this.concentrado_hallazgos[posicion].status = this.status);
+                    })
+                },
+
+                guardar_comentario(comentario,posicion){
+
+                    if(comentario != ''){
+                        this.comentario = comentario;
+                        //console.log('Mi id es:',this.id);
+
+                        axios.post('actualizar_status_hallazgo_syma.php', {
+                            accion: this.comentario,
+                            id: this.id,
+                        }).then(response => {
+                            this.concentrado_hallazgos[this.posicion].status = this.comentario
+                        })
+                    }/*else{
+                        console.log('esta vacio')
+                    }*/
+                    this.myModal.hide();
+                },
+
+                modal_comentario(id,comentario,index){
+                    this.posicion = index;
+                    this.id = id;
+
+                    if(comentario == 'Atendido' || comentario == 'Finalizar'){
+                        this.comentario = '';
+                    }else{
+                        this.comentario = comentario;
+                    }
+
+                   // this.comentario = comentario;
+                    //console.log('Mi comentario es:',comentario)
+                    //console.log('Mi posicion es:',this.posicion)
+                   // console.log('Mi id es:',id);
+                    this.myModal = new bootstrap.Modal(document.getElementById('mimodal_comentario'))
+                    this.myModal.show();
                 },
 
             }

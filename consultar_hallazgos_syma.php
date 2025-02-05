@@ -26,7 +26,7 @@
         while($fila=mysqli_fetch_array($query)){
             $resultado[]= $fila; 
         }
-    }else if($tipo == 'status_btn'){
+    }else if($tipo == "status_btn"){
         $consulta = "SELECT status FROM seguridad_syma 
         ORDER BY id DESC";
         $query = mysqli_query($conexion,$consulta);
