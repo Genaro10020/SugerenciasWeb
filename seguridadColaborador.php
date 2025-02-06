@@ -104,7 +104,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
             <!--CUERPO-->
 
             <!--ESTO SOLO LE APARECE AL ADMIN -->
-            <?php if ($_SESSION["usuario"] == "60083"): ?>
+            <?php if ($_SESSION["usuario"] == "60083" || $_SESSION["usuario"] == "16299" ): ?>
                 <div class="text-center pt-3">
                     <button class="btn btn-danger btn-sm me-1" @click="misHallazgos()">
                         Mis Hallazgos
