@@ -205,7 +205,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                             <div class="row text-center mb-2 d-flex justify-content-center align-items-center">
                                 <div class="text-center col-12"> <label class="card-text mt-2 text-black ">EAD</label></div>
                                 <div @click="redireccionar(ead)" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer">
-                                    <img src="img/ead.png" class="img-fluid" alt="..." style=" width: 50px;">
+                                    <img src="img/ead.png" class="img-fluid" alt="..." style=" width: 60px;">
                                 </div>
                             </div>
                         </div>
@@ -217,7 +217,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                         <div class="row text-center mb-2 d-flex justify-content-center align-items-center">
                             <div class="text-center col-12"> <label class="card-text mt-2 text-black ">Seguridad</label></div>
                             <div @click="redireccionar(sec)" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer">
-                                <img src="img/logoSyma.png" class="img-fluid" alt="..." style=" width: 50px;">
+                                <img src="img/newLogoSyma.png" class="img-fluid" alt="..." style=" width: 60px;">
                             </div>
                         </div>
                     </div>
