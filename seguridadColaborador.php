@@ -251,7 +251,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                 </td>
                                 <td class="text-center">{{concentrado.tipo_hallazgo}} </td>
                                 <td>{{concentrado.descripcion_hallazgo}}</td>
-                                <td>{{concentrado.status}}</td>
+                                <td v-if="concentrado.status == 'Sin Atender' || concentrado.status == 'En Proceso' || concentrado.status == 'Atendido' || concentrado.status == 'Comentario' || concentrado.status == 'Finalizar'">
+                                    <span class="badge bg-dark" style="font-size:12px;">{{concentrado.status}}</span>
+                                </td>
+                                <td v-else><span class="badge bg-info" style="font-size:12px;">Finalizado:</span> {{concentrado.status}}</td>
                             </tr>
                         </tbody>
                     </table>
