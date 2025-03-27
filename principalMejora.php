@@ -353,14 +353,21 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                        </div><!--Fin Modal tabla actividades-->
 
                        <div class="modal fade" id="modalCambiaraEnFactibilidad" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"><!--modal cambiar a enfactibilida-->
-                            <div class="modal-dialog modal-sm modal-dialog-centered">
+                            <div class="modal-dialog modal-md modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="exampleModalLabel">Cambiar STATUS.</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        
                                     </div>
                                     <div class="modal-body">
-                                        <div class="d-flex justify-content-center">
+                                        <div class="d-flex justify-content-center mt-3">
+                                            <span class="badge badge-secondary" style="font-size: 11px; color: #666;">Al presionar este botón, se modificarán los siguientes datos:<br><br>
+                                            Estatus, Respuesta del Analista, Causa de No Factibilidad,<br>
+                                            Fecha de Inicio y Fecha Límite<br><br>
+                                            Por favor, verifica antes de continuar.</span>
+                                        </div>
+                                        <div class="d-flex justify-content-center mt-3">
                                             <button type="button" class="btn btn-success" @click="cambiaraEnFactibilidad" data-bs-dismiss="modal" style="font-size:.9em; font-weight:bold">cambiar a <b>"En Factibilidad"</b></button>
                                         </div>
                                     </div>
@@ -3063,6 +3070,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     id_concentrado:this.id_concentrado,
                     vistobueno:valor,
                 }).then(response =>{
+                   
                     if(response.data==true){
                        //this.acomodarSugerencias()
                        this.verTodo();
@@ -3078,6 +3086,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
         axios.post('guardar_actualizar_cambiar_a_En_Factibilidad.php',{
             id_concentrado: this.id_concentrado
         }).then(response =>{
+            console.log("RESPUESTA RESETEO : ",response.data);
             if(response.data=="correcto"){
                 //this.acomodarSugerencias()
                 this.verTodo();
