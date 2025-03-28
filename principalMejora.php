@@ -161,7 +161,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                             <path fill-rule="evenodd" d="M4.146 3.646a.5.5 0 0 0 0 .708L7.793 8l-3.647 3.646a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708 0M11.5 1a.5.5 0 0 1 .5.5v13a.5.5 0 0 1-1 0v-13a.5.5 0 0 1 .5-.5"/>
                                             </svg>
                                         </button>
-                                        <div v-if="bandera_paginacion == true"class="" style="font-color:#0000FF;font-size:13px;"><u><b>{{arregloPosicionPagina+1}}</b></u></div>
+                                        <div v-if="bandera_paginacion == true"class="" style="color:#0000FF;font-size:13px;"><u><b>{{arregloPosicionPagina+1}}</b></u></div>
                                     </div>
                                 </div>
                             </div>
@@ -362,7 +362,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                     </div>
                                     <div class="modal-body">
                                         <div class="d-flex justify-content-center mt-3">
-                                            <span class="badge badge-secondary" style="font-size: 11px; color: #666;">Al presionar este botón, se modificarán los siguientes datos:<br><br>
+                                            <span class="badge badge-secondary" style="font-size: 11px; color: #666;">Al presionar este botón, se reiniciarán los siguientes datos:<br><br>
                                             Estatus, Respuesta del Analista, Causa de No Factibilidad,<br>
                                             Fecha de Inicio y Fecha Límite<br><br>
                                             Por favor, verifica antes de continuar.</span>
@@ -1223,7 +1223,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                         <path fill-rule="evenodd" d="M4.146 3.646a.5.5 0 0 0 0 .708L7.793 8l-3.647 3.646a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708 0M11.5 1a.5.5 0 0 1 .5.5v13a.5.5 0 0 1-1 0v-13a.5.5 0 0 1 .5-.5"/>
                                         </svg>
                                     </button>
-                                    <div v-if="bandera_paginacion == true"class="text-center" style="font-color:#0000FF;font-size:13px;"><u><b>{{arregloPosicionPagina+1}}</b></u></div>
+                                    <div v-if="bandera_paginacion == true"class="text-center" style="color:#0000FF;font-size:13px;"><u><b>{{arregloPosicionPagina+1}}</b></u></div>
                                 </div>
                             </div>
                         </div>
