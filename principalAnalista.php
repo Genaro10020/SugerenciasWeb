@@ -1070,9 +1070,13 @@ $incrementar=1;
             },
             
             datos_modal_factibilidad(tipo,index,folio,numero_nomina,status,respuesta,check_mc,tipo_impacto){
+                this.factible=''
+                this.no_factible=''
+
                 this.id_actualizar = ''
                 this.status = status
                 this.check_mc = check_mc
+                
                 if(this.check_mc=="Aceptado" || this.check_mc=="Pendiente" | this.check_mc=="Corregido"){
                     this.deshabilitar = true
                 }else{
