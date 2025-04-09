@@ -42,6 +42,10 @@ if(unlink($ruta_eliminar_doc)){
                 $actualizar = "UPDATE concentrado_sugerencias SET status_PPT = 'Eliminado'
                 WHERE id = '$id_concentrado'";
                 $query = mysqli_query($conexion,$actualizar);     
+            }else{
+                $actualizar = "UPDATE concentrado_sugerencias SET status_PPT = ''
+                WHERE id = '$id_concentrado'";
+                $query = mysqli_query($conexion,$actualizar);  
             }
          
             

@@ -63,88 +63,6 @@ if (!file_exists($path)) {
                             if(in_array($ext, $valid_ext)){
 
                             //subir cantidad de documentos existentes en BD
-
-                            
-
-                            if($cual_documento=="reto"){
-                                $actualizar = "UPDATE concentrado_retos_segerencias SET cantidad_img='$suma' WHERE id = '$id_concentrado'";
-                                $query = mysqli_query($conexion,$actualizar);
-                            }
-                           
-                            if($cual_documento=="sugerencia"){
-                                $actualizar = "UPDATE concentrado_sugerencias SET cantidadDOC='$suma' WHERE id = '$id_concentrado'";
-                                $query = mysqli_query($conexion,$actualizar);
-                            }
-                            if($cual_documento=="ppt"){
-
-                                if($usuarioTipo == "analista"){
-
-                                    $status_actual="";
-                                    $consulta = "SELECT * FROM concentrado_sugerencias WHERE id = '$id_concentrado'";
-                                    $query = mysqli_query($conexion,$consulta);
-                                    while($datos = mysqli_fetch_array($query)){
-                                        $status_actual=$datos['status_PPT'];
-                                    }
-                                    if($status_actual == "Rechazado" || $status_actual == 'Eliminado' || $status_actual == 'Corregido'){
-
-                                        date_default_timezone_set('America/Mexico_City');
-                                        $fecha_cierre = date("Y-m-d");
-                                        
-                                        $hay_fecha_cierre="";
-                                        $consulta = "SELECT * FROM concentrado_sugerencias WHERE id = '$id_concentrado'";
-                                        $query = mysqli_query($conexion,$consulta);
-                                        while($datos = mysqli_fetch_array($query)){
-                                            $hay_fecha_cierre=$datos['fecha_real_cierre'];
-                                        }
-                                        if(empty($hay_fecha_cierre)){// si no hay fecha cierre agregar
-                                            $actualizar = "UPDATE concentrado_sugerencias SET cantidadPPT='$suma', status_PPT = 'Corregido' WHERE id = '$id_concentrado'";//actauliando cantidad de documetos en BD.
-                                            $query = mysqli_query($conexion,$actualizar);
-                                        }else{
-                                            $actualizar = "UPDATE concentrado_sugerencias SET cantidadPPT='$suma', status_PPT = 'Corregido' WHERE id = '$id_concentrado'";//actauliando cantidad de documetos en BD.
-                                            $query = mysqli_query($conexion,$actualizar);
-                                        }
-                                        
-                                    }else if($status_actual == ''){ //primera vez que se sube un documento
-
-                                        date_default_timezone_set('America/Mexico_City');
-                                        $fecha_cierre = date("Y-m-d");
-                                        
-                                        $hay_fecha_cierre="";
-                                        $consulta = "SELECT * FROM concentrado_sugerencias WHERE id = '$id_concentrado'";
-                                        $query = mysqli_query($conexion,$consulta);
-                                        while($datos = mysqli_fetch_array($query)){
-                                            $hay_fecha_cierre=$datos['fecha_real_cierre'];
-                                        }
-                                        if(empty($hay_fecha_cierre)){// si no hay fecha cierre agregar
-                                            $actualizar = "UPDATE concentrado_sugerencias SET cantidadPPT='$suma', status_PPT = 'Por Validar' WHERE id = '$id_concentrado'";//actauliando cantidad de documetos en BD.
-                                            $query = mysqli_query($conexion,$actualizar);
-                                        }else{
-                                            $actualizar = "UPDATE concentrado_sugerencias SET cantidadPPT='$suma', status_PPT = 'Por Validar' WHERE id = '$id_concentrado'";//actauliando cantidad de documetos en BD.
-                                            $query = mysqli_query($conexion,$actualizar);
-                                        }
-                                    }
-
-
-                                }else{
-                                    date_default_timezone_set('America/Mexico_City');
-                                    $fecha_cierre = date("Y-m-d");
-                                    
-                                    $hay_fecha_cierre="";
-                                    $consulta = "SELECT * FROM concentrado_sugerencias WHERE id = '$id_concentrado'";
-                                    $query = mysqli_query($conexion,$consulta);
-                                    while($datos = mysqli_fetch_array($query)){
-                                        $hay_fecha_cierre=$datos['fecha_real_cierre'];
-                                    }
-                                    if(empty($hay_fecha_cierre)){// si no hay fecha cierre agregar
-                                        $actualizar = "UPDATE concentrado_sugerencias SET cumplimiento ='100', status='Implementada', fecha_real_cierre='$fecha_cierre', cantidadPPT='$suma', status_impacto = 'Midiendo' WHERE id = '$id_concentrado'";//actauliando cantidad de documetos en BD.
-                                        $query = mysqli_query($conexion,$actualizar);
-                                    }else{
-                                        $actualizar = "UPDATE concentrado_sugerencias SET cumplimiento ='100', status='Implementada', cantidadPPT='$suma', status_impacto = 'Midiendo' WHERE id = '$id_concentrado'";//actauliando cantidad de documetos en BD.
-                                        $query = mysqli_query($conexion,$actualizar);
-    
-                                    }
-                                }
-                            }                       
                             
                             // Ruta de archivo
                             //$newfilename = time()."_".$filename;
@@ -156,6 +74,89 @@ if (!file_exists($path)) {
                             if(move_uploaded_file($_FILES['files']['tmp_name'][$index],$ruta_y_doc)){
                            // $files_arr[] = "http://localhost/sugerencias/".$ruta_y_doc;
                            $files_arr[] = $ruta_y_doc;
+
+
+                           ///////
+                                    if($cual_documento=="reto"){
+                                        $actualizar = "UPDATE concentrado_retos_segerencias SET cantidad_img='$suma' WHERE id = '$id_concentrado'";
+                                        $query = mysqli_query($conexion,$actualizar);
+                                        }
+                                    
+                                        if($cual_documento=="sugerencia"){
+                                            $actualizar = "UPDATE concentrado_sugerencias SET cantidadDOC='$suma' WHERE id = '$id_concentrado'";
+                                            $query = mysqli_query($conexion,$actualizar);
+                                        }
+                                        if($cual_documento=="ppt"){
+
+                                            if($usuarioTipo == "analista"){
+
+                                                $status_actual="";
+                                                $consulta = "SELECT * FROM concentrado_sugerencias WHERE id = '$id_concentrado'";
+                                                $query = mysqli_query($conexion,$consulta);
+                                                while($datos = mysqli_fetch_array($query)){
+                                                    $status_actual=$datos['status_PPT'];
+                                                }
+                                                if($status_actual == "Rechazado" || $status_actual == 'Eliminado' || $status_actual == 'Corregido'){
+
+                                                    date_default_timezone_set('America/Mexico_City');
+                                                    $fecha_cierre = date("Y-m-d");
+                                                    
+                                                    $hay_fecha_cierre="";
+                                                    $consulta = "SELECT * FROM concentrado_sugerencias WHERE id = '$id_concentrado'";
+                                                    $query = mysqli_query($conexion,$consulta);
+                                                    while($datos = mysqli_fetch_array($query)){
+                                                        $hay_fecha_cierre=$datos['fecha_real_cierre'];
+                                                    }
+                                                    if(empty($hay_fecha_cierre)){// si no hay fecha cierre agregar
+                                                        $actualizar = "UPDATE concentrado_sugerencias SET cantidadPPT='$suma', status_PPT = 'Corregido' WHERE id = '$id_concentrado'";//actauliando cantidad de documetos en BD.
+                                                        $query = mysqli_query($conexion,$actualizar);
+                                                    }else{
+                                                        $actualizar = "UPDATE concentrado_sugerencias SET cantidadPPT='$suma', status_PPT = 'Corregido' WHERE id = '$id_concentrado'";//actauliando cantidad de documetos en BD.
+                                                        $query = mysqli_query($conexion,$actualizar);
+                                                    }
+                                                    
+                                                }else if($status_actual == ''){ //primera vez que se sube un documento
+
+                                                    date_default_timezone_set('America/Mexico_City');
+                                                    $fecha_cierre = date("Y-m-d");
+                                                    
+                                                    $hay_fecha_cierre="";
+                                                    $consulta = "SELECT * FROM concentrado_sugerencias WHERE id = '$id_concentrado'";
+                                                    $query = mysqli_query($conexion,$consulta);
+                                                    while($datos = mysqli_fetch_array($query)){
+                                                        $hay_fecha_cierre=$datos['fecha_real_cierre'];
+                                                    }
+                                                    if(empty($hay_fecha_cierre)){// si no hay fecha cierre agregar
+                                                        $actualizar = "UPDATE concentrado_sugerencias SET cantidadPPT='$suma', status_PPT = 'Por Validar' WHERE id = '$id_concentrado'";//actauliando cantidad de documetos en BD.
+                                                        $query = mysqli_query($conexion,$actualizar);
+                                                    }else{
+                                                        $actualizar = "UPDATE concentrado_sugerencias SET cantidadPPT='$suma', status_PPT = 'Por Validar' WHERE id = '$id_concentrado'";//actauliando cantidad de documetos en BD.
+                                                        $query = mysqli_query($conexion,$actualizar);
+                                                    }
+                                                }
+
+
+                                            }else{
+                                                date_default_timezone_set('America/Mexico_City');
+                                                $fecha_cierre = date("Y-m-d");
+                                                
+                                                $hay_fecha_cierre="";
+                                                $consulta = "SELECT * FROM concentrado_sugerencias WHERE id = '$id_concentrado'";
+                                                $query = mysqli_query($conexion,$consulta);
+                                                while($datos = mysqli_fetch_array($query)){
+                                                    $hay_fecha_cierre=$datos['fecha_real_cierre'];
+                                                }
+                                                if(empty($hay_fecha_cierre)){// si no hay fecha cierre agregar
+                                                    $actualizar = "UPDATE concentrado_sugerencias SET cumplimiento ='100', status='Implementada', fecha_real_cierre='$fecha_cierre', cantidadPPT='$suma', status_impacto = 'Midiendo' WHERE id = '$id_concentrado'";//actauliando cantidad de documetos en BD.
+                                                    $query = mysqli_query($conexion,$actualizar);
+                                                }else{
+                                                    $actualizar = "UPDATE concentrado_sugerencias SET cumplimiento ='100', status='Implementada', cantidadPPT='$suma', status_impacto = 'Midiendo' WHERE id = '$id_concentrado'";//actauliando cantidad de documetos en BD.
+                                                    $query = mysqli_query($conexion,$actualizar);
+
+                                                }
+                                            }
+                                        } 
+                           /////
 
                                     if($cual_documento=="premio"){
                                         $actualizar = "UPDATE concentrado_premios_sugerencias SET cant_img='$suma', url_premio='$ruta_y_doc' WHERE id = '$id_concentrado'";
