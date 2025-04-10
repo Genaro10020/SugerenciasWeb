@@ -33,7 +33,7 @@ include "conexionGhoner.php";
                         $query = mysqli_query( $conexion, $delete);
 
                 }else{
-                        $consulta = "UPDATE canjer_premios_colaborador_sugerencias SET numero_nomina = '$numero_nomina', descripcion = '$descripcion', cantidad='$cantidad', puntos_para_canjear='$puntos', img_url='$img_url'  WHERE id_premio = '$id_premio'";
+                        $consulta = "UPDATE canjer_premios_colaborador_sugerencias SET descripcion = '$descripcion', cantidad='$cantidad', puntos_para_canjear='$puntos', img_url='$img_url'  WHERE id_premio = '$id_premio' AND numero_nomina ='$numero_nomina' AND status='Sin aceptar'";
                         $query = mysqli_query( $conexion, $consulta);
                 }
 
