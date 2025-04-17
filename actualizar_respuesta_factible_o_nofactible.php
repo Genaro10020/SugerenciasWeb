@@ -7,7 +7,7 @@ $id_concentrado=$variables['id_concentrado'];
 $respuesta=$variables['respuesta'] ;
 
 if ($respuesta=="Factible") {
-        $puntos_factible=5;
+        $puntos_factible=4;
 }else{
         $puntos_factible=0;
 }
