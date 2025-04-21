@@ -33,6 +33,13 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
         <!--Iconos boostrap-->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
         <title>Sugerencias</title>
+
+        <style>
+        [v-cloak] {
+            display: none; /* Oculta el contenido hasta que Vue esté listo */
+        }
+        </style>
+
     </head>
 
     <body>
@@ -107,7 +114,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                         <div class="col-12 p-3 rounded-1" style=" background-color:#eaeaea"><b>Junta de Arraque</b></div>
                         <div class="col-12 d-flex">
                             <div class="col-6">
-                                <i class="bi bi-hourglass-top"></i><label><b>Hora Inicia:</b> <span class="badge rounded-pill bg-primary">{{hora_inicial}}</span><label>
+                                <i class="bi bi-hourglass-top"></i><label><b>Hora Inicial:</b> <span class="badge rounded-pill bg-primary">{{hora_inicial}}</span><label>
                             </div>
                             <div class="col-6">
                                 <i class="bi bi-hourglass-bottom"></i><label><b>Hora Final:</b> <span class="badge rounded-pill bg-primary">{{hora_final}}</span><label>
@@ -115,8 +122,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                         </div>
                         <div class="col h-25 p-3" style="font-size:0.8em">
 
-                            <ul class="text-start">
-                                <li v-for="(tema,index) in temas" class="mb-2" style="margin-bottom: 2px; ">
+                            <ul class="text-start" v-cloak>
+                                <li v-for="(tema,index) in temas" class="mb-2" style="margin-bottom: 2px; " :key="tema.id">
                                     <input v-model="temasCheck[index]" class="me-3" type="checkbox" :disabled="temasCheck[index]==true" />
                                     {{index+1}}.- {{tema.tema}}
                                 </li>
@@ -219,7 +226,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
             },
             mounted() {
                 this.consultarEAD()
-                this.consultarTemas()
+                //this.consultarTemas()
                 this.consultarJuntasDeArranque()
             },
             methods: {
@@ -247,6 +254,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     axios.get('consultar_temas.php', {}).then(response => {
                         if (response.data[0] == true) {
                             let temas = response.data[1]
+
+                            this.temas = []; //Reinicia el array de checkboxes
+                            
+                            console.log("Area: ", this.datosEquipo.area);
                             if (this.datosEquipo.area !== "Inyección") {
                                 const index = temas.findIndex(item => item.tema === "Revisión de Guantes");
                                 // Si se encuentra el índice
@@ -255,7 +266,12 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                     temas.splice(index, 1);
                                 }
                             }
+
+                            //Asigna los nuevos temas
                             this.temas = temas;
+
+                            //Inicializa temasCheck con el nuevo tamaño
+                            this.temasCheck = Array(temas.length).fill(false);
                         } else {
                             console.log("Algo salio mal en consulta", response.data)
                         }
@@ -492,9 +508,20 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     
                 }
 
+            },
+
+            watch: {
+                'datosEquipo.area'(nuevoValor) {
+                     if (nuevoValor) {
+                        console.log("Área ahora disponible:", nuevoValor);
+                        this.consultarTemas();
+                    }
+                }
             }
+            
         }
         var mountedApp = Vue.createApp(vue3).mount('#app');
+        
     </script>
 
     </html>
