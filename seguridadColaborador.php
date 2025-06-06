@@ -176,8 +176,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                             <div class="pt-2"> <!--- AREAS --->
                                 <select v-model="select_area" class="form-select form-select-sm" aria-label=".form-select-sm example">
                                     <option value="" disabled>Seleccione Área </option>
-                                    <option v-for="area in areas_enerya" :value="area">
-                                        {{area}}
+                                    <option v-for="area in areas_enerya" :value="area.id">
+                                        {{area.area}}
                                     </option>
                                 </select>
                             </div>
@@ -187,8 +187,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                             <div class="pt-2"> <!--- AREAS --->
                                 <select v-model="select_area" class="form-select form-select-sm" aria-label=".form-select-sm example">
                                     <option value="" disabled>Seleccione Área </option>
-                                    <option v-for="area in areas_riasa" :value="area">
-                                        {{area}}
+                                    <option v-for="area in areas_riasa" :value="area.id">
+                                        {{area.area}}
                                     </option>
                                 </select>
                             </div>
@@ -426,7 +426,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     comentario:'',
                     posicion:'',
 
-                    areas_enerya: [
+                    /*areas_enerya: [
                         'Placas',
                         'Ensamble',
                         'Formación',
@@ -452,9 +452,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                         'Subestación de Oxigeno',
                         'Cuarto de Compresores',
                         'Osmosis'
-                    ],
+                    ],*/
 
-                    areas_riasa: [
+                    /*areas_riasa: [
                         'Triturador #1',
                         'Triturador #2',
                         'Grupo Industrial',
@@ -482,7 +482,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                         'Área de Diesel',
                         'Cuarto de Compresores',
                         'Osmosis'
-                    ],
+                    ],*/
                     movil: <?php echo isset($_GET['app']) ? 'true' : 'false'; ?>,
                     ultimo_id: '',
                     numero_nomina: <?php echo $_SESSION["usuario"]; ?>,
@@ -493,10 +493,29 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                 }
             },
             mounted() {
+                //this.consultar_plantas()
                 this.consultar_hallazgos()
+                this.consultar_areas_enerya_y_riasa()
             },
             methods: {
-
+                /*consultar_plantas(){
+                              axios.post('lista_planta.php',{
+                                    }).then(response =>{
+                                        console.log("Respuesta de consultar plantas",response.data.map(items=> items.planta));
+                                        console.log
+                                        //console.log(this.lista_planta);
+                                    })         
+                },*/
+                consultar_areas_enerya_y_riasa(){
+                    axios.get('consultar_areas_enerya_riasa.php',{
+                    }).then(response =>{
+                        this.areas_enerya = response.data.Enerya;
+                        this.areas_riasa = response.data.Riasa;
+                        console.log("Repuesta de consultar las areas ",response.data)
+                    }).catch(error =>{
+                        console.log("Algo salio mal en axios :-(")
+                    });
+                },
                 hola(event, numero, idHallazgo) {
                     event.target.src = 'fotografiaSeguridad/sinFoto.png';
                     let deshabilitarBoton = document.getElementById('boton' + idHallazgo + numero);
