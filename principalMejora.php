@@ -364,7 +364,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                         <div class="d-flex justify-content-center mt-3">
                                             <span class="badge badge-secondary" style="font-size: 11px; color: #666;">Al presionar este botón, se reiniciarán los siguientes datos:<br><br>
                                             Estatus, Respuesta del Analista, Causa de No Factibilidad,<br>
-                                            Fecha de Inicio y Fecha Límite<br><br>
+                                            Fecha de Inicio, Fecha Compromiso y Fecha Límite<br><br>
                                             Por favor, verifica antes de continuar.</span>
                                         </div>
                                         <div class="d-flex justify-content-center mt-3">
