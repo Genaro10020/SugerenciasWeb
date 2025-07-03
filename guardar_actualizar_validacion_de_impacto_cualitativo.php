@@ -15,15 +15,22 @@ $id_concentrado=$datos['id_concentrado'];
 $folio=$datos['folio'];
 $numero_nomina=$datos['numero_nomina'];
 $validacion_de_impacto=$datos['validacion_de_impacto'];
+$fecha_asignacion_puntos= date('y-m-d');
 include "conexionGhoner.php";
 $resultado = [];
 
 $consulta = "SELECT * FROM impacto_cualitativo_sugerencias WHERE id_concentrado = '$id_concentrado' AND folio = '$folio'";
 $query = mysqli_query( $conexion, $consulta);
  if(mysqli_num_rows($query)>0){//SI EXISTE EL REGISTRO ACTUALIZA NADA MAS. id_concentrado = '$id_concentrado', folio = '$folio',
-               $actualizar = "UPDATE impacto_cualitativo_sugerencias SET  numero_nomina = '$numero_nomina', impacto ='$impacto', tipo='$tipo', puntos = '$puntos' WHERE id_concentrado = '$id_concentrado'"; ;
-               $querys = mysqli_query( $conexion, $actualizar);
-               $resultado[] = $querys;
+     $row = mysqli_fetch_assoc($query);
+     if(empty($row['fecha_asignacion_puntos']) && empty($row['tipo'])){
+          $actualizar = "UPDATE impacto_cualitativo_sugerencias SET fecha_asignacion_puntos='$fecha_asignacion_puntos' WHERE id_concentrado = '$id_concentrado'"; ;
+          $querys = mysqli_query( $conexion, $actualizar);
+          $resultado[] = $querys;
+     }
+     $actualizar = "UPDATE impacto_cualitativo_sugerencias SET  numero_nomina = '$numero_nomina', impacto ='$impacto', tipo='$tipo', puntos = '$puntos' WHERE id_concentrado = '$id_concentrado'"; ;
+     $querys = mysqli_query( $conexion, $actualizar);
+     $resultado[] = $querys;
         
  }else{//SI NO EXISTE EL REGISTRO INSERTA.
 

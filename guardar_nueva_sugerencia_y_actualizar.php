@@ -35,7 +35,7 @@ $impacto_planeado= $variables['impacto_planeado'];
 $impacto_real= $variables['impacto_real'];
 $creado_o_modificado= date('Y-m-d');
 $creado_por_o_modificado_por=$variables['usuario'];
-$fecha_limite= date("Y-m-d",strtotime($fecha_inicio."+ 8 days")); //agregando 7 dias
+$fecha_limite= date("Y-m-d",strtotime($fecha_inicio."+ 10 days")); //agregando 9 dias
 $puntos_por_la_sugerencia = 1;
 include "conexionGhoner.php";
     if($tipo=="nueva"){
