@@ -275,6 +275,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                         <thead>
                             <tr style="background:rgb(137, 0, 0); height:5px; color:white; font-size: 1em;">
                                 <th scope="col">#</th>
+                                <th scope="col">ID Identificador</th>
                                 <th scope="col">Fecha del hallazgo</th>
                                 <th scope="col">Colaborador</th>
                                 <th scope="col">Nomina</th>
@@ -289,6 +290,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                         <tbody>
                             <tr v-for="(concentrado, index) in concentrado_hallazgos" class="align-middle">
                                 <td><b>{{index+1}}</b></td>
+                                 <td>ID Unico:<b> {{concentrado.id}}</b>
                                 <td>{{concentrado.fecha_hallazgo}}
                                 <td>{{concentrado.colaborador}} </td>
                                 <td>{{concentrado.numero_nomina}}</td>
