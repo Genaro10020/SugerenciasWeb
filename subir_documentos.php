@@ -107,8 +107,9 @@ if (!file_exists($path)) {
                                                     while($datos = mysqli_fetch_array($query)){
                                                         $hay_fecha_cierre=$datos['fecha_real_cierre'];
                                                     }
+                                                    
                                                     if(empty($hay_fecha_cierre)){// si no hay fecha cierre agregar
-                                                        $actualizar = "UPDATE concentrado_sugerencias SET cantidadPPT='$suma', status_PPT = 'Corregido' WHERE id = '$id_concentrado'";//actauliando cantidad de documetos en BD.
+                                                        $actualizar = "UPDATE concentrado_sugerencias SET  fecha_real_cierre='$fecha_cierre', cantidadPPT='$suma', status_PPT = 'Corregido' WHERE id = '$id_concentrado'";//actauliando cantidad de documetos en BD.
                                                         $query = mysqli_query($conexion,$actualizar);
                                                     }else{
                                                         $actualizar = "UPDATE concentrado_sugerencias SET cantidadPPT='$suma', status_PPT = 'Corregido' WHERE id = '$id_concentrado'";//actauliando cantidad de documetos en BD.
@@ -127,7 +128,7 @@ if (!file_exists($path)) {
                                                         $hay_fecha_cierre=$datos['fecha_real_cierre'];
                                                     }
                                                     if(empty($hay_fecha_cierre)){// si no hay fecha cierre agregar
-                                                        $actualizar = "UPDATE concentrado_sugerencias SET cantidadPPT='$suma', status_PPT = 'Por Validar' WHERE id = '$id_concentrado'";//actauliando cantidad de documetos en BD.
+                                                        $actualizar = "UPDATE concentrado_sugerencias SET fecha_real_cierre='$fecha_cierre', cantidadPPT='$suma', status_PPT = 'Por Validar' WHERE id = '$id_concentrado'";//actauliando cantidad de documetos en BD.
                                                         $query = mysqli_query($conexion,$actualizar);
                                                     }else{
                                                         $actualizar = "UPDATE concentrado_sugerencias SET cantidadPPT='$suma', status_PPT = 'Por Validar' WHERE id = '$id_concentrado'";//actauliando cantidad de documetos en BD.
