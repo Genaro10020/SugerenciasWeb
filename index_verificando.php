@@ -33,7 +33,7 @@ if($remember==1 || $remember=="true"){
         
         echo $tipo;
     }else{
-        $consulta = "SELECT * FROM usuarios_colocaboradores_sugerencias WHERE numero_nomina='$user' AND password='$pass'";
+        $consulta = "SELECT * FROM usuarios_colocaboradores_sugerencias WHERE numero_nomina='$user' AND password='$pass' AND status != 'Baja' ";
         $resultado = mysqli_query($conexion,$consulta);
         if (mysqli_num_rows($resultado)>0)
         {
