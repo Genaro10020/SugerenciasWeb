@@ -13,12 +13,28 @@
         FROM usuarios_colocaboradores_sugerencias
         INNER JOIN seguridad_syma
         ON usuarios_colocaboradores_sugerencias.numero_nomina = seguridad_syma.numero_nomina
-        ORDER BY seguridad_syma.id DESC";
+        ORDER BY seguridad_syma.id DESC ";
         $query = mysqli_query($conexion,$consulta);
         while($fila=mysqli_fetch_array($query)){
-            $resultado[]= $fila; 
-        }
+            $areaID=$fila['area'];
+            $planta = $fila['planta'];
+            
+            
+            if($planta=="Enerya"){
+                $tabla = "areas_enerya_syma";
+            }
+            if($planta=="Riasa"){
+                $tabla = "areas_riasa_syma";
+            }
+                    $consulta = "SELECT * FROM $tabla WHERE id='$areaID'";
+                    $query1 = mysqli_query($conexion,$consulta);
+                    while($fila1=mysqli_fetch_array($query1)){
+                        $fila['nombreArea']= $fila1['area']; 
+                    } 
 
+            $resultado[] = $fila;  
+        }
+        /*Con lo siguientes inner join quiero traer la informacion de areas_enerya_syma o areas_riasa_syma dependiendo cual sea la planta  */
     }else if($tipo == "usuarios"){
         
         $consulta = "SELECT * FROM seguridad_syma WHERE numero_nomina='$user' ORDER BY id DESC";

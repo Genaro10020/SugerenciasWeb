@@ -297,7 +297,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                 <td>{{concentrado.tipo_hallazgo}} </td>
                                 <td>{{concentrado.descripcion_hallazgo}}</td>
                                 <td>{{concentrado.planta}} </td>
-                                <td>{{concentrado.area}}</td>
+                                <td>{{concentrado.nombreArea}}</td>
                                 <td>
                                     <button type="button" :id="'boton'+index" class="btn btn-sm me-2" @click="ampliarImgHallazgo(index)" style="padding:0px;"> <!--v-show="bandera_ampliarImg == 'existe'+index"-->
                                         <img alt="" style="border: 1px solid black; width: 200px; height: 200px;" :src="'fotografiaSeguridad/'+concentrado.numero_nomina+'/'+concentrado.id+'/'+'fotografia.jpeg'" :id="'Imagen'+index" @error="(event) => hola(event,index,'')"></img> <!--"-->
@@ -614,6 +614,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                         this.concentrado_hallazgos = response.data
                         console.log('lo que llega es:',response.data);
                         //console.log('los id son:',this.concentrado_hallazgos[index][2])
+                        //console.log(" RESPUESTAA",response.data);
 
                     })
                 },
