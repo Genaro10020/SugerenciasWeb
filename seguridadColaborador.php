@@ -20,6 +20,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
         <!--Bootstrap Separadors-->
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+        <!--Sweet Alert -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <!--VUE 3-->
         <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
         <!--Axios-->
@@ -285,6 +287,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                 <th scope="col">Área</th>
                                 <th scope="col">Evidencia</th>
                                 <th scope="col">Status</th>
+                                <th scope="col">Eliminar</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -326,6 +329,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                             </button>
                                         </div>
                                     </div>
+                                </td>
+                                <td style= "vertical-align:middle;">
+                                    <button type="button" class="col-12 btn btn-sm btn-danger d-flex justify-content-center align-items-center  rounded-circle" style="width: 40px; height: 40px;" @click= "eliminarHallazgo(index)"><i class="bi bi-trash3-fill"></i></button>
                                 </td>
                             </tr>
                         </tbody>
@@ -746,6 +752,48 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                    // console.log('Mi id es:',id);
                     this.myModal = new bootstrap.Modal(document.getElementById('mimodal_comentario'))
                     this.myModal.show();
+                },
+
+                eliminarHallazgo(posicion){
+                    console.log("HOLA ELIMINAR")
+                    let id = this.concentrado_hallazgos[posicion].id;
+                    console.log(id)
+
+                    Swal.fire({
+                        title: "¿Seguro que desea eliminar?",
+                        text: "Este hallazgo se eliminará de forma definitiva",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#d33",
+                        cancelButtonColor: "rgba(162, 162, 162, 1)",
+                        cancelButtonText: "Cancelar",
+                        confirmButtonText: "Sí, eliminar!"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            axios.delete('eliminar_hallazgo_syma.php', {
+                                params: {
+                                    id: id,
+                                }
+                            }).then(response => {
+                                if(response.data === true){
+                                     Swal.fire({
+                                        title: "Eliminado!",
+                                        text: "Se eliminó el hallazgo",
+                                        icon: "success"
+                                    });
+                                    this.concentradoHallazgos();
+                                }
+                            }).catch(error => {
+                                console.error("Error deleting:", error);
+                                Swal.fire({
+                                    title: "Error!",
+                                    text: "Surgió un problema al eliminar el hallazgo.",
+                                    icon: "error"
+                                });
+                            });
+                        }
+                    });
+                    
                 },
 
             }
