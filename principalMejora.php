@@ -2277,6 +2277,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                         <th scope="col">Colaborador</th>
                                                                         <th scope="col">Planta</th>
                                                                         <th scope="col">Área de Participante</th>
+                                                                        <th scope="col">Área</th>
                                                                         <th scope="col">Fecha de Solicitud</th>
                                                                         <th scope="col">Código de Premio</th>
                                                                         <th scope="col">Cantidad (Pzs.)</th>
@@ -2309,7 +2310,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                         </td>   
                                                                         <td>
                                                                                 {{status_premios.area_participante}}
-                                                                        </td>   
+                                                                        </td>
+                                                                        <td>
+                                                                                {{status_premios.area}}
+                                                                        </td>    
                                                                         <td>
                                                                                 {{status_premios.fecha}}
                                                                         </td>   
@@ -4344,6 +4348,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 axios.post("consultar_solicitud_premios_colaborador.php",{
                 }).then(response =>{
                     this.concentrado_status_premios = response.data
+                    console.log("RESULTADOO",this.concentrado_status_premios)
                 })
             },
             editarStutasPremioSolicitado(bandera,index){

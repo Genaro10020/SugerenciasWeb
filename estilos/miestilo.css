@@ -30,6 +30,10 @@
         max-height: 70vh;
         overflow-x: scroll;
     }
+    .div-scroll-vert{
+        max-height: 50vh;
+        overflow-x: scroll;
+    }
 
     .btn_confirmar{
         font-size:0.7em; background-color:green; cursor: pointer; box-shadow: -5px 0px 5px 2px rgba(172,230,179,1);

@@ -111,14 +111,17 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     <button class="btn btn-danger btn-sm me-1" @click="misHallazgos()">
                         Mis Hallazgos
                     </button>
-                    <button class="btn btn-danger btn-sm" @click="concentradoHallazgos()">
+                    <button class="btn btn-danger btn-sm me-1" @click="concentradoHallazgos()">
                         Concentrado
+                    </button>
+                    <button class="btn btn-danger btn-sm" @click="responsables()">
+                        Responsables
                     </button>
                 </div>
             <?php endif; ?>
 
             <!--APARTADO PARA ENVIAR Y VER HALLAZGOS PROPIOS-->
-            <div v-show="bandera_misHallazgosOconcentrado == true" class="row justify-content-center" style="min-height:75vh;">
+            <div v-show="bandera_misHallazgosOconcentrado == 'MisHallazgos'" class="row justify-content-center" style="min-height:75vh;">
 
                 <div class="contenedorHallazgo mt-3 pb-2 row justify-content-center">
                     <label for="descripcionHallazgo">Descripción del hallazgo:</label>
@@ -269,7 +272,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
 
             <!-- CONCENTRADO DE HALLAZGOS SOLO PARA EL ADMINISTRADOR -->
 
-            <div v-show="bandera_misHallazgosOconcentrado == false" class="row justify-content-center pt-2" style="min-height:75vh;">
+            <div v-show="bandera_misHallazgosOconcentrado == 'Concentrado'" class="row justify-content-center pt-2" style="min-height:75vh;">
 
                 <!-- TABLA DE CONCENTRADO DE HALLAZGOS PROPIOS -->
                 <div class="div-scroll-vertial"><!--scroll-->
@@ -344,6 +347,162 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
 
             </div><!--FIN CUERPO-->
 
+            <!-- APARTADO RESPONSABLES -->
+            <div v-show="bandera_misHallazgosOconcentrado == 'Responsables'" class="row justify-content-center pt-2" style="min-height:75vh;">
+                <div class="d-grid gap-2 col-2 mx-auto">
+                    <button class="btn btn-success mb-2" type="button" @click = 'reserVarGuardar(), modalNuevoResponsable()'><i class="bi bi-person-plus"></i> Nuevo Responsable</button>
+                </div>
+                <div style="height: 70vh; overflow-x: scroll;">
+                    <table class="table table-striped" style="font-size: 0.8em;">
+                        <thead>
+                            <tr style="background:rgb(137, 0, 0); height:5px; color:white; font-size: 1em;">
+                                <th scope="col" class= "text-center align-middle">#</th>
+                                <th scope="col" class= "text-center align-middle">Planta</th>
+                                <th scope="col" class= "text-center align-middle">Secciones</th>
+                                <th scope="col" class= "text-center align-middle">Areas</th>
+                                <th scope="col" class= "text-center align-middle">Nombres</th>
+                                <th scope="col" class= "text-center align-middle">Correos</th>
+                                <th scope="col" class= "text-center align-middle">Cambiar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(secciones, seccion, indexa) in responsables_secciones" class="align-middle">
+                                
+                                <td class= "text-center align-middle"><b>{{indexa+1}}</b></td>
+                                <td class= "text-center align-middle">{{secciones.planta}} </td>
+                                <td class= "text-center align-middle">{{secciones.seccion}}</td>
+                                <td class="align-middle">
+                                    <ul>
+                                        <li v-for="area in secciones.areas">
+                                            {{area}}    
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td class="align-middle"><ul>
+                                        <li v-for="usuario in secciones.usuarios">
+                                            {{usuario}}    
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td class="align-middle"><ul>
+                                        <li v-for="email in secciones.emails">
+                                            {{email}}    
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td class= "text-center align-middle">
+                                      
+                                    <div class="d-grid gap-2 col-6 mx-auto">
+                                        <button class="btn btn-warning btn-sm" style="border-radius: 10px;" type="button" @click="reseteaVar(), modalCambioSeccion(secciones)">Cambiar</button>
+                                        <button class="btn btn-danger btn-sm"style="border-radius: 10px;"  type="button" @click="reseteaResp(), modalEliminaResp(secciones)">Eliminar</button>
+                                    </div>
+                                </td>
+                            </tr>  
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+            <!-- MODAL PARA DAR DE ALTA UN NUEVO RESPONSABLE -->
+            <div  class="modal fade" id="modalNuevoResponsable" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-md modal-dialog-centered">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Agregar Nuevo Responsable</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="reserVarGuardar()"></button><!-- @click=" " AGREGA EN ESTE CLICK EL METODO PARA RESETEAR VARIABLES NUEVO RESPONSABLE-->
+                    </div>
+                    <form @submit.prevent="agregarNuevoResponsable()">
+                        <div class="modal-body" style="display: flex; flex-wrap: wrap; gap: 10px;">
+                            <!-- nombre -->
+                            <div class="input-group input-group-sm flex-nowrap" style="flex: 1 1 45%;">
+                                <span class="input-group-text" id="addon-wrapping"><i class="bi bi-person"></i></span>
+                                <input type="text" class="form-control fs-8" placeholder="Nombre" aria-label="Nombre" aria-describedby="addon-wrapping" v-model="nombre_newresp">
+                            </div>
+                            <!-- correo -->
+                            <div class="input-group input-group-sm flex-nowrap" style="flex: 1 1 45%;">
+                                <span class="input-group-text" id="addon-wrapping">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope-at" viewBox="0 0 16 16">
+                                        <path d="M2 2a2 2 0 0 0-2 2v8.01A2 2 0 0 0 2 14h5.5a.5.5 0 0 0 0-1H2a1 1 0 0 1-.966-.741l5.64-3.471L8 9.583l7-4.2V8.5a.5.5 0 0 0 1 0V4a2 2 0 0 0-2-2zm3.708 6.208L1 11.105V5.383zM1 4.217V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v.217l-7 4.2z"/>
+                                        <path d="M14.247 14.269c1.01 0 1.587-.857 1.587-2.025v-.21C15.834 10.43 14.64 9 12.52 9h-.035C10.42 9 9 10.36 9 12.432v.214C9 14.82 10.438 16 12.358 16h.044c.594 0 1.018-.074 1.237-.175v-.73c-.245.11-.673.18-1.18.18h-.044c-1.334 0-2.571-.788-2.571-2.655v-.157c0-1.657 1.058-2.724 2.64-2.724h.04c1.535 0 2.484 1.05 2.484 2.326v.118c0 .975-.324 1.39-.639 1.39-.232 0-.41-.148-.41-.42v-2.19h-.906v.569h-.03c-.084-.298-.368-.63-.954-.63-.778 0-1.259.555-1.259 1.4v.528c0 .892.49 1.434 1.26 1.434.471 0 .896-.227 1.014-.643h.043c.118.42.617.648 1.12.648m-2.453-1.588v-.227c0-.546.227-.791.573-.791.297 0 .572.192.572.708v.367c0 .573-.253.744-.564.744-.354 0-.581-.215-.581-.8Z"/>
+                                    </svg>
+                                </span>
+                                <input type="text" class="form-control fs-8" placeholder="Correo" aria-label="Correo" aria-describedby="addon-wrapping" v-model="correo_newresp">
+                            </div>
+                            <!-- seccion -->
+                            <div style="width: 100%;">
+                                <select v-model ="seccion_elegida" class="form-select form-select-sm p-10" aria-label=".form-select-sm example">
+                                    <option value="" disabled selected>Elige una sección...</option>
+                                    <option v-for="secc in secciones" :key="secc.id" :value="secc.id">
+                                        {{secc.nombre}} ({{secc.planta}})
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal" style="border-radius: 18px;" @click="reserVarGuardar()">Cerrar</button><!-- @click=" " AGREGA EN ESTE CLICK EL METODO PARA RESETEAR VARIABLES NUEVO RESPONSABLE-->
+                            <button type="submit" class="btn btn-sm btn-warning"  style="border-radius: 18px;" >Guardar</button>
+                        </div>
+                    </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODAL PARA CAMBIAR DE SECCION AL RESPONSABLE -->
+            <div class="modal fade" id="modalCambioSeccion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-md modal-dialog-centered">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Cambiar Sección</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="reseteaVar()"></button>
+                    </div>
+                    <div class="modal-body" style="display: flex; gap: 10px;">
+                        <select v-model ="responsable_seleccionado" class="form-select form-select-sm" style="border-radius: 12px;" aria-label=".form-select-sm example">
+                            <option value="" disabled selected>Seleccione un responsable</option>
+                            <option  v-for="usuario in responsablesDeFila" :key="usuario.id" :value="usuario.id">
+                                {{usuario.usuario}}
+                            </option>
+                        </select>
+                        <select v-model ="seccion_seleccionada"class="form-select form-select-sm" style="border-radius: 12px;" aria-label=".form-select-sm example">
+                            <option value="" disabled selected>Mover a...</option>
+                            <option v-for="sec in secciones" :key="sec.id" :value="sec.id">
+                                {{sec.nombre}} ({{sec.planta}})
+                            </option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal" style="border-radius: 18px;" @click="reseteaVar()">Cerrar</button>
+                        <button type="button" class="btn btn-sm btn-warning"  style="border-radius: 18px;" @click="guardarCambioSeccion()">Guardar Cambio</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            <!-- FIN MODAL CAMBIO SECCION -->
+
+            <!-- MODAL PARA ELIMINAR RESPONSABLE -->
+            <div class="modal fade" id="modalEliminaResp" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-SM modal-dialog-centered">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Eliminar Responsable</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="reseteaResp()"></button>
+                    </div>
+                    <div class="modal-body" style="display: flex; gap: 10px;">
+                        <select v-model ="responsable_aeliminar" class="form-select form-select-sm" style="border-radius: 12px;" aria-label=".form-select-sm example">
+                            <option value="" disabled selected>Seleccione un responsable</option>
+                            <option  v-for="user in responsablesDeFila" :key="user.id" :value="user.id">
+                                {{user.usuario}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal" style="border-radius: 18px;" @click="reseteaResp()">Cerrar</button>
+                        <button type="button" class="btn btn-sm btn-warning"  style="border-radius: 18px;" @click="eliminarResponsable()">Eliminar</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            <!-- FIN MODAL ELIMINAR RESPONSABLE -->
 
             <!-- BOTON ATRAS -->
             <div id="opciones" style="min-height:5vh; max-height:5vh;" class=" d-flex align-items-center justify-content-center ">
@@ -384,24 +543,24 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
 
             <!--MODAL COMENTARIO --->
             <div v-for="(concentrado, index) in concentrado_hallazgos" class="modal fade" id="mimodal_comentario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Comentario</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="textarea_comentario" class="form-label">Escriba su comentario</label>
-                        <textarea class="form-control" id="textarea_comentario" v-model="comentario" rows="3" style="outline:none;resize:none"></textarea>
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Comentario</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="textarea_comentario" class="form-label">Escriba su comentario</label>
+                            <textarea class="form-control" id="textarea_comentario" v-model="comentario" rows="3" style="outline:none;resize:none"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary" @click="guardar_comentario(comentario,concentrado.id)">Guardar</button>
+                    </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" @click="guardar_comentario(comentario,concentrado.id)">Guardar</button>
-                </div>
-                </div>
-            </div>
             </div>
         </div> <!--FIN DIV CONTENEDOR-->
     </body>
@@ -417,7 +576,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     descripcion: false,
                     bandera_msj_hallazgo: false,
                     concentrado_hallazgos: [],
-                    bandera_misHallazgosOconcentrado: true,
+                    bandera_misHallazgosOconcentrado: 'MisHallazgos',
                     id_: '',
                     idHallazgo_: '',
                     nomina: '',
@@ -497,6 +656,18 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     foto_tomada: <?php echo $fotoTomada; ?>,
                     capturando_voz: false,
                     listo_micro: false,
+                    ///Cambiar seccion responsable (Actualiza)
+                    responsables_secciones: [],
+                    responsablesDeFila: [], ///traerá unicamente los responsables de la fila/seccion seleccionada
+                    secciones: [], ///aqui traeré todas las secciones existentes
+                    seccion_seleccionada: '',
+                    responsable_seleccionado: '',
+                    ///Agregar seccion nuevo responsable (Crea)
+                    seccion_elegida: '',
+                    correo_newresp: '',
+                    nombre_newresp: '',
+                    ///Elimina responsable
+                    responsable_aeliminar: '',
 
                 }
             },
@@ -625,6 +796,17 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     })
                 },
 
+                consultarResponables(){
+                    this.responsables_secciones = []
+                    axios.post('consultar_responsables_syma.php', {
+                        tipo: 'admin'
+                    }).then(response => {
+                        this.responsables_secciones = response.data
+                        console.log('llega:', this.responsables_secciones);
+
+                    })
+                },
+
                 redireccionar(opciones) { //btn para ir al menu principal
                     if (opciones == 'Sugerencias') {
                         window.location.href = ""
@@ -636,15 +818,187 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                 },
 
                 misHallazgos() {
-                    this.bandera_misHallazgosOconcentrado = true;
+                    this.bandera_misHallazgosOconcentrado = 'MisHallazgos';
                     this.consultar_hallazgos();
                 },
 
                 concentradoHallazgos() {
-                    this.bandera_misHallazgosOconcentrado = false;
+                    this.bandera_misHallazgosOconcentrado = 'Concentrado';
                     this.consultar_hallazgos_concentrado();
                 },
 
+                responsables() {
+                    this.bandera_misHallazgosOconcentrado = 'Responsables';
+                    console.log("Entraste al apartado de Responsables")
+                    this.consultarResponables();
+                },
+                
+                ///AGREGA NUEVO RESP
+                modalNuevoResponsable(){
+                    this.myModal = new bootstrap.Modal(document.getElementById('modalNuevoResponsable'));
+                    this.myModal.show();
+
+                    this.secciones = Object.values(this.responsables_secciones).map(seccion => {
+                        return { id: seccion.id_seccion, nombre: seccion.seccion, planta: seccion.planta };
+                    });
+                },
+
+                reserVarGuardar(){
+                    this.correo_newresp = '';
+                    this.nombre_newresp ='';
+                    this.seccion_elegida ='';
+                },
+                agregarNuevoResponsable(){
+
+
+                    console.log("Nombre: ", this.nombre_newresp);
+                    console.log("Correo: ", this.correo_newresp);
+                    console.log("Seccion: ", this.seccion_elegida);
+                    if(this.nombre_newresp == '' || this.correo_newresp == '' || this.seccion_elegida == ''){
+                        return alert("Todos los campos son requeridos.")
+                    }
+
+                    axios.post('guardar_nuevoResponsable_syma.php', {
+                        nombre_newresp: this.nombre_newresp,
+                        correo_newresp: this.correo_newresp,
+                        seccion_elegida: this.seccion_elegida,
+                    }).then(response => {
+                        console.log("hola guardar nruvo THEN", response.data);
+                        if(response.data == true){
+                            Swal.fire({
+                                position: "center",
+                                icon: "success",
+                                title: "¡Se agregó nuevo Responsable!",
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }else{
+                            alert("Algo salió mal al agregar:( ")
+                        }    
+                    })
+                    
+                    this.myModal.hide();
+                    this.consultarResponables();
+                },
+                ///FIN AGREGA NUEVO RESP
+
+                ///ACTUALIZA RESP
+                modalCambioSeccion(fila){
+                    //fila trae secciones, que muestra el contenido de la fila en la que se presionó btn cambiar
+
+                    // Abrir modal
+                    this.myModal = new bootstrap.Modal(document.getElementById('modalCambioSeccion'));
+                    this.myModal.show();
+
+                    //Asignar
+                    this.responsablesDeFila = fila.usuarios.map((usuario, index) => {
+                    return { usuario: usuario, id: fila.ids_usuarios[index] };
+                    });
+                    this.secciones = Object.values(this.responsables_secciones).map(seccion => {
+                        return { id: seccion.id_seccion, nombre: seccion.seccion, planta: seccion.planta };
+                    });
+                    //imprimiendo p/verificar
+                    console.log("fila",fila)
+                    console.log("responsables_secciones",this.responsables_secciones)
+
+                    console.log("secciones", this.secciones)
+                    console.log("responsablesDeFila", this.responsablesDeFila)                    
+                },
+                
+                reseteaVar(){
+                    this.responsablesDeFila = [];
+                    this.secciones = [];
+                    this.responsable_seleccionado = '';
+                    this.seccion_seleccionada = '';
+                },
+                guardarCambioSeccion(){
+                    console.log("responsable_seleccionado", this.responsable_seleccionado)
+                    console.log("seccion_seleccionada", this.seccion_seleccionada)
+
+                    if( this.responsable_seleccionado == '' || this.seccion_seleccionada =='' ){
+                        return
+                    }
+
+                    let idresponsable_seleccionado = parseInt(this.responsable_seleccionado);
+                    let idseccion_seleccionada = parseInt(this.seccion_seleccionada);
+
+                    console.log("responsable_seleccionado ID", idresponsable_seleccionado)
+                    console.log("seccion_seleccionada ID", idseccion_seleccionada)
+
+                    
+                    axios.post('actualizar_seccion_syma.php', {
+                        seccion_id: idseccion_seleccionada,
+                        id_resp: idresponsable_seleccionado,
+                    }).then(response => {
+                        console.log("hola THEN", response.data);
+                        if(response.data == true){
+                            Swal.fire({
+                                position: "center",
+                                icon: "success",
+                                title: "¡Se guardó el cambio!",
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }else{
+                            alert("Algo salió mal al cambiar :(");
+                        }    
+                    })
+
+                    this.myModal.hide();
+                    this.consultarResponables();
+                    //manda  a llamar el qu ete trae todo lo responsables pa que se actualice
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "¡Se guardó el cambio!",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                },
+                ///FIN ACTUALIZA RESP
+
+                ///ELIMINA RESP
+
+                modalEliminaResp(fila){
+                    this.myModal = new bootstrap.Modal(document.getElementById('modalEliminaResp'));
+                    this.myModal.show();
+
+                    this.responsablesDeFila = fila.usuarios.map((usuario, index) => {
+                    return { usuario: usuario, id: fila.ids_usuarios[index] };
+                    });
+                },
+                reseteaResp(){
+                    console.log("resetearesp")
+                    this.responsable_aeliminar = '';
+                },
+                eliminarResponsable(){
+                    console.log("usuario: ", this.responsable_aeliminar)
+                    if( this.responsable_aeliminar==''){
+                        return
+                    }
+
+                    axios.post('eliminar_responsable_syma.php', {
+                        usuario_id: this.responsable_aeliminar,
+                    }).then(response => {
+                        console.log("hola eliminar resp THEN", response.data);
+                        if(response.data == true){
+                            Swal.fire({
+                                position: "center",
+                                icon: "success",
+                                title: "Se eliminó el Responsable",
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }else{
+                            alert("Algo salió mal al eliminar :( ")
+                        }    
+                    })
+                    
+                    this.myModal.hide();
+                    this.consultarResponables();
+
+                },
+                ///FIN ELIMINA RESP
                 btnVoz() {
                     <?php if (isset($_GET['app'])) { ?>
                         window.location.href = "ejecutarDictadoVozSeguridad.php";
