@@ -878,7 +878,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     })
                     
                     this.myModal.hide();
-                    this.consultarResponables();
+                    this.responsables();
                 },
                 ///FIN AGREGA NUEVO RESP
 
@@ -945,7 +945,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     })
 
                     this.myModal.hide();
-                    this.consultarResponables();
+                    this.responsables();
                     //manda  a llamar el qu ete trae todo lo responsables pa que se actualice
                     Swal.fire({
                         position: "center",
@@ -995,7 +995,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     })
                     
                     this.myModal.hide();
-                    this.consultarResponables();
+                    this.responsables();
 
                 },
                 ///FIN ELIMINA RESP
