@@ -865,6 +865,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     }).then(response => {
                         console.log("hola guardar nruvo THEN", response.data);
                         if(response.data == true){
+                            
+                            this.responsables();
                             Swal.fire({
                                 position: "center",
                                 icon: "success",
@@ -878,7 +880,6 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     })
                     
                     this.myModal.hide();
-                    this.responsables();
                 },
                 ///FIN AGREGA NUEVO RESP
 
@@ -932,6 +933,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     }).then(response => {
                         console.log("hola THEN", response.data);
                         if(response.data == true){
+                            
+                        this.responsables();
                             Swal.fire({
                                 position: "center",
                                 icon: "success",
@@ -945,15 +948,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     })
 
                     this.myModal.hide();
-                    this.responsables();
                     //manda  a llamar el qu ete trae todo lo responsables pa que se actualice
-                    Swal.fire({
-                        position: "center",
-                        icon: "success",
-                        title: "¡Se guardó el cambio!",
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
+                    
                 },
                 ///FIN ACTUALIZA RESP
 
@@ -982,6 +978,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     }).then(response => {
                         console.log("hola eliminar resp THEN", response.data);
                         if(response.data == true){
+                            
+                            this.responsables();
                             Swal.fire({
                                 position: "center",
                                 icon: "success",
@@ -995,7 +993,6 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     })
                     
                     this.myModal.hide();
-                    this.responsables();
 
                 },
                 ///FIN ELIMINA RESP
