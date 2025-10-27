@@ -866,7 +866,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                         console.log("hola guardar nruvo THEN", response.data);
                         if(response.data == true){
                             
-                            this.responsables();
+                            this.consultarResponables();
                             Swal.fire({
                                 position: "center",
                                 icon: "success",
@@ -934,7 +934,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                         console.log("hola THEN", response.data);
                         if(response.data == true){
                             
-                        this.responsables();
+                        this.consultarResponables();
                             Swal.fire({
                                 position: "center",
                                 icon: "success",
@@ -979,7 +979,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                         console.log("hola eliminar resp THEN", response.data);
                         if(response.data == true){
                             
-                            this.responsables();
+                            this.consultarResponables();
                             Swal.fire({
                                 position: "center",
                                 icon: "success",
