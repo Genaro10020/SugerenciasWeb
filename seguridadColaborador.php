@@ -366,7 +366,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(secciones, seccion, indexa) in responsables_secciones" class="align-middle">
+                            <tr v-for="(secciones, seccion, indexa) in responsables_secciones" class="align-middle" :key="indexa">
                                 
                                 <td class= "text-center align-middle"><b>{{indexa+1}}</b></td>
                                 <td class= "text-center align-middle">{{secciones.planta}} </td>
