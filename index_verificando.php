@@ -46,6 +46,7 @@ if($remember==1 || $remember=="true"){
             }
             $_SESSION["usuario"] = $user;//nomina
             $_SESSION["tipo"] = $tipo;//tipo
+             $_SESSION["tipo_acceso"] = "ColaboradorLider";//tipo
             $_SESSION["planta"] = $planta;//nombre
             $_SESSION["nombre"] = $nombre;//nombre
             $_SESSION["password"] = $pass;//password

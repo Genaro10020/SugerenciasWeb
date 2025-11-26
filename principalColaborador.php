@@ -1,8 +1,6 @@
 <?php
 session_start();
 if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
-
-
     setcookie("login_usuario", $_SESSION["usuario"]);
     setcookie("login_password", base64_encode($_SESSION["password"]));
     if (isset($_SESSION["remember"])) {
@@ -203,7 +201,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     <div class="col-6 col-lg-4 d-flex align-items-center justify-content-center">
                         <div id="opciones" style="width: 18rem;" class=" d-flex align-items-center justify-content-center ">
                             <div class="row text-center mb-2 d-flex justify-content-center align-items-center">
-                                <div class="text-center col-12"> <label class="card-text mt-2 text-black ">EAD</label></div>
+                                <div class="text-center col-12"> <label class="card-text mt-2 text-black ">7.- EAD</label></div>
                                 <div @click="redireccionar(ead)" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer">
                                     <img src="img/ead.png" class="img-fluid" alt="..." style=" width: 60px;">
                                 </div>
@@ -215,13 +213,29 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                 <div class="col-6 col-lg-4 d-flex align-items-center justify-content-center">
                     <div id="opciones" style="width: 18rem;" class=" d-flex align-items-center justify-content-center">
                         <div class="row text-center mb-2 d-flex justify-content-center align-items-center">
-                            <div class="text-center col-12"> <label class="card-text mt-2 text-black ">Seguridad</label></div>
+                            <div class="text-center col-12"> <label class="card-text mt-2 text-black ">8.- Seguridad</label></div>
                             <div @click="redireccionar(sec)" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer">
                                 <img src="img/newLogoSyma.png" class="img-fluid" alt="..." style=" width: 60px;">
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- ////////////////////////////////////////////////////// -->
+                <?php if (isset($_SESSION['lider']) && $_SESSION['lider'] == "Si") { ?><!--Solo lideres-->
+                    <div class="col-6 col-lg-4 d-flex align-items-center justify-content-center">
+                        <div id="opciones" style="width: 18rem;" class=" d-flex align-items-center justify-content-center ">
+                            <div class="row text-center mb-2 d-flex justify-content-center align-items-center">
+                                <div class="text-center col-12"> <label class="card-text mt-2 text-black ">9.- Scorecard</label></div>
+                                <div @click="redireccionar(scd)" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer">
+                                    <img src="img/rendimiento.png" class="img-fluid" alt="..." style=" width: 60px;"><!-- CAMBIA IMAGEN BOLITA -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php } ?>
+                <!-- ////////////////////////////////////////////////////// -->
+
 
                 <div class="col-6 col-lg-4 d-flex align-items-center justify-content-center">
                     <div id="opciones" style="width: 18rem;" class=" d-flex align-items-center justify-content-center ">
@@ -257,6 +271,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     cam: '',
                     enc: '',
                     ead: '',
+                    scd: '',
                     sec: '',
                     sal: '',
                 }
@@ -281,6 +296,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                             window.location.href = "encuestaApp.php"
                         } else if (opciones == 'ead') {
                             window.location.href = "juntasArranque.php?id_equipo=<?php echo $_SESSION["id_ead"]; ?>";
+                        } else if (opciones == 'Scorecard') {
+                            window.location.href = "../EAD-System/panel.php";
                         } else if (opciones == 'seguridad') {
                             window.location.href = "seguridadColaborador.php"
                         } else if (opciones == 'Salir') {
@@ -303,6 +320,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                 this.cam = 'Cambiar Password',
                                 this.enc = 'Encuesta',
                                 this.ead = 'ead',
+                                this.scd = 'Scorecard',
                                 this.sec = 'seguridad',
                                 this.sal = 'Salir'
                         }
