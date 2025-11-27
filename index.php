@@ -61,11 +61,11 @@ session_start();
     <div id="app" class="container-fluid  " >
         <div class="div_susperior d-flex justify-content-around align-items-center " style="height:10vh">
             <div class=""><img class="img-fluid" src="img/logo_gonher.png"></img></div>
-            <div class=" titulo fs-2 lh-1 text-center mt-2 mt-sm-0">Sistema de Sugerencias de Mejora</div>
+            <div class=" titulo fs-2 lh-1 text-center mt-2  mt-sm-0"><label class="px-sm-5">Sistema de Sugerencias de Mejora<label></div>
             <div class=""><img class="img-fluid" style=" max-height: 80px;" src="img/opex.png" ></img></div>
         </div>
         <div class="row" style="height:80vh">
-            <div class="col-12 col-sm-6 d-flex align-items-center justify-content-center rounded-3 mt-2" style="background:#f5f5f5">
+            <div class="col-12 col-lg-6 d-flex align-items-center justify-content-center rounded-3 mt-2" style="background:#f5f5f5">
                 <form @submit.prevent="verificar" class="rounded-3 shadow"  style="background: rgb(181,0,0);">
                     <div class="row rounded-3  d-flex align-items-center m-1 " style="background:#f9f9f9">          
                         <div class="col-12 mt-5" style="color:#920f0f; font-weight:bold">
@@ -89,7 +89,7 @@ session_start();
                     </div> 
                 </form>
             </div>
-            <div class="col-12 col-sm-6 d-flex align-items-center justify-content-center">
+            <div class="col-12 col-lg-6 d-flex align-items-center justify-content-center">
                 <div class="row">
                     <div class="col-12">
                         <img class="img-fluid" src="img/img_index.png"></img>
