@@ -91,6 +91,68 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                 /*box-shadow: 0 0px 0px rgba(0, 133, 180, 1)inset, 0 0 4px rgba( 187, 16, 16, 1);*/
                 outline: 0 none;
             }
+            /* agregué */
+            .juntas-scroll {
+                max-height: 150px;   /* desktop */
+                overflow-y: auto;
+                cursor: default;
+            }
+            .alerta {
+                margin: 15px 0;
+                /*padding: 15px 20px;
+                border-radius: 5px;*/
+                font-weight: 600;
+                font-family: Arial, sans-serif;
+                color: #fff;
+               /*  max-width: 400px; */
+            }
+
+            .alerta-exito {
+                background-color: #4caf50; /* verde */
+                border: 1px solid #388e3c;s
+            }
+
+            .alerta-error {
+                background-color: rgba(255, 0, 0, 0.6); 
+                /*border: 1px solid #d32f2f; */
+            }
+
+            .junta-card {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+            }
+
+            /* Cada fila de texto */
+            .junta-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding-bottom: 4px;
+                border-bottom: 1px solid #e4e2e2ff;
+                font-size:0.90em;
+            }
+
+            /* Texto en negrita (inicio) */
+            .junta-row .label {
+                font-weight: bold;
+            }
+
+            /* Texto normal (final) */
+            .junta-row .value {
+                
+            }
+
+            /* Cámara centrada */
+            .junta-camera {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-top: 6px;
+                font-size: 1.2em;
+            }
+            /* agregué */
+            
         </style>
         <div id="app" class="container-fluid  "><!--BODY-->
             <!--BARRA SUPERIOR-->
@@ -109,7 +171,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
             </div>
             <!--CUERPO-->
             <div class="row cuerpo" style="min-height:80vh; font-size: 1em">
-                <div class="col-12 d-flex justify-content-center">
+                <div class="col-12 d-flex justify-content-center mt-1">
                     <div class="col-10 col-sm-8 col-lg-4 col-xl-3 text-center align-self-center rounded shadow" style=" background-color:#eaeaea;">
                         <div class="col-12 p-3 rounded-1" style=" background-color:#eaeaea"><b>Junta de Arraque</b></div>
                         <div class="col-12 d-flex">
@@ -179,6 +241,54 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                         </div>
                     </div>
                 </div>
+                <!--//////////////Historial/////////////// -->
+                <div class="col-12 d-flex justify-content-center mt-1">
+                    <div class="col-10 col-sm-8 col-lg-4 col-xl-3 text-center align-self-center rounded shadow align-items-center justify-content-center" style=" background-color:#eaeaea;">
+                        <div class="col h-25 p-3" style="font-size:0.8em">
+                            <div v-if="fechasRecientes.length" >
+                                <p v-if="existeJuntaYSinFoto === 'Sin Junta'" class="alerta alerta-error">
+                                    ⚠️ Hoy no se ha realizado la junta de arranque
+                                </p>
+                                <div class="card-header"> 
+                                    <b>Juntas recientes</b>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div class="juntas-scroll">
+                                        <div v-for="(junta, index) in fechasRecientes" :key="index" class="card mb-1 p-2 junta-card" style="background: WhiteSmoke">
+                                            <div class="junta-row">
+                                                <span class="label"><i class="bi bi-calendar-week"></i> Fecha</span><span class="value">{{ new Date(junta.hora_inicial).toISOString().slice(0,10) }}</span>
+                                            </div>
+                                            <div class="junta-row">
+                                                <span class="label"><i class="bi bi-people"></i> Asistencia</span><span class="value">{{ junta.asistencia }}</span>
+                                            </div>
+                                            <div class="junta-row">
+                                                <span class="label"><i class="bi bi-alarm"></i> Duración</span><span class="value">{{ junta.total_tiempo }}</span>
+                                            </div>
+                                            <div class="junta-camera">
+                                                <span title="Con foto" v-if="junta.fotografia === 'Si'">
+                                                    <i class="bi bi-camera-fill text-success"></i>
+                                                    <i class="bi bi-check-lg text-success"></i>
+                                                </span>
+                                                <span title="Sin foto" v-else>
+                                                    <i class="bi bi-camera-fill text-danger"></i>
+                                                    <i class="bi bi-x-lg text-danger"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="col-12 p-3 rounded-1" style=" background-color:#eaeaea"><b>Juntas recientes</b></div> -->
+                                    
+                            </div>
+                            <div v-else>
+                                <p>No hay juntas recientes</p>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                <!--/////////////Fin historial//////////////// -->
+                
 
                 <div class="col-12 col-lg-12 d-flex align-items-end justify-content-center">
                     <div id="opciones" style="width: 18rem;" class=" d-flex align-items-center justify-content-center my-2">
@@ -222,6 +332,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     movil:'',
                     existeJuntaYSinFoto:'Sin junta',
                     hoy:'',
+                    fechasRecientes: [], ////<<<<<<<<AGUREGUÉ
                 }
             },
             mounted() {
@@ -298,6 +409,11 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                             console.log(fechaItem + "==" + fecha_actual);
                             return fechaItem === fecha_actual;
                             });
+                            //agregue vvvvvv
+                            //this.fechasRecientes = this.juntas_arraque.slice(0, 5);
+                            this.fechasRecientes = this.juntas_arraque.filter((_, index) => index < 5);
+                            console.log("Recientes",this.fechasRecientes)
+                            //Agregue ^^^^^^
 
                             if (existeFecha==false) {
                                 this.existeJuntaYSinFoto = "Sin Junta";
@@ -454,7 +570,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                     this.temasCheck = []
                                     this.mostrar = true
                                     this.mensaje = 'Guardada con Éxito';
-                                    //this.consultarJuntasDeArranque()
+                                    this.consultarJuntasDeArranque()
                                     this.ejecutarCamaraMovil()
                                     /*setTimeout(() => {
                                         this.mostrar = false
