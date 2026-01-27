@@ -74,9 +74,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     <button class="opciones mx-lg-2 rounded-3 " @click="mostrar('principalMejora'),acomodarSugerencias()"  v-bind:class="{pintarUno}" >
                         Principal Mejora
                     </button> 
-                    <!--<button class="opciones mx-lg-2 rounded-3 " @click="mostrar('planesDeTrabajo')"  v-bind:class="{pintarDos}" >
+                    <!-- <button class="opciones mx-lg-2 rounded-3 " @click="mostrar('planesDeTrabajo')"  v-bind:class="{pintarDos}" >
                         Planes de Trabajo
-                    </button>  -->
+                    </button> --> 
                     <button class="opciones  mx-lg-2 rounded-3" @click="mostrar('concentrado'),consultado_concentrado()" v-bind:class="{pintarTres}">
                         Concentrado de sugerencias
                     </button>  

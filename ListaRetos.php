@@ -111,13 +111,13 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                                                         <tr class="table_encabezado align-middle" style="background:rgb(137, 0, 0); height:5px; color:white; font-size: 0.9em;">
                                                         <th scope="col" class="text-center">#</th>
                                                             <th scope="col" class="text-center">Folio</th>
-                                                            <th scope="col " class="text-center">Título de Reto</th>
+                                                            <th scope="col "class="text-center">Título de Reto</th>
                                                         </tr>
                                                     </thead>
                                                         <tbody>
                                                             <tr class=" align-middle  fw-normal " v-for="(retos, index) in concentrado_retos" :key="index">
-                                                                <td v-if="retos.planta_reto == planta">{{incrementar()}}</td>
-                                                                <td v-if="retos.planta_reto == planta"><label class="folio fst-italic text-primary" style="cursor:pointer" @click="consultar_reto(retos.folio_reto)"><b>{{retos.folio_reto}}</b></label></td>
+                                                                <td v-if="retos.planta_reto == planta" class="text-center">{{incrementar()}}</td>
+                                                                <td v-if="retos.planta_reto == planta" class="text-center"><label class="folio fst-italic text-primary" style="cursor:pointer" @click="consultar_reto(retos.folio_reto)"><b>{{retos.folio_reto}}</b></label></td>
                                                                 <td v-if="retos.planta_reto == planta">{{retos.titulo_reto}}</td>
                                                             </tr>
                                                         </tbody>
@@ -128,7 +128,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                             <div v-else>
                                     <div class="row justify-content-center">
                                         <div v-for="reto in reto_folio"class="row row-cols-1 text-center mt-3 justify-content-center">
-                                            
+                                                <div class="col-10 col-sm-8 col-lg-6  col-xl-4" style=" background-color:#eaeaea"><b>Reto</b></div>
+                                                <div class="col">{{reto.titulo_reto}}</div>
                                                 <div class="col-10 col-sm-8 col-lg-6  col-xl-4" style=" background-color:#eaeaea"><b>Folio</b></div>
                                                 <div class="col">{{reto.folio_reto}}</div>
                                                 <div class="col-10 col-sm-8 col-lg-6  col-xl-4" style=" background-color:#eaeaea"><b>Responsable</b></div>
