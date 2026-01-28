@@ -236,6 +236,16 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                 <?php } ?>
                 <!-- ////////////////////////////////////////////////////// -->
 
+                <!-- <div class="col-6 col-lg-4 d-flex align-items-center justify-content-center">
+                    <div id="opciones" style="width: 18rem;" class=" d-flex align-items-center justify-content-center">
+                        <div class="row text-center mb-2 d-flex justify-content-center align-items-center">
+                            <div class="text-center col-12"> <label class="card-text mt-2 text-black ">10.- Mi ubicación</label></div>
+                            <div @click="redireccionar(ubi)" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer">
+                                <img src="img/ubicacion.png" class="img-fluid" alt="..." style=" width: 60px;">
+                            </div>
+                        </div>
+                    </div>
+                </div> --> <!-- BOLITA UBICACIÓN -->
 
                 <div class="col-6 col-lg-4 d-flex align-items-center justify-content-center">
                     <div id="opciones" style="width: 18rem;" class=" d-flex align-items-center justify-content-center ">
@@ -273,6 +283,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     ead: '',
                     scd: '',
                     sec: '',
+                    ubi: '',
                     sal: '',
                 }
             },
@@ -300,7 +311,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                             window.location.href = "../EAD-System/panel.php";
                         } else if (opciones == 'seguridad') {
                             window.location.href = "seguridadColaborador.php"
-                        } else if (opciones == 'Salir') {
+                        }  else if (opciones == 'ubicacion') {
+                            window.location.href = "ubicacionColaborador.php"
+                        }else if (opciones == 'Salir') {
                             window.location.href = "index.php"
                         }
                     }
@@ -322,6 +335,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                 this.ead = 'ead',
                                 this.scd = 'Scorecard',
                                 this.sec = 'seguridad',
+                                this.ubi = 'ubicacion',
                                 this.sal = 'Salir'
                         }
                     })
