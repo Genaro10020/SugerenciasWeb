@@ -236,7 +236,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                 <?php } ?>
                 <!-- ////////////////////////////////////////////////////// -->
 
-                <!-- <div class="col-6 col-lg-4 d-flex align-items-center justify-content-center">
+                <div class="col-6 col-lg-4 d-flex align-items-center justify-content-center">
                     <div id="opciones" style="width: 18rem;" class=" d-flex align-items-center justify-content-center">
                         <div class="row text-center mb-2 d-flex justify-content-center align-items-center">
                             <div class="text-center col-12"> <label class="card-text mt-2 text-black ">10.- Mi ubicación</label></div>
@@ -245,7 +245,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                             </div>
                         </div>
                     </div>
-                </div> --> <!-- BOLITA UBICACIÓN -->
+                </div> 
 
                 <div class="col-6 col-lg-4 d-flex align-items-center justify-content-center">
                     <div id="opciones" style="width: 18rem;" class=" d-flex align-items-center justify-content-center ">

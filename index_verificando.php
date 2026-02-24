@@ -13,7 +13,7 @@ if($remember==1 || $remember=="true"){
     $remember="false";
 }
 
-    $consulta = "SELECT * FROM usuarios_sugerencias WHERE user='$user' AND password='$pass'";
+    $consulta = "SELECT * FROM usuarios_sugerencias WHERE user='$user' AND password='$pass'";//Usuarios Analistas
     $resultado = mysqli_query($conexion,$consulta);
     if (mysqli_num_rows($resultado)>0)
     {
@@ -33,17 +33,19 @@ if($remember==1 || $remember=="true"){
         
         echo $tipo;
     }else{
-        $consulta = "SELECT * FROM usuarios_colocaboradores_sugerencias WHERE numero_nomina='$user' AND password='$pass' AND status != 'Baja' ";
+        $consulta = "SELECT * FROM usuarios_colocaboradores_sugerencias WHERE numero_nomina='$user' AND password='$pass' AND status != 'Baja' ";//Usuarios Colaboradores
         $resultado = mysqli_query($conexion,$consulta);
         if (mysqli_num_rows($resultado)>0)
         {
             while ($row = mysqli_fetch_array($resultado)){
+                $id = $row['id'];
                 $tipo = "Colaborador";
                 $nombre = $row['colaborador'];
                 $planta = $row['planta'];
                 $id_equipo = $row['equipo_ead'];
                 $lider = $row['lider_ead'];
             }
+            $_SESSION["id"] = $id;//id
             $_SESSION["usuario"] = $user;//nomina
             $_SESSION["tipo"] = $tipo;//tipo
              $_SESSION["tipo_acceso"] = "ColaboradorLider";//tipo

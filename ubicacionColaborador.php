@@ -31,6 +31,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
     <link rel="stylesheet" type="text/css"  href="estilos/miestilo.css">
     <!--Iconos boostrap-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+      <!-- Google Maps -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKsYbP446ry3WxVoBLRrnApgMUetyCSrs&libraries=places"></script>
     <title>Sugerencias</title>
 </head>
     <body>
@@ -113,135 +115,244 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                         </div>
                     </div>
                     <!--CUERPO-->
-                    <!-- <div class="row justify-content-center" style="min-height:80vh">
-                                <div v-if="seguimiento==false">
-                                        <div class="div-scroll-vertial"> --><!--scroll-->
-                                            <!-- <table class="table table-striped mt-3" style=" font-size: 0.8em;">
-                                                <thead>
-                                                    <tr style="background:rgb(137, 0, 0); height:5px; color:white; font-size: 1em;">
-                                                        <th scope="col">#</th>
-                                                        <th scope="col">Folio</th>
-                                                        <th scope="col">Descripción</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr v-for="(concentrado, index) in concentrado_sugerencias">
-                                                        <td>{{index+1}}</td>
-                                                        <td><label class="folio fst-italic" @click="consultar_sugerencia(concentrado.folio)"><b>{{concentrado.folio}}</b></label></td>
-                                                        <td>{{concentrado.nombre_sugerencia}}</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div> --><!--scroll 
-                                </div>   --> 
-                                <!--Seguimiento-->
-                                <!--  <div v-else class="d-flex align-items-center justify-content-center ">
-                                        <div class="div-scroll-vertial col-12 col-lg-10 col-xl-8">-scroll-->
-                                               <!--  <div class=" d-flex flex-column mb-3 mt-3 text-center " style="font-size:0.8em;">
-                                                    <div class="col-12 col-lg-12  p-2 fw-bold" style=" background:#efefef">Folio</div>
-                                                    <div class="col-12 col-lg-12" >{{sugerencia[0].folio}}</div>
-                                                    <div class="col-12 col-lg-12  p-2 fw-bold" style=" background:#efefef">Descripción</div>
-                                                    <div class="col-12 col-lg-12 mb-1"  style=" line-height:15px;" >{{sugerencia[0].nombre_sugerencia}}</div>
-                                                    <div class="col-12 col-lg-12  p-2 fw-bold" style=" background:#efefef">Analista de Factibilidad</div>
-                                                    <div class="col-12 col-lg-12  mb-1"  >{{sugerencia[0].analista_de_factibilidad}}</div>
-                                                    <div class="col-12 col-lg-12  p-2 fw-bold" style=" background:#053b78; color:white">Seguimiento</div>
-                                                            <div v-if="sugerencia[0].status =='Cerrada/Fast Response' || sugerencia[0].status =='Cerrada/No Factible'">
-                                                                    <div class="col-12 col-lg-12  p-2 bg-danger fw-bold" style="color:white">{{sugerencia[0].status}}</div>
-                                                                    <div class="col-12 col-lg-12  mt-2 fw-bold">Causa de No Factibilidad:</div>
-                                                                    <div class="col-12 col-lg-12  p-1 ">
-                                                                            <textarea   style="height: 100px;  width: 100%; font-size: 0.8em; line-height:15px" disabled>{{sugerencia[0].causa_no_factibilidad}}</textarea>
-                                                                    </div>
-                                                            </div>
-                                                            <div v-else>
-                                                                    <div class=" d-flex justify-content-center mt-1 ">
-                                                                        <div class="col-4 col-sm-4 col-lg-1  d-flex justify-content-center">
-                                                                            <div class="rounded-pill  d-flex align-items-center justify-content-center" style=" height:50px; width: 50px; background: linear-gradient(to bottom, #b5bdc8 0%,#828c95 36%,#28343b 100%);">
-                                                                                <img v-if="sugerencia[0].status=='En Factibilidad' || sugerencia[0].status=='En Implementación' || sugerencia[0].status=='Implementada' || mes1!=''" src="img/app_listo.png" style=" height:50px; width:50px"> </img>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-8 col-sm-8 col-lg-3  mt-1 d-flex">
-                                                                            <input v-if="sugerencia[0].status=='En Factibilidad' || sugerencia[0].status=='En Implementación' || sugerencia[0].status=='Implementada' || mes1!='' || puntos_sugerencia>0" type="text" class="form-control me-1" value="En Factibilidad" disabled></input>
-                                                                            <input v-else type="text" class="form-control me-1" value="En Implementación"  disabled></input>
-                                                                        </div>
-                                                                    </div>
+                   <div class=" d-flex flex-column justify-content-center py-4" style="min-height:80vh">
+
+                     <!-- BUSCADOR DE DIRECCIÓN -->
+               <div class="row justify-content-center">
+                                            
+                    <div class="col-12">
+                        <div class="alert alert-primary ">
+                            <label for="autocomplete" class="form-label fw-semibold my-0" style="font-size: 13px;">
+                                🔎 Buscar dirección:
+                            </label>
+                            <input 
+                            style="font-size: 11px;"
+                                type="text" 
+                                id="autocomplete" 
+                                :disabled="bloquear"
+                                class="form-control shadow-sm fw-normal "
+                                placeholder="Coloque su direccion numero de calle, colonia, ciudad, estado o código postal">
+
+                                          
+                        </div>
+                         <div class="col-12 d-flex flex-column align-items-center justify-content-center">
+                                        <span class="alert alert-success fw-bold text-dark m-0" style="font-size: 13px;">
+                                            <label class="text-dark">Vivo en</label> 🏡: {{ direccionCompleta }}
+                                        </span>
+                                        <span  v-if="bloquear==true"class="alert alert-warning fw-normal font-monospace p-1 m-0" style="font-size: 10px;">
+                                            Puedes editar tu dirección en "Editar mi ubicación"
+                                        </span>
+                                         <span  v-else class="alert alert-warning fw-normal font-monospace p-1 m-0" style="font-size: 10px;">
+                                           Si no has guardado esta ubicación y aquí vives presiona "Guardar mi ubicación"
+                                        </span>
+                                    </div>
+                        <div class="d-flex flex-column">
+                        <label class="text-dark mb-2" style="font-size: 11px;">Puedo buscar mi dirección, tengo tres opciones:</label>
+                        <label class="text-secondary" style="font-size: 11px;">Opción 1: Al buscar una dirección, arrastrar el marcador para ajustar la ubicación exacta.</label>
+                        <label class="text-secondary" style="font-size: 11px;">Opción 2: Colocar la dirección manualmente en el buscador.</label>
+                        <label class="text-secondary" style="font-size: 11px;">Opción 3: Colocar la dirección solicitada en el formulario y presionar "buscar ubicación del formulario."</label>
+                    </div>
+                        </div>
+                       
+                </div>
+                        
+                            <!-- MAPA -->
+                <div class="row justify-content-center mb-4">
+                    <div class="col-12 col-lg-10">
+                        <div class="card shadow-sm">
+                            <div class="card-body p-2">
+                                <div id="map" class="w-100 rounded" style="height:500px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                    <!-- COORDENADAS -->
+                    <div class="row justify-content-center">
+
+                        
+
+                        <div class="col-12 col-md-8 col-lg-6">
+                            <div class="card shadow-sm">
+                                <div class="card-body">
+                                    <div class="row g-3">
+                                       
 
 
-                                                                    <div class=" d-flex justify-content-center mt-1">
-                                                                        <div class="col-4 col-sm-4 col-lg-1  d-flex justify-content-center">
-                                                                            <div class="rounded-pill bg-secondary d-flex align-items-center justify-content-center" style=" height:50px; width: 50px;  background: linear-gradient(to bottom, #b5bdc8 0%,#828c95 36%,#28343b 100%);">
-                                                                                <img v-show="sugerencia[0].validacion_de_impacto!=''" src="img/app_listo.png" style=" height:50px; width:50px"> </img> 
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-8 col-sm-8 col-lg-3  d-flex">
-                                                                            <input  type="text" class="form-control me-1" value="Validación de Impacto" disabled>
-                                                                        </div>
-                                                                    </div>
+                                            <form @submit.prevent="guardarUbicacion" class="row" >
 
+                                             <button type="button"
+                                                    v-show="bloquear"
+                                                    class="btn btn-warning"
+                                                    @click="editarUbicacion">
+                                                    ✏ Editar mi ubicación
+                                                    </button>
 
-                                                                    <div class=" d-flex justify-content-center mt-1 ">
-                                                                        <div class="col-4 col-sm-4 col-lg-1  d-flex justify-content-center">
-                                                                            <div  class="rounded-pill bg-secondary d-flex align-items-center justify-content-center" style=" height:50px; width: 50px;  background: linear-gradient(to bottom, #b5bdc8 0%,#828c95 36%,#28343b 100%);">
-                                                                                <img v-show="sugerencia[0].status=='En Implementación' || sugerencia[0].status=='Implementada' || mes1!=''" src="img/app_listo.png" style=" height:50px; width:50px"> </img> 
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-8 col-sm-8 col-lg-3  d-flex">
-                                                                            <input v-if="sugerencia[0].status=='En Implementación' || sugerencia[0].status=='Implementada' || mes1!=''|| puntos_sugerencia>0" type="text" class="form-control me-1" value="En Implementación" disabled>
-                                                                            <input v-else type="text" class="form-control me-1" value="En Implementación"  disabled></input>
-                                                                        </div>
-                                                                    </div>
-
-                                                                     <div class=" d-flex justify-content-center mt-1  ">
-                                                                        <div class="col-4 col-sm-4 col-lg-1  d-flex justify-content-center">
-                                                                            <div class="rounded-pill bg-secondary d-flex align-items-center justify-content-center" style=" height:50px; width: 50px;  background: linear-gradient(to bottom, #b5bdc8 0%,#828c95 36%,#28343b 100%);">
-                                                                                    <img v-show="sugerencia[0].status=='Implementada' || mes1!=''" src="img/app_listo.png" style=" height:50px; width:50px"> </img> 
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-8 col-sm-8 col-lg-3  d-flex">
-                                                                            <input v-if="sugerencia[0].status=='Implementada' || mes1!='' || puntos_sugerencia>0 " type="text" class="form-control me-1" value="Implementada" disabled>
-                                                                            <input v-else type="text" class="form-control me-1" value="Implementada"  disabled></input>
-                                                                        </div>
-                                                                    </div>
-
-                                                                   
-                                                                    <div class=" d-flex justify-content-center mt-1">
-                                                                        <div class="col-4 col-sm-4 col-lg-1  d-flex justify-content-center">
-                                                                            <div class="rounded-pill bg-secondary d-flex align-items-center justify-content-center" style=" height:50px; width: 50px;  background: linear-gradient(to bottom, #b5bdc8 0%,#828c95 36%,#28343b 100%);">
-                                                                                <img v-show="sugerencia[0].status=='Implementada' && puntos_sugerencia>0" src="img/app_listo.png" style=" height:50px; width:50px"> </img> 
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-8 col-sm-8 col-lg-3  d-flex">
-                                                                            <input v-if="puntos_sugerencia>0" type="text" class="form-control me-1" value="Asignación de Punto" disabled>
-                                                                            <input v-else type="text" class="form-control me-1" value="Asignación de Punto"  disabled></input>
-                                                                        </div>
-                                                                    </div>
-                                                                    
-                                                                    <div class=" d-flex justify-content-center mt-1 text-white">
-                                                                        <div class="col-6 col-sm-6 col-lg-2  d-flex justify-content-center p-3" style=" background:#053b78; color:white"> 
-                                                                            <b>Status:</b>
-                                                                        </div>
-                                                                        <div class="col-6 col-sm-6 col-lg-2  d-flex justify-content-center bg-primary p-3">
-                                                                            Status
-                                                                        </div>
-                                                                    </div> 
-                                                            </div> -->
-                                                
-                                                    <!-- <div class="col-12 offset-lg-5 col-lg-2  mt-2 fw-bold">Puntos Asignados</div>
-                                                    <div class="col-12 offset-lg-5 col-lg-2  "><input type="text" class="form-control text-center fw-bold"  :value="puntos_sugerencia" disabled ></div>      
-                                                </div>
-                                        </div>
-                                 </div>    -->
-                                 <div class="col-12 col-lg-12 d-flex align-items-end justify-content-center" >
-                                                    <div id="opciones" style="width: 18rem;" class=" d-flex align-items-center justify-content-center " >
-                                                        <div class="row text-center mb-2 d-flex justify-content-center align-items-center">
-                                                                <div v-if="seguimiento==false" @click="redireccionar('Atras')" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer"> 
-                                                                    <div> <img src="img/app_atras.png" class="img-fluid" alt="..." style=" width: 50px;" ></div>
-                                                                </div>   
-                                                                <div v-else @click="seguimiento=false" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer"> 
-                                                                    <div> <img src="img/app_atras.png" class="img-fluid" alt="..." style=" width: 50px;" ></div>
-                                                                </div>        
-                                                        </div>
+                                                    <button type="button"
+                                                            v-show="!bloquear"
+                                                            class="btn btn-danger "
+                                                            @click="cancelarUbicacion">
+                                                            ❌ Cancelar
+                                                    </button>
+                                              
+                                          
+                                                      
+                                                    <div class="col-md-6" style="font-size: 12px;">
+                                                        <label :class="turno !== '' ? 'text-success fw-bold' : 'text-dark '">Turno</label>
+                                                        <select
+                                                            style="font-size: 12px;"
+                                                            class="form-control shadow-sm rounded-3" 
+                                                            :class="{'border-primary border-2': turno}"
+                                                            v-model="turno"
+                                                            required
+                                                            :disabled="bloquear">
+                                                            <option disabled value="">Seleccione un turno</option>
+                                                            <option value="Turno Fijo (8 a.m. a 6 p.m.)">Turno Fijo (8 a.m. a 6 p.m.)</option>
+                                                            <option value="Turno Rotativo (12 Hrs)">Turno Rotativo (12 Hrs)</option>
+                                                            <option value="Turno Rotativo (8 Hrs)">Turno Rotativo (8 Hrs)</option>
+                                                        </select>
                                                     </div>
-                                        </div> 
+
+                                                    <div class="col-md-6" style="font-size: 12px;">
+                                                         <label :class="utilizacion !== '' ? 'text-success fw-bold' : 'text-dark '">Utilización</label>
+                                                        <select
+                                                            style="font-size: 12px;"
+                                                            class="form-control shadow-sm rounded-3" 
+                                                            :class="{'border-primary border-2': utilizacion}"
+                                                            v-model="utilizacion"
+                                                            required
+                                                            :disabled="bloquear">
+                                                            <option disabled value="">¿Usas en transporte?</option>
+                                                            <option value="si">Sí</option>
+                                                            <option value="no">No</option>
+                                                            <option value="a veces">A veces</option>
+                                                        </select>
+                                                    </div>
+                                                            
+                                                                                                    
+                                                    <div class="col-md-6" style="font-size: 12px;">
+                                                        <label :class="lat !== '' ? 'text-success fw-bold' : 'text-dark '">
+                                                            Latitud
+                                                        </label>
+                                                        <input type="text" style="font-size: 12px;"
+                                                            class="form-control" 
+                                                            :class="{'border-primary border-2': lat}"
+                                                            v-model="lat"
+                                                            disabled
+                                                            >
+                                                    </div>
+
+                                                    <div class="col-md-6" style="font-size: 12px;">
+                                                        <label :class="lng !== '' ? 'text-success fw-bold' : 'text-dark '">
+                                                            Longitud
+                                                        </label>
+                                                        <input type="text" style="font-size: 12px;"
+                                                            class="form-control " 
+                                                            :class="{'border-primary border-2': lng}"
+                                                            v-model="lng"
+                                                            disabled
+                                                            >
+                                                    </div>
+
+                                                    <div class="col-md-6" style="font-size: 12px;">
+                                                        <label :class="estado !== '' ? 'text-success fw-bold' : 'text-dark '">Estado</label>
+                                                        <input type="text" style="font-size: 12px;"
+                                                            class="form-control shadow-sm rounded-3"
+                                                            :class="{'border-primary border-2': estado}" 
+                                                            v-model="estado"
+                                                            :disabled="bloquear"
+                                                            required
+                                                            >
+                                                    </div>
+
+                                                    <div class="col-md-6" style="font-size: 12px;">
+                                                       <label :class="ciudad !== '' ? 'text-success fw-bold' : 'text-dark '">Ciudad</label>
+                                                        <input type="text" style="font-size: 12px;"
+                                                            class="form-control shadow-sm rounded-3" 
+                                                            :class="{'border-primary border-2': ciudad}"
+                                                            v-model="ciudad"
+                                                            :disabled="bloquear"
+                                                            required
+                                                            >
+                                                    </div>
+
+                                                    <div class="col-md-6" style="font-size: 12px;">
+                                                       <label :class="colonia !== '' ? 'text-success fw-bold' : 'text-dark '">Colonia</label>
+                                                        <input type="text" style="font-size: 12px;"
+                                                            class="form-control shadow-sm rounded-3" 
+                                                            :class="{'border-primary border-2': colonia}"
+                                                            v-model="colonia"
+                                                            :disabled="bloquear"
+                                                            >
+                                                    </div>
+
+                                                    <div class="col-md-6" style="font-size: 12px;">
+                                                        <label :class="calle !== '' ? 'text-success fw-bold' : 'text-dark '">Calle</label>
+                                                        <input type="text" style="font-size: 12px;"
+                                                            class="form-control shadow-sm rounded-3" 
+                                                            :class="{'border-primary border-2': calle}"
+                                                            v-model="calle"
+                                                            :disabled="bloquear"
+                                                            >
+                                                    </div>
+
+                                                    <div class="col-md-6" style="font-size: 12px;">
+                                                        <label :class="numero !== '' ? 'text-success fw-bold' : 'text-dark '">Número</label>
+                                                        <input type="text" style="font-size: 12px;"
+                                                            class="form-control shadow-sm rounded-3" 
+                                                            :class="{'border-primary border-2': numero}"
+                                                            v-model="numero"
+                                                            :disabled="bloquear"
+                                                            >
+                                                    </div>
+
+                                                    <div class="col-md-6" style="font-size: 12px;">
+                                                        <label :class="cp !== '' ? 'text-success fw-bold' : 'text-dark '">Código Postal</label>
+                                                        <input type="text" style="font-size: 12px;"
+                                                            class="form-control shadow-sm rounded-3" 
+                                                            :class="{'border-primary border-2': cp}"
+                                                            v-model="cp"
+                                                            :disabled="bloquear"
+                                                            >
+                                                    </div>
+
+                                                     
+                                                     <div class="d-flex justify-content-center gap-2 mt-4 flex-wrap">
+
+                                                      <button type="submit"
+                                                            v-show="!bloquear"
+                                                            class="btn btn-success my-2">
+                                                        💾 Guardar mi ubicación
+                                                    </button>
+
+                                                    <button type="button"
+                                                                v-show="!bloquear"
+                                                                class="btn btn-primary my-2"
+                                                                @click="buscarDireccion" >
+                                                            🔎 Buscar ubicación del formulario
+                                                     </button>
+                                                    </div>   
+
+                                    </form>
+                        
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        
+                    </div>  
+                    <div class="col-12 col-lg-12 d-flex align-items-end justify-content-center" >
+                                    <div id="opciones" style="width: 18rem;" class=" d-flex align-items-center justify-content-center " >
+                                        <div class="row text-center mb-2 d-flex justify-content-center align-items-center">
+                                                <div v-if="seguimiento==false" @click="redireccionar('Atras')" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer"> 
+                                                    <div> <img src="img/app_atras.png" class="img-fluid" alt="..." style=" width: 50px;" ></div>
+                                                </div>   
+                                                <div v-else @click="seguimiento=false" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer"> 
+                                                    <div> <img src="img/app_atras.png" class="img-fluid" alt="..." style=" width: 50px;" ></div>
+                                                </div>        
+                                        </div>
+                                    </div>
+                    </div> 
                     </div><!--FIN CUERPO-->
                             <!--FOOTER-->
                     <div class="row" style="height:10vh; background-color: rgba(181,0,0,1); box-shadow: 0px 0px 12px -2px black;">
@@ -250,57 +361,298 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
 </body>
 
 <script>
-    const vue3 = 
-    {
-        data(){
-            return {
-                concentrado_sugerencias:[],
-                concentrado_impacto_sugerencias:[],
-                seguimiento:false,
-                sugerencia:[],
-                puntos_sugerencia:0,
-                mes1:'',
-            }
-        },
-        mounted(){
-            this.concentrado_sugerencias_colaborador()
-            
-        },
-        methods:{
-            concentrado_sugerencias_colaborador(){
-                axios.post('consulta_concentrado_sugerencias_colaborador.php',{
-                            }).then(response =>{
-                                this.concentrado_sugerencias = response.data
-                            })
+   const vue3 = 
+                {
+                    data(){
+                        return {
+                            turno: '',
+                            utilizacion:'',
+                            lat: 25.704569879880868,
+                            lng: -100.52591986340332,
+                            estado: '',
+                            ciudad: '',
+                            colonia: '',
+                            calle: '',
+                            numero: '',
+                            cp: '',
+                            map: null,
+                            marker: null,
+                            bloquear: false,
+                            seguimiento: false,
+                            locationButton: null, 
+                        }
+                    },
+                    mounted(){
+                        this.requestMylocation();
+                    },
+                    computed: {
+                    direccionCompleta() {
+                        return [
+                            this.calle,
+                            this.numero,
+                            this.colonia,
+                            this.ciudad,
+                            this.estado,
+                            this.cp
+                        ]
+                        .filter(valor => valor && valor.trim() !== "")
+                        .join(", ");
+                    }
+                },
+                methods:{
+          editarUbicacion() {
+                this.bloquear = false;
+
+                if (this.marker) {
+                    this.marker.setDraggable(true);
+                }
+
+                // Mostrar u ocultar botón según bloquear
+                if (this.locationButton) {
+                    this.locationButton.style.display = this.bloquear ? "none" : "inline-block";
+                }
             },
-            concentrado_impacto_id(id){
-                axios.post('consulta_concentrado_impacto_id.php',{
-                            id_concentrado:id
-                            }).then(response =>{
-                                this.concentrado_impacto_sugerencias = response.data
-                                console.log(this.concentrado_impacto_sugerencias,'FATOS')
-                                if(this.concentrado_impacto_sugerencias[0]!=null ||  this.concentrado_impacto_sugerencias[0]!=undefined){
-                                    this.mes1 = this.concentrado_impacto_sugerencias[0].mes1
-                                }
-                                
-                            })
+            cancelarUbicacion() {
+                    this.bloquear = true;
+
+                    if (this.marker) {
+                        this.marker.setDraggable(false);
+                    }
+
+                    // Mostrar u ocultar botón según bloquear
+                    if (this.locationButton) {
+                        this.locationButton.style.display = this.bloquear ? "none" : "inline-block";
+                    }
+                    this.requestMylocation();
+                },
+              requestMylocation() {
+                        axios.get('consultar_mi_ubicacion.php')
+                    .then(response => {
+                        if (response.data.success === true) {
+                            // Si hay coordenadas guardadas
+                            console.log("UBICACIÓN ENCONTRADA:", response.data);
+                            this.lat = parseFloat(response.data.resultado['latitude']);
+                            this.lng = parseFloat(response.data.resultado['longitude']);
+                            this.calle = response.data.resultado['street'];
+                            this.numero = response.data.resultado['number'];
+                            this.turno = response.data.resultado['work_shift'];
+                            this.utilizacion = response.data.resultado['utilization'];
+                            this.bloquear = true;
+                        } 
+                        // Inicializar el mapa con las coordenadas actuales (guardadas o default)
+                            this.initMap(this.lat, this.lng);
+                            
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        // En caso de error también usamos coordenadas por default
+                        this.initMap(this.lat, this.lng);
+                    });
             },
-            consultar_sugerencia(folio){
-                axios.post('consulta_concentrado_sugerencias_colaborador.php',{
-                    folio_sugerencia: folio
-                            }).then(response =>{
-                                this.sugerencia = response.data
-                                if(this.sugerencia.length > 0){
-                                    this.seguimiento=true
-                                    this.consultadoPuntosSugerencia(this.sugerencia[0].id)
-                                    console.log(this.sugerencia[0].id,'puntooos')
-                                    this.concentrado_impacto_id(this.sugerencia[0].id)
-                                    
-                                }else{
-                                    alert("No logramos localizar ese folio, póngase en contacto con Mejora Continua")
-                                }
-                                
-                            })
+            async guardarUbicacion() {
+                // Crear el objeto con los datos
+                const payload = {
+                    turno: this.turno,
+                    utilizacion:this.utilizacion,
+                    latitud: this.lat,
+                    calle:this.calle,
+                    numero:this.numero,
+                    longitud: this.lng,
+                };
+                try {
+                    // Enviar POST al servidor
+                    const response = await axios.post('guardar_actualizar_mi_ubicacion.php', payload);
+                    // Manejar la respuesta
+                    console.log("RESPUESTA INSERCION",response.data);
+                    if (response.data.success === true) {
+                        alert('Ubicación guardada correctamente ✅');
+                        this.bloquear = true;
+                            if (this.marker) {
+                                this.marker.setDraggable(false);
+                            }
+                    } else {
+                        alert('Error al guardar la ubicación ❌');
+                    }
+                } catch (error) {
+                    console.error(error);
+                        alert('Ocurrió un error al guardar la ubicación ❌');
+                }
+            },
+            initMap(latitud,longitud){
+                const ubicacionInicial = { lat: latitud, lng:  longitud};
+
+                this.map = new google.maps.Map(document.getElementById("map"), {
+                    zoom: 15,
+                    center: ubicacionInicial
+                });
+
+                this.marker = new google.maps.Marker({
+                    position: ubicacionInicial,
+                    map: this.map,
+                    draggable: !this.bloquear,
+                    icon: { url: "img/ubicacion.png", scaledSize: new google.maps.Size(27, 27) }
+                });
+
+                this.lat = ubicacionInicial.lat;
+                this.lng = ubicacionInicial.lng;
+
+                //Si no hay dirección, obtener dirección al cargar el mapa
+
+                    this.obtenerDireccion(this.lat, this.lng);
+                
+               
+
+                // AUTOCOMPLETE
+                const input = document.getElementById("autocomplete");
+                const autocomplete = new google.maps.places.Autocomplete(input);
+
+                autocomplete.bindTo("bounds", this.map);
+
+                autocomplete.addListener("place_changed", () => {
+
+                    const place = autocomplete.getPlace();
+                    if (!place.geometry) return;
+
+                    const location = place.geometry.location;
+
+                    this.map.setCenter(location);
+                    this.map.setZoom(17);
+                    this.marker.setPosition(location);
+
+                    this.lat = location.lat();
+                    this.lng = location.lng();
+
+                    this.obtenerDireccion(this.lat, this.lng);
+                });
+
+                // Cuando se arrastra el marcador
+                this.marker.addListener("dragend", (event) => {
+
+                    this.lat = event.latLng.lat();
+                    this.lng = event.latLng.lng();
+
+                    this.obtenerDireccion(this.lat, this.lng);
+                });
+
+               // En initMap
+                this.locationButton = document.createElement("button");
+                this.locationButton.innerHTML = "📌 Localízame";
+                this.locationButton.classList.add("btn","btn-sm","btn-warning");
+                this.locationButton.style.marginBottom = "30px";
+                // Mostrar u ocultar según bloquear
+                this.locationButton.style.display = this.bloquear ? "none" : "inline-block";
+
+                // Agregar al DOM
+                document.body.appendChild(this.locationButton);
+
+                this.map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(this.locationButton);
+
+                this.locationButton.addEventListener("click", () => {
+
+                    if (!navigator.geolocation) {
+                        alert("Tu navegador no soporta geolocalización");
+                        return;
+                    }
+
+                    this.locationButton.innerHTML = "⏳ Obteniendo ubicación...";
+
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+
+                            const pos = {
+                                lat: position.coords.latitude,
+                                lng: position.coords.longitude,
+                            };
+
+                            this.map.setCenter(pos);
+                            this.map.setZoom(17);
+                        if (!this.bloquear) this.marker.setPosition(pos); // solo mover si desbloqueado
+
+                            this.lat = pos.lat;
+                            this.lng = pos.lng;
+
+                            this.obtenerDireccion(this.lat, this.lng);
+
+                            this.locationButton.innerHTML = "🏡 Ubicación actualizada";
+                            this.locationButton.classList.remove("btn-warning");
+                            this.locationButton.classList.add("btn-primary");
+
+                        },
+                        () => {
+                            alert("Error al obtener ubicación");
+                            this.locationButton.innerHTML = "📌 Localízame";
+                            this.locationButton.classList.remove("btn-primary");
+                            this.locationButton.classList.add("btn-warning");
+                        },
+                        {
+                            enableHighAccuracy: true,
+                            maximumAge: 0,
+                            timeout: 5000
+                        }
+                    );
+
+                });
+
+            },
+        obtenerDireccion(lat, lng) {
+                console.log("Obteniendo dirección para:", lat, lng);
+                const geocoder = new google.maps.Geocoder();
+
+                const latlng = {
+                    lat: parseFloat(lat),
+                    lng: parseFloat(lng)
+                };
+
+                geocoder.geocode({ location: latlng }, (results, status) => {
+
+                    if (status === "OK" && results[0]) {
+                        const components = results[0].address_components;
+                        const getComponent = (type) => {
+                            const comp = components.find(c => c.types.includes(type));
+                            return comp ? comp.long_name : "";
+                        };
+
+                        this.estado  = getComponent("administrative_area_level_1");
+                        this.ciudad  = getComponent("locality");
+                        this.colonia = getComponent("sublocality") || getComponent("neighborhood");
+                        if(this.bloquear==false){
+                                this.calle   = getComponent("route");
+                                this.numero  = getComponent("street_number");
+                        }
+                        this.cp      = getComponent("postal_code");
+
+                    }
+
+                });
+            },
+            buscarDireccion() {
+                const geocoder = new google.maps.Geocoder();
+                // Construimos la dirección desde el formulario
+                const direccion = `
+                    ${this.calle} ${this.numero},
+                    ${this.colonia},
+                    ${this.ciudad},
+                    ${this.estado},
+                    ${this.cp}
+                `;
+
+                geocoder.geocode({ address: direccion }, (results, status) => {
+
+                    if (status === "OK" && results[0]) {
+                        const location = results[0].geometry.location;
+
+                        this.lat = location.lat();
+                        this.lng = location.lng();
+
+                        this.map.setCenter(location);
+                        this.map.setZoom(17);
+                        this.marker.setPosition(location);
+
+                    } else {
+                        alert("No se encontró la dirección");
+                    }
+
+                });
             },
             redireccionar(opciones){
                 if(opciones=='Sugerencias'){
@@ -311,17 +663,6 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                 }
                
             },
-            consultadoPuntosSugerencia(id_concentrado){
-                axios.post('consultar_puntos_sugerencia.php',{
-                        id_concentrado:id_concentrado
-                            }).then(response =>{
-                                this.puntos_sugerencia = response.data
-                                
-                            console.log('los puntos son: ', response.data)
-                                console.log(this.puntos_sugerencia)
-                            })
-
-            }
         }
     }
     var mountedApp = Vue.createApp(vue3).mount('#app');
