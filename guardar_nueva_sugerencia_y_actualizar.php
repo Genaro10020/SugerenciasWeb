@@ -38,6 +38,9 @@ $creado_por_o_modificado_por=$variables['usuario'];
 $fecha_limite= date("Y-m-d",strtotime($fecha_inicio."+ 10 days")); //agregando 9 dias
 $puntos_por_la_sugerencia = 1;
 include "conexionGhoner.php";
+$situacion_actual = mysqli_real_escape_string($conexion, $situacion_actual);
+$idea_propuesta = mysqli_real_escape_string($conexion, $idea_propuesta);
+$nombre_sugerencia = mysqli_real_escape_string($conexion, $nombre_sugerencia);
     if($tipo=="nueva"){
         $consulta = "INSERT INTO concentrado_sugerencias (cumplimiento, sindicalizado_empleado, nombre_sugerencia, folio, status, causa_no_factibilidad, situacion_actual, idea_propuesta,
         numero_nomina,password, colaborador,puesto,planta,area,area_participante,subarea,impacto_primario,impacto_secundario,tipo_de_desperdicio,objetivo_de_calidad_ma, 
