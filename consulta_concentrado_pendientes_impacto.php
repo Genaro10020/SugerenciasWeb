@@ -5,7 +5,7 @@
     $resultado = [];
     $nombre= $_SESSION['nombre'];
 
-    if($_SESSION['tipo']=="Admin"){
+    if(isset($_SESSION['tipo']) && $_SESSION['tipo']=="Admin"){
         $consulta = "SELECT * FROM concentrado_sugerencias WHERE status='Implementada' AND fecha_real_cierre!='' ORDER BY id DESC";
 
     }else{
