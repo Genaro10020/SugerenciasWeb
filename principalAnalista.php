@@ -370,7 +370,7 @@ $incrementar=1;
                                                                                         <td>
                                                                                         <select class="inputs-concentrado" v-model="responsable_plan" >
                                                                                             <option value="" disabled>Seleccione Responsable...</option>
-                                                                                            <option v-for="responsable in lista_responsable_plan" :key="responsable.nombre" :value="responsable.nombre">{{responsable.nombre}}</option>
+                                                                                            <option v-for="responsable in lista_responsable_plan" :key="responsable.nombre" :value="responsable">{{responsable.nombre}}</option>
                                                                                         </select>
                                                                                         </td>
                                                                                         <td>
@@ -912,6 +912,7 @@ $incrementar=1;
                 folio:'',
                 id_concentrado_general:0,
                 lista_impacto:[],
+                num_nomina:'',
                 lista_tipo_desperdicio:[],
                 objetivo_de_calidadMA:[],
                 var_objetivo_de_calidadMA:[],
@@ -1229,13 +1230,14 @@ $incrementar=1;
                             numero_actividad: this.numero_nueva_actividad,
                             actividad: this.descripcion_actividad,
                             folio: this.folio,
-                            responsable_plan: this.responsable_plan,
+                            responsable_plan: this.responsable_plan.nombre,
+                            num_nomina: this.responsable_plan.user,         
                             fecha_inicial_actividad: this.fecha_inicial_actividad,
                             fecha_final_actividad: this.fecha_final_actividad,
                            // porcentaje:this.porcentaje,
                             check_mc: this.check_mc
                         }).then(response =>{
-                            //    console.log(response.data)
+                               console.log("mal"+this.responsable_plan)
                                     if(response.data=="si"){
                                     this.id_actualizar='' // ocultando inputs de actualizar
                                     this.nueva_actividad = false //guardando y ocultando fila nuevo
