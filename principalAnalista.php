@@ -408,7 +408,7 @@ $incrementar=1;
                                                                                         <td>
                                                                                             <select v-if="id_actualizar==index+1" class="inputs-concentrado" v-model="responsable_plan" >
                                                                                                 <option value="" disabled>Seleccione responsable..</option>
-                                                                                                <option v-for="responsable in lista_responsable_plan" :key="responsable.nombre" :value="responsable.nombre">{{responsable.nombre}}</option>
+                                                                                                <option v-for="responsable in lista_responsable_plan" :key="responsable.nombre" :value="responsable">{{responsable.nombre}}</option>
                                                                                             </select>
                                                                                             <label v-else>{{actividades.responsable}}<label>
                                                                                         </td>
@@ -1221,7 +1221,7 @@ $incrementar=1;
                 guardarEditarActividad(tipo,id){
                
                 /*console.log(this.numero_actividad+this.descripcion_actividad+this.var_responsable_plan+this.fecha_inicial_actividad+this.fecha_final_actividad)*/
-                if(this.descripcion_actividad!='' && this.responsable_plan!='' && this.fecha_inicial_actividad!='' && this.fecha_final_actividad!=''){
+                if(this.descripcion_actividad!='' && this.responsable_plan.nombre!='' && this.fecha_inicial_actividad!='' && this.fecha_final_actividad!=''){
 
                         axios.post("guardar_update_actividad_plan.php",{
                             tipo_nueva_actualizar:tipo,
@@ -1237,7 +1237,7 @@ $incrementar=1;
                            // porcentaje:this.porcentaje,
                             check_mc: this.check_mc
                         }).then(response =>{
-                               console.log("mal"+this.responsable_plan)
+                            //    console.log("mal"+this.responsable_plan)
                                     if(response.data=="si"){
                                     this.id_actualizar='' // ocultando inputs de actualizar
                                     this.nueva_actividad = false //guardando y ocultando fila nuevo
@@ -1273,7 +1273,8 @@ $incrementar=1;
                     this.actualizar = false
                     this.id_actualizar = '' // ocultado edits en editar
                     this.descripcion_actividad = ''
-                    this.responsable_plan = ''
+                    this.responsable_plan.nombre = ''
+                    this.responsable_plan.user = ''
                     this.fecha_inicial_actividad = ''
                     this.fecha_final_actividad = ''
                     //this.porcentaje =''
@@ -1286,7 +1287,7 @@ $incrementar=1;
                     var posicion=id
                     this.id_actualizar = id
                     this.descripcion_actividad = this.concentrado_actividades[posicion-1].actividad
-                    this.responsable_plan = this.concentrado_actividades[posicion-1].responsable
+                    this.responsable_plan.nombre = this.concentrado_actividades[posicion-1].responsable
                     this.fecha_inicial_actividad = this.concentrado_actividades[posicion-1].fecha_inicial
                     this.fecha_final_actividad = this.concentrado_actividades[posicion-1].fecha_final
                    // this.porcentaje = this.concentrado_actividades[posicion-1].porcentaje

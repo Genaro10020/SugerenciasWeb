@@ -30,7 +30,7 @@ if($check=="Pendiente"){
 }else if($check=="Aceptado"){
         $check = "Corregido";
 }else{
-        $check = "Pendiente";
+        $check = "";
 }
 
 include "conexionGhoner.php";
@@ -46,7 +46,7 @@ include "conexionGhoner.php";
                         $resultado="error create";
                 }
         }else if ($tipo=="actualizar"){
-                $actualizar = "UPDATE plan_trabajo_sugerencias SET actividad='$actividad', responsable='$responsable_plan',fecha_inicial='$fecha_inicial',fecha_final='$fecha_final', enviado_o_no = '' WHERE id = '$id'";
+                $actualizar = "UPDATE plan_trabajo_sugerencias SET actividad='$actividad', responsable='$responsable_plan',fecha_inicial='$fecha_inicial',fecha_final='$fecha_final', enviado_o_no = '', nomina='$num_nomina' WHERE id = '$id'";
                 $query = mysqli_query( $conexion, $actualizar);
 
                 $actualizar2 = "UPDATE concentrado_sugerencias SET check_mc='$check' WHERE id = '$id_concentrado'";//ACTUALIZADO CHECK  CONCENTRADO SUGERENCIAS
