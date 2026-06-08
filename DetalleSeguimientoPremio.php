@@ -320,7 +320,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
       methods:{
         redireccionar(opciones){
             if(opciones=='Atras'){
-                window.location.href="StatusPremio.php"
+                window.location.href="statusPremio.php"
             }
         },
     calcularStatusUsuario(pedido) {
