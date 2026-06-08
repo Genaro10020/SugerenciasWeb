@@ -143,7 +143,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
 
                     <!-- IMAGEN -->
                     <div style="width:40px; height:40px;">
-                      <img class="img-thumbnail min-w-25" style="max-width:100px" :src="entregar.img_url" />
+                      <img class="img-thumbnail min-w-25" style="width: 40px" :src="entregar.img_url" />
                     </div>
                     
 
