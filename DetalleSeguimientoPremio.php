@@ -176,7 +176,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                   <!-- línea horizontal (solo desktop) -->
                   <div v-if="index !== steps.length - 1" class="d-none d-md-block position-absolute top-10 start-50"
                     :class="index < currentIndex ? 'icon-box' : 'bg-gris-paso'"
-                    style="height:8px;width:100%;margin-top:23px;z-index:0;"></div>
+                    style="height:8px;width:100%;margin-top:17px;z-index:0;"></div>
 
                   <div class="d-flex flex-md-column align-items-start align-items-md-center text-md-center">
 
