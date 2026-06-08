@@ -150,10 +150,10 @@ if (!file_exists($path)) {
                                                 }
                                                 
                                                 if(empty($hay_fecha_cierre)){// si no hay fecha cierre agregar
-                                                    $actualizar = "UPDATE concentrado_sugerencias SET cumplimiento ='100', status='Implementada', cantidadPPT='$suma', status_impacto = 'Midiendo' WHERE id = '$id_concentrado'";//actauliando cantidad de documetos en BD. se quito  fecha_real_cierre='$fecha_cierre', solo Analis.
+                                                    $actualizar = "UPDATE concentrado_sugerencias SET cumplimiento ='100', `status`='Implementada', cantidadPPT='$suma', status_impacto = 'Midiendo' WHERE id = '$id_concentrado'";//actauliando cantidad de documetos en BD. se quito  fecha_real_cierre='$fecha_cierre', solo Analis.
                                                     $query = mysqli_query($conexion,$actualizar);
                                                 }else{
-                                                    $actualizar = "UPDATE concentrado_sugerencias SET cumplimiento ='100', status='Implementada', cantidadPPT='$suma', status_impacto = 'Midiendo' WHERE id = '$id_concentrado'";//actauliando cantidad de documetos en BD.
+                                                    $actualizar = "UPDATE concentrado_sugerencias SET cumplimiento ='100', `status`='Implementada', cantidadPPT='$suma', status_impacto = 'Midiendo' WHERE id = '$id_concentrado'";//actauliando cantidad de documetos en BD.
                                                     $query = mysqli_query($conexion,$actualizar);
 
                                                 }
@@ -168,7 +168,7 @@ if (!file_exists($path)) {
 
                                     if($cual_documento=="entregado"){
                                         $id_premio=$id_concentrado;
-                                        $actualizar = "UPDATE canjer_premios_colaborador_sugerencias SET  cant_img_evidencia='$suma', status='Entregado' WHERE id = '$id_premio'";
+                                        $actualizar = "UPDATE canjer_premios_colaborador_sugerencias SET  cant_img_evidencia='$suma', fecha_entrega = NOW(), `status`='Entregado' WHERE id = '$id_premio'";
                                         $query = mysqli_query( $conexion, $actualizar);
                                     }
                             }

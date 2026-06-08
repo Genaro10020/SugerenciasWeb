@@ -986,7 +986,7 @@ $incrementar=1;
         
             //Consultado concentrado de sugerencias.
             this.consultado_concentrado_pendiente_factibilidad(),
-              //Consultado concentrado de sugerencias.
+            //Consultado concentrado de sugerencias.
             this.consultado_concentrado_pendiente_implementacion(),
             //Consultado concentrado pendientes impacto.
             this.consultado_concentrado_pendiente_impacto(),

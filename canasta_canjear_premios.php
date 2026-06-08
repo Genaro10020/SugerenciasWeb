@@ -21,7 +21,7 @@ if(isset($variables['numero_nomina'])){
 
 
 date_default_timezone_set('America/Mexico_City');
-$fecha = date("Y-m-d");
+$fecha = date("Y-m-d H:i:s");
 include "conexionGhoner.php";
         $consultar = "SELECT * FROM canjer_premios_colaborador_sugerencias WHERE id_premio='$id_premio' AND status = 'Sin aceptar' AND numero_nomina = '$numero_nomina'";
         $query = mysqli_query( $conexion, $consultar);

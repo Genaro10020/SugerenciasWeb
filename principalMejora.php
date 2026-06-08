@@ -29,6 +29,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Goldman&family=Koulen&display=swap" rel="stylesheet"> 
     <!--Incluyendo Estilo-->
     <link rel="stylesheet" type="text/css"  href="estilos/miestilo.css">
+    <!-- Alert confirmar -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!--Iconos boostrap-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <title>Sugerencias</title>
@@ -2282,6 +2284,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                         <th scope="col">Código de Premio</th>
                                                                         <th scope="col">Cantidad (Pzs.)</th>
                                                                         <th scope="col">No. Solped</th>
+                                                                        <th scope="col">Orden de Compra</th>
                                                                         <th scope="col">Status</th>
                                                                         <!--<th scope="col">Entregado</th>-->
                                                                     </tr>
@@ -2294,12 +2297,20 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                          <td>
                                                                             <button v-if="id_updates==index+1" type="button" class="btn btn-danger me-2" title="Cancelar" @click="editarStutasPremioSolicitado(0,0)" ><i class="bi bi-x-circle" ></i></button>
                                                                             <button v-if="bandera_editar_solicitud == false" type="button" class="btn btn-warning me-2" title="Actualizar" @click="editarStutasPremioSolicitado(1,index+1)"><i class="bi bi-pen" ></i></button>
-                                                                            <button v-if="id_updates==index+1" class="btn btn-primary me-2" title="Guardar" @click="guardarStutasPremioSolicitado(status_premios.id)"><i class="bi bi-check-circle"></i></button> 
+                                                                            <button v-if="id_updates==index+1" class="btn btn-primary me-2" title="Guardar" @click="guardarStutasPremioSolicitado(status_premios.id)"><i class="bi bi-check-circle"></i></button>
+                                                                            <!-- Para indicar que llegó el paquete -->
+                                                                        <button v-if="status_premios.solped?.trim() && status_premios.oc_generada?.trim() && Number(status_premios.producto_llego) === 0" type="button" class="btn btn-info me-2" title="Confirmar llegada del producto." @click="confirmarLlegadaProducto(status_premios.id)">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                                            <path d="M12 22V12" /><path d="m16 17 2 2 4-4" /><path d="M21 11.127V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.729l7 4a2 2 0 0 0 2 .001l1.32-.753" /><path d="M3.29 7 12 12l8.71-5" /><path d="m7.5 4.27 8.997 5.148" />
+                                                                        </svg>
+                                                                        </button>
+
+
                                                                             <button v-if="status_premios.status=='Entregado'" type="button" class="btn btn-success  ms-2" title="Subir Imagen" @click="modal_subir_ver_documentos('Subir',status_premios.id,status_premios.id,'entregado',status_premios.cant_img_evidencia)"><i class="bi bi-paperclip"></i>{{status_premios.cant_img_evidencia}}</button>
-                                                                            <button v-else-if="status_premios.solped!='' && status_premios.status=='Pte. Entrega'" type="button" class="btn btn-secondary" type="button" title="Subir evidencia de la entrega del premios." @click="modal_subir_ver_documentos('Subir',status_premios.id,status_premios.id,'entregado',status_premios.cant_img_evidencia)"><i class="bi bi-paperclip"></i>{{concentrado_status_premios.cant_img_evidencia}}</button> 
+                                                                            <button v-else-if="status_premios.producto_llego!='' && status_premios.status=='Pte. Repartir'" type="button" class="btn btn-secondary" type="button" title="Subir evidencia de la entrega del premios." @click="modal_subir_ver_documentos('Subir',status_premios.id,status_premios.id,'entregado',status_premios.cant_img_evidencia)"><i class="bi bi-paperclip"></i>{{concentrado_status_premios.cant_img_evidencia}}</button> 
                                                                             <button v-else-if="status_premios.solped==''" title="Coloque número de solped para que se active." class="btn btn-secondary" disabled><i class="bi bi-paperclip"></i></button>  
                                                                         </td> 
-                                                                        <td >
+                                                                        <td>
                                                                                 {{status_premios.numero_nomina}}
                                                                         </td>  
                                                                         <td>
@@ -2315,7 +2326,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                                 {{status_premios.area}}
                                                                         </td>    
                                                                         <td>
-                                                                                {{status_premios.fecha}}
+                                                                               {{ status_premios.fecha.substring(0, 10) }}
                                                                         </td>   
                                                                         <td>
                                                                                 {{status_premios.codigo_premio}}
@@ -2326,11 +2337,17 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                         <td >
                                                                                 <input class="inputs-concentrado text-center" type="text"  v-model="numero_solped"  v-if="id_updates==index+1">
                                                                                 <label v-else>{{status_premios.solped}}</label>   
-                                                                        </td>   
+                                                                        </td>
+                                                                        <td >
+                                                                                <input class="inputs-concentrado text-center" type="text"  v-model="oc_generada"  v-if="id_updates==index+1">
+                                                                                <label v-else>{{status_premios.oc_generada}}</label>   
+                                                                        </td>    
                                                                         <td>
-                                                                                    <label v-if="status_premios.status=='Entregado'" class="fw-bold text-success">{{status_premios.status}}</label>
-                                                                                    <label v-else-if="status_premios.status=='Pte. Entrega'" class="fw-bold text-warning">{{status_premios.status}}</label>
-                                                                                    <label v-else>{{status_premios.status}}</label>
+                                                                                    <label v-if="status_premios.status=='Entregado'" class="fw-bold text-success">{{ TitleStatus[status_premios.status] || status_premios.status }}</label>
+                                                                                    <label v-else-if="status_premios.status=='Pte. Repartir'" class="fw-bold text-danger">{{ TitleStatus[status_premios.status] || status_premios.status }}</label>
+                                                                                    <label v-else-if="status_premios.status=='Pte. Llegada'" class="fw-bold text-info">{{ TitleStatus[status_premios.status] || status_premios.status }}</label>
+                                                                                    <label v-else-if="status_premios.status=='Pte. Entrega'" class="fw-bold text-warning">{{ TitleStatus[status_premios.status] || status_premios.status }}</label>
+                                                                                    <label v-else-if="status_premios.status=='Pte. Solped'" class="fw-bold text-secondary">{{ TitleStatus[status_premios.status] || status_premios.status }}</label>
                                                                         </td>   
                                                                         <!--<td class="text-center">
                                                                                 <button class="boton-nuevo" @click="finalizarEntregaPremio(status_premios.id)" >Finalizar</button>
@@ -2720,6 +2737,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 id_updates:0,
                 bandera_editar_solicitud:false,
                 numero_solped:'',
+                oc_generada:'',
+                producto_llego:'',
                 premio_status:'',
                 cssentregado:'',
                 /* Variables de Impacto*/
@@ -2750,6 +2769,14 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 bandera_inputVacio: false,
                 desactivarbtnLimpiar: true,
                 bandera_buscador: false,
+
+                //VALORES DE LOS ESTATUS
+                TitleStatus: {
+                    'Pte. Solped': 'Pte. Solped',
+                    'Pte. Entrega': 'Pte. Orden de compra',
+                    'Pte. Llegada': 'Pte. Confirmar Llegada de Premio',
+                    'Pte. Repartir': 'Pte. Entrega'
+                }
             }
         },
         mounted(){
@@ -4362,17 +4389,20 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                   this.u_departamento=this.array_usuarios[index-1].departamento
                   this.u_tipo=this.array_usuarios[index-1].tipo*/
                   this.numero_solped=this.concentrado_status_premios[index-1].solped
+                  this.oc_generada=this.concentrado_status_premios[index-1].oc_generada
                   this.premio_status=this.concentrado_status_premios[index-1].status
               }
               if(bandera==0){
                   this.bandera_editar_solicitud = false
               }
           },
-          guardarStutasPremioSolicitado(id_premio){
+          guardarStutasPremioSolicitado(id_seguimiento, producto_llego = false){
             axios.post("actualizar_solped_status.php",{
-                id_premio: id_premio,
+                id_seguimiento: id_seguimiento,
                 numero_solped: this.numero_solped,
-                premio_status: this.premio_status
+                oc_generada: (this.oc_generada && this.oc_generada !== '0') ? this.oc_generada : null,
+                premio_status: this.premio_status,
+                producto_llego: producto_llego ? 1 : 0
             }).then(response =>{
                 if(response.data==true){
                     this.id_updates=0
@@ -4383,10 +4413,11 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 }
             })
           },
-          finalizarEntregaPremio(id_premio){
+
+          finalizarEntregaPremio(id_seguimiento){
             if(!confirm("El premio se a entregado al colaborador."))return
                 axios.post("actualizar_solped_status.php",{
-                    id_premio: id_premio,
+                    id_seguimiento: id_seguimiento,
                     numero_solped: this.numero_solped,
                     premio_status: "Entregado"
                 }).then(response =>{
@@ -4436,6 +4467,23 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                
 
           },
+        confirmarLlegadaProducto(id_seguimiento) {
+        Swal.fire({
+            title: '¿Confirmar llegada del producto?',
+            text: 'Al confirmar, el producto se marcará como recibido. Esta acción no se puede deshacer.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Marcar como recibido',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+            this.guardarStutasPremioSolicitado(id_seguimiento, true);
+            }
+        });
+        },
+
           modalActualizarColaborador(nombre,id,planta,status){
                 this.colaborador_nombre = nombre
                 this.id_colaborador = id

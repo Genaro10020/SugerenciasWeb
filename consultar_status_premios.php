@@ -7,7 +7,11 @@ $resultado =[];
 $numero_nomina = $variables['numero_nomina'];
 include "conexionGhoner.php";
 
-        $consultar = "SELECT * FROM canjer_premios_colaborador_sugerencias WHERE numero_nomina='$numero_nomina' AND status='Pte. Entrega' || numero_nomina='$numero_nomina' AND status='Entregado' || numero_nomina='$numero_nomina' AND status='Pte. Solped'";
+        $consultar = "SELECT *, (cantidad * puntos_para_canjear) AS 'Total_puntos_Gastados' 
+        FROM canjer_premios_colaborador_sugerencias 
+        WHERE numero_nomina='$numero_nomina' 
+        ORDER BY id DESC;";
+
         $query = mysqli_query( $conexion, $consultar);
         while ($datos = mysqli_fetch_array($query)){
                 $resultado[] = $datos; 
