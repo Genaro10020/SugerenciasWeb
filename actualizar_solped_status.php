@@ -5,6 +5,7 @@ $variables = json_decode(file_get_contents('php://input'), true);
 include "conexionGhoner.php";
 
 date_default_timezone_set('America/Mexico_City');
+$fecha = date('Y-m-d H:i:s');
 
 $id_seguimiento=$variables['id_seguimiento'];
 
@@ -77,7 +78,9 @@ if(array_key_exists('numero_solped', $variables)) {
       Si producto llegó es igual a 0 y no hay nada en número solped ni antes y después, actualiza la fecha.
    */
    if($actual === 0 && trim($numero_solped) !== '' && trim($numero_solped) !== trim($numero_solped_antes)) {
-      $set[] = "fecha_solped=NOW()";
+      $set[] = "fecha_solped=?";
+      $params[] = $fecha;
+      $types .="s"; 
    }
    /* CASO 2
       Si producto llegó es igual a 0, ni numero solped está vacío y en la bd también está vacío y la oc generada debe contener fecha entonces asigna fecha oc a fecha solped.
@@ -119,7 +122,9 @@ if(array_key_exists('oc_generada', $variables)) {
    */
 
    if($actual === 0 && trim($oc_generada) !== '' && trim($oc_generada) !== trim($oc_generada_antes)) {
-      $set[] = "fecha_oc=NOW()";
+      $set[] = "fecha_oc=?";
+      $params[] = $fecha;
+      $types .="s"; 
    }
    /* CASO 8
       Si producto llegó es igual a 0, la oc actual está vacía pero la oc generada antes tiene datos, se elimina la fecha oc como null.
@@ -152,7 +157,9 @@ if (array_key_exists('producto_llego', $variables)) {
    if ($producto_llego === 1 && $actual === 0) {
 
       $set[] = "producto_llego=1";
-      $set[] = "fecha_llegada=NOW()";
+      $set[] = "fecha_llegada=?";
+      $params[] = $fecha;
+      $types .="s"; 
    }
 }
 // ## ARMADO DE LA CONSULTA ##
