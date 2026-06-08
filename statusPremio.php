@@ -142,8 +142,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Colaborador"){
                   <div class="d-flex align-items-center gap-2">
 
                     <!-- IMAGEN -->
-                    <div style="width:40px; height:40px;">
-                      <img class="img-thumbnail min-w-25" style="width: 40px" :src="entregar.img_url" />
+                    <div style="width:65px; height:65px;">
+                      <img class="img-thumbnail min-w-25" style="width: 65px" :src="entregar.img_url" />
                     </div>
                     
 
