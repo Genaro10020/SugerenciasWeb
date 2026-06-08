@@ -4,6 +4,8 @@ header("Content-Type: application/json");
 $variables = json_decode(file_get_contents('php://input'), true);
 include "conexionGhoner.php";
 
+date_default_timezone_set('America/Mexico_City');
+
 $id_seguimiento=$variables['id_seguimiento'];
 
 $sql_get = "SELECT * FROM canjer_premios_colaborador_sugerencias WHERE id=?";
