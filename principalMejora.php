@@ -4396,13 +4396,12 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                   this.bandera_editar_solicitud = false
               }
           },
-          guardarStutasPremioSolicitado(id_seguimiento, producto_llego = false){
+          guardarStutasPremioSolicitado(id_seguimiento){
             axios.post("actualizar_solped_status.php",{
                 id_seguimiento: id_seguimiento,
                 numero_solped: this.numero_solped,
                 oc_generada: (this.oc_generada && this.oc_generada !== '0') ? this.oc_generada : null,
-                premio_status: this.premio_status,
-                producto_llego: producto_llego ? 1 : 0
+                premio_status: this.premio_status
             }).then(response =>{
                 if(response.data==true){
                     this.id_updates=0
@@ -4410,6 +4409,20 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     this.consultar_premios_solicitados()
                 }else{
                     alert("Algo salio mal al actualizar Solped y Status")
+                }
+            })
+          },
+          actualizarLlegadaPremio(id_seguimiento, producto_llego = false) {
+            axios.post("actualizar_solped_status.php", {
+                accion:'ConfirmarPremio',
+                id_seguimiento:id_seguimiento,
+                premio_status: this.premio_status,
+                producto_llego: producto_llego ? 1 : 0
+            }).then(response=>{
+                if(response.data==true){
+                    this.consultar_premios_solicitados()
+                }else{
+                    alert("Algo salió mal al actualizar el pedido")
                 }
             })
           },
@@ -4479,7 +4492,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
             cancelButtonText: 'Cancelar'
         }).then((result) => {
             if (result.isConfirmed) {
-            this.guardarStutasPremioSolicitado(id_seguimiento, true);
+            this.actualizarLlegadaPremio(id_seguimiento, true);
             }
         });
         },
