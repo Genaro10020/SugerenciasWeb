@@ -240,7 +240,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     <div class="col-6 col-lg-4 d-flex align-items-center justify-content-center">
                         <div id="opciones" style="width: 18rem;" class=" d-flex align-items-center justify-content-center ">
                             <div class="row text-center mb-2 d-flex justify-content-center align-items-center">
-                                <div class="text-center col-12"> <label class="card-text mt-2 text-black ">10.- Grafcias</label></div>
+                                <div class="text-center col-12"> <label class="card-text mt-2 text-black ">10.- Graficas</label></div>
                                 <div @click="redireccionar(scd)" class="btn_principal_coloborador text-center col-12 d-flex align-items-center justify-content-center" style="cursor: pointer">
                                     <img src="img/grafico-de-barras.png" class="img-fluid" alt="..." style=" width: 60px;">
                                 </div>
