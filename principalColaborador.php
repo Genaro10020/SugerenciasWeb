@@ -350,7 +350,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                 this.scd = 'Scorecard',
                                 this.sec = 'seguridad',
                                 this.ubi = 'ubicacion',
-                                this.sal = 'Salir'
+                                this.sal = 'Salir',
+                                this.graf = 'Graficas'
                         }
                     })
                 }
