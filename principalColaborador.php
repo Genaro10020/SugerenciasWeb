@@ -298,6 +298,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     sec: '',
                     ubi: '',
                     sal: '',
+                    graf: ''
                 }
             },
             mounted() {
