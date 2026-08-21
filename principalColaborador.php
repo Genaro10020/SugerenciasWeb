@@ -298,7 +298,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     sec: '',
                     ubi: '',
                     sal: '',
-                    graf: ''
+                    gra: ''
                 }
             },
             mounted() {
@@ -351,7 +351,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                 this.sec = 'seguridad',
                                 this.ubi = 'ubicacion',
                                 this.sal = 'Salir',
-                                this.graf = 'Graficas'
+                                this.gra = 'Graficas'
                         }
                     })
                 }
