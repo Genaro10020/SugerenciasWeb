@@ -323,6 +323,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                             window.location.href = "juntasArranque.php?id_equipo=<?php echo $_SESSION["id_ead"]; ?>";
                         } else if (opciones == 'Scorecard') {
                             window.location.href = "../EAD-System/panel.php";
+                        } else if(opciones == 'Graficas'){
+                            window.location.href = "../EAD-System/panel.php?vista=graficas"
                         } else if (opciones == 'seguridad') {
                             window.location.href = "seguridadColaborador.php"
                         }  else if (opciones == 'ubicacion') {
