@@ -1,6 +1,8 @@
 <?php
 session_start();
 include "conexionGhoner.php";
+include "conexionEAD.php";
+
 header("Content-Type: application/json");
 $variables = json_decode(file_get_contents('php://input'), true);
 $tipo="";
