@@ -20,6 +20,11 @@ $consulta_ead = "SELECT * FROM usuarios WHERE nomina = '$user' AND tipo_usuario=
 $resultado_ead = mysqli_query($conexionEAD, $consulta_ead);
 
 if ($resultado_ead && mysqli_num_rows($resultado_ead) > 0) {
+    
+    $row_ead = mysqli_fetch_assoc($resultado_ead);
+    $nombre_supervisor = $row_ead['nombre'];
+
+
     $consulta_sug = "SELECT * FROM usuarios_colocaboradores_sugerencias WHERE numero_nomina = '$user' AND password='$pass' AND (status != 'Baja' OR status IS NULL)";
     $resultado_sug = mysqli_query($conexion, $consulta_sug);
 
