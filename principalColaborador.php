@@ -1,6 +1,6 @@
 <?php
 session_start();
-if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
+if (isset($_SESSION["usuario"]) && ($_SESSION["tipo"] == "Colaborador" || $_SESSION["tipo"] == "Supervisor")) {
     setcookie("login_usuario", $_SESSION["usuario"]);
     setcookie("login_password", base64_encode($_SESSION["password"]));
     if (isset($_SESSION["remember"])) {
@@ -222,7 +222,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                 </div>
 
                 <!-- ////////////////////////////////////////////////////// -->
-                <?php if (isset($_SESSION['lider']) && $_SESSION['lider'] == "Si") { ?><!--Solo lideres-->
+                <?php if (isset($_SESSION['lider']) && $_SESSION['lider'] == "Si" || $_SESSION["tipo"] == "Supervisor") { ?><!--Solo lideres y supervisores-->
                     <div class="col-6 col-lg-4 d-flex align-items-center justify-content-center">
                         <div id="opciones" style="width: 18rem;" class=" d-flex align-items-center justify-content-center ">
                             <div class="row text-center mb-2 d-flex justify-content-center align-items-center">
@@ -236,7 +236,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                 <?php } ?>
                 <!-- ////////////////////////////////////////////////////// -->
 
-                <?php if (isset($_SESSION['lider']) && $_SESSION['lider'] == "Si") { ?><!--Solo lideres-->
+                <?php if ((isset($_SESSION['lider']) && $_SESSION['lider'] == "Si") || $_SESSION["tipo"] == "Supervisor") { ?> <!--Solo lideres y supervisores-->
                     <div class="col-6 col-lg-4 d-flex align-items-center justify-content-center">
                         <div id="opciones" style="width: 18rem;" class=" d-flex align-items-center justify-content-center ">
                             <div class="row text-center mb-2 d-flex justify-content-center align-items-center">
@@ -320,7 +320,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                         } else if (opciones == 'Encuesta') {
                             window.location.href = "encuestaApp.php"
                         } else if (opciones == 'ead') {
-                            window.location.href = "juntasArranque.php?id_equipo=<?php echo $_SESSION["id_ead"]; ?>";
+                            window.location.href = `juntasArranque.php?id_equipo=<?php echo isset($_SESSION['id_ead']) ? trim($_SESSION['id_ead']) : ''; ?>`;
                         } else if (opciones == 'Scorecard') {
                             window.location.href = "../EAD-System/panel.php";
                         } else if(opciones == 'Graficas'){
