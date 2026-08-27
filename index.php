@@ -132,18 +132,18 @@ session_start();
                 recordar: this.remember
                 }).then(response =>{
                     console.log(response.data)
-                   if(response.data=='Admin'){
 
+                    let rol = response.data.trim();
+                    if(rol == 'Admin'){
                         window.location.href = "principalMejora.php"
-                    }else if(response.data=='Analista') {
-
+                    }else if(rol == 'Analista') {
                         window.location.href = "principalAnalista.php"
-                    }else if(response.data=='Colaborador'){
-
+                    }else if(rol == 'Colaborador'){
                         window.location.href = "principalColaborador.php"
-                    }else if(response.data == 'Gerente'){
-
+                    }else if(rol == 'Gerente'){
                         window.location.href = "principalGerente.php"
+                    }else if(rol == 'Supervisor'){ 
+                        window.location.href = "principalColaborador.php"
                     }
                     else{
                         this.mostrar=true;
