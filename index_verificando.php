@@ -31,6 +31,12 @@ if ($resultado_ead && mysqli_num_rows($resultado_ead) > 0) {
     $consulta_sug = "SELECT * FROM usuarios_colocaboradores_sugerencias WHERE numero_nomina = '$user' AND password='$pass' AND (status != 'Baja' OR status IS NULL)";
     $resultado_sug = mysqli_query($conexion, $consulta_sug);
 
+    if($resultado_equipos && mysqli_num_rows($resultado_equipos) > 0) {
+        while ($row_equipo = mysqli_fetch_assoc($resultado_equipos)) {
+            $arreglo_ids[] = $row_equipo['id'];
+        }
+    }
+
     if ($resultado_sug && mysqli_num_rows($resultado_sug) > 0) {
         while ($row = mysqli_fetch_array($resultado_sug)) {
             $id     = $row['id'];
