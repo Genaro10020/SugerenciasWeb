@@ -24,6 +24,9 @@ if ($resultado_ead && mysqli_num_rows($resultado_ead) > 0) {
     $row_ead = mysqli_fetch_assoc($resultado_ead);
     $nombre_supervisor = $row_ead['nombre'];
 
+    $arreglo_ids = [];
+    $consulta_equipos = "SELECT id FROM equipos_ead WHERE supervisor = '$nombre_supervisor'";
+    $resultado_equipos = mysqli_query($conexion, $consulta_equipos);
 
     $consulta_sug = "SELECT * FROM usuarios_colocaboradores_sugerencias WHERE numero_nomina = '$user' AND password='$pass' AND (status != 'Baja' OR status IS NULL)";
     $resultado_sug = mysqli_query($conexion, $consulta_sug);
