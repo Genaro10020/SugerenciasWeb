@@ -1,0 +1,59 @@
+<?php
+session_start();
+header("Content-Type: application/json");
+$variables = json_decode(file_get_contents('php://input'), true);
+$resultado ="";
+$numero_nomina="";
+$id_premio = $variables['id_premio'];
+$codigo = $variables['codigo_premio'];
+$img_url = $variables['img_url'];
+$descripcion = $variables['descripcion'];
+$puntos = $variables['puntos'];
+
+
+if(isset($variables['cantidad'])){
+        $cantidad = $variables['cantidad'];
+}
+if(isset($variables['numero_nomina'])){
+        $numero_nomina = $variables['numero_nomina'];
+}
+
+
+
+date_default_timezone_set('America/Mexico_City');
+$fecha = date("Y-m-d H:i:s");
+include "conexionGhoner.php";
+        $consultar = "SELECT * FROM canjer_premios_colaborador_sugerencias WHERE id_premio='$id_premio' AND status = 'Sin aceptar' AND numero_nomina = '$numero_nomina'";
+        $query = mysqli_query( $conexion, $consultar);
+        if(mysqli_num_rows($query)>0){
+
+                if($cantidad==0){
+                        //$delete = "DELETE FROM canjer_premios_colaborador_sugerencias WHERE id_premio = '$id_premio'";//ELIMINA TODOS HASTA LOS ENTREGADOS ANTES/ ESTO ES INCORRECTO NO ACTIVAR O ELIMINAR ESTA LINEA
+                        $delete = "DELETE FROM canjer_premios_colaborador_sugerencias WHERE id_premio='$id_premio' AND status = 'Sin aceptar' AND numero_nomina = '$numero_nomina'";
+                        $query = mysqli_query( $conexion, $delete);
+
+                }else{
+                        $consulta = "UPDATE canjer_premios_colaborador_sugerencias SET descripcion = '$descripcion', cantidad='$cantidad', puntos_para_canjear='$puntos', img_url='$img_url'  WHERE id_premio = '$id_premio' AND numero_nomina ='$numero_nomina' AND status='Sin aceptar'";
+                        $query = mysqli_query( $conexion, $consulta);
+                }
+
+        }else{
+                if($cantidad!=0){
+                        $consultando = "SELECT * FROM concentrado_sugerencias WHERE numero_nomina = '$numero_nomina' ORDER BY id DESC LIMIT 1";
+                        $querys = $conexion->query($consultando);
+                        while($datos = $querys->fetch_array()){
+                                $planta=$datos['planta'];
+                                $area_participante=$datos['area_participante'];
+                        }
+                                $colaborador=$_SESSION['nombre'];
+                                $consulta = "INSERT INTO canjer_premios_colaborador_sugerencias (id_premio,numero_nomina,colaborador,planta,area_participante,codigo_premio,descripcion, cantidad, puntos_para_canjear, img_url,fecha, status)  VALUES ('$id_premio ','$numero_nomina','$colaborador','$planta','$area_participante','$codigo','$descripcion','$cantidad','$puntos','$img_url','$fecha','Sin aceptar')";
+                                $query = mysqli_query( $conexion, $consulta);
+                }else{
+                        $query=true;
+                }       
+        }
+        
+        $resultado = $query;
+    
+echo json_encode($resultado);
+?>

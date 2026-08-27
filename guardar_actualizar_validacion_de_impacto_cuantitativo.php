@@ -9,26 +9,40 @@ $tipo_de_impacto=$datos['tipo_de_impacto'];
 $puntos_asignados=$datos['puntos_asignados'];
 $id_concentrado=$datos['id_concentrado'];
 $folio=$datos['folio'];
+$numero_nomina=$datos['numero_nomina'];
 $validacion_de_impacto=$datos['validacion_de_impacto'];
+$fecha_asignacion_puntos= date('y-m-d');
 include "conexionGhoner.php";
 $resultado = [];
 
 $consulta = "SELECT * FROM impacto_cuantitativo_sugerencias WHERE id_concentrado = '$id_concentrado' AND folio = '$folio'";
 $query = mysqli_query( $conexion, $consulta);
- if(mysqli_num_rows($query)>0){//SI EXISTE EL REGISTRO ACTUALIZA NADA MAS.
-               $actualizar = "UPDATE impacto_cuantitativo_sugerencias SET indicador='$indicador', linea_base='$linea_base',	resultado_esperado='$resultado_esperado', porcentaje_de_mejora ='$porcentaje_de_mejora',	tipo_de_impacto = '$tipo_de_impacto', puntos_asignados = '$puntos_asignados' WHERE id_concentrado = '$id_concentrado'"; ;
-               $querys = mysqli_query( $conexion, $actualizar);
-               $resultado[] = $querys;
-        
+ if(mysqli_num_rows($query)>0){//SI EXISTE EL REGISTRO ACTUALIZA NADA MAS.          
+      $row = mysqli_fetch_assoc($query);
+      if(empty($row['fecha_asignacion_puntos']) && empty($row['tipo_de_impacto'])){
+            $actualizar = "UPDATE impacto_cuantitativo_sugerencias SET fecha_asignacion_puntos='$fecha_asignacion_puntos' WHERE id_concentrado = '$id_concentrado'"; ;
+            $querys = mysqli_query( $conexion, $actualizar);
+            $resultado[] = $querys;
+      }
+      $actualizar = "UPDATE impacto_cuantitativo_sugerencias SET numero_nomina ='$numero_nomina' ,indicador='$indicador', linea_base='$linea_base',	resultado_esperado='$resultado_esperado', porcentaje_de_mejora ='$porcentaje_de_mejora',	tipo_de_impacto = '$tipo_de_impacto', puntos_asignados = '$puntos_asignados' WHERE id_concentrado = '$id_concentrado'"; ;
+      $querys = mysqli_query( $conexion, $actualizar);
+      $resultado[] = $querys;
+      
  }else{//SI NO EXISTE EL REGISTRO INSERTA.
 
-      $insertar = "INSERT INTO impacto_cuantitativo_sugerencias (id_concentrado, folio, indicador, linea_base,	resultado_esperado, porcentaje_de_mejora,	tipo_de_impacto, puntos_asignados) 
-      VALUES ('$id_concentrado', '$folio', '$indicador', '$linea_base', '$resultado_esperado', '$porcentaje_de_mejora', '$tipo_de_impacto','$puntos_asignados')";
+      $insertar = "INSERT INTO impacto_cuantitativo_sugerencias (id_concentrado, folio,numero_nomina, indicador, linea_base,	resultado_esperado, porcentaje_de_mejora,	tipo_de_impacto, puntos_asignados) 
+      VALUES ('$id_concentrado', '$folio','$numero_nomina','$indicador', '$linea_base', '$resultado_esperado', '$porcentaje_de_mejora', '$tipo_de_impacto','$puntos_asignados')";
       $quer = mysqli_query( $conexion, $insertar);
       $resultado[] = $quer;
  }
+  
+    if($puntos_asignados>0){
+          $esta_calificado = 1;
+    }else{
+          $esta_calificado = 0;
+    } 
 
-   $actualizar = "UPDATE concentrado_sugerencias SET validacion_de_impacto ='$validacion_de_impacto' WHERE id = '$id_concentrado'"; ;
+   $actualizar = "UPDATE concentrado_sugerencias SET validacion_de_impacto ='$validacion_de_impacto', validacion_calificada = '$esta_calificado' WHERE id = '$id_concentrado'"; 
    $actualizando = mysqli_query( $conexion, $actualizar);
    $resultado[] = $actualizando;
 

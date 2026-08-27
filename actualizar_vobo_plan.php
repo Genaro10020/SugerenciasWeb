@@ -7,6 +7,10 @@ $id_concentrado=$variables['id_concentrado'];
 $check=$variables['aceptado_rechazado'];
 $status=$variables['status'];
 
+
+
+
+
 include "conexionGhoner.php";
 if($status!="Implementada" && $check =="Aceptado"){// si esta en Factibilidad o En Implementación se actualiza pero si esta en Inplementada no haga nada.
         $actualizar = "UPDATE concentrado_sugerencias SET status='En Implementación', check_mc='$check' WHERE id = '$id_concentrado'";

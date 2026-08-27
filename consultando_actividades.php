@@ -10,17 +10,15 @@ $consulta = "SELECT * FROM plan_trabajo_sugerencias WHERE id_concentrado='$id_co
 $query = mysqli_query( $conexion, $consulta);
 while ($datos = mysqli_fetch_array($query)){
     $fecha_final=$datos['fecha_final'];
-        $date1 = new DateTime($fecha_final);
-        $date2 = new DateTime($hoy);
-        if($date1>=$date2){
-            $diff = $date1->diff($date2);
-            $dias=$diff->d;
-            //$diff->days;
-        }else{
-            $dias =0;
-        }
+        $f_final = new DateTime($fecha_final);
+        $f_actual = new DateTime($hoy);
+        $diff = $f_actual->diff($f_final);
+        $dias=$diff->format('%R'.$diff->days);
+        //$dias=$diff->days;
+       
+ 
 
-    $resultado[] =  ["dias_restantes_actividad"=>$dias]+$datos;
+    $resultado[] =  ["dias_restantes_actividad"=>$dias,"f_hoy"=>$f_actual,"f_final"=>$f_final,"diferencia"=>$diff]+$datos;
 
 }
 

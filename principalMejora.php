@@ -16,10 +16,12 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
      <!--VUE 3-->
-     <script src="https://unpkg.com/vue@next"></script>
+     <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
     <!--Axios--> 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <!--Titulo fuente-->
+
+    <!---->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet"> 
@@ -27,82 +29,148 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Goldman&family=Koulen&display=swap" rel="stylesheet"> 
     <!--Incluyendo Estilo-->
     <link rel="stylesheet" type="text/css"  href="estilos/miestilo.css">
+    <!-- Alert confirmar -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!--Iconos boostrap-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <title>Sugerencias</title>
 </head>
 <body>
 <style>
-                .titulo{
-                        font-family: 'Luckiest Guy', cursive;
-                        color: white; 
-                        /*text-shadow: 0px 0px 2px black;*/
-                       /* -webkit-text-stroke: 1px black;*/
-                    }
+    .titulo{    
+            font-family: 'Luckiest Guy', cursive;
+            color: white; 
+            /*text-shadow: 0px 0px 2px black;
+                -webkit-text-stroke: 1px black;*/
+        }
 
-               .div_susperior{
-                background: rgb(255,255,255);
-                background: linear-gradient(140deg, rgba(255,255,255,1) 24%, rgba(181,0,0,1) 24%, rgba(181,0,0,1) 76%, rgba(255,255,255,1) 76%); 
-               }
+        .div_susperior{
+        background: rgb(255,255,255);
+        background: linear-gradient(140deg, rgba(255,255,255,1) 24%, rgba(181,0,0,1) 24%, rgba(181,0,0,1) 76%, rgba(255,255,255,1) 76%); 
+        }
 
-               footer{
-                background: rgb(181,0,0);
-                background: linear-gradient(180deg, rgba(181,0,0,1) 12%, rgba(237,193,193,1) 100%); 
-               }
+        footer{
+        background: rgb(181,0,0);
+        background: linear-gradient(180deg, rgba(181,0,0,1) 12%, rgba(237,193,193,1) 100%); 
+        }
 
-                textarea[type]:focus,input[type]:focus, button[type]:focus {
-                border: 2px solid;    
-                border-color: rgb(137, 0, 0);
-                /*box-shadow: 0 0px 0px rgba(0, 133, 180, 1)inset, 0 0 4px rgba( 187, 16, 16, 1);*/
-                outline: 0 none;
-                }
-                
+        textarea[type]:focus,input[type]:focus, button[type]:focus {
+        border: 2px solid;    
+        border-color: rgb(137, 0, 0);
+        /*box-shadow: 0 0px 0px rgba(0, 133, 180, 1)inset, 0 0 4px rgba( 187, 16, 16, 1);*/
+        outline: 0 none;
+        }
+        
     </style>
     <div id="app" class="container-fluid  " >
                 <!--BARRA SUPERIOR-->
             <div class="div_susperior d-flex justify-content-around align-items-center" style="height:10vh">
                 <div class=""><img class="img-fluid" src="img/logo_gonher.png"></img></div>
                 <div class=" titulo fs-2 lh-1 text-center">SISTEMA DE SUGERENCIAS DE MEJORA</div>
-                <div class=""><img class="img-fluid" src="img/logo_mejora_continua.png"></img></div>
+                <div class=""><img class="img-fluid" style=" height: 80px;" src="img/logo_opex.jpg"></img></div>
             </div>
              <!--BARRA MENÚ-->
             <div class="row" style="height:4vh">
                 <div class="d-flex justify-content-center text-white align-items-center" >
                
-                            <button class="opciones mx-lg-2 rounded-3 " @click="mostrar('principalMejora')"  v-bind:class="{pintarUno}" >
-                                Principal Mejora
-                            </button>  
-                            <button class="opciones  mx-lg-2 rounded-3" @click="mostrar('concentrado')" v-bind:class="{pintarDos}">
-                                Concentrado de sugerencias
-                            </button>  
-                            <button class="opciones  mx-lg-2  rounded-3" @click="mostrar('premios')" v-bind:class="{pintarTres}">
-                                Administración de Premios
-                            </button>
-                            <button class="opciones  mx-lg-2  rounded-3" @click="mostrar('retos')" v-bind:class="{pintarCuatro}">
-                                Administración de Retos
-                            </button>
-                            <button class="opciones   mx-lg-2 rounded-3" @click="mostrar('configuracion')" v-bind:class="{pintarCinco}">
-                                Configuración
-                            </button>
-                </div>
+                    <button class="opciones mx-lg-2 rounded-3 " @click="mostrar('principalMejora'),acomodarSugerencias()"  v-bind:class="{pintarUno}" >
+                        Principal Mejora
+                    </button> 
+                    <!-- <button class="opciones mx-lg-2 rounded-3 " @click="mostrar('planesDeTrabajo')"  v-bind:class="{pintarDos}" >
+                        Planes de Trabajo
+                    </button> --> 
+                    <button class="opciones  mx-lg-2 rounded-3" @click="mostrar('concentrado'),consultado_concentrado()" v-bind:class="{pintarTres}">
+                        Concentrado de sugerencias
+                    </button>  
+                    <button class="opciones  mx-lg-2  rounded-3" @click="mostrar('premios')" v-bind:class="{pintarCuatro}">
+                        Administración de Premios
+                    </button>
+                    <button class="opciones  mx-lg-2  rounded-3" @click="mostrar('retos')" v-bind:class="{pintarCinco}">
+                        Administración de Retos
+                    </button>
+                    <button class="opciones   mx-lg-2 rounded-3" @click="mostrar('configuracion')" v-bind:class="{pintarSeis}">
+                        Configuración
+                    </button>
+                    <button class="opciones   mx-lg-2 rounded-3" @click="mostrar('solicitados')" v-bind:class="{pintarSiete}">
+                        Premios Solicitados
+                    </button>
+                    <button class="opciones   mx-lg-2 rounded-3" @click="mostrar('colaboradores')" v-bind:class="{pintarOcho}">
+                        Colaborador
+                    </button>
+                </div>               
             </div>
+            <div style=" font-size: 15px;"><b> <?php echo $_SESSION['nombre']; ?></b></div>
                  <!--CUERPO-->
-            <div class="row" style="min-height:76vh">
+            <div class="row cuerpo_principal" style="min-height:76vh" >
             <!--////////////////////////////////////////////////////////PRINCIPAL MEJORA-->
-                   <div v-if="ventana=='principalMejora'">
+                   <div v-if="ventana=='principalMejora'" v-cloak>
                             <!--cinta apartado-->
                             <div class="row justify-content-center align-items-start ">
-                                    <div class="cintilla col-12 text-center">
-                                    <b> PRINCIPAL MEJORA </b>
-                                    </div>
+                                <div class="cintilla col-12 text-center">
+                                <b> PRINCIPAL MEJORA </b>
+                                </div>
                             </div>
                             <!--fin cinta apartado-->
                             <!-- contenido principal gonher-->
-                            <div class="text-center mt-3 "><span class="badge bg-light text-dark">Implementación y validación de impactos de sugerencias:</span></div>
-                            <div class="div-scroll mt-3">
-                                <table class="tablaMonitoreo-sugerencias table table-striped table-bordered ">
+                            <span class="badge bg-light text-dark col-12 d-flex justify-content-center align-items-center">Implementación y validación de impactos de sugerencias:</span>
+                            <div class="text-center d-flex col-12 pt-1">
+                                <div class="col-2 text-start"> <!-- d-flex   style=" padding-top:10px; padding-left:10px;"-->
+                                    <div class="form-check form-switch" v-if="bandera_paginacion == true" > <!-- -->
+                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" v-model="ver_todo" @change="verTodo()" checked>
+                                        <label class="form-check-label" for="flexSwitchCheckChecked" style="font-size:13px;">Ver todo</label>
+                                    </div>
+                                </div>
+
+                                <!--buscador-->
+                                <div class="input-group col-7" style="width:40%;height:20px;"> <!--style="max-width:350px;"-->
+                                    <div class="input-group">
+                                        <input type="text" id="inputBuscar" class="form-control" placeholder="Buscar" aria-label="Recipient's username" v-model="palabra" aria-describedby="basic-addon2" autocomplate="off" >
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary" type="button" @click="buscadorSugerencia()">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                                </svg>
+                                            </button>
+                                            <button title="limpiar filtro" :disabled="palabra== ''" class="btn btn-outline-secondary" type="button" @click="limpiarFiltro()">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-eraser" viewBox="0 0 16 16">
+                                                <path d="M8.086 2.207a2 2 0 0 1 2.828 0l3.879 3.879a2 2 0 0 1 0 2.828l-5.5 5.5A2 2 0 0 1 7.879 15H5.12a2 2 0 0 1-1.414-.586l-2.5-2.5a2 2 0 0 1 0-2.828zm2.121.707a1 1 0 0 0-1.414 0L4.16 7.547l5.293 5.293 4.633-4.633a1 1 0 0 0 0-1.414zM8.746 13.547 3.453 8.254 1.914 9.793a1 1 0 0 0 0 1.414l2.5 2.5a1 1 0 0 0 .707.293H7.88a1 1 0 0 0 .707-.293z"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <span v-if="bandera_inputVacio" class="badge text-danger mb-1">*El campo está vacio </span>
+                                </div>
+
+                                <div class="col-5 d-flex justify-content-end" v-if="ventana == 'principalMejora' || ventana == 'concentrado'">
+                                    <div class="" v-if="bandera_paginacion == true" style="height:5vh; background-color: #ffffff">
+                                        <button type="button" id="btn1" class="btn btn-primary me-1" :disabled="arregloPosicionPagina < 1 || ver_todo == true" @click="primerPagina()" style="height:20px; padding:0px; width:20px;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="d-flex align-items-center bi bi-chevron-bar-left" viewBox="0 0 15 15">
+                                            <path fill-rule="evenodd" d="M11.854 3.646a.5.5 0 0 1 0 .708L8.207 8l3.647 3.646a.5.5 0 0 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 0 1 .708 0M4.5 1a.5.5 0 0 0-.5.5v13a.5.5 0 0 0 1 0v-13a.5.5 0 0 0-.5-.5"/>
+                                            </svg>
+                                        </button>
+                                        <button type="button" id="btn2" class="btn btn-primary me-1" :disabled="arregloPosicionPagina < 1 || ver_todo == true" @click="retrocederPagina()" style="height:20px; padding:0px; width:20px;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="d-flex align-items-center bi bi-chevron-left" viewBox="0 0 14 14">
+                                            <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>
+                                            </svg>
+                                        </button>
+                                        <button type="button" id="btn3" class="btn btn-primary me-1" :disabled="arregloPosicionPagina == total_paginas-1 || ver_todo == true || bandera_buscador == true" @click="avanzarPagina()" style="height:20px; padding:0px; width:20px;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="d-flex align-items-center bi bi-chevron-right" viewBox="0 0 14 14">
+                                            <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
+                                            </svg>
+                                        </button>
+                                        <button type="button" id="btn4" class="btn btn-primary me-1" :disabled="arregloPosicionPagina == total_paginas-1 || ver_todo == true || bandera_buscador == true" @click="ultimaPagina()" style="height:20px; padding:0px; width:20px;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="d-flex align-items-center bi bi-chevron-bar-right" viewBox="0 0 15 15">
+                                            <path fill-rule="evenodd" d="M4.146 3.646a.5.5 0 0 0 0 .708L7.793 8l-3.647 3.646a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708 0M11.5 1a.5.5 0 0 1 .5.5v13a.5.5 0 0 1-1 0v-13a.5.5 0 0 1 .5-.5"/>
+                                            </svg>
+                                        </button>
+                                        <div v-if="bandera_paginacion == true"class="" style="color:#0000FF;font-size:13px;"><u><b>{{arregloPosicionPagina+1}}</b></u></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="div-scroll mt-4">
+                                <table class="tablaMonitoreo-sugerencias table table-bordered">
                                 <thead class="encabezado-tabla text-center text-light ">
-                                    <tr >
+                                    <tr>
                                     <th scope="col " class="sticky">#</th>
                                     <th scope="col">Plan de Trabajo</th>
                                     <th scope="col">Folio</th>
@@ -111,51 +179,93 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                     <th scope="col">% Avance</th>
                                     <th scope="col">Implementación</th>
                                     <th scope="col">Val. Impactos</th>
+                                    <th scope="col">Impacto de sugerencias</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr v-for="(concentrado, index) in concentrado_sugerencias">
-                                    <th scope="row" class="text-center">{{index+1}}</th>
+                                <tbody v-if="loanding === false">
+                                    <tr v-for="(concentrado, index) in concentrado_sugerencias"
+                                    :style="{ backgroundColor: 
+                                        concentrado.status === 'En Factibilidad' && concentrado.check_mc === '' ? '#e2f3ff' :
+                                        concentrado.cumplimiento === '0' && (concentrado.check_mc === 'Pendiente' || concentrado.check_mc === 'Rechazado' || concentrado.check_mc === 'Corregido') ? '#ffe9e2' :
+                                        concentrado.cumplimiento === '99' && (concentrado.status === 'Cerrada/No Factible' || concentrado.status === 'Cerrada/Fast Response')  ? '#ffe9e2' :
+                                        concentrado.status === 'En Implementación' ? '#eefaec' :
+                                        concentrado.validacion_calificada === '0' && concentrado.status === 'Implementada' && (concentrado.validacion_de_impacto === 'Cuantitativo' || concentrado.validacion_de_impacto === 'Cualitativo') ? '#fff5e2' :
+                                        concentrado.validacion_de_impacto === '' && concentrado.status === 'Implementada' ? '#f9eeff':
+                                    '' }">
+                                    <th scope="row" class="text-center">{{(arregloPosicionPagina*cantidad_p_pagina)+(index+1)}}</th>
                                     <td>
                                         <button  v-show="concentrado.check_mc=='Pendiente' && concentrado.status!='Cerrada/Fast Response'  && concentrado.status!='Cerrada/No Factible'" class="btn btn-secondary" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalTablaPlan" @click="consultarActividades(concentrado.id,concentrado.status),datosSugerencia(concentrado.id)"><i class="bi bi-table" ></i> {{concentrado.check_mc}}</button>
                                         <button  v-show="concentrado.check_mc=='Rechazado' && concentrado.status!='Cerrada/Fast Response'  && concentrado.status!='Cerrada/No Factible'" class="btn btn-danger" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalTablaPlan" @click="consultarActividades(concentrado.id,concentrado.status),datosSugerencia(concentrado.id)"><i class="bi bi-table" ></i> {{concentrado.check_mc}}</button>
                                         <button  v-show="concentrado.check_mc=='Corregido' && concentrado.status!='Cerrada/Fast Response'  && concentrado.status!='Cerrada/No Factible'" class="btn btn-warning" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalTablaPlan" @click="consultarActividades(concentrado.id,concentrado.status),datosSugerencia(concentrado.id)"><i class="bi bi-table"  ></i> {{concentrado.check_mc}}</button>
                                         <button  v-show="concentrado.check_mc=='Aceptado' && concentrado.status!='Cerrada/Fast Response' && concentrado.status!='Cerrada/No Factible'" class="btn btn-success" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalTablaPlan" @click="consultarActividades(concentrado.id,concentrado.status),datosSugerencia(concentrado.id)"><i class="bi bi-table" ></i> {{concentrado.check_mc}}</button>
                                     </td>
-                                        <td>{{concentrado.folio}}</td>
-                                        <td>{{concentrado.nombre_sugerencia}}</td>
-                                        <td>{{concentrado.fecha_compromiso}}</td>
-                                        <td>{{concentrado.cumplimiento}}%</td>
+                                        <td>{{concentrado.folio}}</td> <!--FOLIO-->
                                         <td>
+                                            {{concentrado.nombre_sugerencia}}
+                                            <br>
+                                            <span v-show="concentrado.VoBo_gerente != 'SI' && concentrado.fecha_factibilidad > '2024-10-01 00:00:00' && concentrado.respuesta_analista == 'No Factible' && (concentrado.status =='Cerrada/Fast Response' || concentrado.status == 'Cerrada/No Factible')" class="badge bg-primary text-white" style="font-size:10px;">
+                                                Esta sugerencia está siendo revisada por Gerente {{concentrado.planta}}
+                                            </span>
+                                            <span v-if="concentrado.motivo_gerente != '' && concentrado.respuesta_analista == 'Factible'" :title="concentrado.motivo_gerente" class="badge bg-secondary" style="font-size:10px;">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-left-text-fill" viewBox="0 0 16 16">
+                                                <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414a1 1 0 0 0-.707.293L.854 15.146A.5.5 0 0 1 0 14.793zm3.5 1a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1zm0 2.5a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1zm0 2.5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1z"/>
+                                                </svg>
+                                                Factible - Comentario de Gerente
+                                            </span>
+                                            <span v-if="concentrado.motivo_gerente != '' && concentrado.respuesta_analista == 'No Factible'" :title="concentrado.motivo_gerente" class="badge bg-secondary" style="font-size:10px;">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-left-text-fill" viewBox="0 0 16 16">
+                                                <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414a1 1 0 0 0-.707.293L.854 15.146A.5.5 0 0 1 0 14.793zm3.5 1a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1zm0 2.5a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1zm0 2.5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1z"/>
+                                                </svg>
+                                                No Factible - Comentario de Gerente
+                                            </span>
+                                        </td>
+                                        <td>{{concentrado.fecha_compromiso}}</td>
+                                        <td v-if="concentrado.cumplimiento==100" class="text-white bg-success"><b>{{concentrado.cumplimiento}}%</b></td>
+                                        <td v-else-if="concentrado.cumplimiento==99" class="text-white bg-warning" ><b>{{concentrado.cumplimiento}}%</b></td>
+                                        <td v-else><b>{{concentrado.cumplimiento}}%</b></td>
+                                        <td> <!--ES ESTEEEE -->
                                             <!--<a v-if="concentrado.status=='Cerrada/Fast Response' || concentrado.status=='Cerrada/No Factible'" data-bs-toggle="modal" data-bs-target="#modalCambiaraEnFactibilidad" style="cursor: pointer; text-decoration: underline blue;" @click="datos_modal(concentrado.id)" ><p class="fw-bold text-primary">{{concentrado.status}}</p></a>
                                             <a v-else> {{concentrado.status}}</a>-->
-                                            <a data-bs-toggle="modal" data-bs-target="#modalCambiaraEnFactibilidad" style="cursor: pointer; text-decoration: underline blue;" @click="datos_modal(concentrado.id)" ><p class="fw-bold text-primary">{{concentrado.status}}</p></a>
+                                            <div class="d-inline">
+                                                <a data-bs-toggle="modal" data-bs-target="#modalCambiaraEnFactibilidad" style="cursor: pointer; text-decoration: underline blue;" @click="datos_modal(concentrado.id)" class="fw-bold text-primary me-2">{{concentrado.status}}</a>
+                                            </div>
+                                            <div class="d-inline">
+                                                <button v-show="concentrado.status=='Cerrada/Fast Response' || concentrado.status=='Cerrada/No Factible'" class="btn btn-success" style="font-size:.9em" @click="datos_modal_detalles(concentrado.id,concentrado.folio,concentrado.numero_nomina,concentrado.causa_no_factibilidad,concentrado.cumplimiento,concentrado.analista_de_factibilidad,concentrado.colaborador,concentrado.idea_propuesta,concentrado.situacion_actual)"><i class="bi bi-table" ></i> Detalles</button>
+                                            </div>  
                                         </td>
                                         <td> 
-                                                <div class="d-flex justify-content-around">
-                                                    <div>
-                                                           <div v-if="concentrado.validacion_de_impacto =='Cuantitativo'"><!--BTN VERDE-->
-                                                                <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-success" @click="datos_modal(concentrado.id, concentrado.folio,'Cuantitativo')" style=" font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalImpactoCuantitativo">Impacto Cuantitativo</button>
-                                                                <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-danger ms-2" @click="vaciarValidaciondeImpacto(concentrado.id,'Cuantitativo')" title="Limpiar impacto" style=" font-size:.9em">x</button>
-                                                           </div>
-                                                           <div v-else><!--BTN GRIS-->                                                           
-                                                                <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-secondary" @click="datos_modal(concentrado.id, concentrado.folio,'Cuantitativo')" style=" font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalImpactoCuantitativo">Impacto Cuantitativo</button>
-                                                           </div> 
+                                            <div class="d-flex justify-content-around">
+                                                <div>
+                                                    <div v-if="concentrado.validacion_de_impacto =='Cuantitativo'"><!--BTN VERDE-->
+                                                        <button v-show="concentrado.status=='Implementada' && concentrado.validacion_calificada!=0" type="button" class="btn btn-success" @click="datos_modal(concentrado.id, concentrado.folio,'Cuantitativo',concentrado.numero_nomina)" style=" font-size:.9em">Impacto Cuantitativo</button>
+                                                        <button v-show="concentrado.status=='Implementada' && concentrado.validacion_calificada==0" type="button" class="btn btn-warning" @click="datos_modal(concentrado.id, concentrado.folio,'Cuantitativo',concentrado.numero_nomina)" style=" font-size:.9em">Impacto Cuantitativo</button>
+                                                        <!--<button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-danger ms-2" @click="vaciarValidaciondeImpacto(concentrado.id,'Cuantitativo')" title="Limpiar impacto" style=" font-size:.9em">x</button>-->
                                                     </div>
-                                                    <div>
-                                                            <div v-if="concentrado.validacion_de_impacto =='Cualitativo'"><!--BTN VERDE-->
-                                                                <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-success" @click="datos_modal(concentrado.id, concentrado.folio,'Cualitativo')" style=" font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalImpactoCualitativo">Impacto Cualitativo</button>
-                                                                <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-danger ms-2" @click="vaciarValidaciondeImpacto(concentrado.id,'Cualitativo')" title="Limpiar impacto" style=" font-size:.9em">x</button>
-                                                            </div>
-                                                            <div v-else><!--BTN GRIS-->
-                                                                <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-secondary" @click="datos_modal(concentrado.id, concentrado.folio,'Cualitativo')" style=" font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalImpactoCualitativo">Impacto Cualitativo</button>
-                                                            </div>  
+                                                    <!--<div v-else>                                                          
+                                                        <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-secondary" @click="datos_modal(concentrado.id, concentrado.folio,'Cuantitativo',concentrado.numero_nomina)" style=" font-size:.9em" >Impacto Cuantitativo</button>
                                                     </div>
-                                                 </div>
+                                                </div>
+                                                <div>--> 
+                                                    <div v-if="concentrado.validacion_de_impacto =='Cualitativo'"><!--BTN VERDE-->
+                                                        <button v-show="concentrado.status=='Implementada' && concentrado.validacion_calificada!=0" type="button" class="btn btn-success" @click="datos_modal(concentrado.id, concentrado.folio,'Cualitativo',concentrado.numero_nomina)" style=" font-size:.9em" >Impacto Cualitativo</button>
+                                                        <button v-show="concentrado.status=='Implementada' && concentrado.validacion_calificada==0" type="button" class="btn btn-warning" @click="datos_modal(concentrado.id, concentrado.folio,'Cualitativo',concentrado.numero_nomina)" style=" font-size:.9em" >Impacto Cualitativo</button>
+                                                        <!-- <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-danger ms-2" @click="vaciarValidaciondeImpacto(concentrado.id,'Cualitativo')" title="Limpiar impacto" style=" font-size:.9em">x</button>-->
+                                                    </div>
+                                                    <!-- <div v-else>
+                                                        <button v-show="concentrado.status=='Implementada'" type="button" class="btn btn-secondary" @click="datos_modal(concentrado.id, concentrado.folio,'Cualitativo',concentrado.numero_nomina)" style=" font-size:.9em" >Impacto Cualitativo</button>
+                                                    </div> BTN GRIS -->
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalImpactoSugerencia" @click="modalImpacto"><i class="bi bi-table"></i></button>
                                         </td>
                                     </tr>
                                 </tbody>
                                 </table>
+                                <div v-if="loanding===true" class="d-flex justify-content-center w-100">
+                                        <img src="img/loading.gif">
+                                </div>
                             </div>
 
                       <div class="modal fade" id="modalTablaPlan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"><!--modal tabla actividades-->
@@ -167,70 +277,75 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                     </div>
                                     <div class="modal-body">
                                         <div class="row" style="font-size:0.7em;">
-
-                                                <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center" ><div><b>Impacto Primario:</b></div></div>
-                                                <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div>{{datos_sugerencia.impacto_primario}}</div></div>
-                                                <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div><b>Impacto Secundario:</b></div></div>
-                                                <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div>{{datos_sugerencia.impacto_secundario}}</div></div>
-                                                <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center" ><div><b>Tipo de Desperdicio:</b></div></div>
-                                                <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div>{{datos_sugerencia.tipo_de_desperdicio}}</div></div>
-                                                <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div><b>Objetivos de Calidad y M.A.</b></div></div>
-                                                <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div>{{datos_sugerencia.objetivo_de_calidad_ma}}</div></div>
-                                          
+                                            <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center" ><div><b>Situación Actual:</b></div></div>
+                                            <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div>{{datos_sugerencia.situacion_actual}}</div></div>
+                                            <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center" ><div><b>Idea Propuesta:</b></div></div>
+                                            <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div>{{datos_sugerencia.idea_propuesta}}</div></div>
+                                            <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center" ><div><b>Impacto Primario:</b></div></div>
+                                            <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div>{{datos_sugerencia.impacto_primario}}</div></div>
+                                            <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div><b>Impacto Secundario:</b></div></div>
+                                            <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div>{{datos_sugerencia.impacto_secundario}}</div></div>
+                                            <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center" ><div><b>Tipo de Desperdicio:</b></div></div>
+                                            <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div>{{datos_sugerencia.tipo_de_desperdicio}}</div></div>
+                                            <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div><b>Objetivos de Calidad y M.A.</b></div></div>
+                                            <div class="col-12 col-sm-6 col-lg-3 d-flex align-items-center"><div>{{datos_sugerencia.objetivo_de_calidad_ma}}</div></div>
+                                            <div class="col-12 d-flex justify-content-center p-2 fw-medium"><div>Analista: {{datos_sugerencia.analista_de_factibilidad}} ({{datos_sugerencia.folio}})</div></div>
                                         </div>
-                                                        <div class="div-scroll"><!--Scroll-->
-                                                                <table class="tablaMonitoreo-sugerencias table table-striped table-bordered text-center" style=" font-size: 12px">
-                                                                    <thead class="encabezado-tabla text-center text-light ">
-                                                                        <tr>
-                                                                        <th scope="col">No. Actividad</th>
-                                                                        <th scope="col">Descripción Actividad</th>
-                                                                        <th scope="col">Responsable</th>
-                                                                        <th scope="col">Fecha de Inicio</th>
-                                                                        <th scope="col">Fecha de Cierre</th>
-                                                                        <th scope="col">% Porcentaje</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                                <!--Consulta actividades-->
-                                                                        <tr class="align-middle" v-for="(actividades,index) in concentrado_actividades">
-                                                                            <th scope="row">
-                                                                                <label>{{numero_orden_en_select=index+1}}</label>
-                                                                            </th>
-                                                                            <td>    
-                                                                                <label>{{actividades.actividad}}<label></td>
-                                                                            <td>
-                                                                                <label>{{actividades.responsable}}<label>
-                                                                            </td>
-                                                                            <td><label>{{actividades.fecha_inicial}}<label></td>
-                                                                            <td><label>{{actividades.fecha_final}}<label></td>
-                                                                            <td>
-                                                                                <div v-show ="actividades.dias_restantes_actividad > 7 && actividades.porcentaje !=100" class="bg-warning"><!--En curso-->
-                                                                                    <label>{{actividades.porcentaje}}%<label>
-                                                                                </div>
-                                                                                <div v-show ="actividades.dias_restantes_actividad > 0 && actividades.dias_restantes_actividad <= 7 && actividades.porcentaje !=100"  style="background-color: #fd7e14;"><!--Menor Igual a 7-->
-                                                                                    <label>{{actividades.porcentaje}}%<label>
-                                                                                </div>
-                                                                                <div v-show ="actividades.porcentaje == 100" class="bg-success"><!--100% Completadas-->
-                                                                                    <label>{{actividades.porcentaje}}%<label>
-                                                                                </div>
-                                                                                <div v-show ="actividades.dias_restantes_actividad <= 0 && actividades.porcentaje !=100" class="bg-danger"><!--Vencida-->
-                                                                                    <label>{{actividades.porcentaje}}%<label>
-                                                                                </div>
-                                                                              
-                                                                            </td>
-                                                                        </tr><!--Fin consuta actividades-->    
-                                                                    </tbody>
-                                                                </table>
-                                                         </div><!--scroll-->
-                                                <div class="d-flex justify-content-around">
-                                                    <div>
-                                                            <button type="button" class="btn btn-success" @click="actualizarVoBoPlan('Aceptado')" data-bs-dismiss="modal">Aceptado</button>
-                                                    </div>
-                                                    <div>
-                                                            <button type="button" class="btn btn-danger" @click="actualizarVoBoPlan('Rechazado')" data-bs-dismiss="modal">Rechazado</button>
-                                                     </div>
-                                                 </div>
-                                      
+                                        <div class="div-scroll"><!--Scroll-->
+                                            <table class="tablaMonitoreo-sugerencias table table-striped table-bordered text-center" style=" font-size: 12px">
+                                                <thead class="encabezado-tabla text-center text-light ">
+                                                    <tr>
+                                                    <th scope="col">No. Actividad</th>
+                                                    <th scope="col">Descripción Actividad</th>
+                                                    <th scope="col">Responsable</th>
+                                                    <th scope="col">Fecha de Inicio</th>
+                                                    <th scope="col">Fecha de Cierre</th>
+                                                    <th scope="col">% Porcentaje</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                            <!--Consulta actividades-->
+                                                    <tr class="align-middle" v-for="(actividades,index) in concentrado_actividades">
+                                                        <th scope="row">
+                                                            <label>{{numero_orden_en_select=index+1}}</label>
+                                                        </th>
+                                                        <td>    
+                                                            <label>{{actividades.actividad}}<label></td>
+                                                        <td>
+                                                            <label>{{actividades.responsable}}<label>
+                                                        </td>
+                                                        <td><label>{{actividades.fecha_inicial}}<label></td>
+                                                        <td><label>{{actividades.fecha_final}}<label></td>
+                                                        <td>
+                                                            <div v-show="actividades.porcentaje != 100">
+                                                                <b>Dias restantes: {{actividades.dias_restantes_actividad}}</b>
+                                                            </div>
+                                                            <div v-show ="actividades.dias_restantes_actividad > 7 && actividades.porcentaje !=100" class="bg-warning"><!--En curso-->
+                                                                <label>{{actividades.porcentaje}}%<label>
+                                                            </div>
+                                                            <div v-show ="actividades.dias_restantes_actividad > 0 && actividades.dias_restantes_actividad <= 7 && actividades.porcentaje !=100"  style="background-color: #fd7e14;"><!--Menor Igual a 7-->
+                                                                <label>{{actividades.porcentaje}}%<label>
+                                                            </div>
+                                                            <div v-show ="actividades.porcentaje == 100" class="bg-success"><!--100% Completadas-->
+                                                                <label>{{actividades.porcentaje}}%<label>
+                                                            </div>
+                                                            <div v-show ="actividades.dias_restantes_actividad <= 0 && actividades.porcentaje !=100" class="bg-danger"><!--Vencida-->
+                                                                <label>{{actividades.porcentaje}}%<label>
+                                                            </div>
+                                                            
+                                                        </td>
+                                                    </tr><!--Fin consuta actividades-->    
+                                                </tbody>
+                                            </table>
+                                        </div><!--scroll-->
+                                        <div class="d-flex justify-content-around">
+                                            <div>
+                                                    <button type="button" class="btn btn-success" @click="actualizarVoBoPlan('Aceptado')" data-bs-dismiss="modal">Aceptado</button> <!--v-show ="datos_sugerencia.check_mc!='Aceptado'"-->
+                                            </div>
+                                            <div>
+                                                    <button  type="button" class="btn btn-danger" @click="actualizarVoBoPlan('Rechazado')" data-bs-dismiss="modal">Rechazado</button><!--v-show ="datos_sugerencia.check_mc!='Aceptado'"-->
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -240,25 +355,101 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                        </div><!--Fin Modal tabla actividades-->
 
                        <div class="modal fade" id="modalCambiaraEnFactibilidad" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"><!--modal cambiar a enfactibilida-->
-                                <div class="modal-dialog modal-sm modal-dialog-centered">
-                                    <div class="modal-content">
+                            <div class="modal-dialog modal-md modal-dialog-centered">
+                                <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="exampleModalLabel">Cambiar STATUS.</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        
                                     </div>
                                     <div class="modal-body">
-                                        
-                                             <div class="d-flex justify-content-center">
-                                                            <button type="button" class="btn btn-success" @click="cambiaraEnFactibilidad" data-bs-dismiss="modal" style="font-size:.9em; font-weight:bold">cambiar a <b>"En Factibilidad"</b></button>
-                                             </div>
+                                        <div class="d-flex justify-content-center mt-3">
+                                            <span class="badge badge-secondary" style="font-size: 11px; color: #666;">Al presionar este botón, se reiniciarán los siguientes datos:<br><br>
+                                            Estatus, Respuesta del Analista, Causa de No Factibilidad,<br>
+                                            Fecha de Inicio, Fecha Compromiso y Fecha Límite<br><br>
+                                            Por favor, verifica antes de continuar.</span>
+                                        </div>
+                                        <div class="d-flex justify-content-center mt-3">
+                                            <button type="button" class="btn btn-success" @click="cambiaraEnFactibilidad" data-bs-dismiss="modal" style="font-size:.9em; font-weight:bold">cambiar a <b>"En Factibilidad"</b></button>
+                                        </div>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                                     </div>
-                                    </div>
                                 </div>
+                            </div>
                        </div><!--Fin Modal cambiar a en factibilidad-->
 
+                       <div class="modal fade" id="modalDetallesNofactible" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"><!--modal no factible detalles-->
+                                <div class="modal-dialog modal-lg modal-dialog-centered">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Detalles NO FACTIBLE.</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class=" mt-3 text-center ">
+                                            <div class="row text-start" style=" font-size:0.8em;">                                                                
+                                                <div class="col-12 col-sm-3  mb-2 "><b>Analista:</b></div>
+                                                <div class="col-12 col-sm-9  mb-2">{{nombre_analista}}</div>
+                                                <div class="col-12 col-sm-3  mb-2"><b>Nombre Colaborador:</b></div>
+                                                <div class="col-12 col-sm-9  mb-2">{{nombre_colaborador}}</div>
+                                                <div class="col-12 col-sm-3  mb-2"><b>Situación Actual:</b></div>
+                                                <div class="col-12 col-sm-9  mb-2">{{situacion_actual}}</div>
+                                                <div class="col-12 col-sm-3  mb-2"><b>Idea Propuesta:</b></div>
+                                                <div class="col-12 col-sm-9  mb-2">{{idea_propuesta}}</div>                                                  
+                                            </div> 
+                                    
+                                            <span class="badge bg-light text-dark mb-1 mt-3">CAUSA DE NO FACTIBILIDAD</span>
+                                            <div class="col-12 text-center bg-warning">
+                                                <textarea class="text-area-causa-no-factibilidad my-2" type="text"  style=" font-size:0.9em" disabled>{{causa}}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="text-center">
+                                            <!-- <span class="badge bg-light text-dark">TIPO DE CIERRE</span><br>
+                                                    
+                                            <select class="" v-model="var_tipo_de_cierre" required>
+                                                    <option value="" disabled>Seleccione una opción..</option>
+                                                    <option  v-for=" lista in tipo_de_cierre" :key="lista.id" >{{lista}}</option>
+                                            </select>-->
+                                                            
+                                        </div>
+                                        <hr>
+                                        <div class=" mt-3 ">
+                                            <!-- Mostrando los archivos cargados -->
+                                            <div v-show="fileopcional.length>0">
+                                                <div class="col-12 text-center mb-5" v-for= "(ruta_documento,index) in fileopcional">
+                                                    <div class="col-12 text-center">
+                                                        Descargar {{nombre_de_descarga=ruta_documento.slice((ruta_documento.lastIndexOf('/') - 1) + 2)}}<br><!--obtengo el nombre del documento con extension-->
+                                                        <a :href="ruta_documento" :download="nombre_de_descarga">
+                                                            <img src="img/descargar_archivo.png" style="width:100px; height:100px;"></img>
+                                                        </a>
+                                                    </div>
+                                                    <!--<div class="col-12 ">
+                                                        <button type="button" class="btn btn-danger" @click="eliminarDocumento(ruta_documento)" >Eliminar</button>
+                                                    </div>-->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-center align-items-center">
+                                            <div v-if="vistobueno==false" class="col-8">
+                                                <button class="btn btn-success col-4" type="submit" style="font-size:0.8em;width:120px;" @click="guardarPuntosnofactible()">Guardar Puntos.</button>
+                                            </div>
+                                            <div class="col-6 col-sm-3 text-center">  
+                                                    <input type="number" min="0" class="form-control" v-model="puntos_no_factible" :disabled="vistobueno"></input>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                                <div class="col-12 text-center">
+                                                <input type="checkbox" id="checkbox" v-model="vistobueno"  @change="checknoFactibilidad()" />
+                                                    <label for="checkbox" class="ms-2 text-primary">Aceptar la no factibilidad</label>
+                                                </div>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                    </div>
+                                    </div>
+                                </div>
+                       </div><!--Fin Modal no factible detalles-->
 
                        <div class="modal fade" id="modalImpactoCuantitativo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"><!--modal impacto cuantitativo-->
                                 <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -275,30 +466,32 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                     </div>
                                                                     <div class="row">
                                                                             <div class="col-12 col-sm-6">
-                                                                                        <div>
-                                                                                                <label><b>Impacto Primario: </b> {{concentrado.impacto_primario}}</label><br>
-                                                                                                <label><b>Impacto Secundario: </b> {{concentrado.impacto_secundario}}</label><br>
-                                                                                                <label><b>Tipo de Desperdicio:</b> {{concentrado.tipo_de_desperdicio}}</label><br>
-                                                                                                <label><b>Objetivos de Calidad y M.A:</b> {{concentrado.objetivo_de_calidad_ma}}</label><br>
-                                                                                        </div>
+                                                                                <div>
+                                                                                    <label><b>Impacto Primario: </b> {{concentrado.impacto_primario}}</label><br>
+                                                                                    <label><b>Impacto Secundario: </b> {{concentrado.impacto_secundario}}</label><br>
+                                                                                    <label><b>Tipo de Desperdicio:</b> {{concentrado.tipo_de_desperdicio}}</label><br>
+                                                                                    <label><b>Objetivos de Calidad y M.A:</b> {{concentrado.objetivo_de_calidad_ma}}</label><br>
+                                                                                </div>
                                                                             </div>
                                                                             <div class="col-12 col-sm-6 d-flex justify-content-center">
-                                                                                                <!-- Mostrando los archivos nuevos y cargados de PPT-->
-                                                                                            <div v-show="fileppt.length>0 && cual_documento=='ppt'" >
-                                                                                                    <div v-for= "(fileppts,index) in fileppt">
-                                                                                            
-                                                                                                            <span class="badge bg-secondary">Descargar Presentacion </span><br>
-                                                                                                                <!--<div class="col-12 col-md-12">
-                                                                                                                    <button type="button" class="btn btn-danger" @click="eliminarDocumento(fileppts)" >Eliminar</button>
-                                                                                                                </div>-->
-                                                                                                                <div class="mb-5">
-                                                                                                                    <a :href="fileppts" download="Presentacion.pptx">
-                                                                                                                        <img src="img/descargar_ppt.png" style="width:100px; height:100px;"></img>
-                                                                                                                    </a>
-                                                                                                                </div>
-                                                                                                        
-                                                                                                    </div>
-                                                                                            </div>
+                                                                                    <!-- Mostrando los archivos nuevos y cargados de PPT-->
+                                                                                <div v-show="fileppt.length>0 && cual_documento=='ppt'" >
+                                                                                    <div v-for= "(fileppts,index) in fileppt">  
+                                                                                            mostrando resultado {{fileppt}}<br>
+                                                                                        mostrando resultado {{fileppts}}<br>
+                                                                                
+                                                                                        <span class="badge bg-secondary">Descargar Presentacion</span>
+                                                                                        <!--<div class="col-12 col-md-12">
+                                                                                            <button type="button" class="btn btn-danger" @click="eliminarDocumento(fileppts)" >Eliminar</button>
+                                                                                        </div>-->
+                                                                                        <div class="mb-5">
+                                                                                            <a :href="fileppts" download="Presentacion.pptx">
+                                                                                                <img src="img/descargar_ppt.png" style="width:100px; height:100px;"></img>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                        
+                                                                                    </div>
+                                                                                </div>
                                                                             </div>
                                                                     </div>
                                                                     <div class="bg-light p-3 border rounded">
@@ -306,17 +499,17 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                                 <div class="row">
                                                                                         <div class="col-12 col-sm-6">
                                                                                             <label>Indicador:</label>
-                                                                                            <input v-model="indicador" type="text" class="form-control" style="font-size:.8em" required/>
+                                                                                            <input v-model="indicador" type="text" class="form-control" style="font-size:.8em" required disabled/>
                                                                                         </div>
                                                                                 </div>
                                                                                 <div class="row">
                                                                                         <div class="col-12 col-sm-6">
                                                                                             <label>Línea Base:</label>
-                                                                                            <input  v-model="linea_base" type="text" class=" form-control" style="font-size:.8em" required/>
+                                                                                            <input  v-model="linea_base" type="text" class=" form-control" style="font-size:.8em" required disabled/>
                                                                                         </div>
                                                                                         <div class="col-12 col-sm-6">
                                                                                             <label>Resultado Esperado:</label>
-                                                                                            <input v-model="resultado_esperado" type="text" class=" form-control" style="font-size:.8em" required/>
+                                                                                            <input v-model="resultado_esperado" type="text" class=" form-control" style="font-size:.8em" required disabled/>
                                                                                         </div>
                                                                                 </div>
                                                                                 <div class="row">
@@ -327,17 +520,17 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                                         <div class="col-12 col-sm-5">
                                                                                             <label>Tipo de impacto:</label>
                                                                                             <select v-model="tipo_de_impacto" class=" form-control" style="font-size:.8em" required>
-                                                                                                        <option value="" disabled>Seleccione una opción..</option>
-                                                                                                        <option value="Bajo">Bajo</option>
-                                                                                                        <option value="Medio">Medio</option>
-                                                                                                        <option value="Alto">Alto</option>
+                                                                                                <option value="" disabled>Seleccione una opción..</option>
+                                                                                                <option value="Bajo">Bajo</option>
+                                                                                                <option value="Medio">Medio</option>
+                                                                                                <option value="Alto">Alto</option>
                                                                                             </select>
                                                                                         </div>
                                                                                 </div>
                                                                                 <div class="row">
                                                                                         <div class="col-12 col-sm-3">
                                                                                             <label>Puntos Asignados</label>
-                                                                                            <input v-model="puntos_asignados" type="text" class=" form-control" style="font-size:.8em" required/>
+                                                                                            <input v-model="puntos_asignados" type="number" min="0" class=" form-control" style="font-size:.8em" required/>
                                                                                         </div>
                                                                                 </div>
                                                                                 <div class="d-flex justify-content-center">
@@ -404,7 +597,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                                 <div class="row">
                                                                                         <div class="col-12">
                                                                                             <label>Impacto cualitativo:</label>
-                                                                                            <textarea v-model="impacto_cualitativo" type="text" class="form-control" style="font-size:.8em;" required></textarea>
+                                                                                            <textarea v-model="impacto_cualitativo" type="text" class="form-control" style="font-size:.8em;" required disabled></textarea>
                                                                                         </div>
                                                                                 </div>
                                                                                 <div class="row">
@@ -421,7 +614,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                                                 <div class="row">
                                                                                         <div class="col-12 col-sm-3">
                                                                                             <label>Puntos Asignados</label>
-                                                                                            <input v-model="puntos_asignados_cualitativos" type="text" class=" form-control" style="font-size:.8em" required/>
+                                                                                            <input v-model="puntos_asignados_cualitativos" type="number" min="0" class=" form-control" style="font-size:.8em" required/>
                                                                                         </div>
                                                                                 </div>
                                                                                 <div class="d-flex justify-content-center">
@@ -443,10 +636,554 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                 </div>
                        </div><!--Fin Modal cualitativo-->
 
+                       <div class="modal fade" id="modalImpactoSugerencia" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"><!--modal impacto cualitativo-->
+                                <div class="modal-dialog modal-fullscreen modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel"  style="font-size:.9em;">Concentrado <b>Impacto Sugerencias.</b></h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                                        <div class="row">  <!-- contenido impacto de sugerencia-->
+                                                                                <div class="col-12">                                
+                                                                                        <div class="text-center mt-3 ">
+                                                                                            <span class="badge bg-light text-dark">Concentrado Impacto Sugerencias</span>
+                                                                                        </div>
+                                                                                            <div class="div-scroll mt-3 "><!--Scroll-->
+                                                                                            <table class="tablaMonitoreo-sugerencias table table-striped table-bordered text-center">
+                                                                                                <thead class="encabezado-tabla text-center text-light ">
+                                                                                                    <tr >
+                                                                                                    <th scope="col">Folio</th>
+                                                                                                    <th scope="col">Nombre de Sugerencia</th>
+                                                                                                    <th scope="col">Analista de Factibilidad</th>
+                                                                                                    <th scope="col">Planta</th>
+                                                                                                    <th scope="col">Área</th>
+                                                                                                    <th scope="col">Subárea</th>
+                                                                                                    <th scope="col">Fecha real de Cierra</th>
+                                                                                                    <th scope="col">Indicador</th>
+                                                                                                    <th scope="col">Unidades</th>
+                                                                                                    <th scope="col">Línea Base</th>
+                                                                                                    <th scope="col">Periodo de Medición</th>
+                                                                                                    <th scope="col">Mes 1</th>
+                                                                                                    <th scope="col">Mes 2</th>
+                                                                                                    <th scope="col">Mes 3</th>
+                                                                                                    <th scope="col">Mes 4</th>
+                                                                                                    <th scope="col">Mes 5</th>
+                                                                                                    <th scope="col">Mes 6</th>
+                                                                                                    <th scope="col">Mes 7</th>
+                                                                                                    <th scope="col">Mes 8</th>
+                                                                                                    <th scope="col">Mes 9</th>
+                                                                                                    <th scope="col">Mes 10</th>
+                                                                                                    <th scope="col">Mes 11</th>
+                                                                                                    <th scope="col">Mes 12</th>
+                                                                                                    <th scope="col">Status</th>
+                                                                                                    <!--<th scope="col">Acumulado</th>-->
+                                                                                                    </tr>
+                                                                                                </thead>
+                                                                                                <tbody>
+                                                                                    <tr class="align-middle"  :style="pendiente_impacto.orden == 2? colorgreen : colorgris"  v-for="(pendiente_impacto, index) in concentrado_sugerencias_pendiente_impacto">
+                                                                                        
+                                                                                            
+                                                                                       
+                                                                                       <td><label>{{pendiente_impacto.folio}}</label></td>
+                                                                                       <td><label>{{pendiente_impacto.nombre_sugerencia}}</label></td>
+                                                                                       <td><label>{{pendiente_impacto.analista_de_factibilidad}}</label></td>
+                                                                                       <td><label>{{pendiente_impacto.planta}}</label></td>
+                                                                                       <td><label>{{pendiente_impacto.area}}</label></td>
+                                                                                       <td><label>{{pendiente_impacto.subarea}}</label></td>
+                                                                                       <td><label>{{pendiente_impacto.fecha_real_cierre}}</label>
+                                                                                       
+                                                                                       </td>
+                                                                                       <td>
+                                                                                               <input v-if="id_actualiza==index+1" class="rounded border-2" v-model="indicador" type="text" ></input> 
+                                                                                               <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
+                                                                                               <!--{{pendiente_impacto.orden}}{{ "=="+concentrado_impacto_midiendo.orden}}-->
+                                                                                                    <input v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && pendiente_impacto.orden == concentrado_impacto_midiendo.orden" :value="concentrado_impacto_midiendo.indicador" class="rounded border-2 bg-light fw-bold " type="text" disabled></input>
+                                                                                               </div>
+                                                                                       </td>
+                                                                                       <td>
+                                                                                               <input v-if="id_actualiza==index+1" class="rounded border-2" v-model="unidades" type="text" ></input>
+                                                                                               <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo"> 
+                                                                                                           <input v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && pendiente_impacto.orden == concentrado_impacto_midiendo.orden" :value="concentrado_impacto_midiendo.unidades" class="rounded border-2 bg-light fw-bold " type="text" disabled></input> 
+                                                                                               </div>
+                                                                                       </td>
+                                                                                       <td>
+                                                                                               <input v-if="id_actualiza==index+1" class="rounded border-2" v-model="linea_base" type="text" ></input>
+                                                                                               <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo"> 
+                                                                                                   <input v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && pendiente_impacto.orden == concentrado_impacto_midiendo.orden" :value="concentrado_impacto_midiendo.linea_base" class="rounded border-2 bg-light fw-bold" type="text" disabled></input> 
+                                                                                               </div>
+                                                                                       </td>
+                                                                                       <td>
+                                                                                      
+                                                                                               <select v-if="id_actualiza==index+1" v-model="periodo_de_medicion" class="rounded border-2  bg-body">
+                                                                                                   <option value="0" disabled selected>Seleccione Periodo..</option>
+                                                                                                   <option v-for="mes in 12" :value="mes" @click="vaciarMeses(pendiente_impacto.id)">{{mes}} Mes/es</option>
+                                                                                               </select>
+                                                                                                       <div v-else  v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo"> 
+                                                                                                           <input v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && pendiente_impacto.orden == concentrado_impacto_midiendo.orden" :value="concentrado_impacto_midiendo.periodo" class="rounded border-2 bg-light fw-bold" type="text" disabled></input> 
+                                                                                                       </div>   
+                                                                                       </td>
+                                                                                       <td style="background-color: #fffadf"><!--Mes1-->
+                                                                                               <div v-if="id_actualiza==index+1" v-show="periodo_de_medicion >= 1">    
+                                                                                                           <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.mes1}}</span>
+                                                                                                           <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2" type="text" v-model="mes1"></input></span>
+                                                                                               </div>   
+                                                                                               <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
+                                                                                                       <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && pendiente_impacto.orden == concentrado_impacto_midiendo.orden  && concentrado_impacto_midiendo.periodo >=1">
+                                                                                                           <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes1}}</span>
+                                                                                                           <span class="d-block p-1 bg-secondary text-white ">
+                                                                                                               <input  :value="concentrado_impacto_midiendo.mes1" class="border-2  text-center fw-bold" type="text" disabled></input>
+                                                                                                           </span> 
+                                                                                                       </div>    
+                                                                                               </div>   
+                                                                                       </td>
+                                                                                       <td style="background-color: #fffadf">
+                                                                                               <div v-if="id_actualiza==index+1" v-show="periodo_de_medicion >= 2">
+                                                                                                           <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.mes2}}</span>
+                                                                                                           <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2" type="text" v-model="mes2"></input></span>
+                                                                                               </div> 
+                                                                                               <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
+                                                                                                       <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && pendiente_impacto.orden == concentrado_impacto_midiendo.orden  && concentrado_impacto_midiendo.periodo >=2">
+                                                                                                           <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes2}}</span>
+                                                                                                           <span class="d-block p-1 bg-secondary text-white ">
+                                                                                                               <input  :value="concentrado_impacto_midiendo.mes2" class="border-2  text-center fw-bold" type="text" disabled></input>
+                                                                                                           </span> 
+                                                                                                       </div>     
+                                                                                               </div>      
+                                                                                       </td>
+                                                                                       <td style="background-color: #fffadf">
+                                                                                               <div v-if="id_actualiza==index+1" v-show="periodo_de_medicion >= 3">
+                                                                                                           <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.mes3}}</span>
+                                                                                                           <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2" type="text" v-model="mes3"></input></span>
+                                                                                               </div> 
+                                                                                               <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
+                                                                                                       <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && pendiente_impacto.orden == concentrado_impacto_midiendo.orden  && concentrado_impacto_midiendo.periodo >=3">
+                                                                                                           <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes3}}</span>
+                                                                                                           <span class="d-block p-1 bg-secondary text-white ">
+                                                                                                               <input  :value="concentrado_impacto_midiendo.mes3" class="border-2  text-center fw-bold" type="text" disabled></input>
+                                                                                                           </span> 
+                                                                                                       </div>     
+                                                                                               </div>      
+                                                                                       </td>
+                                                                                       <td style="background-color: #fffadf">
+                                                                                           <div v-if="id_actualiza==index+1" v-show="periodo_de_medicion >= 4">
+                                                                                                           <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.mes4}}</span>
+                                                                                                           <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2" type="text" v-model="mes4"></input></span>
+                                                                                           </div>  
+                                                                                           <div v-else  v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
+                                                                                                       <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && pendiente_impacto.orden == concentrado_impacto_midiendo.orden  && concentrado_impacto_midiendo.periodo >=4">
+                                                                                                           <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes4}}</span>
+                                                                                                           <span class="d-block p-1 bg-secondary text-white ">
+                                                                                                               <input  :value="concentrado_impacto_midiendo.mes4" class="border-2  text-center fw-bold" type="text" disabled></input>
+                                                                                                           </span> 
+                                                                                                       </div>     
+                                                                                           </div>    
+                                                                                       </td>
+                                                                                       <td style="background-color: #fffadf">
+                                                                                           <div v-if="id_actualiza==index+1" v-show="periodo_de_medicion >= 5">
+                                                                                                   <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.mes5}}</span>
+                                                                                                   <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2" type="text" v-model="mes5"></input></span>
+                                                                                           </div>
+                                                                                           <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
+                                                                                                       <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && pendiente_impacto.orden == concentrado_impacto_midiendo.orden  && concentrado_impacto_midiendo.periodo >=5">
+                                                                                                           <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes5}}</span>
+                                                                                                           <span class="d-block p-1 bg-secondary text-white ">
+                                                                                                               <input  :value="concentrado_impacto_midiendo.mes5" class="border-2  text-center fw-bold" type="text" disabled></input>
+                                                                                                           </span> 
+                                                                                                       </div>     
+                                                                                           </div>   
+                                                                                       </td>
+                                                                                       <td style="background-color: #fffadf">
+                                                                                           <div v-if="id_actualiza==index+1" v-show="periodo_de_medicion >= 6">
+                                                                                                   <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.mes6}}</span>
+                                                                                                   <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2" type="text" v-model="mes6"></input></span>
+                                                                                           </div>    
+                                                                                           <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
+                                                                                                       <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && pendiente_impacto.orden == concentrado_impacto_midiendo.orden  && concentrado_impacto_midiendo.periodo >=6">
+                                                                                                           <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes6}}</span>
+                                                                                                           <span class="d-block p-1 bg-secondary text-white ">
+                                                                                                               <input  :value="concentrado_impacto_midiendo.mes6" class="border-2  text-center fw-bold" type="text" disabled></input>
+                                                                                                           </span> 
+                                                                                                       </div>     
+                                                                                           </div>    
+                                                                                       </td>
+                                                                                       <td style="background-color: #fffadf">
+                                                                                           <div v-if="id_actualiza==index+1" v-show="periodo_de_medicion >= 7">
+                                                                                                   <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.mes7}}</span>
+                                                                                                   <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2" type="text" v-model="mes7"></input></span>
+                                                                                           </div>   
+                                                                                           <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
+                                                                                                       <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && pendiente_impacto.orden == concentrado_impacto_midiendo.orden  && concentrado_impacto_midiendo.periodo >=7">
+                                                                                                           <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes7}}</span>
+                                                                                                           <span class="d-block p-1 bg-secondary text-white ">
+                                                                                                               <input  :value="concentrado_impacto_midiendo.mes7" class="border-2  text-center fw-bold" type="text" disabled></input>
+                                                                                                           </span> 
+                                                                                                       </div>     
+                                                                                           </div>    
+                                                                                       </td>
+                                                                                       <td style="background-color: #fffadf">
+                                                                                           <div v-if="id_actualiza==index+1" v-show="periodo_de_medicion >= 8">
+                                                                                                   <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.mes8}}</span>
+                                                                                                   <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2"type="text" v-model="mes8"></input></span>
+                                                                                           </div>    
+                                                                                           <div v-else  v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
+                                                                                                       <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && pendiente_impacto.orden == concentrado_impacto_midiendo.orden  && concentrado_impacto_midiendo.periodo >=8">
+                                                                                                           <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes8}}</span>
+                                                                                                           <span class="d-block p-1 bg-secondary text-white ">
+                                                                                                               <input  :value="concentrado_impacto_midiendo.mes8" class="border-2  text-center fw-bold" type="text" disabled></input>
+                                                                                                           </span> 
+                                                                                                       </div>       
+                                                                                           </div>   
+                                                                                       </td>
+                                                                                       <td style="background-color: #fffadf">
+                                                                                           <div v-if="id_actualiza==index+1" v-show="periodo_de_medicion >= 9">
+                                                                                           <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.mes9}}</span>
+                                                                                                   <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2"type="text" v-model="mes9"></input></span>
+                                                                                           </div> 
+                                                                                           <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
+                                                                                                       <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && pendiente_impacto.orden == concentrado_impacto_midiendo.orden  && concentrado_impacto_midiendo.periodo >=9">
+                                                                                                           <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes9}}</span>
+                                                                                                           <span class="d-block p-1 bg-secondary text-white ">
+                                                                                                               <input  :value="concentrado_impacto_midiendo.mes9" class="border-2  text-center fw-bold" type="text" disabled></input>
+                                                                                                           </span> 
+                                                                                                       </div>    
+                                                                                           </div>   
+                                                                                       </td>
+                                                                                       <td style="background-color: #fffadf">
+                                                                                           <div v-if="id_actualiza==index+1" v-show="periodo_de_medicion >= 10">
+                                                                                                   <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.mes10}}</span>
+                                                                                                   <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2"type="text" v-model="mes10"></input></span>
+                                                                                           </div>    
+                                                                                           <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
+                                                                                           <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && pendiente_impacto.orden == concentrado_impacto_midiendo.orden  && concentrado_impacto_midiendo.periodo >=10">
+                                                                                                           <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes10}}</span>
+                                                                                                           <span class="d-block p-1 bg-secondary text-white ">
+                                                                                                               <input  :value="concentrado_impacto_midiendo.mes10" class="border-2  text-center fw-bold" type="text" disabled></input>
+                                                                                                           </span> 
+                                                                                                       </div>    
+                                                                                           </div>  
+                                                                                       </td>
+                                                                                       <td style="background-color: #fffadf">
+                                                                                           <div v-if="id_actualiza==index+1" v-show="periodo_de_medicion >= 11">
+                                                                                                   <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.mes11}}</span>
+                                                                                                   <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2"type="text" v-model="mes11"></input></span>
+                                                                                           </div>  
+                                                                                           <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
+                                                                                                       <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && pendiente_impacto.orden == concentrado_impacto_midiendo.orden  && concentrado_impacto_midiendo.periodo >=11">
+                                                                                                           <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes11}}</span>
+                                                                                                           <span class="d-block p-1 bg-secondary text-white ">
+                                                                                                               <input  :value="concentrado_impacto_midiendo.mes11" class="border-2  text-center fw-bold" type="text" disabled></input>
+                                                                                                           </span> 
+                                                                                                       </div>    
+                                                                                           </div>       
+                                                                                       </td>
+                                                                                       <td style="background-color: #fffadf">
+                                                                                           <div v-if="id_actualiza==index+1" v-show="periodo_de_medicion >= 12">
+                                                                                                   <span class="d-block p-1 bg-dark text-white fw-bold">{{pendiente_impacto.mes12}}</span>
+                                                                                                   <span class="d-block p-1 bg-dark text-white"><input  class="rounded border-2" type="text" v-model="mes12"></input></span>
+                                                                                           </div>     
+                                                                                           <div v-else v-for="concentrado_impacto_midiendo in concentrado_impacto_sugerencias_midiendo">
+                                                                                                       <div v-if="concentrado_impacto_midiendo.id_concentrado == pendiente_impacto.id && pendiente_impacto.orden == concentrado_impacto_midiendo.orden  && concentrado_impacto_midiendo.periodo >=12">
+                                                                                                           <span  class="d-block p-1 bg-secondary text-white fw-bold">{{pendiente_impacto.mes12}}</span>
+                                                                                                           <span class="d-block p-1 bg-secondary text-white ">
+                                                                                                               <input  :value="concentrado_impacto_midiendo.mes12" class="border-2  text-center fw-bold" type="text" disabled></input>
+                                                                                                           </span> 
+                                                                                                       </div>    
+                                                                                           </div>     
+                                                                                       </td>
+                                                                                       <td>
+                                                                                            <label v-show="pendiente_impacto.orden == 2">{{pendiente_impacto.status_impacto}}</label>
+                                                                                       </td>
+                                                                                   </tr>
+                
+                                                                                                </tbody>
+                                                                                            </table>
+                                                                                        </div><!--scroll-->
+                                                                        </div>
+                                                        </div><!-- contenido impacto de sugerencia-->
+                                        </div>  
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                       </div><!--Fin Modal cualitativo-->
+
 
                    </div> <!--fin contenido principal gonher-->
+
+
                    <!--////////////////////////////////////////////////////////APARTADO CONCENTRADO DE SUGERENCIAS-->
-                   <div v-else-if="ventana=='concentrado'">
+                   <div v-else-if="ventana=='planesDeTrabajo'" v-cloak>
+                       <!--cinta apartado-->
+                            <div class="row justify-content-center align-items-start ">
+                                <div class="cintilla col-12 text-center">
+                                   <b> PLANES DE TRABAJO </b>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center align-items-center">
+                            <div class="text-center pt-3 ">
+                                <span class="badge bg-light text-dark" style="font-size:0.7em;">Filtrado por columnas</span>
+                            </div>
+                                    <div class="div-scroll">
+                                        <table class="tablaMonitoreo-sugerencias table table-striped table-bordered ">
+                                            <thead class="encabezado-tabla text-center text-light ">
+                                                <tr >
+                                                    <th scope="col" class="sticky">Pendiente</th>
+                                                    <th scope="col">Folio<br>
+                                                    <input v-model="input_folio_filtrar" type="text" placeholder="folio y presione Enter" @change="consultar_planes_de_trabajo()"/> <br>
+                                                        <button class="btn-filtrar border rounded" :class="{ 'btn-filtrar-activo': buttonActivo === 1 }" @click="activeButton(1,'pts.id','ASC')"><!--el segundo parametro me estoy basando a la consulta de consultar_planes_de_trabajo.php-->
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-short" viewBox="0 0 16 16">
+                                                                <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>
+                                                            </svg>
+                                                            <label class="label-asc">ASC</label>
+                                                        </button>
+                                                        <button class="btn-filtrar border rounded":class="{ 'btn-filtrar-activo': buttonActivo === 2 }" @click="activeButton(2,'pts.id','DESC')">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-short" viewBox="0 0 16 16">
+                                                                <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4z"/>
+                                                            </svg>
+                                                            <label class="label-asc">DES</label>
+                                                        </button>
+                                                    </th>
+                                                    <th scope="col">Planta<br>
+                                                        <select v-model="planta_filtrada"  @change="consultar_planes_de_trabajo()">
+                                                               <option value="">Sin este filtro..</option>  
+                                                               <option v-for="lista_plantas in lista_plantas_select_filtrar" :value="lista_plantas.planta">{{lista_plantas.planta}}</option>                                                      
+                                                        </select><br>  
+                                                            <button class="btn-filtrar border rounded" :class="{ 'btn-filtrar-activo': buttonActivo === 3 }" @click="activeButton(3,'us.planta','ASC')">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-short" viewBox="0 0 16 16">
+                                                                    <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>
+                                                                </svg>
+                                                                <label class="label-asc">ASC</label>
+                                                            </button>
+                                                        <button class="btn-filtrar border rounded" :class="{ 'btn-filtrar-activo': buttonActivo === 4 }" @click="activeButton(4,'us.planta','DESC')">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-short" viewBox="0 0 16 16">
+                                                                <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4z"/>
+                                                            </svg>
+                                                            <label class="label-asc">DES</label>
+                                                        </button>
+                                                    </th>
+                                                    <th scope="col">Área<br>
+                                                        <select v-model="area_filtrada"  @change="consultar_planes_de_trabajo()">
+                                                               <option value="">Sin este filtro..</option>  
+                                                               <option v-for="lista_areas in lista_areas_select_filtrar" :value="lista_areas.area">{{lista_areas.area}}</option>                                                      
+                                                        </select><br>  
+                                                            <button class="btn-filtrar border rounded" :class="{ 'btn-filtrar-activo': buttonActivo === 5 }" @click="activeButton(5,'us.area','ASC')">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-short" viewBox="0 0 16 16">
+                                                                    <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>
+                                                                </svg>
+                                                                <label class="label-asc">ASC</label>
+                                                            </button>
+                                                        <button class="btn-filtrar border rounded" :class="{ 'btn-filtrar-activo': buttonActivo === 6 }" @click="activeButton(6,'us.area','DESC')">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-short" viewBox="0 0 16 16">
+                                                                <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4z"/>
+                                                            </svg>
+                                                            <label class="label-asc">DES</label>
+                                                        </button>
+                                                    </th>
+                                                    <th scope="col">Subárea<br>
+                                                        <select v-model="subarea_filtrada"  @change="consultar_planes_de_trabajo()">
+                                                               <option value="">Sin este filtro..</option>  
+                                                               <option v-for="lista_subareas in lista_subareas_select_filtrar" :value="lista_subareas.subarea">{{lista_subareas.subarea}}</option>                                                      
+                                                        </select><br>  
+                                                            <button class="btn-filtrar border rounded" :class="{ 'btn-filtrar-activo': buttonActivo === 7 }" @click="activeButton(7,'us.subarea','ASC')">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-short" viewBox="0 0 16 16">
+                                                                    <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>
+                                                                </svg>
+                                                                <label class="label-asc">ASC</label>
+                                                            </button>
+                                                        <button class="btn-filtrar border rounded" :class="{ 'btn-filtrar-activo': buttonActivo === 8 }" @click="activeButton(8,'us.subarea','DESC')">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-short" viewBox="0 0 16 16">
+                                                                <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4z"/>
+                                                            </svg>
+                                                            <label class="label-asc">DES</label>
+                                                        </button>
+                                                    </th>
+                                                    <th scope="col">Analista<br>
+                                                        <select v-model="analista_filtrado"  @change="consultar_planes_de_trabajo()">
+                                                               <option value="">Sin este filtro..</option>  
+                                                               <option v-for="lista_analistas in lista_analistas_select_filtrar" :value="lista_analistas.nombre">{{lista_analistas.nombre}}</option>                                                      
+                                                        </select><br>  
+                                                            <button class="btn-filtrar border rounded" :class="{ 'btn-filtrar-activo': buttonActivo === 9 }" @click="activeButton(9,'cs.analista_de_factibilidad','ASC')">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-short" viewBox="0 0 16 16">
+                                                                    <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>
+                                                                </svg>
+                                                                <label class="label-asc">ASC</label>
+                                                            </button>
+                                                            <button class="btn-filtrar border rounded" :class="{ 'btn-filtrar-activo': buttonActivo === 10 }" @click="activeButton(10,'cs.analista_de_factibilidad','DESC')">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-short" viewBox="0 0 16 16">
+                                                                    <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4z"/>
+                                                                </svg>
+                                                                <label class="label-asc">DES</label>
+                                                            </button>
+                                                    </th>
+                                                    <th scope="col">Actividad<br>
+                                                        <button class="btn-filtrar border rounded" :class="{ 'btn-filtrar-activo': buttonActivo === 11 }" @click="activeButton(11,'pts.actividad','ASC')">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-short" viewBox="0 0 16 16">
+                                                                <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>
+                                                            </svg>
+                                                            <label class="label-asc">ASC</label>
+                                                        </button>
+                                                        <button class="btn-filtrar border rounded" :class="{ 'btn-filtrar-activo': buttonActivo === 12 }" @click="activeButton(12,'pts.actividad','DESC')">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-short" viewBox="0 0 16 16">
+                                                                <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4z"/>
+                                                            </svg>
+                                                            <label class="label-asc">DES</label>
+                                                        </button>
+                                                    </th>
+                                                    <th scope="col">Fecha Cierra Actividad<br>
+                                                        <button class="btn-filtrar border rounded" :class="{ 'btn-filtrar-activo': buttonActivo === 13 }" @click="activeButton(13,'pts.fecha_final','ASC')">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-short" viewBox="0 0 16 16">
+                                                                <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>
+                                                            </svg>
+                                                            <label class="label-asc">ASC</label>
+                                                        </button>
+                                                        <button class="btn-filtrar border rounded" :class="{ 'btn-filtrar-activo': buttonActivo === 14 }" @click="activeButton(14,'pts.fecha_final','DESC')">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-short" viewBox="0 0 16 16">
+                                                                <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4z"/>
+                                                            </svg>
+                                                            <label class="label-asc">DES</label>
+                                                        </button>
+                                                    </th>
+                                                    <th scope="col">Responsable de actividad<br>
+                                                    <select v-model="responsable_filtrado"  @change="consultar_planes_de_trabajo()">
+                                                               <option value="">Sin este filtro..</option>  
+                                                               <option v-for="lista_responsables in lista_responsables_actividades_select_filtrar" :value="lista_responsables.responsable">{{lista_responsables.responsable}}</option>                                                      
+                                                        </select><br>  
+                                                            <button class="btn-filtrar border rounded" :class="{ 'btn-filtrar-activo': buttonActivo === 15 }" @click="activeButton(15,'pts.responsable','ASC')">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-short" viewBox="0 0 16 16">
+                                                                    <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>
+                                                                </svg>
+                                                                <label class="label-asc">ASC</label>
+                                                            </button>
+                                                            <button class="btn-filtrar border rounded" :class="{ 'btn-filtrar-activo': buttonActivo === 16 }" @click="activeButton(16,'pts.responsable','DESC')">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-short" viewBox="0 0 16 16">
+                                                                    <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4z"/>
+                                                                </svg>
+                                                                <label class="label-asc">DES</label>
+                                                            </button>
+                                                    </th>
+                                                    <th scope="col">Subarea (Responsable) <br>
+                                                        <select v-model="responsable_subarea_filtrada"  @change="consultar_planes_de_trabajo()">
+                                                               <option value="">Sin este filtro..</option>  
+                                                               <option v-for="lista_subareas in lista_subareas_select_filtrar" :value="lista_subareas.subarea">{{lista_subareas.subarea}}</option>                                                      
+                                                        </select><br>  
+                                                            <button class="btn-filtrar border rounded" :class="{ 'btn-filtrar-activo': buttonActivo === 17 }" @click="activeButton(17,'usr.subarea','ASC')">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-short" viewBox="0 0 16 16">
+                                                                    <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>
+                                                                </svg>
+                                                                <label class="label-asc">ASC</label>
+                                                            </button>
+                                                            <button class="btn-filtrar border rounded" :class="{ 'btn-filtrar-activo': buttonActivo === 18 }" @click="activeButton(18,'usr.subarea','DESC')">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-short" viewBox="0 0 16 16">
+                                                                    <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4z"/>
+                                                                </svg>
+                                                                <label class="label-asc">DES</label>
+                                                            </button>
+                                                    </th>
+                                                    <th scope="col">Fecha Compromiso plan<br>
+                                                        <button class="btn-filtrar border rounded" :class="{ 'btn-filtrar-activo': buttonActivo === 19 }" @click="activeButton(19,'cs.fecha_compromiso','ASC')">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-short" viewBox="0 0 16 16">
+                                                                <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>
+                                                            </svg>
+                                                            <label class="label-asc">ASC</label>
+                                                        </button>
+                                                        <button class="btn-filtrar border rounded" :class="{ 'btn-filtrar-activo': buttonActivo === 20 }" @click="activeButton(20,'cs.fecha_compromiso','DESC')">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-short" viewBox="0 0 16 16">
+                                                                <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4z"/>
+                                                            </svg>
+                                                            <label class="label-asc">DES</label>
+                                                        </button>
+                                                    </th>
+                                                    <th scope="col">Estatus Actividad<br>
+                                                    <select v-model="estatus_hallazgo_filtrado"  @change="consultar_planes_de_trabajo()">
+                                                               <option value="">Sin este filtro..</option>  
+                                                               <option value="Completada">Completada</option> 
+                                                               <option value="Vencida">Vencida</option>    
+                                                               <option value="Por Vencer">Por Vencer</option>                                                     
+                                                               <option value="En tiempo">En Tiempo</option>
+                                                        </select><br> 
+                                                            <button class="btn-filtrar border rounded" :class="{ 'btn-filtrar-activo': buttonActivo === 21 }" @click="activeButton(21,'pts.porcentaje DESC, pts.fecha_final','ASC')">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-short" viewBox="0 0 16 16">
+                                                                    <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>
+                                                                </svg>
+                                                                <label class="label-asc">ASC</label>
+                                                            </button>
+                                                            <button class="btn-filtrar border rounded" :class="{ 'btn-filtrar-activo': buttonActivo === 22 }" @click="activeButton(22,'pts.porcentaje ASC, pts.fecha_final','DESC')">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-short" viewBox="0 0 16 16">
+                                                                    <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4z"/>
+                                                                </svg>
+                                                                <label class="label-asc">DES</label>
+                                                            </button>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody v-if="loanding===false">
+                                                <tr  class=" text-center" v-for="(actividades,index) in arregloPlanesDeTrabajo">
+                                                
+                                                        <!--<td class="align-middle sticky" style="  background: #f8f9fa;">
+                                                                <button  class="btn btn-primary" ><i class="bi bi-check-circle"></i></button>       
+                                                        </td>-->
+                                                        <td>
+                                                            {{index+1}}
+                                                        </td>
+                                                        <td>
+                                                           {{actividades.folio}}
+                                                        </td>
+                                                        <td>
+                                                            {{actividades.planta}}
+                                                        </td>
+                                                        <td>
+                                                            {{actividades.area}}
+                                                        </td>
+                                                        <td>
+                                                            {{actividades.subarea_us}}
+                                                        </td>
+                                                        <td>
+                                                            {{actividades.analista_de_factibilidad}}
+                                                        </td>
+                                                        <td class="text-wrap labels-consulta" >
+                                                           {{actividades.actividad}}
+                                                        </td>
+                                                        <td>
+                                                           {{actividades.fecha_final}}
+                                                        </td>
+                                                        <td>
+                                                           {{actividades.responsable}}
+                                                        </td>
+                                                        <td>
+                                                           {{actividades.subarea_usr}}
+                                                        </td>
+                                                        <td>
+                                                           {{actividades.fecha_compromiso}}
+                                                        </td>
+                                                        
+                                                                                
+                                                                                <td v-show ="actividades.dias_restantes > 7 && actividades.porcentaje !=100" class="bg-warning"><!--En curso-->
+                                                                                    <label>{{actividades.porcentaje}}% (En tiempo)<label>
+                                                                                </td>
+                                                                                <td v-show ="actividades.dias_restantes > 0 && actividades.dias_restantes <= 7 && actividades.porcentaje !=100"  style="background-color: #fd7e14;"><!--Menor Igual a 7-->
+                                                                                    <label>{{actividades.porcentaje}}%  (Por Vencer)<label>
+                                                                                </td>
+                                                                                <td v-show ="actividades.porcentaje == 100" class="bg-success"><!--100% Completadas-->
+                                                                                    <label>{{actividades.porcentaje}}% (Completada)<label>
+                                                                                </td>
+                                                                                <td v-show ="actividades.dias_restantes <= 0 && actividades.porcentaje !=100" class="bg-danger"><!--Vencida-->
+                                                                                    <label>{{actividades.porcentaje}}% (Vencida)<label>
+                                                                                </td>
+                                                           
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <div v-if="loanding===true" class="d-flex justify-content-center w-100">
+                                                <img src="img/loading.gif">
+                                        </div>
+                                    </div>
+                            </div>
+                        <!--fin cinta apartado-->
+                    </div>     
+                   <!--////////////////////////////////////////////////////////APARTADO CONCENTRADO DE SUGERENCIAS-->
+                   <div v-else-if="ventana=='concentrado'" v-cloak>
                        <!--cinta apartado-->
                             <div class="row justify-content-center align-items-start ">
                                 <div class="cintilla col-12 text-center">
@@ -454,13 +1191,46 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                 </div>
                             </div>
                         <!--fin cinta apartado-->
-                            <!-- contenido principal gonher-->
-                            <div class="row m-lg-2">
-                                <div class="col-12 text-center inline-block">
+                        <div class="text-center row pt-1">
+                            <div class="d-flex justify-content-start col-3"> <!--style=" padding-top:10px; padding-left:10px;"-->
+                                <div class="form-check form-switch" v-if="bandera_paginacion == true" > <!-- -->
+                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" v-model="ver_todo" @change="verTodo()" checked>
+                                    <label class="form-check-label" for="flexSwitchCheckChecked" style="font-size:13px;">Ver todo</label>
+                                </div>
+                            </div>
+                            <div class="col-6 text-center inline-block">
                                     <div>
                                         <button class="boton-nuevo" @click="agregar_nueva_sugerencia, mostrar_id(0)"><i class="bi bi-plus-circle"></i> Nueva Sugerencia</button>
                                     </div>
                                 </div>
+                            <div class="col-3" v-if="ventana == 'principalMejora' || ventana == 'concentrado'">
+                                <div class="text-center" v-if="bandera_paginacion == true" style="height:5vh; width:100%; background-color: #ffffff">
+                                    <button type="button" class="btn btn-primary me-1" :disabled="arregloPosicionPagina < 1 || (ver_todo == true && ventana == 'concentrado')" @click="primerPagina()" style="height:20px; padding:0px; width:20px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="d-flex align-items-center bi bi-chevron-bar-left" viewBox="0 0 15 15">
+                                        <path fill-rule="evenodd" d="M11.854 3.646a.5.5 0 0 1 0 .708L8.207 8l3.647 3.646a.5.5 0 0 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 0 1 .708 0M4.5 1a.5.5 0 0 0-.5.5v13a.5.5 0 0 0 1 0v-13a.5.5 0 0 0-.5-.5"/>
+                                        </svg>
+                                    </button>
+                                    <button type="button" class="btn btn-primary me-1" :disabled="arregloPosicionPagina < 1 || (ver_todo == true && ventana == 'concentrado')" @click="retrocederPagina()" style="height:20px; padding:0px; width:20px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="d-flex align-items-center bi bi-chevron-left" viewBox="0 0 14 14">
+                                        <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>
+                                        </svg>
+                                    </button>
+                                    <button type="button" class="btn btn-primary me-1" :disabled="arregloPosicionPagina == total_paginas-1 || (ver_todo == true && ventana == 'concentrado')" @click="avanzarPagina()" style="height:20px; padding:0px; width:20px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="d-flex align-items-center bi bi-chevron-right" viewBox="0 0 14 14">
+                                        <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
+                                        </svg>
+                                    </button>
+                                    <button type="button" class="btn btn-primary me-1" :disabled="arregloPosicionPagina == total_paginas-1 || (ver_todo == true && ventana == 'concentrado')" @click="ultimaPagina()" style="height:20px; padding:0px; width:20px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="d-flex align-items-center bi bi-chevron-bar-right" viewBox="0 0 15 15">
+                                        <path fill-rule="evenodd" d="M4.146 3.646a.5.5 0 0 0 0 .708L7.793 8l-3.647 3.646a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708 0M11.5 1a.5.5 0 0 1 .5.5v13a.5.5 0 0 1-1 0v-13a.5.5 0 0 1 .5-.5"/>
+                                        </svg>
+                                    </button>
+                                    <div v-if="bandera_paginacion == true"class="text-center" style="color:#0000FF;font-size:13px;"><u><b>{{arregloPosicionPagina+1}}</b></u></div>
+                                </div>
+                            </div>
+                        </div>
+                            <!-- contenido principal gonher-->
+                            <div class="row m-lg-2">
                             <div class="div-scroll mt-3 ">
                                     <table class="table tablaConcentrado table-striped table-bordered" style="height:10px; ">
                                         <thead class="encabezado-tabla text-center">
@@ -472,7 +1242,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                             <th scope="col">Nombre sugerencias <span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span></th>
                                             <th scope="col">Folio <span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span></th>
                                             <th scope="col">Status</th>
-                                            <th scope="col">Causa de No factibidad <span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span></th>
+                                            <th scope="col">Causa de No factibidad</th>
                                             <th scope="col">Situación Actual <span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span></th>
                                             <th scope="col">Idea Propuesta <span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span></th>
                                             <th scope="col">No. de Nomina <span v-show="nueva_sugerencia==true || actualizar_sugerencia!=''" class="badge bg-primary">*</span></th>
@@ -520,14 +1290,14 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                             <!--<th scope="col">Eliminar</th>-->
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody v-if="loanding===false">
+
                                             <!--Nueva Sugerencia-->
                                             <tr v-show="nueva_sugerencia" class="align-middle bg-info">
                                                 
                                                 <td class="sticky"> 
                                                     <button type="button" class="btn btn-danger  me-2" title="Cancelar" @click="nueva_sugerencia=false"><i class="bi bi-x-circle" ></i></button>
                                                     <button type="button" class="btn btn-primary" title="Guardar" @click="guardar_nueva_sugerencia_y_actualizar('nueva','')"><i class="bi bi-check-circle"></i></button>   
-                                                    
                                                 </td>
                                                 <th scope="row">Nueva</th>
                                                 <td><label>0%</label></td>
@@ -542,8 +1312,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                 <td><textarea class="inputs-concentrado text-area" type="text"  name="nombre_sugerencia" v-model="var_nombre_sugerencias"></textarea></td>
                                                 <td><input class="inputs-concentrado" type="text" v-model="var_folio"></input></td>
                                                 <td><label>En Factibilidad</label></td>
-                                                <td>
-                                                <textarea class="inputs-concentrado text-area" type="text"  v-model="var_causa_no_factibilidad" >{{var_causa_no_factibilidad}}</textarea></td>
+                                                <td><!--<textarea class="inputs-concentrado text-area" type="text"  v-model="var_causa_no_factibilidad" >{{var_causa_no_factibilidad}}</textarea>--></td>
                                                 <td><textarea class="inputs-concentrado text-area" type="text" v-model="var_situacion_actual" ></textarea></td>
                                                 <td><textarea class="inputs-concentrado text-area" type="text"  v-model="var_idea_propuesta" ></textarea></td>
                                                 <td><input class="inputs-concentrado" type="text"  v-model="var_nomina" ></input></td>
@@ -612,8 +1381,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                         <option v-for="factibilidad in lista_usuarios_y_analistas_factibilidad" :key="factibilidad.nombre" :value="factibilidad.nombre">{{factibilidad.nombre}}</option>
                                                     </select>
                                                 </td>
-                                                <td><input class="inputs-concentrado" type="text" v-model="var_impacto_planeado" name="impacto planeado" ></input></td>
-                                                <td><input class="inputs-concentrado" type="text" v-model="var_impacto_real" name="impacto_real" ></input></td>
+                                                <td><!--<input class="inputs-concentrado" type="text" v-model="var_impacto_planeado" name="impacto planeado" >--></input></td>
+                                                <td><!--<input class="inputs-concentrado" type="text" v-model="var_impacto_real" name="impacto_real" >--></input></td>
                                                 <td><label>{{usuario}}</label></td>
                                                 <td><label><?php echo date("d-m-Y"); ?></label></td>
                                                 <td></input></td>
@@ -621,19 +1390,27 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                 <!--<td><button type="button" class="btn btn-danger" title="Eliminar" @click="nueva_sugerencia=false"><i class="bi bi-trash"></button></i></td>-->
                                             </tr>
                                            
-                                            <!--Consulta/Editar Segerencia -->
+                                            <!--Consulta/Editar Segerencia -->  
                                             <tr class="align-middle" v-for="(concentrado, index) in concentrado_sugerencias" :key="concentrado.id" >
                                                 <td class="sticky table-striped table-bordered">
                                                     <button type="button" class="btn btn-danger me-2" title="Cancelar" @click="mostrar_id('')" v-if="actualizar_sugerencia==index+1"><i class="bi bi-x-circle" ></i></button>
                                                     <button type="button" class="btn btn-primary" title="Guardar" @click="guardar_nueva_sugerencia_y_actualizar('actualizar',concentrado.id)" v-if="actualizar_sugerencia==index+1"><i class="bi bi-check-circle"></i></button>
                                                     <button type="button" class="btn btn-warning" title="Actualizar" @click="mostrar_id(index+1)" v-else><i class="bi bi-pen" ></i></button>
-                                                    <button v-show="concentrado.cantidadDOC == 0"type="button" class="btn btn-secondary  ms-2" title="Subir Sugerencia" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_subir_ver_documentos('Subir',concentrado.id,concentrado.folio,'sugerencia',concentrado.cantidadDOC)"><i class="bi bi-paperclip"></i>{{concentrado.cantidadDOC}}</button>
-                                                    <button v-show="concentrado.cantidadDOC != 0" type="button" class="btn btn-success  ms-2" title="Subir Sugerencia" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_subir_ver_documentos('Subir',concentrado.id,concentrado.folio,'sugerencia',concentrado.cantidadDOC)"><i class="bi bi-paperclip"></i>{{concentrado.cantidadDOC}}</button>
-                                                    <button v-show="concentrado.cantidadPPT == 0" type="button" class="btn btn-secondary  ms-2" title="Subir PPT" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_subir_ver_documentos('Subir',concentrado.id,concentrado.folio,'ppt',concentrado.cantidadPPT)"><i class="bi bi-paperclip"></i>{{concentrado.cantidadPPT}}</button>
-                                                    <button v-show="concentrado.cantidadPPT != 0" type="button" class="btn btn-success  ms-2" title="Subir PPT" data-bs-toggle="modal" data-bs-target="#modal" @click="modal_subir_ver_documentos('Subir',concentrado.id,concentrado.folio,'ppt',concentrado.cantidadPPT)"><i class="bi bi-paperclip">{{concentrado.cantidadPPT}}</i></button>
+                                                    <button v-show="concentrado.cantidadDOC == 0" type="button" class="btn btn-secondary  ms-2" title="Subir Sugerencia"  @click="modal_subir_ver_documentos('Subir',concentrado.id,concentrado.folio,'sugerencia',concentrado.cantidadDOC)"><i class="bi bi-paperclip"></i>{{concentrado.cantidadDOC}}</button>
+                                                    <button v-show="concentrado.cantidadDOC != 0" type="button" class="btn btn-success  ms-2" title="Subir Sugerencia"  @click="modal_subir_ver_documentos('Subir',concentrado.id,concentrado.folio,'sugerencia',concentrado.cantidadDOC)"><i class="bi bi-paperclip"></i>{{concentrado.cantidadDOC}}</button>
+                                                    <!--Deshabilitar btn si no esta al 99% el plan (100% actividades)-->
+                                                    <button v-show="concentrado.cumplimiento < 99 && concentrado.cumplimiento =='' || !(concentrado.status=='En Implementación' || concentrado.status=='Implementada')" type="button" class="btn btn-secondary  ms-2" title="Subir PPT(Deshabilitado)" disabled><i class="bi bi-paperclip"></i>{{concentrado.cantidadPPT}}</button> <!--AQUII-->
+                                                    <button v-show="concentrado.cantidadPPT == 0 && concentrado.cumplimiento >= 99 && concentrado.status=='En Implementación' || concentrado.cantidadPPT == 0 && concentrado.cumplimiento >= 99 && concentrado.status=='Implementada'"  type="button" class="btn btn-secondary  ms-2" title="Subir PPT"  @click="modal_subir_ver_documentos('Subir',concentrado.id,concentrado.folio,'ppt',concentrado.cantidadPPT,concentrado.cumplimiento,index,concentrado.status_PPT)"><i class="bi bi-paperclip"></i>{{concentrado.cantidadPPT}}</button>
+                                                    <button v-show="concentrado.cantidadPPT != 0 && concentrado.status=='En Implementación' || concentrado.cantidadPPT != 0 && concentrado.cumplimiento >= 99 && concentrado.status=='Implementada'" type="button" class="btn btn-success  ms-2" title="Subir PPT"  @click="modal_subir_ver_documentos('Subir',concentrado.id,concentrado.folio,'ppt',concentrado.cantidadPPT,concentrado.cumplimiento,index,concentrado.status_PPT)"><i class="bi bi-paperclip"></i>{{concentrado.cantidadPPT}}</button>
                                                 </td>
-                                                <th scope="row">{{index+1}}<br><!--{{concentrado.id}}--></th>
-                                                <td><label>{{concentrado.cumplimiento}}%</label></td>
+                                                <th scope="row">{{(arregloPosicionPagina*cantidad_p_pagina)+(index+1)}}<br><!--{{concentrado.id}}--></th> <!--1904371-->
+                                                <td>
+                                                    <label>{{concentrado.cumplimiento}}%</label>
+                                                    <br>
+                                                    <span v-show="concentrado.status_PPT == 'Por Validar' && concentrado.cumplimiento == '99'" class="badge bg-primary text-white">Pendiente por Revisar</span>
+                                                    <span v-show="concentrado.status_PPT == 'Corregido' && concentrado.cumplimiento == '99'" class="badge bg-primary text-white">Corregido por Analista</span>
+                                                    <span v-show="concentrado.status_PPT == 'Rechazado' && concentrado.cumplimiento == '99'" class="badge bg-warning text-dark">Rechazado. Pendiente a corregir por Analista</span>
+                                                </td>
                                                 <td>
                                                     <select class="inputs-concentrado" v-model="var_sindicalizado_empleado"  v-if="actualizar_sugerencia==index+1">
                                                         <option>Sindicalizado</option>
@@ -644,9 +1421,15 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                 <td><textarea class="inputs-concentrado text-area" type="text"  name="nombre_sugerencia" v-model="var_nombre_sugerencias" v-if="actualizar_sugerencia==index+1"></textarea> <label v-else>{{concentrado.nombre_sugerencia}}</label></td>
                                                 <td><input class="inputs-concentrado" type="text" v-model="var_folio" v-if="actualizar_sugerencia==index+1"></input> <label v-else>{{concentrado.folio}}</label></td>
                                                 <td><label>{{concentrado.status}}</label></td>
-                                                <td><textarea class="inputs-concentrado text-area" type="text"  v-model="var_causa_no_factibilidad" v-if="actualizar_sugerencia==index+1">{{var_causa_no_factibilidad}}</textarea><label v-else>{{concentrado.causa_no_factibilidad}}</label></td>
-                                                <td><textarea class="inputs-concentrado text-area" type="text" v-model="var_situacion_actual"  v-if="actualizar_sugerencia==index+1"></textarea><label v-else>{{concentrado.situacion_actual}}</label></td>
-                                                <td><textarea class="inputs-concentrado text-area" type="text"  v-model="var_idea_propuesta"  v-if="actualizar_sugerencia==index+1"></textarea><label v-else>{{concentrado.idea_propuesta}}</label></td>
+                                                <td class="columna-nofactible text-justify"><!--<textarea class="inputs-concentrado-disabled text-area-disabled" type="text" style="width: 300px;"  v-bind:title="concentrado.causa_no_factibilidad" disabled> {{concentrado.causa_no_factibilidad}}</textarea>-->
+                                                    <label class="text-wrap labels-consulta"> {{concentrado.causa_no_factibilidad}}</label></td>
+                                                <td class="columna-nofactible text-justify"><textarea class="inputs-concentrado text-area" type="text" v-model="var_situacion_actual"  v-if="actualizar_sugerencia==index+1"></textarea>
+                                                    <!--<textarea  v-else class="inputs-concentrado-disabled text-area-disabled" type="text" style="width: 300px;"  v-bind:title="concentrado.situacion_actual" disabled> {{concentrado.situacion_actual}}</textarea>-->
+                                                    <label v-else class="text-wrap labels-consulta"> {{concentrado.situacion_actual}}</label></td>
+                                                </td>
+                                                <td class="columna-nofactible text-justify"><textarea class="inputs-concentrado text-area" type="text"  v-model="var_idea_propuesta"  v-if="actualizar_sugerencia==index+1"></textarea>
+                                                    <!--<textarea  v-else class="inputs-concentrado-disabled text-area-disabled" type="text" style="width: 300px;"  v-bind:title="concentrado.idea_propuesta" disabled> {{concentrado.idea_propuesta}}</textarea>-->
+                                                    <label v-else class="text-wrap labels-consulta"> {{concentrado.idea_propuesta}}</label></td>
                                                 <td><input class="inputs-concentrado" type="text"  v-model="var_nomina"  v-if="actualizar_sugerencia==index+1"></input><label v-else>{{concentrado.numero_nomina}}</label></td>
                                                 <td><input class="inputs-concentrado" type="text"  v-model="var_colaborador"  v-if="actualizar_sugerencia==index+1"><label v-else>{{concentrado.colaborador}}</label></input></td>
                                                 <td><input class="inputs-concentrado" type="text"  v-model="var_puesto"  v-if="actualizar_sugerencia==index+1"><label v-else>{{concentrado.puesto}}</label></input></td>
@@ -713,18 +1496,18 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                 </td>
                                                 <td><input class="inputs-concentrado" type="date" v-model="var_fecha_sugerencia" v-if="actualizar_sugerencia==index+1"></input><label v-else>{{concentrado.fecha_de_sugerencia}}</label></td>
                                                 <td><input class="inputs-concentrado" type="date" v-model="var_fecha_inicio" v-if="actualizar_sugerencia==index+1"></input><label v-else>{{concentrado.fecha_de_inicio}}</label></td>
-                                                <td><!--<input class="inputs-concentrado" type="date" v-model="var_fecha_compromiso" v-if="actualizar_sugerencia==index+1"></input><label v-else>{{concentrado.fecha_compromiso}}</label></td>-->
-                                                <td><!--<input class="inputs-concentrado" type="date" v-model="var_fecha_real_de_cierre" v-if="actualizar_sugerencia==index+1"></input><label v-else>{{concentrado.fecha_real_cierre}}</label></td>-->
+                                                <td><label>{{concentrado.fecha_compromiso}}</label></td>
+                                                <td><label>{{concentrado.fecha_real_cierre}}</label></td>
                                                 <td>
                                                     <select class="inputs-concentrado" v-model="var_usuario_y_analista_de_factibilidad" v-if="actualizar_sugerencia==index+1">
                                                         <option value="" disabled>Seleccione analista..</option>
                                                         <option v-for="analistas_factibilidad in lista_usuarios_y_analistas_factibilidad" :key="analistas_factibilidad.nombre" :value="analistas_factibilidad.nombre">{{analistas_factibilidad.nombre}}</option>
                                                     </select>
                                                     <label v-else>{{concentrado.analista_de_factibilidad}}</label>
-                                                </td>
-                                                <td><input class="inputs-concentrado" type="text" v-model="var_impacto_planeado" name="impacto planeado" v-if="actualizar_sugerencia==index+1"></input><label v-else>{{concentrado.impacto_planeado}}</label></td>
-                                                <td><input class="inputs-concentrado" type="text" v-model="var_impacto_real" name="impacto_real" v-if="actualizar_sugerencia==index+1"></input><label v-else>{{concentrado.impacto_real}}</label></td>
-                                                <td><label>{{usuario}}</label></td>
+                                                </td> 
+                                                <td><input  class="inputs-concentrado" type="text" v-model="var_impacto_planeado" name="impacto planeado" v-if="actualizar_sugerencia==index+1 && concentrado.status=='Implementada'"></input><label v-else>{{concentrado.impacto_planeado}}</label></td>
+                                                <td><input class="inputs-concentrado" type="text" v-model="var_impacto_real" name="impacto_real" v-if="actualizar_sugerencia==index+1 && concentrado.status=='Implementada'"></input><label v-else>{{concentrado.impacto_real}}</label></td>
+                                                <td><label>{{concentrado.creado_por}}</label></td>
                                                 <td><label v-if="actualizar_sugerencia==index+1"><?php echo date("d-m-Y"); ?></label><label v-else>{{concentrado.creado}}</label></td>
                                                 <td>{{concentrado.modificado_por}}</td>
                                                 <td>{{concentrado.modificado}}</td>
@@ -732,6 +1515,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                             </tr>
                                         </tbody>
                                     </table>
+                                    <div v-if="loanding===true" class="d-flex justify-content-center w-100">
+                                        <img src="img/loading.gif">
+                                    </div>
                                 </div>
                             </div>
 
@@ -739,7 +1525,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
 
                             <!-- Modal Eliminar/Actualizar-->
                             <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-dialog modal-dialog-centered modal-xl">
                                 <div class="modal-content">
                                 <div class="modal-header">
                                     <h6 class="modal-title" id="exampleModalLabel" >{{titulo_modal}} </h6>
@@ -804,12 +1590,12 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                         </div>
 
                                         <div class="text-center" v-if="contenido_modal_agregar_eliminar=='Subir'">
-                                                <form @submit.prevent="uploadFile()">
+                                                <form @submit.prevent="uploadFile('admin')">
                                                     <!--Subir Documento Sugerencia-->
                                                     <div class="row">
                                                         <div class="col-12">
                                                             <div class="custom-file my-5"> 
-                                                                <input type="file" id="input_file_subir"  ref="documentosugerencia" multiple required/>{{extensiones_valida}}</input>
+                                                                <input type="file" id="input_file_subir"  ref="archivosydocumentos" multiple required/>{{extensiones_valida}}</input>
                                                             </div>
                                                         </div>
                                                         <div class="col-12">
@@ -849,30 +1635,43 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                         </div>
 
                                                          <!-- Mostrando los archivos nuevos y cargados de PPT-->
-                                                         <div v-show="fileppt.length>0 && cual_documento=='ppt'" >
+                                                         <div v-show="fileppt.length>0 && cual_documento=='ppt'">
                                                          <hr>
                                                                 <div class="col-12" v-for= "(fileppts,index) in fileppt">
                                                                     <div class="row">
-                                                                        <span class="badge bg-secondary">Documento {{index+1}}</span><br>
+                                                                        <span class="badge bg-secondary mt-3">Documento {{index+1}}</span><br>
                                                                             <div class="col-12 col-md-12">
-                                                                                <button type="button" class="btn btn-danger" @click="eliminarDocumento(fileppts)" >Eliminar</button>
+                                                                                <button type="button" class="btn btn-danger" @click="eliminarDocumento(fileppts,tipo_usuario)" >Eliminar</button>
                                                                             </div>
-                                                                            <div class="col-12 col-md-12 mt-5">
-                                                                            Descargar<br>
-                                                                                <a :href="fileppts" download="Presentacion.pptx">
-                                                                                    <img src="img/descargar_ppt.png" style="width:100px; height:100px;"></img>
+                                                                            <div class="col-12 col-md-12">
+                                                                            Descargar <br><label style="font-size: 0.8em;">{{fileppts.substr(fileppts.lastIndexOf('/')+1)}}</label><br>
+                                                                                <a :href="fileppts" :download="fileppts.substr(fileppts.lastIndexOf('/') + 1)">
+
+                                                                                    <div v-if="fileppts.substr(fileppts.lastIndexOf('.')+1).trim() =='ppt' || fileppts.substr(fileppts.lastIndexOf('.')+1).trim()=='pptx'">
+                                                                                        <img src="img/descargar_ppt.png" style="width:100px; height:100px;"></img>
+                                                                                     </div>
+                                                                                     <div v-if="fileppts.substr(fileppts.lastIndexOf('.')+1).trim() =='xls' || fileppts.substr(fileppts.lastIndexOf('.')+1).trim()=='xlsx'">
+                                                                                        <img src="img/descargar_excel.png" style="width:100px; height:100px;"></img>
+                                                                                     </div>
+                                                                                     <div v-if="fileppts.substr(fileppts.lastIndexOf('.')+1).trim() =='doc' || fileppts.substr(fileppts.lastIndexOf('.')+1).trim()=='docx'">
+                                                                                        <img src="img/descargar_word.png" style="width:100px; height:100px;"></img>
+                                                                                     </div>
                                                                                 </a>
+                                                                                <!--aceptar y rechazar documentos de analista-->
                                                                             </div>
                                                                     </div>
                                                                 </div>
                                                          </div>
-                                                        <hr>
                                                     <!---->
                                                     <!---->
                                                 </form>
                                         </div>
                                 </div>
                                 <div class="modal-footer">
+                                    <div v-show="cumplimientoPPT != 100 && (status_ppt == 'Corregido' || status_ppt == 'Por Validar')"> <!-- cuando el analista no ha subido documentos-->
+                                        <button type="button" class="btn btn-success me-2" @click="aceptarRechazar_DocAnalista('aceptar')" >Aceptar</button>
+                                        <button type="button" class="btn btn-warning" @click="aceptarRechazar_DocAnalista('rechazar')" >Rechazar</button>
+                                    </div>
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                                     <button v-if="contenido_modal_agregar_eliminar=='Agregar'" type="button" class="btn btn-primary "  data-bs-dismiss="modal" @click="agregar_nuevo_lista">Guardar</button>
                                 </div>
@@ -881,26 +1680,433 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                             </div>
                    </div>
                   <!--////////////////////////////////////////////////////////APARTADO PREMIOS SUGERENCIAS-->
-                   <div v-else-if="ventana=='premios'">
+                   <div v-else-if="ventana=='premios'" v-cloak>
                             <!--cinta apartado-->
                             <div class="row justify-content-center align-items-start ">
                                 <div class="cintilla col-12 text-center">
                                    <b> ADMINISTRACIÓN DE PREMIOS </b>
                                 </div>
                             </div>
+
+                            <div class="row">
+                                <div class="col-12"><!--Agregar Premios-->
+                                        <div class="text-center mt-3">
+                                            <span class="badge bg-secondary">Agregar Productos</span>
+                                        </div>
+                                        <div class="div-scroll">
+                                            <table class="tablaMonitoreo-sugerencias table table-striped table-bordered ">
+                                            <thead class="encabezado-tabla text-center text-light ">
+                                                <tr>
+                                                    <th scope="col " class="sticky">Agregar</th>
+                                                    <th scope="col">Código<span class="badge bg-primary">*</span></th>
+                                                    <th scope="col">Descripción <span  class="badge bg-primary">*</span></th>
+                                                    <th scope="col">Puntos para canjer<span class="badge bg-primary">*</span></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr v-show="bandera_editar==false" class=" text-center">
+                                                
+                                                        <td class="align-middle sticky" style="  background: #f8f9fa;">
+                                                        <button  class="btn btn-primary" title="Guardar Reto" @click="guardarActualizarPremios('','','Insertar')"><i class="bi bi-check-circle"></i></button>       
+                                                        </td>
+                                                        <td>
+                                                            <input class="inputs-concentrado" type="text" v-model="codigo_premios" required></input>                  
+                                                        </td>
+                                                        <td>  
+                                                            <textarea class="inputs-concentrado text-area" type="text" v-model="descripcion_premios" required></textarea>                 
+                                                        </td>
+                                                        <td>
+                                                            <input class="inputs-concentrado" type="number" v-model="puntos_canjear_premios" required></input>   
+                                                        </td>
+                                                </tr>
+                                            </tbody>
+                                            </table>
+                                        </div>
+                                </div><!--Fin Agregar Primerios-->
+                                <div class="col-12"><!--Catalago de Premios-->
+                                        <div class="text-center mt-3">
+                                                <span class="badge bg-secondary">Catálogo de Premios</span>
+                                        </div>
+                                        <div class="div-scroll">
+                                                    <table class="tablaMonitoreo-sugerencias table table-striped table-bordered ">
+                                                    <thead class="encabezado-tabla text-center text-light ">
+                                                        <tr >
+                                                            <th scope="col" class="sticky">Editar/ Subir Imagen</th>
+                                                            <th scope="col">No.</th>
+                                                            <th scope="col">Imagen</th>
+                                                            <th scope="col">Código</th>
+                                                            <th scope="col">Descripción</th>
+                                                            <th scope="col">Puntos para canjer</th>
+                                                            <th scope="col">Eliminar</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr class=" text-center align-middle " v-for="(premios, index) in concentrado_premios">
+                                                                 
+                                                                <td class="sticky" style=" background: rgb(194, 194, 194)">
+                                                                            
+                                                                            <button v-if="actualizar_premios==index+1" type="button" class="btn btn-danger me-2" title="Cancelar" @click="editaPremio(0)" ><i class="bi bi-x-circle" ></i></button>
+                                                                            <button v-show="bandera_editar_premio==false" type="button" class="btn btn-warning me-2" title="Actualizar" @click="editaPremio(index+1)"><i class="bi bi-pen" ></i></button>
+                                                                            <button v-if="actualizar_premios==index+1" class="btn btn-primary me-2" title="Guardar Reto" @click="guardarActualizarPremios(0,premios.id,'Actualizar')"><i class="bi bi-check-circle"></i></button> 
+                                                                            <button v-if="premios.cant_img>0" type="button" class="btn btn-success" title="Subir Imagen"  @click="modal_subir_ver_documentos('Subir',premios.id,premios.codigo_premio,'premio',premios.cant_img)" ><i class="bi bi-paperclip">{{premios.cantidad_img}}</i></button>
+                                                                            <button v-else type="button" class="btn btn-secondary " title="Subir Imagen"  @click="modal_subir_ver_documentos('Subir',premios.id,premios.codigo_premio,'premio',premios.cant_img)" ><i class="bi bi-paperclip">{{premios.cantidad_img}}</i></button>    
+                                                                </td>
+                                                                <td>
+                                                                
+                                                                     <label><b>{{index+1}}</b></label>
+                                                                </td>
+                                                                <td>
+                                                               <!-- <img class="img-thumbnail min-w-25" style="max-width:100px" :src="'http://localhost/sugerencias/'+premios.url_premio" />-->
+                                                                <img class="img-thumbnail min-w-25" style="max-width:100px" :src="premios.url_premio" />
+                                                                </td>
+                                                                <td>
+                                                                    <input v-if="actualizar_premios==index+1"  class="inputs-concentrado" type="text" v-model="act_codigo_premio" required></input>
+                                                                    <label  v-else>{{premios.codigo_premio}}</label>
+                                                                </td>
+                                                                <td>
+                                                                    <input v-if="actualizar_premios==index+1"  class="inputs-concentrado" type="text" v-model="act_descripcion_premios" required></input>
+                                                                    <label v-else>{{premios.descripcion}}</label>                  
+                                                                </td>
+                                                                <td>
+                                                                    <input v-if="actualizar_premios==index+1"  class="inputs-concentrado" type="text" v-model="act_puntos_premios" required></input>
+                                                                    <label v-else >{{premios.puntos_para_canjear}}</label> 
+                                                                </td>    
+                                                                <td>
+                                                                    <button type="button" class="btn btn-danger" title="Eliminar" @click="eliminarPremio(premios.id,premios.url_premio,premios.cant_img)"><i class="bi bi-trash"></button></i>
+                                                                </td>
+                                                        </tr>
+                                                    </tbody>
+                                                    </table>
+                                                </div>
+                                            
+                            </div><!--Fin Premio Vigentes-->
+
+                        <!--Inicio Modal subir imagen en premio-->
+                        <!-- Modal Eliminar/Actualizar-->
+                        <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-xl">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h6 class="modal-title" id="exampleModalLabel" >{{titulo_modal}} </h6>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                        <div class="text-center" v-if="contenido_modal_agregar_eliminar=='Subir'">
+                                                <form @submit.prevent="uploadFile('admin')">
+                                                    <!--Subir Documento Sugerencia-->
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <div class="custom-file my-5"> 
+                                                                <input type="file" id="input_file_subir"  ref="ref_premio" multiple required/>{{extensiones_valida}}</input>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <button  type="submit" name="upload" class="btn btn-primary">Subir Archivos </button>
+                                                        </div>
+                                                    </div> 
+                                                       
+                                                          <!-- Mostrando los archivos cargados -->
+                                                        <div v-show="filepremio.length>0 && cual_documento=='premio'" >
+                                                        <hr>
+                                                                <div class="col-12" v-for= "(fileprem,index) in filepremio">
+                                                                    <div class="row">
+                                                                        <span class="badge bg-secondary">Documento {{index+1}}</span><br>
+                                                                            <div class="">
+                                                                                <button type="button" class="btn btn-danger" @click="eliminarDocumento(fileprem)" >Eliminar</button>
+                                                                            </div>
+                                                                    </div>
+                                                                    <img :src="filepremio[index]" style="width:50%"></img>
+                                                                    
+                                                                   <!-- <iframe src="https://vvnorth.com/Sugerencias/documentos/pdf.pdf" style="width:100%;height:500px;"></iframe>-->
+                                                                </div>
+                                                        </div>
+                                                </form>
+                                        </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                        <!--Fin Modal subir imagenes en retos-->
+
+
+                        </div><!--Fin apartado premios-->
+
+                        <!--Inicio Modal subir imagen en retos-->
+                        <!-- Modal Eliminar/Actualizar-->
+                            <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-xl">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h6 class="modal-title" id="exampleModalLabel" >{{titulo_modal}} </h6>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                        <div class="text-center" v-if="contenido_modal_agregar_eliminar=='Subir'">
+                                                <form @submit.prevent="uploadFile('admin')">
+                                                    <!--Subir Documento Sugerencia-->
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <div class="custom-file my-5"> 
+                                                                <input type="file" id="input_file_subir"  ref="archivosydocumentos" multiple required/>{{extensiones_valida}}</input>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <button  type="submit" name="upload" class="btn btn-primary">Subir Archivos </button>
+                                                        </div>
+                                                    </div> 
+                                                          <!-- Mostrando los archivos cargados -->
+                                                        <div v-show="filereto.length>0 && cual_documento=='reto'" >
+                                                        <hr>
+                                                                <div class="col-12" v-for= "(fileimgreto,index) in filereto">
+                                                                    <div class="row">
+                                                                    <span class="badge bg-secondary">Documento {{index+1}}</span><br>
+                                                                        <div class="d-flex justify-content-center m-3">
+                                                                            
+                                                                                <button type="button" class="btn btn-danger" @click="eliminarDocumento(fileimgreto)" >Eliminar</button><br>
+                                                                                <img class="text-center" :src="filereto[index]" style="width:100%; height:100%;"></img>
+                                                                            
+                                                                        </div>    
+                                                                    </div>
+                                                                   <!-- <iframe src="https://vvnorth.com/Sugerencias/documentos/pdf.pdf" style="width:100%;height:500px;"></iframe>-->
+                                                                </div>
+                                                        </div>
+                                                </form>
+                                        </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                        <!--Fin Modal subir imagenes en retos-->
                              <!--fin cinta apartado-->
                             <!-- contenido principal gonher-->
                             
                              <!--fin contenido principal gonher-->
                    </div>
-                   <div v-else-if="ventana=='retos'">
+                   <!--//////////////////////////////////////////////////////APARTADO ADMINISTRACION DE RETOS-->
+                   <div v-else-if="ventana=='retos'" v-cloak>
                             <div class="row justify-content-center align-items-start ">
                                 <div class="cintilla col-12 text-center">
                                    <b> ADMINISTRACIÓN DE RETOS</b>
                                 </div>
                             </div>
+                        
+                        <div class="row">
+                                <div class="col-12"><!--Agregar reto-->
+                                        <div class="text-center mt-3">
+                                            <span class="badge bg-secondary">Agregar Reto</span>
+                                        </div>
+                                        <div class="div-scroll">
+                                            <table class="tablaMonitoreo-sugerencias table table-striped table-bordered ">
+                                            <thead class="encabezado-tabla text-center text-light ">
+                                                <tr >
+                                                <th scope="col " class="sticky">Guardar<span  class="badge bg-primary">*</span></th>
+                                                <th scope="col">Título de Reto <span class="badge bg-primary">*</span></th>
+                                                <th scope="col">Descripción del Reto <span  class="badge bg-primary">*</span></th>
+                                                <th scope="col">Responsable <span class="badge bg-primary">*</span></th>
+                                                <th scope="col">Planta <span class="badge bg-primary">*</span></th>
+                                                <th scope="col">Área <span class="badge bg-primary">*</span></th>
+                                                <th scope="col">Subárea <span  class="badge bg-primary">*</span></th>
+                                                <th scope="col">Folio</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr v-show="bandera_editar==false" class=" text-center">
+                                                
+                                                        <td class="align-middle sticky" style="  background: rgb(94, 94, 94);">
+                                                                <button type="submit" class="btn btn-primary" title="Guardar Reto" @click="agregarReto('Insertar')"><i class="bi bi-check-circle"></i></button> 
+                                                        </td>
+                                                        <td>
+                                                            <textarea class="inputs-concentrado text-area" type="text"  v-model="titulo_del_reto" required></textarea>                   
+                                                        </td>
+                                                        <td>  
+                                                            <textarea class="inputs-concentrado text-area" type="text" v-model="descripcion_del_reto" required></textarea>                 
+                                                        </td>
+                                                        <td>
+                                                            <select class="inputs-concentrado" v-model="responsable_del_reto" required>
+                                                                <option value="" disabled>Seleccione analista..</option>
+                                                                <option v-for="analistas_factibilidad in lista_usuarios_y_analistas_factibilidad" :key="analistas_factibilidad.nombre" :value="analistas_factibilidad.nombre">{{analistas_factibilidad.nombre}}</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <select  class="inputs-concentrado"  @change="generarFolio()" v-model="planta_en_reto" required>
+                                                                    <option value=""  disabled>Seleccione la planta...</option>
+                                                                    <option v-for="planta in lista_planta" :key="planta.planta" :value="planta.planta">{{planta.planta}}</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <select class="inputs-concentrado" @change="generarFolio()" v-model="area_en_reto" required> 
+                                                                    <option value="" disabled>Seleccione el área...</option>
+                                                                    <option  v-for="area in lista_area" :key="area.area" :value="area.area">{{area.area}}</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                                    <select class="inputs-concentrado" v-model="subarea_en_reto" required>
+                                                                        <option value="" disabled>Seleccione Subárea...</option>
+                                                                        <option v-for="subarea in lista_subarea" :key="subarea.subarea" :value="subarea.subarea">{{subarea.subarea}}</option>
+                                                                    </select>         
+                                                        </td>
+                                                        <td>
+                                                                <input class="inputs-concentrado fw-bold" type="text"  v-model="folio_del_reto" disabled></input>                           
+                                                        </td>
+                                                    
+                                                </tr>
+                                            </tbody>
+                                            </table>
+                                        </div>
+                                </div><!--Fin Agregar reto-->
+                                <div class="col-12"><!--Reto Vigentes-->
+                                        <div class="text-center mt-3">
+                                                <span class="badge bg-secondary">Retos Vigentes</span>
+                                        </div>
+                                        <div class="div-scroll">
+                                                    <table class="tablaMonitoreo-sugerencias table table-striped table-bordered ">
+                                                    <thead class="encabezado-tabla text-center text-light ">
+                                                        <tr >
+                                                        <th scope="col" class="sticky">Guardar </th>
+                                                        <th>No. #</th>
+                                                        <th scope="col">Reto </th>
+                                                        <th scope="col">Título</th>
+                                                        <th scope="col">Descripción</th>
+                                                        <th scope="col">Responsable </th>
+                                                        <th scope="col">Planta </th>
+                                                        <th scope="col">Área </th>
+                                                        <th scope="col">Subárea </th>
+                                                        <th scope="col">Ingreso</th>
+                                                        <th scope="col">Folio</th>
+                                                        <th scope="col">Eliminar</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr class=" text-center align-middle " v-for="(retos, index) in concentrado_retos">
+                                                                 
+                                                                <td class="sticky" style=" background: rgb(194, 194, 194)">
+                                                                            
+                                                                <button v-if="actualizar_reto==index+1" type="button" class="btn btn-danger me-2" title="Cancelar" @click="editaReto(0)" ><i class="bi bi-x-circle" ></i></button>
+                                                                            <button v-show="bandera_editar==false" type="button" class="btn btn-warning me-2" title="Actualizar" @click="editaReto(index+1)"><i class="bi bi-pen" ></i></button>
+                                                                            <button v-show="bandera_editar==true" class="btn btn-primary me-2" title="Guardar Reto" @click="guardarActualizacionReto(0,retos.id,'Actualizar')"><i class="bi bi-check-circle"></i></button> 
+                                                                            <button v-if="retos.cantidad_img>0" type="button" class="btn btn-success  ms-2" title="Subir Imagen" @click="modal_subir_ver_documentos('Subir',retos.id,retos.folio_reto,'reto',retos.cantidad_img)"><i class="bi bi-paperclip">{{retos.cantidad_img}}</i></button>
+                                                                            <button v-else type="button" class="btn btn-secondary " title="Subir Imagen" @click="modal_subir_ver_documentos('Subir',retos.id,retos.folio_reto,'reto',retos.cantidad_img)" ><i class="bi bi-paperclip">{{retos.cantidad_img}}</i></button>    
+                                                                </td>
+                                                                <td >
+                                                                     <label><b>{{index+1 }}</b></label>
+                                                                </td>
+                                                                <td>
+                                                                    <select v-if="actualizar_reto==index+1" class="inputs-concentrado" v-model="act_status_reto" required>
+                                                                        <option v-for="tipo_status in tipo_status_reto"  :value="tipo_status">{{tipo_status}}</option>
+                                                                    </select>
+                                                                    <label  v-else>{{retos.status_reto}}</label>
+                                                                </td>
+                                                                <td>
+                                                                    <textarea v-if="actualizar_reto==index+1" class="inputs-concentrado text-area" type="text"  v-model="act_titulo_del_reto" required></textarea> 
+                                                                    <label v-else>{{retos.titulo_reto}}</label>                  
+                                                                </td>
+                                                                <td class="text-start">  
+                                                                    <textarea v-if="actualizar_reto==index+1" class="inputs-concentrado text-area" type="text" v-model="act_descripcion_del_reto" required></textarea>  
+                                                                    <label  v-else>{{retos.descripcion_reto}}</label>               
+                                                                </td>
+                                                                <td>
+                                                                    <select v-if="actualizar_reto==index+1" class="inputs-concentrado" v-model="act_responsable_del_reto" required>
+                                                                        <option value="" disabled>Seleccione analista..</option>
+                                                                        <option v-for="analistas_factibilidad in lista_usuarios_y_analistas_factibilidad" :key="analistas_factibilidad.nombre" :value="analistas_factibilidad.nombre">{{analistas_factibilidad.nombre}}</option>
+                                                                    </select>
+                                                                    <label  v-else>{{retos.responsable_reto}}</label>
+                                                                </td>
+                                                                <td>
+                                                                    <!--<select v-if="actualizar_reto==index+1"  class="inputs-concentrado" v-model="act_planta_en_reto" required>
+                                                                            <option value=""  disabled>Seleccione la planta...</option>
+                                                                            <option @click="generarFolio()" v-for="planta in lista_planta" :key="planta.planta" :value="planta.planta">{{planta.planta}}</option>
+                                                                    </select>-->
+                                                                    <label>{{retos.planta_reto}}</label>
+                                                                </td>
+                                                                <td>
+                                                                    <!--<select v-if="actualizar_reto==index+1" class="inputs-concentrado" v-model="act_area_en_reto" required> 
+                                                                            <option value="" disabled>Seleccione el área...</option>
+                                                                            <option @click="generarFolio()" v-for="area in lista_area" :key="area.area" :value="area.area">{{area.area}}</option>
+                                                                    </select>-->
+                                                                    <label>{{retos.area_reto}}</label> 
+                                                                </td>
+                                                                <td>
+                                                                        <select v-if="actualizar_reto==index+1" class="inputs-concentrado" v-model="act_subarea_en_reto" required>
+                                                                            <option value="" disabled>Seleccione Subárea...</option>
+                                                                            <option v-for="subarea in lista_subarea" :key="subarea.subarea" :value="subarea.subarea">{{subarea.subarea}}</option>
+                                                                        </select>
+                                                                    <label  v-else>{{retos.subarea_reto}}</label>         
+                                                                </td>
+                                                                <td>
+                                                                    <label>{{retos.fecha}}</label>
+                                                                </td>
+                                                                <td>
+                                                                    <label>{{retos.folio_reto}}</label>                           
+                                                                </td>
+                                                                <td>
+                                                                    <button type="button" class="btn btn-danger" title="Eliminar" @click="eliminarReto(retos.id)"><i class="bi bi-trash"></button></i>
+                                                                </td>
+                                                            
+                                                        </tr>
+                                                    </tbody>
+                                                    </table>
+                                                </div>
+                            </div><!--Fin Reto Vigentes-->
+                        </div>
+
+                        <!--Inicio Modal subir imagen en retos-->
+                        <!-- Modal Eliminar/Actualizar-->
+                            <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-xl">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h6 class="modal-title" id="exampleModalLabel" >{{titulo_modal}} </h6>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                        <div class="text-center" v-if="contenido_modal_agregar_eliminar=='Subir'">
+                                            <form @submit.prevent="uploadFile('admin')">
+                                                <!--Subir Documento Sugerencia-->
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="custom-file my-5"> 
+                                                            <input type="file" id="input_file_subir"  ref="archivosydocumentos" multiple required/>{{extensiones_valida}}</input>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <button  type="submit" name="upload" class="btn btn-primary">Subir Archivos </button>
+                                                    </div>
+                                                </div> 
+                                                    
+                                                    <!-- Mostrando los archivos cargados -->
+                                                <div v-show="filereto.length>0 && cual_documento=='reto'" >
+                                                <hr>
+                                                        <div class="col-12" v-for= "(fileimgreto,index) in filereto">
+                                                            <div class="row">
+                                                                <span class="badge bg-secondary">Documento {{index+1}}</span><br>
+                                                                    <div class="">
+                                                                        <button type="button" class="btn btn-danger" @click="eliminarDocumento(fileimgreto)" >Eliminar</button>
+                                                                    </div>
+                                                            </div>
+                                                            <img  :src="filereto[index]" style="width:100%;width:100%"></img>
+                                                            
+                                                            <!-- <iframe src="https://vvnorth.com/Sugerencias/documentos/pdf.pdf" style="width:100%;height:500px;"></iframe>-->
+                                                        </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                        <!--Fin Modal subir imagenes en retos-->
+                            
                    </div>
-                   <div v-else-if="ventana=='configuracion'">
+                   <div v-else-if="ventana=='configuracion'" v-cloak>
                     <!--//////////////////////////////////////////////////////////////////////////////APARTADO CONFIGURACIÓN-->
                     
                                 <div class="row justify-content-center align-items-start ">
@@ -908,55 +2114,425 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                         <b> CONFIGURACIÓN</b>
                                         </div>
                                 </div>
-                                <div class="row h-100">
-                               
-                                    <div class="d-flex justify-content-center align-items-center">
-                                        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 col-xxl-2 bg-light  border bordered-2 border-secondary rounded-2">
-                                            <form @submit.prevent="guardar_admin_y_analista" class="m-2">
-                                            <div class="text-center"><span class="badge text-dark ">ALTA DE USUARIOS/ANALISTAS.</span></div>
-                                                <div class="mb-3">
-                                                <div><span class="badge text-dark">Usuario (No. de Control):</span></div>
-                                                    <input type="text" class="form-control" v-model="nuevo_usuario"  required>
+                                <div class="row justify-content-center align-items-center">
+                                   
+                                                <div class="col-12 col-sm-4 col-xl-3  bg-light ms-3  ms-sm-0 mt-2   border bordered-2 border-secondary rounded-2 ">
+                                                    <form @submit.prevent="guardar_admin_y_analista" class="m-2 " style="font-size: 0.9em;">
+                                                    <div class="text-center"><span class="badge text-dark ">ALTA DE ADMIN/ANALISTAS.</span></div>
+                                                        <div class="mb-3">
+                                                        <div><span class="badge text-dark">Usuario (No. de Nómina):</span></div>
+                                                            <input type="text" class="w-100" v-model="nuevo_usuario"  required>
+                                                        </div>
+                                                        <div class="">
+                                                        <div><span class="badge text-dark">Password:</span></div>
+                                                            <input type="text" class="w-100" v-model="nuevo_password" required>
+                                                        </div>
+                                                        <div class="">
+                                                            <div><span class="badge text-dark">Nombre Completo:</span></div>
+                                                            <input type="text"   class="w-100" v-model="nuevo_nombre" required>
+                                                        </div>
+                                                        <div class="">
+                                                            <div><span class="badge text-dark">Correo:</span></div>
+                                                            <input type="email"class="w-100" v-model="nuevo_correo" required>
+                                                        </div>
+                                                        <div class="">
+                                                            <div><span class="badge text-dark">Planta:</span></div>
+                                                            <select class="w-100" v-model="analista_planta" required  style="font-size: 0.9em;">
+                                                                <option value="" disabled>Seleccione planta...</option>
+                                                                <option v-for="planta_analista in lista_planta" :value="planta_analista.planta">{{planta_analista.planta}}</option>
+                                                            </select> 
+                                                        </div>
+                                                        <div class="">
+                                                            <div><span class="badge text-dark">Área:</span></div>
+                                                            <select class="w-100" v-model="analista_area" required  style="font-size: 0.9em;">
+                                                                <option value="" disabled>Seleccione área...</option>
+                                                                <option v-for="area_analista in lista_area" :value="area_analista.area">{{area_analista.area}}</option>
+                                                            </select> 
+                                                        </div>
+                                                        <div class="">
+                                                            <div><span class="badge text-dark">Subárea:</span></div>
+                                                            <select class="w-100" v-model="analista_subarea" required  style="font-size: 0.9em;">
+                                                                <option value="" disabled>Seleccione subárea...</option>
+                                                                <option v-for="subarea_analista in lista_subarea" :value="subarea_analista.subarea">{{subarea_analista.subarea}}</option>
+                                                            </select> 
+                                                        </div>
+                                                        <div class="">
+                                                            <div><span class="badge text-dark">Departamento:</span></div>
+                                                            <select class="w-100" v-model="nuevo_departamento" required  style="font-size: 0.9em;">
+                                                                <option value="" disabled>Seleccione departamento...</option>
+                                                                <option v-for="area_part in lista_area_participante" :value="area_part.area_participante">{{area_part.area_participante}}</option>
+                                                            </select> 
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <div><span class="badge text-dark">Tipo:</span></div>
+                                                            <select class="w-100" v-model="var_tipo_usuario" required  style="font-size: 0.9em;">
+                                                                <option value="" disabled>Seleccione tipo...</option>
+                                                                <option v-for="array_tipo in array_tipo_usuario" :value="array_tipo">{{array_tipo}}</option>
+                                                            </select> 
+                                                        </div>
+                                                    
+                                                        <div class="text-center">
+                                                            <button class="boton-nuevo" > Aceptar</button>
+                                                        </div>
+                                                    </form>
                                                 </div>
-                                                <div class="mb-3">
-                                                <div><span class="badge text-dark">Password:</span></div>
-                                                    <input type="text" class="form-control" v-model="nuevo_password" required>
+                                                <div class="col-12 col-sm-8 ">
+                                                            <div class="text-center pt-1 ">
+                                                                <span class="badge bg-light text-dark" style="font-size:0.7em;">Administradores / Analistas / Responsables</span>
+                                                            </div>
+                                                            <div class="" style=" height:65vh; overflow-x: scroll;">
+                                                                <table class="tablaMonitoreo-sugerencias table table-striped table-bordered ">
+                                                                <thead class="encabezado-tabla text-center text-light ">
+                                                                    <tr >
+                                                                        <th scope="col" class="sticky">Editar</th>
+                                                                        <th scope="col">Usuario</th>
+                                                                        <th scope="col">Password</th>
+                                                                        <th scope="col">Email </th>
+                                                                        <th scope="col">Nombre</th>
+                                                                        <th scope="col">Planta</th>
+                                                                        <th scope="col">Área</th>
+                                                                        <th scope="col">Subárea</th>
+                                                                        <th scope="col">Departamento</th>
+                                                                        <th scope="col">Tipo </th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr v-for="(admis_usuarios, index) in array_usuarios">
+                                                                        <td>
+                                                                            <button v-if="id_update==index+1" type="button" class="btn btn-danger me-2" title="Cancelar" @click="editarUsuarios(0,0)" ><i class="bi bi-x-circle" ></i></button>
+                                                                            <button v-if="bandera_editar_user == false" type="button" class="btn btn-warning me-2" title="Actualizar" @click="editarUsuarios(1,index+1)"><i class="bi bi-pen" ></i></button>
+                                                                            <button v-if="id_update==index+1" class="btn btn-primary me-2" title="Guardar" @click="actualizar_admin_y_analista(admis_usuarios.id)"><i class="bi bi-check-circle"></i></button> 
+                                                                        </td>
+                                                                        <td> 
+                                                                            <input v-if="id_update==index+1" class="inputs-concentrado" type="text" v-model="u_user"/> 
+                                                                            <label v-else>{{admis_usuarios.user}}</label>
+                                                                        </td>
+                                                                        <td><input v-if="id_update==index+1" class="inputs-concentrado" type="text" v-model="u_password"/> 
+                                                                            <label v-else>{{admis_usuarios.password}}<label>
+                                                                        </td>
+                                                                        <td><input v-if="id_update==index+1" class="inputs-concentrado" type="text" v-model="u_email"/> 
+                                                                            <label v-else>{{admis_usuarios.email}}<label>
+                                                                        </td>
+                                                                        <td><input v-if="id_update==index+1" class="inputs-concentrado" type="text" v-model="u_nombre"/> 
+                                                                            <label v-else>{{admis_usuarios.nombre}}<label>
+                                                                        </td>    
+                                                                        <td>
+                                                                            <select v-if="id_update==index+1" class="inputs-concentrado" v-model="u_planta" required>
+                                                                                <option value="" disabled>Seleccione planta...</option>
+                                                                                <option v-for="planta_list in lista_planta" :value="planta_list.planta">{{planta_list.planta}}</option>
+                                                                            </select>  
+                                                                            <label v-else>{{admis_usuarios.planta}}<label>
+                                                                        </td>    
+                                                                        <td>
+                                                                            <select v-if="id_update==index+1" class="inputs-concentrado" v-model="u_area" required>
+                                                                                <option value="" disabled>Seleccione área...</option>
+                                                                                <option v-for="area_list in lista_area" :value="area_list.area">{{area_list.area}}</option>
+                                                                            </select>  
+                                                                            <label v-else>{{admis_usuarios.area}}<label>
+                                                                        </td>    
+                                                                        <td><select v-if="id_update==index+1" class="inputs-concentrado" v-model="u_subarea" required>
+                                                                                <option value="" disabled>Seleccione subárea...</option>
+                                                                                <option v-for="subarea_list in lista_subarea" :value="subarea_list.subarea">{{subarea_list.subarea}}</option>
+                                                                            </select>  
+                                                                            <label v-else>{{admis_usuarios.subarea}}<label>
+                                                                        </td>    
+                                                                        <td>
+                                                                            <select v-if="id_update==index+1" class="inputs-concentrado" v-model="u_departamento" required>
+                                                                                <option value="" disabled>Seleccione departamento...</option>
+                                                                                <option v-for="area_part in lista_area_participante" :value="area_part.area_participante">{{area_part.area_participante}}</option>
+                                                                            </select> 
+                                                                            <label v-else>{{admis_usuarios.departamento}}<label>
+                                                                        </td>    
+                                                                        <td>
+                                                                            <select  v-if="id_update==index+1" class="inputs-concentrado" v-model="u_tipo" required>
+                                                                                <option value="" disabled>Seleccione tipo...</option>
+                                                                                <option v-for="array_tipo in array_tipo_usuario" :value="array_tipo">{{array_tipo}}</option>
+                                                                            </select> 
+                                                                            <label v-else>{{admis_usuarios.tipo}}<label>
+                                                                        </td>    
+                                                                    </tr>
+                                                                </tbody>
+                                                                </table>
+                                                            </div>          
                                                 </div>
-                                                <div class="mb-3">
-                                                    <div><span class="badge text-dark">Nombre Completo:</span></div>
-                                                    <input type="text"   class="form-control" v-model="nuevo_nombre" required>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <div><span class="badge text-dark">Correo:</span></div>
-                                                    <input type="email" class="form-control" v-model="nuevo_correo" required>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <div><span class="badge text-dark">Departamente:</span></div>
-                                                    <input type="text"   class="form-control" v-model="nuevo_departamento" required>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <div><span class="badge text-dark">Tipo:</span></div>
-                                                    <select class="form-control" v-model="var_tipo_usuario" required>
-                                                        <option value="" disabled>Seleccione tipo...</option>
-                                                        <option v-for="array_tipo in array_tipo_usuario" :value="array_tipo">{{array_tipo}}</option>
-                                                    </select> 
-
-                                                </div>
-                                               
-                                                <div class="text-center">
-                                                    <button class="boton-nuevo" > Aceptar</button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
                                 </div>
                    </div>
+                   <div v-else-if="ventana=='solicitados'" v-cloak>
+                    <!--//////////////////////////////////////////////////////////////////////////////REMIOS SOLICITADOS-->
+                    
+                                <div class="row justify-content-center align-items-start ">
+                                        <div class="cintilla col-12 text-center">
+                                        <b>PREMIOS SOLICITADOS</b>
+                                        </div>
+                                </div>
+                                <div class="row  justify-content-center align-items-center">
+                                                            <div class="text-center pt-3 ">
+                                                                <span class="badge bg-light text-dark" style="font-size:0.7em;">Listado de Premios Solicitados</span>
+                                                            </div>
+                                                            <div class="" style="height:70vh; overflow-x: scroll;">
+                                                                <table class="tablaMonitoreo-sugerencias table table-striped table-bordered ">
+                                                                <thead class="encabezado-tabla text-center text-light ">
+                                                                    <tr>
+                                                                        <th scope="col">#</th>
+                                                                        <th scope="col" class="sticky">Editar</th>
+                                                                        <th scope="col">Número de Nómina</th>
+                                                                        <th scope="col">Colaborador</th>
+                                                                        <th scope="col">Planta</th>
+                                                                        <th scope="col">Área de Participante</th>
+                                                                        <th scope="col">Área</th>
+                                                                        <th scope="col">Fecha de Solicitud</th>
+                                                                        <th scope="col">Código de Premio</th>
+                                                                        <th scope="col">Cantidad (Pzs.)</th>
+                                                                        <th scope="col">No. Solped</th>
+                                                                        <th scope="col">Orden de Compra</th>
+                                                                        <th scope="col">Status</th>
+                                                                        <!--<th scope="col">Entregado</th>-->
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr class="text-center" v-for="(status_premios, index) in concentrado_status_premios">   
+                                                                        <td>
+                                                                            {{index+1}}
+                                                                        </td> 
+                                                                         <td>
+                                                                            <button v-if="id_updates==index+1" type="button" class="btn btn-danger me-2" title="Cancelar" @click="editarStutasPremioSolicitado(0,0)" ><i class="bi bi-x-circle" ></i></button>
+                                                                            <button v-if="bandera_editar_solicitud == false" type="button" class="btn btn-warning me-2" title="Actualizar" @click="editarStutasPremioSolicitado(1,index+1)"><i class="bi bi-pen" ></i></button>
+                                                                            <button v-if="id_updates==index+1" class="btn btn-primary me-2" title="Guardar" @click="guardarStutasPremioSolicitado(status_premios.id)"><i class="bi bi-check-circle"></i></button>
+                                                                            <!-- Para indicar que llegó el paquete -->
+                                                                        <button v-if="status_premios.solped?.trim() && status_premios.oc_generada?.trim() && Number(status_premios.producto_llego) === 0" type="button" class="btn btn-info me-2" title="Confirmar llegada del producto." @click="confirmarLlegadaProducto(status_premios.id)">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                                            <path d="M12 22V12" /><path d="m16 17 2 2 4-4" /><path d="M21 11.127V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.729l7 4a2 2 0 0 0 2 .001l1.32-.753" /><path d="M3.29 7 12 12l8.71-5" /><path d="m7.5 4.27 8.997 5.148" />
+                                                                        </svg>
+                                                                        </button>
+
+
+                                                                            <button v-if="status_premios.status=='Entregado'" type="button" class="btn btn-success  ms-2" title="Subir Imagen" @click="modal_subir_ver_documentos('Subir',status_premios.id,status_premios.id,'entregado',status_premios.cant_img_evidencia)"><i class="bi bi-paperclip"></i>{{status_premios.cant_img_evidencia}}</button>
+                                                                            <button v-else-if="status_premios.producto_llego!='' && status_premios.status=='Pte. Repartir'" type="button" class="btn btn-secondary" type="button" title="Subir evidencia de la entrega del premios." @click="modal_subir_ver_documentos('Subir',status_premios.id,status_premios.id,'entregado',status_premios.cant_img_evidencia)"><i class="bi bi-paperclip"></i>{{concentrado_status_premios.cant_img_evidencia}}</button> 
+                                                                            <button v-else-if="status_premios.solped==''" title="Coloque número de solped para que se active." class="btn btn-secondary" disabled><i class="bi bi-paperclip"></i></button>  
+                                                                        </td> 
+                                                                        <td>
+                                                                                {{status_premios.numero_nomina}}
+                                                                        </td>  
+                                                                        <td>
+                                                                                {{status_premios.colaborador}}   
+                                                                        </td>   
+                                                                        <td>
+                                                                                {{status_premios.planta}}
+                                                                        </td>   
+                                                                        <td>
+                                                                                {{status_premios.area_participante}}
+                                                                        </td>
+                                                                        <td>
+                                                                                {{status_premios.area}}
+                                                                        </td>    
+                                                                        <td>
+                                                                               {{ status_premios.fecha.substring(0, 10) }}
+                                                                        </td>   
+                                                                        <td>
+                                                                                {{status_premios.codigo_premio}}
+                                                                        </td> 
+                                                                        <td>
+                                                                                {{status_premios.cantidad}}
+                                                                        </td> 
+                                                                        <td >
+                                                                                <input class="inputs-concentrado text-center" type="text"  v-model="numero_solped"  v-if="id_updates==index+1">
+                                                                                <label v-else>{{status_premios.solped}}</label>   
+                                                                        </td>
+                                                                        <td >
+                                                                                <input class="inputs-concentrado text-center" type="text"  v-model="oc_generada"  v-if="id_updates==index+1">
+                                                                                <label v-else>{{status_premios.oc_generada}}</label>   
+                                                                        </td>    
+                                                                        <td>
+                                                                                    <label v-if="status_premios.status=='Entregado'" class="fw-bold text-success">{{ TitleStatus[status_premios.status] || status_premios.status }}</label>
+                                                                                    <label v-else-if="status_premios.status=='Pte. Repartir'" class="fw-bold text-danger">{{ TitleStatus[status_premios.status] || status_premios.status }}</label>
+                                                                                    <label v-else-if="status_premios.status=='Pte. Llegada'" class="fw-bold text-info">{{ TitleStatus[status_premios.status] || status_premios.status }}</label>
+                                                                                    <label v-else-if="status_premios.status=='Pte. Entrega'" class="fw-bold text-warning">{{ TitleStatus[status_premios.status] || status_premios.status }}</label>
+                                                                                    <label v-else-if="status_premios.status=='Pte. Solped'" class="fw-bold text-secondary">{{ TitleStatus[status_premios.status] || status_premios.status }}</label>
+                                                                        </td>   
+                                                                        <!--<td class="text-center">
+                                                                                <button class="boton-nuevo" @click="finalizarEntregaPremio(status_premios.id)" >Finalizar</button>
+                                                                        </td> -->
+                                                                    </tr>
+                                                                </tbody>
+                                                                </table>
+                                                            </div>          
+                                    </div>
+
+
+
+                           <!-- Modal Eliminar/Actualizar-->
+                            <div class="modal fade " id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-xl">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h6 class="modal-title" id="exampleModalLabel" >{{titulo_modal}} </h6>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                        <div class="text-center">
+                                                <form @submit.prevent="uploadFile('admin')">
+                                                    <!--Subir Documento Sugerencia-->
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <div class="custom-file my-5"> 
+                                                                <input type="file" id="input_file_subir"  ref="archivosydocumentos" multiple required/>{{extensiones_valida}}</input>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <button  type="submit" name="upload" class="btn btn-primary">Subir Archivos </button>
+                                                        </div>
+                                                    </div> 
+                                                       
+                                                          <!-- Mostrando los archivos cargados -->
+                                                        <div class="div" v-show="fileentregado.length>0 && cual_documento=='entregado'" >
+                                                        <hr>
+                                                                <div v-for= "(fileimgreto,index) in fileentregado" :key="index"  class="col-12 text-center">
+                                                                    <div class="row">
+                                                                     <span class="badge bg-secondary">Documento {{index+1}}</span><br>
+                                                                        <div class=" d-flex justify-content-center mt-3">
+                                                                                <div>
+                                                                                    <button type="button" class="btn btn-danger" @click="eliminarDocumento(fileimgreto)" >Eliminar</button><br>
+                                                                                   
+                                                                                </div>
+                                                                        </div>
+                                                                        <img class="centered-iframe" :src="fileentregado[index]" style="width:100%; height:100%;"></img>
+                                                                    </div>
+                                                                   
+                                                                   <!-- <iframe src="https://vvnorth.com/Sugerencias/documentos/pdf.pdf" style="width:100%;height:500px;"></iframe>-->
+                                                                </div>
+                                                        </div>
+                                                </form>
+                                        </div>
+                                </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        <!--Fin Modal subir imagenes en retos-->
+                   </div>
+                   <div v-else-if="ventana=='colaboradores'" v-cloak>
+                                    <div class="row justify-content-center align-items-start ">
+                                                <div class="cintilla col-12 text-center">
+                                                    <b>COLABORADORES</b>
+                                                </div>
+                                    </div>
+                                    <div class="row  justify-content-center align-items-center">
+                                                            <div class="text-center pt-3 ">
+                                                                <span class="badge bg-light text-dark" style="font-size:0.7em;">Listado de Colaboradores Registrados: {{ concentrado_colaboradores.Registrados}}</span><br>
+                                                                <span class="badge bg-light text-dark" style="font-size:0.7em;">No Registrados: {{ concentrado_colaboradores.NoRegistrados}}</span>
+                                                            </div>
+                                                            <div>
+                                                                <div class="row">
+                                                                    <div class="col-12 col-md-12"> 
+                                                                    <!-- Contenido -->
+                                                                        <div class="outer-container" style=" font-size:1em">
+                                                                            <form @submit.prevent="subirExcelNuevosColaboradores" style="font-size:0.7em;">
+                                                                                <div>
+                                                                                    
+                                                                                    <input type="file"  ref="documentoExcel" accept=".csv" required/></input>
+                                                                                    <button type="submit" class="btn btn-primary" style=" font-size: 0.8em" >Importar Registros</button>
+                                                                                </div>
+                                                                            </form>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            <!-- Fin Contenido --> 
+                                                            </div>
+
+                                                            <!---->
+                                                            <div class="" style="height:70vh; overflow-x: scroll;">
+                                                                <table class="tablaMonitoreo-sugerencias table table-striped table-bordered ">
+                                                                <thead class="encabezado-tabla text-center text-light ">
+                                                                    <tr>
+                                                                        <!--<th scope="col" class="sticky">Editar</th>-->
+                                                                        <th scope="col" >#</th>
+                                                                        <th scope="col">Nombre Colaborador</th>
+                                                                        <th scope="col">Número de Nómina</th>
+                                                                        <th scope="col">Password</th>
+                                                                        <th scope="col">Planta</th>
+                                                                        <th scope="col">Baja laboral</th>
+                                                                        <th scope="col">Actualizar</th>
+                                                                        <!--<th scope="col">Entregado</th>-->
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr class="text-center align-middle " v-for="(colaboradores, index) in concentrado_colaboradores">    
+                                                                          <!--<td>
+                                                                           <button v-if="id_updates==index+1" type="button" class="btn btn-danger me-2" title="Cancelar" @click="editarStutasPremioSolicitado(0,0)" ><i class="bi bi-x-circle" ></i></button>
+                                                                            <button v-if="bandera_editar_solicitud == false" type="button" class="btn btn-warning me-2" title="Actualizar" @click="editarStutasPremioSolicitado(1,index+1)"><i class="bi bi-pen" ></i></button>
+                                                                            <button v-if="id_updates==index+1" class="btn btn-primary me-2" title="Guardar" @click="guardarStutasPremioSolicitado(status_premios.id)"><i class="bi bi-check-circle"></i></button> 
+                                                                            <button v-if="status_premios.status=='Entregado'" type="button" class="btn btn-success  ms-2" title="Subir Imagen" @click="modal_subir_ver_documentos('Subir',status_premios.id,status_premios.solped,'entregado',status_premios.cant_img_evidencia)"><i class="bi bi-paperclip"></i>{{status_premios.cant_img_evidencia}}</button>
+                                                                            <button v-else-if="status_premios.solped!='' && status_premios.status=='Pte. Entrega'" type="button" class="btn btn-secondary" type="button" title="Subir evidencia de la entrega del premios." @click="modal_subir_ver_documentos('Subir',status_premios.id,status_premios.solped,'entregado',status_premios.cant_img_evidencia)"><i class="bi bi-paperclip"></i>{{concentrado_status_premios.cant_img_evidencia}}</button> 
+                                                                            <button v-else-if="status_premios.solped==''" title="Coloque número de solped para que se active." class="btn btn-secondary" disabled><i class="bi bi-paperclip"></i></button> 
+                                                                        </td> -->
+                                                                        <td>
+                                                                            <b>{{index}}</b>
+                                                                        </td> 
+                                                                        <td>
+                                                                                {{colaboradores.colaborador}}
+                                                                        </td>  
+                                                                        <td>
+                                                                                {{colaboradores.numero_nomina}}   
+                                                                        </td>   
+                                                                        <td v-if="colaboradores.password=='123456'">
+                                                                                {{colaboradores.password}}
+                                                                        </td> 
+                                                                        <td v-else class="bg-success text-white">
+                                                                            <b>{{colaboradores.password}}</b>
+                                                                        </td>
+                                                                        <td>
+                                                                             {{colaboradores.planta}}
+                                                                        </td>
+                                                                        <td v-if="colaboradores.status=='Baja'" class="bg-danger text-white">
+                                                                            {{colaboradores.status}}
+                                                                        </td>
+                                                                        <td v-else>
+                                                                            
+                                                                        </td>   
+                                                                        <td>
+                                                                             <button type="button" class="btn btn-warning me-2" title="Actualizar" @click="modalActualizarColaborador(colaboradores.colaborador,colaboradores.id,colaboradores.planta,colaboradores.status)" data-bs-toggle="modal" data-bs-target="#modalColaborador"><i class="bi bi-pen" ></i></button>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                                </table>
+                                                            </div>          
+                                    </div>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="modalColaborador" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                            <div class="modal-header tamanio-text-grande">
+                                                <label class="modal-title" id="staticBackdropLabel"> Actualizar a: <b>{{colaborador_nombre}}<b></label>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body tamanio-text-grande text-center d-flex justify-content-around">
+                                                        <select v-model="selector_planta_colaborador">
+                                                            <option  value="" selected>Selecciona una planta</option>
+                                                            <option v-for="planta in lista_planta" :key="planta.planta" :value="planta.planta">{{planta.planta}}</option>
+                                                        </select>
+
+                                                        <select v-model="selector_baja_colaborador">
+                                                            <option  value="" selected>¡¡Sigue activo!!</option>
+                                                            <option  value="Baja">Dado de BAJA</option>
+                                                        </select>
+                                            </div>
+                                            <div class="modal-footer taminio-text-mediano ">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                <button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="actualizarColaborador(id_colaborador)">Actualizar</button>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                     <!-- Fin Modal -->
+                    </div>
+
+
             </div>
-                <!--FOOTER-->
-            <div class="row" style="height:10vh; background: url(img/pie.jpg); background-repeat: repeat-x; background-size: 8% 100%;">
-           
-            </div>
-        
+            <!--FOOTER-->
+                <div class="row" style="height:10vh; background: url(img/pie.jpg); background-repeat: repeat-x; background-size: 8% 100%;"></div>
     </div>
 
 <script>
@@ -973,11 +2549,49 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 pintarTres:false,
                 pintarCuatro:false,
                 pintarCinco: false,
+                pintarSeis: false,
+                pintarSiete: false,
+                pintarOcho: false,
                 nueva_sugerencia:false,
+                concentrado_sugerencias_pendiente_impacto: [],
+                concentrado_impacto_sugerencias_midiendo:[],
+                myModal:'',
+                causa:'',
+                fileopcional:[],
+                puntos_no_factible:0,
+                vistobueno:false,
+                nombre_analista:'',
+                nombre_colaborador:'',
+                idea_propuesta:'',
+                situacion_actual:'',
+                colaborador_nombre:'',
+                id_colaborador:'',
+                selector_planta_colaborador:'',
+                selector_baja_colaborador:'',
+                //*Variables Planes de Trabajo*/
+                loanding:true,
+                arregloPlanesDeTrabajo:[],
+                desc_o_asc:'desc',
+                ordenar:'pts.id',//tabla plabes_de_trabajo_sugerencias (pts)
+                buttonActivo:2,//lo inicializo con 2 para que se active desc.
+                input_folio_filtrar:'',
+                lista_plantas_select_filtrar:[],
+                lista_areas_select_filtrar:[],
+                lista_subareas_select_filtrar:[],
+                lista_analistas_select_filtrar:[],
+                lista_cierre_actividades_select_filtrar:[],
+                lista_responsables_actividades_select_filtrar:[],
+                lista_responsables_subareas_select_filtrar:[],
+                planta_filtrada:'',
+                area_filtrada:'',
+                subarea_filtrada:'',
+                analista_filtrado:'',
+                responsable_filtrado:'',
+                responsable_subarea_filtrada:'',
+                estatus_hallazgo_filtrado:'',
                 //*Varibales Concetrado*/
                 lista_validacion_de_impacto:['Cuantitativo','Cualitativo'],
                 concentrado_actividades:[],
-                
                 folio:'',
                 validacion_de_impacto:'',
                 //*Varibales modal acaptado o rechazado */
@@ -990,6 +2604,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 porcentaje_de_mejora:'',
                 tipo_de_impacto:'',
                 puntos_asignados:'',
+                numero_nomina:'',
                 /*formulario cualitativo*/
                 tipo_impacto:'',
                 impacto_cualitativo:'',
@@ -999,6 +2614,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 filenames: [],
                 filedoc: [],
                 fileppt: [],
+                filepremio: [],
+                filereto: [],
+                fileentregado: [],
                 contar_DOC:0,
                 contar_PPT:0,
                 actualizar_sugerencia:'',
@@ -1050,45 +2668,147 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 correo_analista:'',
                 id_concentrado:'',
                 folio_carpeta_doc:'',
-                cantidadDOCPPT:0,
+                cantidadDOCFILE:0,
                 cual_documento:'',
+                /*Variables Premios*/
+                codigo_premios:'',
+                descripcion_premios:'',
+                puntos_canjear_premios:'',
+                /*Variables administracion de retos*/
+                titulo_del_reto:'',
+                descripcion_del_reto:'',
+                responsable_del_reto:'',
+                planta_en_reto:'',
+                area_en_reto:'',
+                subarea_en_reto:'',
+                folio_del_reto:'',
+                concentrado_retos:[],
+                ultimo_folio_retos:[],
+                bandera_editar:false,
+                actualizar_reto:'',
+                tipo_status_reto:['Activo','Cerrado','Inactivo'],
+                act_status_reto:'',
+                act_titulo_del_reto:'',
+                act_descripcion_del_reto:'',
+                act_responsable_del_reto:'',
+                act_planta_en_reto:'',
+                act_area_en_reto:'',
+                act_subarea_en_reto:'',
+                /*Variables administracion de premios*/
+                concentrado_premios:[],
+                codigo_premios:'',
+                descripcion_premios:'',
+                puntos_canjear_premios:'',
+                actualizar_premios:'',
+                bandera_editar_premio:'',
+                act_codigo_premio:'',
+                act_descripcion_premio:'',
+                act_puntos_premios:'',
+                url_img_premio:'',
+                numberRule: [
+                            v => v.length > 0 || 'campo requerido',
+                            v => v > 0 || 'El valor debe ser mayor a cero'
+                        ],
                 /*Variables Configuracion*/
                 nuevo_usuario:'',
                 nuevo_password:'',
                 nuevo_nombre:'',
                 nuevo_correo:'',
                 nuevo_departamento:'',
-                array_tipo_usuario: ['Admin','Analista'],
+                analista_planta:'',
+                analista_area:'',
+                analista_subarea:'',
+                array_tipo_usuario: ['Admin','Analista','Responsable'],
                 var_tipo_usuario:'',
+                array_usuarios:[],
+                bandera_editar_user:false,
+                id_update:0,
+                u_user: '', 
+                u_password:'', 
+                u_email: '',
+                u_nombre:'',
+                u_planta:'',
+                u_area:'',
+                u_subarea:'', 
+                u_departamento:'', 
+                u_tipo:'',
+                /*Variables de Estatus de Premios */
+                concentrado_status_premios: [],
+                id_updates:0,
+                bandera_editar_solicitud:false,
+                numero_solped:'',
+                oc_generada:'',
+                producto_llego:'',
+                premio_status:'',
+                cssentregado:'',
+                /* Variables de Impacto*/
+                colorgreen:'background: url("img/verde2.jpg"); color:white; font-weight:bold;',
+                colorgris:'background-color: #fbfbfb ',
+                concentrado_colaboradores:[],
+                suma:0,
+                sumatotal:0,
+                cambio_contrasenia:[],
+                valor:'acomodar',
+                usuarioT:'',
+                cumplimientoPPT:'',
+                indexPPT:'',
+                status_ppt:'',
+                total_sugerencias: '',
+                cantidad_p_pagina: 50,
+                total_paginas: '',
+                arregloPosicionPagina: 0,
+                cant_paginas:'',
+                valorBtnPag: 'ordenar',
+                bandera_paginacion: true,
+                //bandera_verTodo: true,
+                ver_todo: false,
+                //size_paginacion: 50,
+                ventana_actual:'principalMejora',
+                palabra:'',
+                coincidencias:'',
+                bandera_inputVacio: false,
+                desactivarbtnLimpiar: true,
+                bandera_buscador: false,
+
+                //VALORES DE LOS ESTATUS
+                TitleStatus: {
+                    'Pte. Solped': 'Pte. Solped',
+                    'Pte. Entrega': 'Pte. Orden de compra',
+                    'Pte. Llegada': 'Pte. Confirmar Llegada de Premio',
+                    'Pte. Repartir': 'Pte. Entrega'
+                }
             }
         },
         mounted(){
 
             //Consultado concentrado de sugerencias.
-            this.consultado_concentrado(),
+            //this.consultado_concentrado(),
             //consultado lista status
            axios.post('lista_status.php',{
             }).then(response =>{
                 this.lista_status = response.data
-                console.log(this.lista_status);
+                //console.log(this.lista_status);
             }),
-             //consultado lista planta
-             this.consultando_plantas(),
-             //consultado lista area
-             this.consultando_area(),
-             //consultado lista participante
-             this.consultando_area_participante(),
-             //consultado lista subareas
-             this.consultando_subarea(),
-             //consultado lista impacto primario y secuandario
-             this.consultando_impacto(),
-             //consultado lista tipo desperdicio
-             this.consultando_lista_de_desperdicio(),
-             //consultado lista objetivo de calidad MA
-             this.consulta_lista_objetivos_calidad_ma(),
-             //consultado lista analistas de factibilidad
-             this.consulta_lista_analista_factibilidad(),
-             this.consulta_lista_usuarios_y_analistas_factibilidad(),
+            this.acomodarSugerencias(),
+            this.consultando_total_sugerencias(),
+            //consultado lista planta
+            this.consultando_plantas(),
+            //consultado lista area
+            this.consultando_area(),
+            //consultado lista participante
+            this.consultando_area_participante(),
+            //consultado lista subareas
+            this.consultando_subarea(),
+            //consultado lista impacto primario y secuandario
+            this.consultando_impacto(),
+            //consultado lista tipo desperdicio
+            this.consultando_lista_de_desperdicio(),
+            //consultado lista objetivo de calidad MA
+            this.consulta_lista_objetivos_calidad_ma(),
+            //consultado lista analistas de factibilidad
+            this.consulta_lista_analista_factibilidad(),
+            this.consulta_lista_usuarios_y_analistas_factibilidad(),
+ 
                 axios.post('consulta_usuario.php',{
                     usuario: this.usuario
                 }).then(response =>{
@@ -1097,33 +2817,173 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     //this.objetivo_de_calidadMA = response.data
                     //console.log(this.objetivo_de_calidadMA);
                 })
+
         },
         methods:{
-            mostrar(dato){
-                   this.ventana=dato;
-                   if(dato=='principalMejora'){ this.pintarUno=true}else{this.pintarUno=false}
-                   if(dato=='concentrado'){this.pintarDos=true}else{this.pintarDos=false}
-                   if(dato=='premios'){ this.pintarTres=true}else{this.pintarTres=false}
-                   if(dato=='retos'){this.pintarCuatro=true}else{this.pintarCuatro=false}
-                   if(dato=='configuracion'){this.pintarCinco=true}else{this.pintarCinco=false}
-             },
-       /*METODOS PRINCIPAL MEJORA*/   
+
+
+
+    mostrar(dato){
+        this.ventana=dato;
+        if(dato=='principalMejora'){ this.pintarUno=true; this.valorBtnPag = 'ordenar'; this.arregloPosicionPagina = 0; this.bandera_paginacion = true; this.ver_todo = false;} else{this.pintarUno=false}
+        if(dato=='planesDeTrabajo'){ this.pintarDos=true; this.consultar_planes_de_trabajo(); this.consultar_listas_selected_filtrados(), this.bandera_paginacion = false;this.ver_todo = false;}else{this.pintarDos=false}
+        if(dato=='concentrado'){ this.pintarTres=true; this.valorBtnPag = 'no ordenar'; this.arregloPosicionPagina = 0; this.bandera_paginacion = true; this.ver_todo = false;}else{this.pintarTres=false}
+        if(dato=='premios'){this.pintarCuatro=true;  this.consultar_concentrado_premios(); this.bandera_paginacion = false;  this.ver_todo = false;}else{this.pintarCuatro=false;}
+        if(dato=='retos'){this.pintarCinco=true; this.consultaConcentradoRetos(); this.bandera_paginacion = false;  this.ver_todo = false;}else{this.pintarCinco=false;}
+        if(dato=='configuracion'){this.pintarSeis=true; this. consultar_usuarios(); this.bandera_paginacion = false; this.ver_todo = false;}else{this.pintarSeis=false;}
+        if(dato=='solicitados'){this.pintarSiete=true; this.consultar_premios_solicitados(); this.bandera_paginacion = false; this.ver_todo = false;}else{this.pintarSiete=false;}
+        if(dato=='colaboradores'){this.pintarOcho=true; this.consultar_colaboradores(); this.bandera_paginacion = false; this.ver_todo = false;}else{this.pintarOcho=false; }
+    },
+
+       /*METODOS PRINCIPAL MEJORA*/      
     datosSugerencia(id){
-                axios.post("cunsultar_datos_sugerencia.php",{
-                id_concentrado:id
-                }).then(response =>{
-                    console.log(this.datos_sugerencia = response.data)
-                }).catch(error => {
-                    console.log(error)
-                })
-            },                                 
+        axios.post("cunsultar_datos_sugerencia.php",{
+        id_concentrado:id
+        }).then(response =>{
+            console.log(this.datos_sugerencia = response.data)
+        }).catch(error => {
+            console.log(error)
+        })
+    },
+
+    buscadorSugerencia(){
+        this.arregloPosicionPagina = 0;
+        if(this.palabra == ''){
+            this.bandera_inputVacio = true;
+            document.getElementById('inputBuscar').style.borderColor  = '#ff0000';
+            //this.palabra = 'vacio';
+            //this.bandera_inputVacio = true;
+
+            setTimeout(() => {
+                document.getElementById('inputBuscar').style.borderColor  = '#bdbdbd';
+                this.bandera_inputVacio = false;
+            }, 3000);
+
+        }else{
+            this.loanding = true;
+            this.ver_todo = false;
+            this.bandera_buscador = true;
+
+            /*if(this.ver_todo == false){
+                const button3 = document.getElementById('btn3');
+                button3.disabled = true;
+                const button4 = document.getElementById('btn4');
+                button4.disabled = true;
+            }else{
+                const button1 = document.getElementById('btn1');
+                button1.disabled = true;
+                const button2 = document.getElementById('btn2');
+                button2.disabled = true;
+            }*/
+
+            console.log('buscar:',this.palabra)
+            axios.post("consulta_concentrado_sugerencias.php",{
+                accion:'buscar',
+                numero_pagina: '',
+                palabra:this.palabra
+            }).then(response =>{
+                //console.log(response.data)
+                this.coincidencias = response.data
+                    this.concentrado_sugerencias = response.data
+                    console.log('las coincidencias son:',this.concentrado_sugerencias);
+            }).catch(error => {
+                console.log(error);
+            }).finally(() =>{
+                this.loanding = false;
+            })
+            //this.bandera_inputVacio = false;
+        }
+        
+    },
+
+    limpiarFiltro(){
+        this.acomodarSugerencias();
+        this.palabra = '';
+        this.bandera_buscador = false;
+       // this.bandera_limpiarFiltro = true;
+        //this.bandera_inputVacio = false;
+        document.getElementById('inputBuscar').style.borderColor  = '#bdbdbd';
+
+        this.ver_todo = false;
+        this.arregloPosicionPagina= 0;
+        this.acomodarSugerencias();
+
+    },
+
+    consultar_planes_de_trabajo(){//consulto al iniar y al seleccionar una opcion de los select
+        this.loanding = true;
+        axios.post("consultar_planes_de_trabajo.php",{
+            folio:this.input_folio_filtrar,
+            planta: this.planta_filtrada,
+            area: this.area_filtrada,
+            subarea: this.subarea_filtrada,
+            analista: this.analista_filtrado,
+            responsable: this.responsable_filtrado,
+            responsable_subarea: this.responsable_subarea_filtrada,
+            estatus_hallazgos: this.estatus_hallazgo_filtrado
+        }).then(response =>{
+            this.arregloPlanesDeTrabajo = response.data
+            console.log(this.arregloPlanesDeTrabajo);
+        }).catch(error => {
+            console.log(error);
+        }).finally(() =>{
+            this.loanding = false;
+        })
+    }, 
+    activeButton(numero,ordenar,orden){//cosultar al presionar el boton ordenar
+        this.loanding = true;
+        this.buttonActivo = numero
+            axios.post("consultar_planes_de_trabajo.php",{
+                folio:this.input_folio_filtrar,
+                planta: this.planta_filtrada,
+                area: this.area_filtrada,
+                subarea: this.subarea_filtrada,
+                analista: this.analista_filtrado,
+                responsable: this.responsable_filtrado,
+                responsable_subarea: this.responsable_subarea_filtrada,
+                estatus_hallazgos: this.estatus_hallazgo_filtrado,
+                ordenar: ordenar, 
+                orden: orden
+            }).then(response =>{
+                console.log(response.data)
+                this.arregloPlanesDeTrabajo = response.data
+            }).catch(error => {
+                console.log(error);
+            }).finally(() => {
+                this.loanding = false;
+            })
+    },    
+    consultar_listas_selected_filtrados(){
+        axios.post("consultas_listas_filtrado.php",{
+        })
+        .then(response =>{
+            console.log("PLATAS",response.data.plantas);
+            console.log("AREAS",response.data.areas);
+            console.log("SUBAREAS",response.data.subareas);
+            this.lista_plantas_select_filtrar = response.data.plantas;
+            this.lista_areas_select_filtrar = response.data.areas;
+            this.lista_subareas_select_filtrar = response.data.subareas;
+            this.lista_analistas_select_filtrar = response.data.analistas;
+            this.lista_responsables_actividades_select_filtrar = response.data.responsables;
+                /*lista_plantas_select_filtrar:[],
+                lista_areas_select_filtrar:[],
+                lista_subareas_select_filtrar:[],
+                lista_analistas_select_filtrar:[],
+                lista_cierre_actividades_select_filtrar:[],
+                lista_responsables_actividades_select_filtrar:[],
+                lista_responsables_subareas_select_filtrar:[],*/
+        }).catch(error =>{
+            alert("Error en axios: " + error.message);
+        })
+    },
+                                
     consultarActividades(id,status){
                 this.id_concentrado = id
                 this.status = status
                 axios.post("consultando_actividades.php",{
                 id_concentrado:this.id_concentrado
                 }).then(response =>{
-                    console.log(this.concentrado_actividades = response.data)
+                    console.log("ARREGLO",this.concentrado_actividades = response.data)
                 }).catch(error => {
                     console.log(error)
                 })
@@ -1136,7 +2996,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
             }).then(response =>{
                 console.log(response.data)
                 if(response.data==true){
-                    this.consultado_concentrado();
+                    this.verTodo();
+                   // this.acomodarSugerencias();
                 }else{
                     alert("Problemas para actualizar.")
                 }
@@ -1144,24 +3005,122 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 console.log(error)
             })
     },
-    datos_modal(id_concentrado,folio,validacion_de_impacto){
+    mensajeAlNueveNueve(){
+        alert("El %cumplimiento debe de estar al 99% para que se active. ")
+    },
+    datos_modal(id_concentrado,folio,validacion_de_impacto,nomina){
+        
+        this.numero_nomina = nomina
         this.id_concentrado = id_concentrado
         this.folio = folio
         this.folio_carpeta_doc = folio
         this.validacion_de_impacto = validacion_de_impacto
         this.cual_documento = 'ppt'
+        
+            if(this.validacion_de_impacto=="Cuantitativo"){
+              this.myModal = new bootstrap.Modal(document.getElementById('modalImpactoCuantitativo'))
+              this.myModal.show()
+             
+            }
+            if(this.validacion_de_impacto=="Cualitativo"){
+             this.myModal = new bootstrap.Modal(document.getElementById('modalImpactoCualitativo'))
+             this.myModal.show()
+            }
         this.buscarDocumentos()
         this.buscarDatosValidacionImpacto()
-        
-        
+    },
+
+    datos_modal_detalles(id_concentrado,folio,nomina,causa,cumplimiento,nombre_analista,nombre_colaborador,idea_propuesta,situacion_actual){
+       
+        if(cumplimiento==100){
+            this.vistobueno=true
+        }else{
+            this.vistobueno=false
+        }
+        this.folio_carpeta_doc=folio
+        this.folio = folio
+        this.cual_documento = "nofactibleopcional"
+        this.causa=causa
+        this.id_concentrado = id_concentrado
+        this.numero_nomina = nomina
+
+        this.nombre_analista = nombre_analista
+        this.nombre_colaborador = nombre_colaborador
+        this.idea_propuesta = idea_propuesta
+        this.situacion_actual = situacion_actual
+        //id_concentrado,folio,numero_nomina,puntos
+
+        this.buscarDocumentos()
+        this.consultarPuntosNoFactible()
+        this.myModal = new bootstrap.Modal(document.getElementById('modalDetallesNofactible'))
+        this.myModal.show()
+
+    },
+    
+    consultarPuntosNoFactible(){
+        this.puntos_no_factible=0;//reinicio la variable para que no me muestre el valor anterior
+        axios.post("consultar_puntos_no_factible.php",{
+            id_concentrado:this.id_concentrado,
+            folio:this.folio
+        }).then(response =>{
+            if(response.data!=""){
+                this.puntos_no_factible=response.data;
+            }
+        })
+    },
+
+    guardarPuntosnofactible(){
+        axios.post('guardar_actualizar_puntos_no_factible.php',{
+            id_concentrado:this.id_concentrado,
+            folio:this.folio,
+            numero_nomina:this.numero_nomina,
+            puntos:this.puntos_no_factible
+        }).then(response =>{
+            if(response.data[0]== true){
+                alert("Puntos guardados.")
+                    //this.myModal.hide();
+            }else{
+                alert("Algo salio mal no se pueden guardar/actualizar los puntos")
+            }
+        }).catch(arror =>{
+            console.log(error)
+        })
+
+      /*  axios.post('guardar_actulizar_puntos_no_factible.php',{
+            id_concentrado:this.id_concentrado,
+            folio:this.folio,
+            numero_nomina:this.numero_nomina,
+            puntos:this.puntos_no_factible
+        }).then(response =>{
+                console.log(response.data);
+        })*/
+    },
+    checknoFactibilidad(){
+       var valor = document.getElementById("checkbox").checked;
+                axios.post('check_no_factibilidad.php',{
+                    id_concentrado:this.id_concentrado,
+                    vistobueno:valor,
+                }).then(response =>{
+                   
+                    if(response.data==true){
+                       //this.acomodarSugerencias()
+                       this.verTodo();
+                    }else{
+                        alert("Error al actualizar el porcentaje en el check.")
+                    }
+                    
+                })
+      
     },
     cambiaraEnFactibilidad(){
         if(!confirm('Desea usted cambiar el status de esta sugerencia a "En Factibilidad"')) return
         axios.post('guardar_actualizar_cambiar_a_En_Factibilidad.php',{
             id_concentrado: this.id_concentrado
         }).then(response =>{
+            console.log("RESPUESTA RESETEO : ",response.data);
             if(response.data=="correcto"){
-                this.consultado_concentrado()
+                //this.acomodarSugerencias()
+                this.verTodo();
             }else{
                 alert('algo salio mal.')
             }
@@ -1207,17 +3166,15 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 resultado_esperado:this.resultado_esperado,
                 porcentaje_de_mejora:this.porcentaje_de_mejora,
                 validacion_de_impacto:this.validacion_de_impacto,
-                puntos_asignados:this.puntos_asignados
+                puntos_asignados:this.puntos_asignados,
+                numero_nomina:this.numero_nomina
                 }).then(response =>{
                         console.log(response.data)
                         if(response.data[0]== true && response.data[1]== true){
                            alert("Los datos se guardaron/actualizaron correctamente.")
-                           /*const items = document.getElementsByClassName("modal-backdrop fade show")// obtengo div con estas clases
-                           items[0].className = ""; // sustituyo y elimino a nada. 
-                           bootstrap.Modal.getOrCreateInstance(document.getElementById('modalImpactoCuantitativo')).hide()//oculto contenido*/
-                            this.consultado_concentrado()
-                            //window.location.reload();
-                            
+                           //this.acomodarSugerencias()
+                           this.verTodo();
+                           this.myModal.hide()
                         }else{
                             alert("Fallo al guardar en una tabla o ambas")
                         }
@@ -1234,18 +3191,15 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 impacto_cualitativo:this.impacto_cualitativo,
                 tipo_impacto:this.tipo_impacto,
                 puntos_asignados_cualitativos:this. puntos_asignados_cualitativos,
-                validacion_de_impacto: this.validacion_de_impacto
+                validacion_de_impacto: this.validacion_de_impacto,
+                numero_nomina:this.numero_nomina
                 }).then(response =>{
                         console.log(response.data)
                         if(response.data[0]== true && response.data[1]== true){
-                            //window.location.reload();
-                           alert("Los datos se guardaron/actualizaron correctamente.")
-                           /*const items = document.getElementsByClassName("modal-backdrop fade show")// obtengo div con estas clases
-                           items[0].className = ""; // sustituyo y elimino a nada. 
-                           bootstrap.Modal.getOrCreateInstance(document.getElementById('modalImpactoCualitativo')).hide()//oculto contenido*/
-                          
-                            this.consultado_concentrado()
-                            
+                            alert("Los datos se guardaron/actualizaron correctamente.")
+                            //this.acomodarSugerencias()
+                            this.verTodo()
+                            this.myModal.hide()
                         }else{
                             alert("Fallo al guardar en una tabla o ambas")
                         }
@@ -1274,320 +3228,593 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 })
        
     },
+    modalImpacto(){
+        this.consultado_concentrado_pendiente_impacto()
+        this.consultado_concentrado_impacto_sugerencias()
+       
+    },
+    consultado_concentrado_pendiente_impacto(){//consulto datos del concentrado de sugerencias midiendo
+                axios.post('consulta_concentrado_pendientes_impacto.php',{
+                            }).then(response =>{
+                                this.concentrado_sugerencias_pendiente_impacto = response.data
+                                console.log(this.concentrado_sugerencias_pendiente_impacto,'CONCENTRADO')
+                            })
+                },
+    consultado_concentrado_impacto_sugerencias(){//consulto datos del concentrado impacto midiendo
+                    axios.post('consulta_concentrado_impacto_midiendo.php',{
+                    }).then(response =>{
+                        this.concentrado_impacto_sugerencias_midiendo = response.data
+                        console.log(this.concentrado_impacto_sugerencias_midiendo)
+                    }).catch(error =>{
+
+                    })
+                },
       /*FIN METODOS PRINCIPAL MEJORA*/
       /*METODOS CONCENTRADO SUGERENCIAS*/
-            guardar_nueva_sugerencia_y_actualizar(nueva_o_actualizar,id_registro){
+    guardar_nueva_sugerencia_y_actualizar(nueva_o_actualizar,id_registro){
 
-                if(this.var_sindicalizado_empleado!='' && this.var_nombre_sugerencias!='' && this.var_folio!='' && this.var_causa_no_factibilidad!='' && this.var_situacion_actual!='' && 
-                    this.var_idea_propuesta!='' && this.var_nomina!='' && this.var_colaborador!='' && this.var_puesto!='' && this.var_planta!='' && 
-                    this.var_area!='' && this.var_area_participante!='' && this.var_subarea!='' && this.var_fecha_sugerencia!='' && this.var_fecha_inicio!='' && this.var_usuario_y_analista_de_factibilidad!='' ){
-                    this.actualizar_sugerencia="";//desactivar editar o actualizar
-                    this.nueva_sugerencia=false;//desactivar nueva sugerencia
-                        axios.post('guardar_nueva_sugerencia_y_actualizar.php',{
-                            id: id_registro,
-                            tipo_nueva_o_actualizar: nueva_o_actualizar,
-                            cumplimiento: this.var_cumplimiento,
-                            sindicalizado_empleado:this.var_sindicalizado_empleado,
-                            nombre_sugerencia: this.var_nombre_sugerencias,
-                            folio: this.var_folio,
-                            status: this.var_status,
-                            causa_no_factibilidad: this.var_causa_no_factibilidad,
-                            situacion_actual: this.var_situacion_actual,
-                            idea_propuesta: this.var_idea_propuesta,
-                            nomina: this.var_nomina,
-                            colaborador: this.var_colaborador,
-                            puesto: this.var_puesto,
-                            planta: this.var_planta,
-                            area: this.var_area,
-                            area_participante: this.var_area_participante,
-                            subarea: this.var_subarea,
-                            impacto_primario: this.var_impacto_primario,
-                            impacto_secundario: this.var_impacto_secundario,
-                            tipo_desperdicio: this.var_tipo_desperdicio,
-                            objetivo_de_calidadMA: this.var_objetivo_de_calidadMA,
-                            fecha_sugerencia: this.var_fecha_sugerencia,
-                            fecha_inicio: this.var_fecha_inicio,
-                            fecha_compromiso: this.var_fecha_compromiso,
-                            fecha_real_de_cierre: this.var_fecha_real_de_cierre,
-                            analista_de_factibilidad: this.var_usuario_y_analista_de_factibilidad,
-                            impacto_planeado: this.var_impacto_planeado,
-                            impacto_real: this.var_impacto_real,
-                            usuario: this.usuario
-                        }).then(response =>{
-                            console.log(response.data);
-                            this.consultado_concentrado()
-                        })
-                }else{
-                    alert('todos los campos marcados con: (*) son requeridos.')
-                }
-            },
-            mostrar_id(id){
-                    var posicion=id
-                    console.log(posicion)
-                    this.actualizar_sugerencia = posicion
-                if(id=="0"){// nueva sugerencia
-                    this.var_sindicalizado_empleado=''
-                    this.var_nombre_sugerencias=''
-                    this.var_folio=''
-                    this.var_causa_no_factibilidad=''
-                    this.var_situacion_actual = ''
-                    this.var_idea_propuesta = ''
-                    this.var_nomina = ''
-                    this.var_colaborador = ''
-                    this.var_puesto = ''
-                    this.var_planta = ''
-                    this.var_area = ''
-                    this.var_area_participante = ''
-                    this.var_subarea = ''
-                    this.var_usuario_y_analista_de_factibilidad=''
-                    this.var_impacto_primario = ''
-                    this.var_impacto_secundario = ''
-                    this.var_tipo_desperdicio = ''
-                    this.var_objetivo_de_calidadMA.splice(0,15)
-                    this.var_fecha_sugerencia = ''
-                    this.var_fecha_inicio = ''
-                    this.nueva_sugerencia=true
-                } else if (id==""){//cacelar actualizar
-
-                } else {//llenado campos de actualizar asignandolos a las variables
-                    this.nueva_sugerencia=false;
-                    this.var_sindicalizado_empleado=this.concentrado_sugerencias[posicion-1].sindicalizado_empleado
-                    this.var_nombre_sugerencias=this.concentrado_sugerencias[posicion-1].nombre_sugerencia
-                    this.var_folio=this.concentrado_sugerencias[posicion-1].folio
-                    this.var_causa_no_factibilidad=this.concentrado_sugerencias[posicion-1].causa_no_factibilidad
-                    this.var_situacion_actual = this.concentrado_sugerencias[posicion-1].situacion_actual
-                    this.var_idea_propuesta = this.concentrado_sugerencias[posicion-1].idea_propuesta
-                    this.var_nomina = this.concentrado_sugerencias[posicion-1].numero_nomina
-                    this.var_colaborador = this.concentrado_sugerencias[posicion-1].colaborador
-                    this.var_puesto = this.concentrado_sugerencias[posicion-1].puesto
-                    this.var_planta = this.concentrado_sugerencias[posicion-1].planta
-                    this.var_area = this.concentrado_sugerencias[posicion-1].area
-                    this.var_area_participante = this.concentrado_sugerencias[posicion-1].area_participante
-                    this.var_subarea = this.concentrado_sugerencias[posicion-1].subarea
-                    this.var_usuario_y_analista_de_factibilidad = this.var_subarea = this.concentrado_sugerencias[posicion-1].analista_de_factibilidad
-                    this.var_impacto_primario = this.concentrado_sugerencias[posicion-1].impacto_primario
-                    this.var_impacto_secundario = this.concentrado_sugerencias[posicion-1].impacto_secundario
-                    this.var_tipo_desperdicio = this.concentrado_sugerencias[posicion-1].tipo_de_desperdicio
-                    this.var_fecha_sugerencia = this.concentrado_sugerencias[posicion-1].fecha_de_sugerencia
-                    this.var_fecha_inicio = this.concentrado_sugerencias[posicion-1].fecha_de_inicio
-                    var arr = this.concentrado_sugerencias[posicion-1].objetivo_de_calidad_ma.split(',')
-                    var longitud = arr.length
-                    this.var_objetivo_de_calidadMA.splice(0,15);
-                    //console.log(longitud)
-                    if(arr.length>1){
-                        for (var i = 0; i < arr.length; i++){
-                                    this.var_objetivo_de_calidadMA[i] = arr[i]
-                        }
-                    }else if(arr.length==1){
-                        if(arr!="" || arr!=""){
-                            this.var_objetivo_de_calidadMA[0] = arr[0]
-                        }
-                    }else{
-                        console.log("0 POSICIONES")
-                    }
-                }
-            },
-            eliminar_sugerencia(id_eliminar){
-                if(!confirm("¿Desea eliminar la sugerencia?")) return;
-                axios.post('eliminar_sugerencia.php',{
-                    eliminar_sugerencia:id_eliminar
+        if(this.var_sindicalizado_empleado!='' && this.var_nombre_sugerencias!='' && this.var_folio!='' && this.var_situacion_actual!='' && 
+            this.var_idea_propuesta!='' && this.var_nomina!='' && this.var_colaborador!='' && this.var_puesto!='' && this.var_planta!='' && 
+            this.var_area!='' && this.var_area_participante!='' && this.var_subarea!='' && this.var_fecha_sugerencia!='' && this.var_fecha_inicio!='' && this.var_usuario_y_analista_de_factibilidad!='' ){
+            this.actualizar_sugerencia="";//desactivar editar o actualizar
+            this.nueva_sugerencia=false;//desactivar nueva sugerencia
+                axios.post('guardar_nueva_sugerencia_y_actualizar.php',{
+                    id: id_registro,
+                    tipo_nueva_o_actualizar: nueva_o_actualizar,
+                    cumplimiento: this.var_cumplimiento,
+                    sindicalizado_empleado:this.var_sindicalizado_empleado,
+                    nombre_sugerencia: this.var_nombre_sugerencias,
+                    folio: this.var_folio,
+                    status: this.var_status,
+                    //causa_no_factibilidad: this.var_causa_no_factibilidad,
+                    situacion_actual: this.var_situacion_actual,
+                    idea_propuesta: this.var_idea_propuesta,
+                    nomina: this.var_nomina,
+                    colaborador: this.var_colaborador,
+                    puesto: this.var_puesto,
+                    planta: this.var_planta,
+                    area: this.var_area,
+                    area_participante: this.var_area_participante,
+                    subarea: this.var_subarea,
+                    impacto_primario: this.var_impacto_primario,
+                    impacto_secundario: this.var_impacto_secundario,
+                    tipo_desperdicio: this.var_tipo_desperdicio,
+                    objetivo_de_calidadMA: this.var_objetivo_de_calidadMA,
+                    fecha_sugerencia: this.var_fecha_sugerencia,
+                    fecha_inicio: this.var_fecha_inicio,
+                    fecha_compromiso: this.var_fecha_compromiso,
+                    fecha_real_de_cierre: this.var_fecha_real_de_cierre,
+                    analista_de_factibilidad: this.var_usuario_y_analista_de_factibilidad,
+                    impacto_planeado: this.var_impacto_planeado,
+                    impacto_real: this.var_impacto_real,
+                    usuario: this.usuario
                 }).then(response =>{
-                    if(response.data==true){// si se elimina consultar concentrado nuevamente
+                    console.log(response.data); //1904371
+                    /*if(this.ver_todo == false){
                         this.consultado_concentrado()
-                    }
-                })
-            },
-            consultado_concentrado(){
-                axios.post('consulta_concentrado_sugerencias.php',{
-                            }).then(response =>{
-                                this.concentrado_sugerencias = response.data
-                                console.log(this.concentrado_sugerencias);
-                            })
-            },
-            consultando_plantas(){
-                axios.post('lista_planta.php',{
-                }).then(response =>{
-                    this.lista_planta = response.data
-                    console.log(this.lista_planta);
-                })
-            },
-            consultando_area(){
-                axios.post('lista_area.php',{
-            }).then(response =>{
-                this.lista_area = response.data
-                console.log(this.lista_area);
-            })
-            },
-            consultando_area_participante(){
-                axios.post('lista_area_participante.php',{
-                }).then(response =>{
-                    this.lista_area_participante = response.data
-                    console.log(this.lista_area_participante);
-                })
-            },
-            consultando_subarea(){
-                axios.post('lista_subarea.php',{
-                }).then(response =>{
-                    this.lista_subarea = response.data
-                    console.log(this.lista_subarea);
-                })
-            },
-            consultando_impacto(){
-                axios.post('lista_impacto.php',{
-                }).then(response =>{
-                    this.lista_impacto_primario = response.data
-                    this.lista_impacto_secundario = response.data
-                    console.log(this.lista_impacto_primario);
-                    console.log(this.lista_impacto_secundario);
-                })
-            },
-            consultando_lista_de_desperdicio(){
-                axios.post('lista_tipo_desperdicio.php',{
-                }).then(response =>{
-                    this.lista_tipo_desperdicio = response.data
-                    console.log(this.lista_tipo_desperdicio);
-                })
-            },
-            consulta_lista_objetivos_calidad_ma(){
-                axios.post('lista_objetivos_calidad_ma.php',{
-            }).then(response =>{
-                this.objetivo_de_calidadMA = response.data
-                console.log(this.objetivo_de_calidadMA);
-            })
-            },
-            consulta_lista_analista_factibilidad(){
-                axios.post('lista_analista_factibilidad.php',{
-            }).then(response =>{
-                this.lista_analista_factibilidad = response.data
-                console.log(this.lista_analista_factibilidad);
-            })
-            },
-            consulta_lista_usuarios_y_analistas_factibilidad(){
-                axios.post('lista_usuarios_y_analistas_factibilidad.php',{
-            }).then(response =>{
-                this.lista_usuarios_y_analistas_factibilidad = response.data
-                console.log(this.lista_usuarios_y_analistas_factibilidad);
-            })
-            },
-            modal_nueva_eliminar(agregar_o_eliminar,tipo,folio){
-                this.folio_carpeta_doc = folio
-                this.tipo_agregar_eliminar = tipo
-                this.titulo_modal=agregar_o_eliminar+" "+tipo //creando titulo modal
-                this.contenido_modal_agregar_eliminar=agregar_o_eliminar // contenido a mostrar
-            },
-            agregar_nuevo_lista(){
-                axios.post('agregar_nuevo_en_lista.php',{
-                    nuevo_registro: this.nueva_opcion,
-                    tipo: this.tipo_agregar_eliminar,
-                    correo: this.correo_analista
-                }).then(response =>{
-                    this.nueva_opcion = ''
-                    if(response.data=='planta agregada'){
-                        alert("Se agrego la Planta con Éxito.")
-                        this.consultando_plantas()
-                    }else if(response.data=='area agregada'){
-                        alert("Se agrego la Area con Éxito.")
-                        this.consultando_area()
-                    }else if(response.data=='area participante agregada'){
-                        alert("Se agrego la Area con Éxito.")
-                        this.consultando_area_participante()
-                    }else if(response.data=='subarea agregada'){
-                        alert("Se agrego la Subarea con Éxito.")
-                        this.consultando_subarea()
-                    }else if(response.data=='impacto agregada'){
-                        alert("Se agrego Impacto primario con Éxito.")
-                        this.consultando_impacto()
-                    }else if(response.data=='desperdicio agregada'){
-                        alert("Se agrego nuevo tipo de desperdicio con Éxito.")
-                        this.consultando_lista_de_desperdicio()
-                    }else if(response.data=='calidad agregada'){
-                        alert("Se agrego nuevo objetivo de calidad MA con Éxito.")
-                        this.consulta_lista_objetivos_calidad_ma()
-                    }else if(response.data=='analista agregada'){
-                        alert("Se agrego Analista y correo con Éxito.")
-                        this.consulta_lista_analista_factibilidad()
+
                     }else{
-                        alert("Algo salio mal al agregar.")
-                    }
+                        this.consultando_total_sugerencias()
+                    }*/
+                    this.verTodo();
                 })
-            },
-            eliminar_elementos_lista(id_eliminar){
-                //console.log("ID ELIMINAR"+id_eliminar+"TIPO:"+this.tipo_agregar_eliminar)
-               axios.post('eliminar_elementos_lista.php',{
-                id_eliminar: id_eliminar,
-                tipo: this.tipo_agregar_eliminar
-               }).then(response =>{
-                if(response.data=='planta eliminada'){
-                        alert("Se elimino con Éxito.")
-                        this.consultando_plantas()
-                }else if (response.data=='area eliminada'){
-                        alert("Se elimino con Éxito.")
-                        this.consultando_area()
-                }else if (response.data=='area participante eliminada'){
-                        alert("Se elimino con Éxito.")
-                        this.consultando_area_participante()
-                }else if (response.data=='subarea eliminada'){
-                        alert("Se elimino con Éxito.")
-                        this.consultando_subarea()
-                }else if (response.data=='impacto eliminada'){
-                        alert("Se elimino con Éxito.")
-                        this.consultando_impacto()
-                }else if (response.data=='desperdicio eliminada'){
-                        alert("Se elimino con Éxito.")
-                        this.consultando_lista_de_desperdicio()
-                }else if (response.data=='calidad eliminada'){
-                        alert("Se elimino con Éxito.")
-                        this.consulta_lista_objetivos_calidad_ma()
-                }else if (response.data=='analista eliminada'){
-                        alert("Se elimino con Éxito.")
-                        this.consulta_lista_analista_factibilidad()
-                }else{
-                    alert("Algo salio mal al eliminar.")
+        }else{
+            alert('todos los campos marcados con: (*) son requeridos.')
+        }
+    },
+    mostrar_id(id){
+            var posicion=id
+            console.log(posicion)
+            this.actualizar_sugerencia = posicion
+        if(id=="0"){// nueva sugerencia
+            this.var_sindicalizado_empleado=''
+            this.var_nombre_sugerencias=''
+            this.var_folio=''
+            //this.var_causa_no_factibilidad=''
+            this.var_situacion_actual = ''
+            this.var_idea_propuesta = ''
+            this.var_nomina = ''
+            this.var_colaborador = ''
+            this.var_puesto = ''
+            this.var_planta = ''
+            this.var_area = ''
+            this.var_area_participante = ''
+            this.var_subarea = ''
+            this.var_usuario_y_analista_de_factibilidad=''
+            this.var_impacto_primario = ''
+            this.var_impacto_secundario = ''
+            this.var_tipo_desperdicio = ''
+            this.var_objetivo_de_calidadMA.splice(0,15)
+            this.var_fecha_sugerencia = ''
+            this.var_fecha_inicio = ''
+            this.nueva_sugerencia=true
+        } else if (id==""){//cacelar actualizar
+
+        } else {//llenado campos de actualizar asignandolos a las variables
+            this.nueva_sugerencia=false;
+            this.var_sindicalizado_empleado=this.concentrado_sugerencias[posicion-1].sindicalizado_empleado
+            this.var_nombre_sugerencias=this.concentrado_sugerencias[posicion-1].nombre_sugerencia
+            this.var_folio=this.concentrado_sugerencias[posicion-1].folio
+            this.var_status=this.concentrado_sugerencias[posicion-1].status
+            this.var_causa_no_factibilidad=this.concentrado_sugerencias[posicion-1].causa_no_factibilidad
+            this.var_situacion_actual = this.concentrado_sugerencias[posicion-1].situacion_actual
+            this.var_idea_propuesta = this.concentrado_sugerencias[posicion-1].idea_propuesta
+            this.var_nomina = this.concentrado_sugerencias[posicion-1].numero_nomina
+            this.var_colaborador = this.concentrado_sugerencias[posicion-1].colaborador
+            this.var_puesto = this.concentrado_sugerencias[posicion-1].puesto
+            this.var_planta = this.concentrado_sugerencias[posicion-1].planta
+            this.var_area = this.concentrado_sugerencias[posicion-1].area
+            this.var_area_participante = this.concentrado_sugerencias[posicion-1].area_participante
+            this.var_subarea = this.concentrado_sugerencias[posicion-1].subarea
+            this.var_impacto_primario = this.concentrado_sugerencias[posicion-1].impacto_primario
+            this.var_impacto_secundario = this.concentrado_sugerencias[posicion-1].impacto_secundario
+            this.var_tipo_desperdicio = this.concentrado_sugerencias[posicion-1].tipo_de_desperdicio
+            this.var_fecha_sugerencia = this.concentrado_sugerencias[posicion-1].fecha_de_sugerencia
+            this.var_fecha_inicio = this.concentrado_sugerencias[posicion-1].fecha_de_inicio
+            this.var_usuario_y_analista_de_factibilidad = this.concentrado_sugerencias[posicion-1].analista_de_factibilidad
+            var arr = this.concentrado_sugerencias[posicion-1].objetivo_de_calidad_ma.split(',')
+            var longitud = arr.length
+            this.var_objetivo_de_calidadMA.splice(0,15);
+            //console.log(longitud)
+            if(arr.length>1){
+                for (var i = 0; i < arr.length; i++){
+                            this.var_objetivo_de_calidadMA[i] = arr[i]
                 }
-               })
-            },
-            modal_subir_ver_documentos(tipo,id_concentrado,folio,cual_documento,cantidad){
-                this.id_concentrado = id_concentrado
-                this.cual_documento = cual_documento
-                this.cantidadDOCPPT = cantidad
-                if(this.cual_documento == 'sugerencia'){
-                    
-                    this.extensiones_valida = '(.png, .jpeg, .jpg, .pdf)'
-                }else if(this.cual_documento == 'ppt'){
-                    this.extensiones_valida = '(.docx, .ppt, .pptx)'
-                }else{
-                    this.extensiones_valida = ''
+            }else if(arr.length==1){
+                if(arr!="" || arr!=""){
+                    this.var_objetivo_de_calidadMA[0] = arr[0]
                 }
-                this.folio_carpeta_doc = folio
-                this.titulo_modal="Subir/Ver Documentos." //creando titulo modal
-                this.contenido_modal_agregar_eliminar=tipo // contenido a mostrar
-                this.buscarDocumentos()
-            },
-            uploadFile(){
+            }else{
+                console.log("0 POSICIONES")
+            }
+        }
+    },
+
+    eliminar_sugerencia(id_eliminar){
+        if(!confirm("¿Desea eliminar la sugerencia?")) return;
+        axios.post('eliminar_sugerencia.php',{
+            eliminar_sugerencia:id_eliminar
+        }).then(response =>{
+            if(response.data==true){// si se elimina consultar concentrado nuevamente
+                this.consultado_concentrado()
+            }
+        })
+    },
+
+    consultado_concentrado(){
+        this.loanding = true;
+        axios.post('consulta_concentrado_sugerencias.php',{
+            accion:'',
+            numero_pagina: this.arregloPosicionPagina,
+            palabra:''
+        }).then(response =>{
+            this.concentrado_sugerencias = response.data
+            //console.log(this.concentrado_sugerencias);
+        }).catch(error => {
+        console.log(error);
+        }).finally(() =>{
+            this.loanding = false;
+        })
+        //console.log('la ventana en la que estamos es:', this.ventana)
+
+
+    },
+
+    consultando_total_sugerencias(){
+        axios.post('consulta_concentrado_sugerencias.php',{
+            accion:'total',
+            numero_pagina: this.arregloPosicionPagina,
+            palabra:''
+        }).then(response =>{
+            this.total_sugerencias = response.data.length
+            //console.log('El total de sugerencias es:', this.total_sugerencias)
+            
+            this.cant_paginas = (this.total_sugerencias/this.cantidad_p_pagina)
+            //console.log('la cantidad es:', this.cant_paginas)
+
+            if((this.total_sugerencias%this.cantidad_p_pagina)!= 0){
+                this.total_paginas = Math.floor(this.cant_paginas) + 1
+            }else{
+                this.total_paginas = this.cant_paginas 
+            }
+            //console.log('La cantidad de paginas es:', this.total_paginas)
+
+        }).catch(error => {
+        console.log(error);
+        })
+    },
+
+    acomodarSugerencias(){
+        this.loanding = true,
+        this.valor = 'acomodar',
+        //console.log('estamos en la pantalla:',this.mostrar())
+        axios.post('consulta_concentrado_sugerencias.php',{
+            accion: this.valor,
+            numero_pagina: this.arregloPosicionPagina,
+            palabra:''
+        }).then(response =>{
+            this.concentrado_sugerencias = response.data
+            //console.log(this.concentrado_sugerencias);
+        }).catch(error => {
+            console.log(error);
+        }).finally(() =>{
+            this.loanding = false;
+        })
+        //console.log('la ventana en la que estamos es:', this.ventana)
+    },
+
+    retrocederPagina(){
+        this.loanding = true;
+        this.arregloPosicionPagina--;
+        let pagina = (this.arregloPosicionPagina) * this.cantidad_p_pagina;
+
+        //console.log('la posicion en la que esta es', pagina);
+
+        if(this.valorBtnPag == 'ordenar'){
+            this.valor = 'acomodar';
+        }else if(this.valorBtnPag == 'no ordenar'){
+            this.valor = '';
+        }
+        axios.post('consulta_concentrado_sugerencias.php',{
+            numero_pagina: pagina,
+            accion: this.valor,
+            palabra:''
+
+        }).then(response =>{
+            this.concentrado_sugerencias = response.data
+        }).catch(error => {
+            console.log(error);
+        }).finally(() =>{
+            this.loanding = false;
+        })
+    },
+            
+    primerPagina(){
+        this.loanding = true;
+        this.arregloPosicionPagina = 0;
+        
+        if(this.valorBtnPag == 'ordenar'){
+            this.valor = 'acomodar';
+        }else if(this.valorBtnPag == 'no ordenar'){
+            this.valor = '';
+        }
+
+        axios.post('consulta_concentrado_sugerencias.php',{
+            numero_pagina: 0,
+            accion: this.valor,
+            palabra:''
+
+        }).then(response =>{
+            this.concentrado_sugerencias = response.data
+        }).catch(error => {
+            console.log(error);
+        }).finally(() =>{
+            this.loanding = false;
+        })
+        //console.log('la posicion esss',this.arregloPosicionPagina)
+    },
+
+    avanzarPagina(){
+        this.loanding = true;
+        this.palabra = '';
+        let pagina = ((this.arregloPosicionPagina+1) * this.cantidad_p_pagina);
+        this.arregloPosicionPagina++;
+
+        if(this.valorBtnPag == 'ordenar'){
+            this.valor = 'acomodar';
+        }else if(this.valorBtnPag == 'no ordenar'){
+            this.valor = '';
+        }
+
+        axios.post('consulta_concentrado_sugerencias.php',{
+            numero_pagina: pagina,
+            accion: this.valor,
+            palabra:''
+
+        }).then(response =>{
+            this.concentrado_sugerencias = response.data
+            //console.log('el concentrado es:',this.concentrado_sugerencias)
+        }).catch(error => {
+            console.log(error);
+        }).finally(() =>{
+            this.loanding = false;
+        })
+        //console.log('la posicion esss',this.arregloPosicionPagina)
+    },
+
+    ultimaPagina(){
+        this.loanding = true;
+        this.palabra = '';
+        this.arregloPosicionPagina = this.total_paginas-1;
+        let pagina = ((this.arregloPosicionPagina) * this.cantidad_p_pagina);
+
+        if(this.valorBtnPag == 'ordenar'){
+            this.valor = 'acomodar';
+        }else if(this.valorBtnPag == 'no ordenar'){
+            this.valor = '';
+        }
+
+        axios.post('consulta_concentrado_sugerencias.php',{
+            numero_pagina: pagina,
+            accion: this.valor,
+            palabra:''
+
+        }).then(response =>{
+            this.concentrado_sugerencias = response.data
+            //console.log('el concentrado es:',this.concentrado_sugerencias)
+        }).catch(error => {
+            console.log(error);
+        }).finally(() =>{
+            this.loanding = false;
+        })
+    },
+
+    verTodo(){
+        this.loanding = true;
+        this.palabra = '';
+        this.bandera_buscador = false;
+
+        if(this.ventana=="concentrado"){
+            if(this.ver_todo == true){
+                /*const button1 = document.getElementById('btn1');
+                button1.disabled = true;
+                const button2 = document.getElementById('btn2');
+                button2.disabled = true;
+                const button3 = document.getElementById('btn3');
+                button3.disabled = true;
+                const button4 = document.getElementById('btn4');
+                button4.disabled = true;*/
+
+                this.arregloPosicionPagina = 0;
+                axios.post('consulta_concentrado_sugerencias.php',{
+                    accion:'total',
+                    numero_pagina: this.arregloPosicionPagina,
+                    palabra:''
+                }).then(response =>{
+                    this.concentrado_sugerencias = response.data
+
+                }).catch(error => {
+                console.log(error);
+                }).finally(() =>{
+                    this.loanding = false;
+                })
+            }else if(this.ver_todo == false){
+                this.consultado_concentrado();
+                this.arregloPosicionPagina = 0;
+            }
+        }else if(this.ventana=="principalMejora"){
+            if(this.ver_todo == true){
+
+                this.arregloPosicionPagina = 0;
+                axios.post('consulta_concentrado_sugerencias.php',{
+                    accion:'principalSinPaginacion',
+                    numero_pagina: this.arregloPosicionPagina,
+                    palabra:''
+                }).then(response =>{
+                    this.concentrado_sugerencias = response.data
+
+                }).catch(error => {
+                console.log(error);
+                }).finally(() =>{
+                    this.loanding = false;
+                })
+            }else if(this.ver_todo == false){
+                this.acomodarSugerencias();
+                this.arregloPosicionPagina = 0;
+            }
+        }
+    },
+
+    consultando_plantas(){
+        axios.post('lista_planta.php',{
+        }).then(response =>{
+            this.lista_planta = response.data
+            //console.log(this.lista_planta);
+        })
+    },
+    consultando_area(){
+        axios.post('lista_area.php',{
+    }).then(response =>{
+        this.lista_area = response.data
+        //console.log(this.lista_area);
+    })
+    },
+    consultando_area_participante(){
+        axios.post('lista_area_participante.php',{
+        }).then(response =>{
+            this.lista_area_participante = response.data
+            //console.log(this.lista_area_participante);
+        })
+    },
+    consultando_subarea(){
+        axios.post('lista_subarea.php',{
+        }).then(response =>{
+            this.lista_subarea = response.data
+        })
+    },
+    consultando_impacto(){
+        axios.post('lista_impacto.php',{
+        }).then(response =>{
+            this.lista_impacto_primario = response.data
+            this.lista_impacto_secundario = response.data
+        })
+    },
+    consultando_lista_de_desperdicio(){
+        axios.post('lista_tipo_desperdicio.php',{
+        }).then(response =>{
+            this.lista_tipo_desperdicio = response.data
+        })
+    },
+    consulta_lista_objetivos_calidad_ma(){
+        axios.post('lista_objetivos_calidad_ma.php',{
+    }).then(response =>{
+        this.objetivo_de_calidadMA = response.data
+        //console.log(this.objetivo_de_calidadMA);
+    })
+    },
+    consulta_lista_analista_factibilidad(){
+        axios.post('lista_analista_factibilidad.php',{
+    }).then(response =>{
+        this.lista_analista_factibilidad = response.data
+        //console.log(this.lista_analista_factibilidad);
+    })
+    },
+    consulta_lista_usuarios_y_analistas_factibilidad(){
+        axios.post('lista_usuarios_y_analistas_factibilidad.php',{
+    }).then(response =>{
+        this.lista_usuarios_y_analistas_factibilidad = response.data
+    })
+    },
+    modal_nueva_eliminar(agregar_o_eliminar,tipo,folio){
+        this.folio_carpeta_doc = folio
+        this.tipo_agregar_eliminar = tipo
+        this.titulo_modal=agregar_o_eliminar+" "+tipo //creando titulo modal
+        this.contenido_modal_agregar_eliminar=agregar_o_eliminar // contenido a mostrar
+    },
+    agregar_nuevo_lista(){
+        axios.post('agregar_nuevo_en_lista.php',{
+            nuevo_registro: this.nueva_opcion,
+            tipo: this.tipo_agregar_eliminar,
+            correo: this.correo_analista
+        }).then(response =>{
+            this.nueva_opcion = ''
+            if(response.data=='planta agregada'){
+                alert("Se agrego la Planta con Éxito.")
+                this.consultando_plantas()
+            }else if(response.data=='area agregada'){
+                alert("Se agrego la Area con Éxito.")
+                this.consultando_area()
+            }else if(response.data=='area participante agregada'){
+                alert("Se agrego la Area con Éxito.")
+                this.consultando_area_participante()
+            }else if(response.data=='subarea agregada'){
+                alert("Se agrego la Subarea con Éxito.")
+                this.consultando_subarea()
+            }else if(response.data=='impacto agregada'){
+                alert("Se agrego Impacto primario con Éxito.")
+                this.consultando_impacto()
+            }else if(response.data=='desperdicio agregada'){
+                alert("Se agrego nuevo tipo de desperdicio con Éxito.")
+                this.consultando_lista_de_desperdicio()
+            }else if(response.data=='calidad agregada'){
+                alert("Se agrego nuevo objetivo de calidad MA con Éxito.")
+                this.consulta_lista_objetivos_calidad_ma()
+            }else if(response.data=='analista agregada'){
+                alert("Se agrego Analista y correo con Éxito.")
+                this.consulta_lista_analista_factibilidad()
+            }else{
+                alert("Algo salio mal al agregar.")
+            }
+        })
+    },
+    eliminar_elementos_lista(id_eliminar){
+        //console.log("ID ELIMINAR"+id_eliminar+"TIPO:"+this.tipo_agregar_eliminar)
+        axios.post('eliminar_elementos_lista.php',{
+        id_eliminar: id_eliminar,
+        tipo: this.tipo_agregar_eliminar
+        }).then(response =>{
+        if(response.data=='planta eliminada'){
+                alert("Se elimino con Éxito.")
+                this.consultando_plantas()
+        }else if (response.data=='area eliminada'){
+                alert("Se elimino con Éxito.")
+                this.consultando_area()
+        }else if (response.data=='area participante eliminada'){
+                alert("Se elimino con Éxito.")
+                this.consultando_area_participante()
+        }else if (response.data=='subarea eliminada'){
+                alert("Se elimino con Éxito.")
+                this.consultando_subarea()
+        }else if (response.data=='impacto eliminada'){
+                alert("Se elimino con Éxito.")
+                this.consultando_impacto()
+        }else if (response.data=='desperdicio eliminada'){
+                alert("Se elimino con Éxito.")
+                this.consultando_lista_de_desperdicio()
+        }else if (response.data=='calidad eliminada'){
+                alert("Se elimino con Éxito.")
+                this.consulta_lista_objetivos_calidad_ma()
+        }else if (response.data=='analista eliminada'){
+                alert("Se elimino con Éxito.")
+                this.consulta_lista_analista_factibilidad()
+        }else{
+            alert("Algo salio mal al eliminar.")
+        }
+        })
+    },
+
+    modal_subir_ver_documentos(tipo,id_concentrado,folio,cual_documento,cantidad,cumplimiento,index,statusPPT){
+        this.id_concentrado = id_concentrado
+        this.cual_documento = cual_documento
+        this.cantidadDOCFILE = cantidad
+        if(this.cual_documento == 'sugerencia'){
+            this.myModal = new bootstrap.Modal(document.getElementById('modal'))
+            this.myModal.show()
+            this.extensiones_valida = '(.png, .jpeg, .jpg, .pdf)'
+        }else if(this.cual_documento == 'ppt'){
+            this.cumplimientoPPT = cumplimiento;
+            this.indexPPT = index;
+            this.status_ppt = statusPPT;
+            this.myModal = new bootstrap.Modal(document.getElementById('modal'))
+            this.myModal.show()
+            this.extensiones_valida = '(.docx, .ppt, .pptx,.xls,.xlsx)'
+        }else if(this.cual_documento == 'reto'){
+            this.myModal = new bootstrap.Modal(document.getElementById('modal'))
+            this.myModal.show()
+            this.extensiones_valida = '(.png, .jpeg, .jpg, .pdf)'
+        }else if(this.cual_documento == 'premio'){
+            this.myModal = new bootstrap.Modal(document.getElementById('modal'))
+            this.myModal.show()
+            this.extensiones_valida = '(.png, .jpeg, .jpg)'
+        }else if(this.cual_documento == 'entregado'){
+            this.myModal = new bootstrap.Modal(document.getElementById('modal'))
+            this.myModal.show()
+            this.extensiones_valida = '(.png, .jpeg, .jpg)'
+        }else{
+            this.extensiones_valida = ''
+        }
+        this.folio_carpeta_doc = folio
+        this.titulo_modal="Subir/Ver Documentos." //creando titulo modal
+        this.contenido_modal_agregar_eliminar=tipo // contenido a mostrar
+        this.buscarDocumentos()
+        //this.verTodo()
+        //73491
+    },
+
+            uploadFile(tipo_usuario){
                 let formData = new FormData();
-                var files = this.$refs.documentosugerencia.files;
-                var totalfiles = this.$refs.documentosugerencia.files.length;
+
+                this.usuarioT = tipo_usuario;
+                if(this.cual_documento=="premio"){
+                    var files = this.$refs.ref_premio.files;
+                    var totalfiles = this.$refs.ref_premio.files.length;
+                }else{
+                    var files = this.$refs.archivosydocumentos.files;
+                    var totalfiles = this.$refs.archivosydocumentos.files.length;
+                } 
+               
                 for (var index = 0; index < totalfiles; index++) {
                  formData.append("files[]", files[index]);//arreglo de documentos
                 }
                 formData.append("folio", this.folio_carpeta_doc);
                 formData.append("cual_documento", this.cual_documento);
                 formData.append("id_concentrado", this.id_concentrado);
-                formData.append("cantidad", this.cantidadDOCPPT);
+                formData.append("cantidad", this.cantidadDOCFILE);
+                formData.append("tipo_usuario", this.usuarioT);
                 axios.post("subir_documentos.php", formData,
                     {
                     headers: {"Content-Type": "multipart/form-data"}
                     })
                     .then(response => {
                         console.log(response.data);
-                        console.log("ARRIBA")
                      if(this.cual_documento=="ppt"){
                         this.fileppt = response.data;
                         if(this.fileppt.length>0){
-                            //this.cantidadDOCPPT = this.fileppt.length
+                            this.myModal.hide()
                             document.getElementById("input_file_subir").value=""
                             alert(this.fileppt.length + " archivo/s se han subido.")
                             this.buscarDocumentos()
+                            this.verTodo()
                         }else{
                             alert("Verifique la extension del archivo o Intente nuevamente.")
                         }
@@ -1596,9 +3823,43 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                      if(this.cual_documento=="sugerencia"){
                         this.filedoc = response.data;
                         if(this.filedoc.length>0){
-                           // this.cantidadDOCPPT = this.filedoc.length
+                            this.myModal.hide()
                             document.getElementById("input_file_subir").value=""
                             alert(this.filedoc.length + " archivo/s se han subido.")
+                            this.buscarDocumentos()
+                            this.verTodo()
+                        }else{
+                            alert("Verifique la extension del archivo o Intente nuevamente.")
+                        }
+                     }   
+                     if(this.cual_documento=="reto"){
+                        this.filereto = response.data;
+                        if(this.filereto.length>0){
+                            this.myModal.hide()
+                            document.getElementById("input_file_subir").value=""
+                            alert(this.filereto.length + " archivo/s se han subido.")
+                            this.buscarDocumentos()
+                        }else{
+                            alert("Verifique la extension del archivo o Intente nuevamente.")
+                        }
+                     }  
+                     if(this.cual_documento=="premio"){
+                        this.filepremio = response.data;
+                        if(this.filepremio.length>0){
+                            this.myModal.hide()
+                            document.getElementById("input_file_subir").value=""
+                            alert(this.filepremio.length + " archivo/s se han subido.")
+                            this.buscarDocumentos()
+                        }else{
+                            alert("Verifique la extension del archivo o Intente nuevamente.")
+                        }
+                     }   
+                     if(this.cual_documento=="entregado"){
+                        this.fileentregado = response.data;
+                        if(this.fileentregado.length>0){
+                            this.myModal.hide()
+                            document.getElementById("input_file_subir").value=""
+                            alert(this.fileentregado.length + " archivo/s se han subido.")
                             this.buscarDocumentos()
                         }else{
                             alert("Verifique la extension del archivo o Intente nuevamente.")
@@ -1610,12 +3871,15 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     .catch(error => {
                         console.log(error);
                     });
-                },
+            },
+
             buscarDocumentos(){
-                //alert(this.folio_carpeta_doc+this.cual_documento)
+                //alert(this.cual_documento+""+this.folio_carpeta_doc)
                 this.filenames=[] //limpiado vista del documento subido en modal 
                 this.filedoc=[]//limpiado vista del documento bajada en modal 
-                this.fileppt=[]//limpiado vista del documento bajada en modal 
+                this.fileppt=[]//limpiado vista del documento bajada en modal
+                this.fileopcional=[]//limpiado vista del documento bajada en modal 
+                this.fileentregado=[]//limpiado vista del documento bajada en modal 
                 if(this.folio_carpeta_doc!=undefined){
                                 axios.post("buscar_documentos.php",{
                                     folio_carpeta_doc:this.folio_carpeta_doc,
@@ -1625,24 +3889,65 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                             
                                 if(this.cual_documento=="sugerencia"){
                                             this.filedoc = response.data
-                                            this.cantidadDOCPPT = this.filedoc.length
+                                            this.cantidadDOCFILE = this.filedoc.length
                                             if(this.filedoc.length>0){
                                                 console.log(this.filedoc.length + "Archivos encontrados.")
                                             }else{
-                                                /*alert("Sin Documentos agregados.")*/
+                                                //alert("Sin Documentos agregados.")
                                             }
+                                            //this.verTodo();
+                                            //this.consultado_concentrado()
                                 }
                                 if(this.cual_documento=="ppt"){
                                             this.fileppt = response.data
-                                            this.cantidadDOCPPT = this.fileppt.length
+                                            this.cantidadDOCFILE = this.fileppt.length
                                             if(this.fileppt.length>0){
                                                 console.log(this.fileppt.length + "Archivos encontrados.")
                                             }else{
-                                                /*alert("Sin Documentos agregados.")*/
+                                                //alert("Sin Documentos agregados.")
                                             }
+                                            //this.verTodo();
                                     }
-                                    this.consultado_concentrado()
-                                    
+                                if(this.cual_documento=="reto"){
+                                            this.filereto = response.data
+                                            this.cantidadDOCFILE = this.filereto.length
+                                            if(this.filereto.length>0){
+                                                console.log(this.filereto.length + "Archivos encontrados.")
+                                            }else{
+                                                //alert("Sin Documentos agregados.")
+                                            }
+                                            this.consultaConcentradoRetos()
+                                    }
+                                if(this.cual_documento=="premio"){
+                                            this.filepremio = response.data
+                                            this.cantidadDOCFILE = this.filepremio.length
+                                            if(this.filepremio.length>0){
+                                                console.log(this.filepremio.length + "Archivos encontrados.")
+                                            }else{
+                                                //alert("Sin Documentos agregados.")
+                                            }
+                                            this.consultar_concentrado_premios()
+                                    }
+                                if(this.cual_documento=="nofactibleopcional"){
+                                            this.fileopcional = response.data
+                                            this.cantidadDOCFILE = this.fileopcional.length
+                                            if(this.fileopcional.length>0){
+                                                console.log(this.fileopcional.length + "Archivos encontrados.")
+                                            }else{
+                                                //alert("Sin Documentos agregados.")
+                                            }
+                                            //this.consultar_concentrado_premios()
+                                    }
+                                if(this.cual_documento=="entregado"){
+                                            this.fileentregado = response.data
+                                            this.cantidadDOCFILE = this.fileentregado.length
+                                            if(this.fileentregado.length>0){
+                                                console.log(this.fileentregado.length + "Archivos encontrados.")  
+                                            }else{
+                                                //alert("Sin Documentos agregados.")
+                                            }
+                                            this.consultar_premios_solicitados()
+                                    }
                                 })
                                 .catch(error => {
                                     console.log(error);
@@ -1651,37 +3956,353 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 },
                 
             eliminarDocumento(ruta){
-               
+               if(!confirm("Desea eliminar el Documento ¿Esta seguro?"))
+               {
+                return true
+               }
                axios.post("eliminar_documento.php",{
                     ruta_eliminar: ruta,
                     id_concentrado: this.id_concentrado,
                     cual_documento:this.cual_documento,
-                    cantidad: this.cantidadDOCPPT-1,
-                }).then( reponse=>{
-                    alert(this.cantidadDOCPPT)
-                    if(reponse.data=="Archivo Eliminado"){
+                    cantidad: this.cantidadDOCFILE-1,
+                }).then( response=>{
+                    if(response.data=="Archivo Eliminado"){
                         this.buscarDocumentos()
-                        alert("Eliminado con Éxito")
-                    }else if(reponse.data=="No Eliminado"){
+                        this.myModal.hide();
+                        alert("Archivo/Documento Eliminado con Éxito")
+                    }else if(response.data=="No Eliminado"){
                         alert("Algo no salio bien no se logro Eliminar.")
                     }else{
+                        console.log('mostrar',response.data)
                         alert("Error al eliminar el Documento.")
                     }
-                    this.consultado_concentrado()
+
+                    if(this.cual_documento=="reto"){
+                        this.consultaConcentradoRetos()
+                    }else if(this.cual_documento=="premio"){
+                        this.consultar_concentrado_premios()
+                    }else if(this.cual_documento=="entregado"){
+                        this.consultar_premios_solicitados()
+                    }else{
+                        this.verTodo()
+                    }
+                    
+                }).catch(error =>{
+                 
+                })
+                   
+            },  
+                /*METODOS DE PREMIOS*/
+                consultar_concentrado_premios(){
+                    axios.post("consulta_concentrado_premios.php",{
+                    }).then(response =>{
+                            this.concentrado_premios=response.data
+                    }).catch(arror =>{
+
+                    })
+            },
+
+                aceptarRechazar_DocAnalista(accion,id){
+
+                    if(accion == "aceptar" || accion == "rechazar"){
+
+                        console.log(accion);
+
+                        let formData = new FormData();
+
+                        formData.append("accion_", accion);
+                        formData.append("id_concentrado", this.id_concentrado);
+                        formData.append("folio_", this.folio_carpeta_doc);
+
+                        axios.post("aceptar_rechazar_doc_analista.php", formData,
+                        {
+                            headers: {"Content-Type": "multipart/form-data"}
+                        })
+                        .then(response => {
+                            console.log('obtuve',response.data);
+                            this.consultado_concentrado();
+                            this.myModal.hide();
+
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+
+                    }
+                },
+
+                guardarActualizarPremios(index,id_premio,insertar_actualizar){
+
+                    if(insertar_actualizar=="Insertar"){
+
+                            if(this.codigo_premios!='' || this.descripcion_premios!='' || this.puntos_canjear_premios )
+                                {
+                                    var validar= Number.isInteger(this.puntos_canjear_premios)
+                                        if(validar==true){
+                                                axios.post("guardar_actualizar_premio.php",{
+                                                    id_premio:id_premio,
+                                                    insertar_actualizar: insertar_actualizar,
+                                                    codigo_premios: this.codigo_premios,
+                                                    descripcion_premios: this.descripcion_premios,
+                                                    puntos_canjear_premios: this.puntos_canjear_premios
+
+                                                }).then(response =>{
+                                                    console.log(response.data,'VERIFICANDO SI YA EXISTE EL DATO.')
+                                                    if(response.data== true){
+                                                        this.bandera_editar_premio = false
+                                                        this.actualizar_premios=index
+                                                        this.codigo_premios = ''
+                                                        this.descripcion_premios = ''
+                                                        this.puntos_canjear_premios = ''
+                                                        this.consultar_concentrado_premios()
+                                                    }else if(response.data=="Existe"){
+                                                          alert('El código esta DUPLICADO, verifique y vuelva a guardar.')  
+                                                    }else{
+                                                        alert('Problemas para guardar premio en BD')
+                                                    }
+                                                    console.log(response.data)
+                                                }).catch(error =>{
+
+                                                })
+
+                                        }else{
+                                                alert("el campo Puntos de canje deben ser números.")
+                                            }
+                                }else{
+                                    alert("Los campos (*) son requeridos")
+                                }
+                    }
+                    if(insertar_actualizar=="Actualizar"){
+                        
+                        if(this.act_codigo_premio!='' || this.act_descripcion_premios!='' || this.act_puntos_premios )
+                            {
+                                    axios.post("guardar_actualizar_premio.php",{
+                                        id_premio:id_premio,
+                                        insertar_actualizar: insertar_actualizar,
+                                        codigo_premios: this.act_codigo_premio,
+                                        descripcion_premios: this.act_descripcion_premios,
+                                        puntos_canjear_premios: this.act_puntos_premios
+                                    }).then(response =>{
+                                        if(response.data== true){
+                                            this.bandera_editar_premio = false
+                                            this.actualizar_premios=index
+                                            this.act_codigo_premio = ''
+                                            this.act_descripcion_premios = ''
+                                            this.act_puntos_premios = ''
+                                            this.consultar_concentrado_premios()
+                                        }else if(response.data=="Existe"){
+                                            alert('El código esta DUPLICADO, verifique y vuelva a guardar.')  
+                                        }else{
+                                            alert('Problemas para actualizar premio en BD')
+                                        }
+                                        console.log(response.data)
+                                    }).catch(error =>{
+
+                                    })
+                            
+                            }else{
+                                alert("Todos los campos son requeridos")
+                            }
+
+                    }
+                },
+
+                eliminarPremio(id_premio, ruta, cant_doc){
+               if(!confirm('Seguro de elimiar Premio del Catálogo')) return 
+                axios.post("eliminar_premio.php",{
+                    id_premio:id_premio
+                }).then(response =>{
+                        if(response.data=="si"){//eliminar registro de premios
+                            this.consultar_concentrado_premios()
+                            alert("Premio Eliminado con Éxito")
+
+                            this.id_concentrado = id_premio
+                            this.cual_documento = 'premio'
+                            this.cantidadDOCFILE = cant_doc-1
+                            
+                            this.eliminarDocumento(ruta)//eliminar el documento.
+ 
+                            }else if(response.data=="No Eliminado"){
+                                alert("Algo no salio bien no se logro Eliminar.")
+                            }else{
+                                alert("Error al eliminar Premio.")
+                            }
                 }).catch(error =>{
 
                 })
+            },
+            editaPremio(index){
+                if(index==0){
+                    this.actualizar_premios = index
+                    this.bandera_editar_premio = false
+                }else if(index!=0){
+                    this.actualizar_premios = index
+                    this.bandera_editar_premio = true
+                    this.act_codigo_premio = this.concentrado_premios[index-1].codigo_premio
+                    this.act_descripcion_premios=this.concentrado_premios[index-1].descripcion
+                    this.act_puntos_premios = this.concentrado_premios[index-1].puntos_para_canjear
+                }
+                //alert(index)
+            },
+            buscarUrlImagen(index){
+                alert(index)
+                /*this.url_img_premio= this.concentrado_premios[index].url_premio*/
+                
+            },
+            /*METOS ADMINISTRACION DE RETOS */
+            consultaConcentradoRetos(){
+                axios.post("consulta_concentrado_retos.php",{
+                }).then(response =>{
+                    this.concentrado_retos = response.data
+                }).catch(error =>{
                    
-                },  
-            /*METODOS DE ADMINISTRACION*/
+                })
+
+            },
+            agregarReto(guardar){
+                if(this.titulo_del_reto!='' || this.descripcion_del_reto!='' || this.responsable_del_reto !=''
+                    || this.planta_en_reto!='' || this.area_en_reto!='' || this.subarea_en_reto!=''){
+
+                        axios.post("guardar_actualizar_reto.php",{
+                            guardar_o_actualizar: guardar,
+                            titulo_del_reto: this.titulo_del_reto,
+                            descripcion_del_reto: this.descripcion_del_reto,
+                            responsable_del_reto: this.responsable_del_reto,
+                            planta_en_reto: this.planta_en_reto,
+                            area_en_reto: this.area_en_reto,
+                            subarea_en_reto: this.subarea_en_reto,
+                            folio_del_reto: this.folio_del_reto
+                        }).then(response =>{
+                            console.log()
+                            if(response.data==true){
+                                this.titulo_del_reto =''
+                                this.descripcion_del_reto=''
+                                this.responsable_del_reto=''
+                                this.planta_en_reto=''
+                                this.area_en_reto=''
+                                this.subarea_en_reto= ''
+                                this.folio_del_reto = ''
+                                this.consultaConcentradoRetos()
+                            }else{
+                                alert("Salio mal al insertar datos del reto en BD.")
+                            }
+                           
+                        }).catch(error =>{
+
+                        })
+                        
+                        //console.log("guardar")
+                }else{
+                    alert("todos los campos con (*) son requeridos.")
+                }    
+            },    
+            generarFolio(){
+                if(this.planta_en_reto!='' && this.area_en_reto!=''){
+                        axios.post("consulta_ultimo_folio_concentrado_retos.php",{
+                            planta_en_reto: this.planta_en_reto,
+                            area_en_reto: this.area_en_reto
+                        }).then(response =>{
+                            this.ultimo_folio_retos = response.data
+                            var nuevo_numero = 1
+                            console.log(this.ultimo_folio_retos.length)
+                            console.log("arriba largo del arreglo")
+                            if(this.ultimo_folio_retos.length>0){
+                                var ultimo_folio = this.ultimo_folio_retos[0].folio_reto
+                                var ultimo_numero_string=ultimo_folio.split("-").slice(-1) 
+                                var ultimo_numero = parseInt(ultimo_numero_string)
+                                var nuevo_numero = ultimo_numero+1
+                            }
+                            var anio = new Date().getFullYear()// tomando anio
+                            var acadena = anio.toString();// pasandolo a cadena
+                            var ultimos_dos_digitos=acadena.substr(-2)//tomando los ultimos dos digitos
+                            var limpiandoplanta = this.planta_en_reto.replace(".",'')//remplazando . si exite
+                            var limpiandoarea = this.area_en_reto.replace(".",'')//remplazando . si exite
+                            var planta=limpiandoplanta.substr(0,3)//tomando los primero 3
+                            var area=limpiandoarea.substr(0,3)//tomando los primero 3
+                            var prefolio = planta+"-"+area+"-"+ultimos_dos_digitos +"-"+nuevo_numero //concatenando para formar folio
+                            var mayus_folio = prefolio.toUpperCase() 
+                            this.folio_del_reto = mayus_folio 
+                            
+                        }).catch(error =>{
+
+                        })
+                }
+            },
+            editaReto(index){
+                if(index==0){
+                    this.actualizar_reto = index
+                    this.bandera_editar = false
+                }else if(index!=0){
+                    this.actualizar_reto = index
+                    this.bandera_editar = true
+                    this.act_status_reto = this.concentrado_retos[index-1].status_reto
+                    this.act_titulo_del_reto=this.concentrado_retos[index-1].titulo_reto
+                    this.act_descripcion_del_reto = this.concentrado_retos[index-1].descripcion_reto
+                    this.act_responsable_del_reto = this.concentrado_retos[index-1].responsable_reto
+                    this.act_planta_en_reto = this.concentrado_retos[index-1].planta_reto
+                    this.act_area_en_reto = this.concentrado_retos[index-1].area_reto
+                    this.act_subarea_en_reto = this.concentrado_retos[index-1].subarea_reto
+                }
+                //alert(index)
+            },
+ 
+            guardarActualizacionReto(index,id_reto,actualizar){
+                axios.post("guardar_actualizar_reto.php",{
+                            guardar_o_actualizar: actualizar,
+                            status_reto: this.act_status_reto,
+                            titulo_del_reto: this.act_titulo_del_reto,
+                            descripcion_del_reto: this.act_descripcion_del_reto,
+                            responsable_del_reto: this.act_responsable_del_reto,
+                            planta_en_reto: this.act_planta_en_reto,
+                            area_en_reto: this.act_area_en_reto,
+                            subarea_en_reto: this.act_subarea_en_reto,
+                            id_reto: id_reto,
+                        }).then(response =>{
+                            console.log(response.data)
+                            if(response.data==true){
+                                this.actualizar_reto = 0
+                                this.bandera_editar = false
+                                this.consultaConcentradoRetos()
+                            }else{
+                                alert("Salio mal al insertar datos del reto en BD.")
+                            }
+                           
+                        }).catch(error =>{
+
+                        })
+            },
+            eliminarReto(id_reto){
+               if(!confirm('Esta seguro de eliminar este reto')) return 
+                axios.post("eliminar_reto.php",{
+                    id_reto:id_reto
+                }).then(response =>{
+                        if(response.data=="si"){
+                            this.consultaConcentradoRetos()
+                            alert("Reto Eliminado con Éxito")
+                        }else if(response.data=="No Eliminado"){
+                            alert("Algo no salio bien no se logro Eliminar.")
+                        }else{
+                            alert("Error al eliminar el Documento.")
+                        }
+                    
+                }).catch(error =>{
+
+                })
+            },
+        
+            /*METODOS DE CONFIGURACION*/
             guardar_admin_y_analista(){
                 axios.post('guardar_analista_o_admin.php',{
                     nuevo_usuario: this.nuevo_usuario,
                     nuevo_password: this.nuevo_password,
                     nuevo_nombre: this.nuevo_nombre,
                     nuevo_correo: this.nuevo_correo,
+                    planta: this.analista_planta,
+                    area:this.analista_area,
+                    subarea:this.analista_subarea,
                     nuevo_departamento: this.nuevo_departamento,
-                    var_tipo_usuario: this.var_tipo_usuario
+                    var_tipo_usuario: this.var_tipo_usuario,
+                    accion: 'guardar'
                 }).then(response =>{
                     console.log(response.data);
                    if(response.data=='Bien'){
@@ -1693,16 +4314,218 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                         this.var_tipo_usuario=''
                         alert("Usuario dado de alta con Éxito.")
                         this.consulta_lista_usuarios_y_analistas_factibilidad()
+                        this.consultar_usuarios()
                    }else{
                     alert("Algo salio mal.")
                    }
                 })
+            },
+            consultar_usuarios(){
+                axios.post('consulta_usuarios.php',{
+                }).then(response =>{
+                    this.array_usuarios=response.data
+                })
+            },
+            editarUsuarios(bandera,index){
+              
+                this.id_update = index
+                if(bandera==1){
+                    this.bandera_editar_user = true
+                    this.u_user=this.array_usuarios[index-1].user
+                    this.u_password=this.array_usuarios[index-1].password
+                    this.u_email=this.array_usuarios[index-1].email
+                    this.u_nombre=this.array_usuarios[index-1].nombre
+                    this.u_planta=this.array_usuarios[index-1].planta
+                    this.u_area=this.array_usuarios[index-1].area
+                    this.u_subarea=this.array_usuarios[index-1].subarea
+                    this.u_departamento=this.array_usuarios[index-1].departamento
+                    this.u_tipo=this.array_usuarios[index-1].tipo
+
+                }
+                if(bandera==0){
+                    this.bandera_editar_user = false
+                }
+            },
+            actualizar_admin_y_analista(id){
+                axios.post('guardar_analista_o_admin.php',{
+                    nuevo_usuario:  this.u_user,
+                    nuevo_password: this.u_password,
+                    nuevo_nombre:  this.u_nombre,
+                    nuevo_correo: this.u_email,
+                    planta: this.u_planta,
+                    area: this.u_area,
+                    subarea: this.u_subarea,
+                    nuevo_departamento: this.u_departamento,
+                    var_tipo_usuario: this.u_tipo,
+                    id: id,
+                    accion: 'actualizar',
+                    }).then(response =>{
+                   if(response.data=='Bien'){
+                        this.bandera_editar_user = false
+                        this.id_update = 0
+                        this.consulta_lista_usuarios_y_analistas_factibilidad()
+                        this.consultar_usuarios()
+                   }else{
+                    alert("Algo salio mal.")
+                   }
+                })
+            },
+            /*PREMIOS SOLICITADOS*/
+            consultar_premios_solicitados(){
+                axios.post("consultar_solicitud_premios_colaborador.php",{
+                }).then(response =>{
+                    this.concentrado_status_premios = response.data
+                    console.log("RESULTADOO",this.concentrado_status_premios)
+                })
+            },
+            editarStutasPremioSolicitado(bandera,index){
+              this.id_updates = index
+              if(bandera==1){
+                  /*this.bandera_editar_user = true
+                  this.u_user=this.array_usuarios[index-1].user
+                  this.u_password=this.array_usuarios[index-1].password
+                  this.u_email=this.array_usuarios[index-1].email
+                  this.u_nombre=this.array_usuarios[index-1].nombre
+                  this.u_departamento=this.array_usuarios[index-1].departamento
+                  this.u_tipo=this.array_usuarios[index-1].tipo*/
+                  this.numero_solped=this.concentrado_status_premios[index-1].solped
+                  this.oc_generada=this.concentrado_status_premios[index-1].oc_generada
+                  this.premio_status=this.concentrado_status_premios[index-1].status
+              }
+              if(bandera==0){
+                  this.bandera_editar_solicitud = false
+              }
+          },
+          guardarStutasPremioSolicitado(id_seguimiento){
+            axios.post("actualizar_solped_status.php",{
+                id_seguimiento: id_seguimiento,
+                numero_solped: this.numero_solped,
+                oc_generada: (this.oc_generada && this.oc_generada !== '0') ? this.oc_generada : null,
+                premio_status: this.premio_status
+            }).then(response =>{
+                if(response.data==true){
+                    this.id_updates=0
+                    this.bandera_editar_solicitud = false
+                    this.consultar_premios_solicitados()
+                }else{
+                    alert("Algo salio mal al actualizar Solped y Status")
+                }
+            })
+          },
+          actualizarLlegadaPremio(id_seguimiento, producto_llego = false) {
+            axios.post("actualizar_solped_status.php", {
+                accion:'ConfirmarPremio',
+                id_seguimiento:id_seguimiento,
+                premio_status: this.premio_status,
+                producto_llego: producto_llego ? 1 : 0
+            }).then(response=>{
+                if(response.data==true){
+                    this.consultar_premios_solicitados()
+                }else{
+                    alert("Algo salió mal al actualizar el pedido")
+                }
+            })
+          },
+
+          finalizarEntregaPremio(id_seguimiento){
+            if(!confirm("El premio se a entregado al colaborador."))return
+                axios.post("actualizar_solped_status.php",{
+                    id_seguimiento: id_seguimiento,
+                    numero_solped: this.numero_solped,
+                    premio_status: "Entregado"
+                }).then(response =>{
+                    if(response.data==true){
+                        this.id_updates=0
+                        this.bandera_editar_solicitud = false
+                        this.consultar_premios_solicitados()
+                    }else{
+                        alert("Algo salio mal al actualizar Solped y Status")
+                    }
+                })
+          },
+          consultar_colaboradores(){
+            axios.post("consultar_colaboradores.php",{
+            }).then(response =>{
+                this.concentrado_colaboradores = response.data
+               // console.log("AVER",this.concentrado_colaboradores)
+            })
+          },
+          subirExcelNuevosColaboradores(){
+            let formData = new FormData();
+               
+               
+                   var files = this.$refs.documentoExcel.files;
+                   var totalfiles = this.$refs.documentoExcel.files.length;
+              
+              
+               for (var index = 0; index < totalfiles; index++) {
+                formData.append("files[]", files[index]);//arreglo de documentos
+               }
+                axios.post("subir_excel_nuevos_colaboradores.php", formData,
+                    {
+                     headers: {"Content-Type": "multipart/form-data"}
+                    })
+                    .then(response => {
+                        console.log('Respuesta csv',response.data);
+                       if(response.data[0]==true){
+                            this.consultar_colaboradores();
+                            alert("Subida Exitosa.\n \n Coincidencias: ("+response.data[1].length+") \n Agregados: ("+response.data[2].length+")")
+                       }else{
+                            this.consultar_colaboradores();
+                       }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+               
+
+          },
+        confirmarLlegadaProducto(id_seguimiento) {
+        Swal.fire({
+            title: '¿Confirmar llegada del producto?',
+            text: 'Al confirmar, el producto se marcará como recibido. Esta acción no se puede deshacer.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Marcar como recibido',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+            this.actualizarLlegadaPremio(id_seguimiento, true);
             }
+        });
+        },
+
+          modalActualizarColaborador(nombre,id,planta,status){
+                this.colaborador_nombre = nombre
+                this.id_colaborador = id
+                this.selector_planta_colaborador = planta
+                this.selector_baja_colaborador = status
+          },
+          actualizarColaborador(id){
+               axios.post("actualizar_colaborador.php",{
+                    id:id,
+                    planta_seleccionada:this.selector_planta_colaborador,
+                    activo_baja:this.selector_baja_colaborador
+               }).then(response => {
+                    console.log(response.data);
+                    if (response.data==true) {
+                        console.log("Actualizado correctamente");
+                        this.consultar_colaboradores();
+                    }else{
+                        alert("No se actualizo.")
+                    }
+               }).catch(error => {
+                    console.log("Error en el metodo actualizarColaborador");
+               }).finally(() => {
+                    
+               });
+          },
+
         }   
     }
     var mountedApp = Vue.createApp(vue3).mount('#app');
-
-
 </script>
 </body>
 </html>  

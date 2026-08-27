@@ -1,6 +1,60 @@
 /*PRINCIPAL MEJORA*/
 /* Small devices (landscape phones, 576px and up)***************************************/
 @media (min-width: 0px) {
+
+    [v-cloak]{
+        display: none;
+    }
+
+    .tamanio-text-chico{
+        font-size:0.6em;
+    }
+
+    .tamanio-text-mediano{
+        font-size:0.7em;
+    }
+
+    .tamanio-text-grande{
+        font-size:0.8em;
+    }
+
+    
+
+
+
+    body {
+        overscroll-behavior: contain;
+      }
+    /*css pricipal colaboradoress*/
+    .div-scroll-vertial{
+        max-height: 70vh;
+        overflow-x: scroll;
+    }
+    .div-scroll-vert{
+        max-height: 50vh;
+        overflow-x: scroll;
+    }
+
+    .btn_confirmar{
+        font-size:0.7em; background-color:green; cursor: pointer; box-shadow: -5px 0px 5px 2px rgba(172,230,179,1);
+        transition: background-color 0.5s ease 0s;
+    }
+    .btn_confirmar:hover{
+        box-shadow: -5px 0px 5px 2px rgba(172,230,179,1);
+        background-color:rgb(12, 174, 12);
+    }
+
+
+    .btn_cancelar{
+        font-size:0.7em; background: rgb(213, 8, 8); cursor: pointer; 
+        box-shadow: -5px 0px 5px 2px rgba(230,172,179,1); 
+        transition: background-color 0.5 ease 0s;
+    }
+
+    .btn_cancelar:hover{
+        background-color: rgb(255, 0, 0);
+    }
+    /*fin principal colaboradors*/
     .opciones{
         height:30px;
         background: rgb(255, 223, 223);
@@ -18,7 +72,7 @@
         transform: scale(1.1);
         /*color:rgb(0, 121, 16)*/
     }
-    .pintarUno, .pintarDos, .pintarTres, .pintarCuatro, .pintarCinco{
+    .pintarUno, .pintarDos, .pintarTres, .pintarCuatro, .pintarCinco, .pintarSeis, .pintarSiete, .pintarOcho{
         background: rgb(137, 0, 0);
         color: white;
     }
@@ -49,7 +103,7 @@
     /*tabla sugerencias*/
         .div-scroll{
             max-height: 70vh;
-            overflow: auto;
+             overflow-x: auto;
             white-space: nowrap;
         }
       
@@ -85,12 +139,28 @@
             border-color: rgb(137, 0, 0);
             border-radius: 5px;
             height: 50px;
+            width: 100%;
             min-width: 100px;
         }
 
-        .input-nom-sugerencia{ width: 250px;}
-        .text-area{resize: inline; }
+        .inputs-concentrado-disabled{
+            background: rgb(255, 255, 255);
+            border: 1px solid;
+            border-radius: 5px;
+            height: 50px;
+            min-width: 500px;
+        }
         
+
+        .input-nom-sugerencia{ width: 250px;}
+        .text-area{resize: horizontal; }
+        .text-area-disabled{resize: none;}
+        .columna-nofactible{
+            text-align: justify;
+        }
+        .labels-consulta{
+            width: 500px;
+        }
   /*Fin concentrado sugerencias*/
   /*model no factibilidad */
   .text-area-causa-no-factibilidad{
@@ -104,23 +174,121 @@
             min-width: 100px;
   }
   /*fin modal no factibilidad */
+ /*Medicion de Impacto*/
+ 
+
+ .addnewImpacto  {
+	box-shadow: 0px 10px 14px -7px #3e7327;
+	background:linear-gradient(to bottom, #77b55a 5%, #72b352 100%);
+	background-color:#77b55a;
+	border-radius:4px;
+	border:1px solid #4b8f29;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:13px;
+	font-weight:bold;
+	padding:3px 6px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #5b8a3c;
+}
+.deletenewImpacto{
+    box-shadow: 0px 10px 14px -7px #732727;
+	background:linear-gradient(to bottom, #b55a5a 5%, #b35252 100%);
+	background-color:#b55a5a;
+	border-radius:4px;
+	border:1px solid #8f2929;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:13px;
+	font-weight:bold;
+	padding:3px 6px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #8a3c3c;
+}
+
+.addnewImpacto:hover, .deletenewImpacto:hover {
+	background:linear-gradient(to bottom, #72b352 5%, #77b55a 100%);
+	background-color:#72b352;
+}
+.deletenewImpacto:hover {
+	background:linear-gradient(to bottom, #b35252 5%, #b55a5a 100%);
+	background-color:#b35252;
+}
+.addnewImpacto:active, .deletenewImpacto:active {
+	position:relative;
+	top:1px;
+}
+
+.label-asc{
+ font-size: 0.6em;
+ margin-left: -2px;
+
+}
+
+.btn-filtrar{
+    border: 2px solid #000000 !important;
+    height: 28px;
+    width:40px;
+}
+.btn-filtrar-activo{
+    border: 2px solid #060606 !important;
+    background-color: #8d1610 ;
+    height: 28px;
+    width:40px;
+    color:white;
+}
+
+
+.btn_photo {
+    background-color: #ddf5bf;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    font-size: 18px;
+    border-radius: 50px;
+    width: 100px;
+    height: 100px;
+    transition: 0.3s;
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
+  }
+  
+  .btn_photo:hover {
+    transform: translateY(2px);
+    box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.5);
+    }
+/*APP*/
+
  }
  /* Medium devices (tablets, 576 and up)***************************************/
 @media (min-width: 576px) {
 
     .inputs-concentrado{
-        min-width: 200px;
+        width:100%;
+       /* min-width: 200px;*/
     }
   
  }
 /* Medium devices (tablets, 768px and up)***************************************/
 @media (min-width: 768px) { 
+    .opciones{
+        font-size: 0.6em;
+        border-radius: 20px;
+    }
     
  }
 /* Large devices (desktops, 992px and up)****************************************/
 @media (min-width: 992px) { 
+    .div-scroll-vertial{
+        max-height: 100vh;
+        overflow-x: auto;
+    }
     .opciones{
-        font-size: 0.9em;
+        font-size: 0.6em;
     }
     .tablaConcentrado, .tablaMonitoreo-sugerencias{
         font-size: 0.6em;         
@@ -129,6 +297,9 @@
  }
 /* X-Large devices (large desktops, 1200px and up)***************************************/
 @media (min-width: 1200px) {
+    .opciones{
+        font-size: 0.8em;
+    }
     .tablaConcentrado, .tablaMonitoreo-sugerencias{
         font-size: 0.7em;         
      }
@@ -138,3 +309,17 @@
 @media (min-width: 1400px) { 
 
 }
+
+/* comentario de motivo factibilidad */
+.txt-area_motivo{
+    background: rgb(255, 255, 255);
+    border: 1px solid;
+    border-color: rgb(137, 0, 0);
+    border-radius: 5px;
+    height: 3em;
+    width: 95%;
+    min-height: 100px;
+    min-width: 100px;
+}
+
+

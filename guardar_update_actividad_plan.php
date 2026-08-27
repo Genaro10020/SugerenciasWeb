@@ -7,6 +7,7 @@ $numero_actividad=$variables['numero_actividad'];
 $folio=$variables['folio'];
 $actividad=$variables['actividad'];
 $responsable_plan=$variables['responsable_plan'];
+$num_nomina=$variables['num_nomina'];
 
 $fecha_inicial=$variables['fecha_inicial_actividad'];
 $fecha_inicial = date("Y-m-d", strtotime($fecha_inicial));
@@ -29,13 +30,13 @@ if($check=="Pendiente"){
 }else if($check=="Aceptado"){
         $check = "Corregido";
 }else{
-        $check = "Pendiente";
+        $check = "";
 }
 
 include "conexionGhoner.php";
 
         if($tipo=="nuevo"){
-                $consulta = "INSERT INTO plan_trabajo_sugerencias (id_concentrado,num_actividad,folio,actividad,responsable,fecha_inicial,fecha_final,porcentaje,enviado_o_no)  VALUES ('$id_concentrado','$numero_actividad','$folio','$actividad','$responsable_plan','$fecha_inicial','$fecha_final','0','')";
+                $consulta = "INSERT INTO plan_trabajo_sugerencias (id_concentrado,num_actividad,folio,actividad,responsable,fecha_inicial,fecha_final,porcentaje,enviado_o_no, nomina)  VALUES ('$id_concentrado','$numero_actividad','$folio','$actividad','$responsable_plan','$fecha_inicial','$fecha_final','0','', $num_nomina)";
                 $query = mysqli_query( $conexion, $consulta);
                 if($query==true){
                         $resultado="si";
@@ -45,7 +46,7 @@ include "conexionGhoner.php";
                         $resultado="error create";
                 }
         }else if ($tipo=="actualizar"){
-                $actualizar = "UPDATE plan_trabajo_sugerencias SET actividad='$actividad', responsable='$responsable_plan',fecha_inicial='$fecha_inicial',fecha_final='$fecha_final', enviado_o_no = '' WHERE id = '$id'";
+                $actualizar = "UPDATE plan_trabajo_sugerencias SET actividad='$actividad', responsable='$responsable_plan',fecha_inicial='$fecha_inicial',fecha_final='$fecha_final', enviado_o_no = '', nomina='$num_nomina' WHERE id = '$id'";
                 $query = mysqli_query( $conexion, $actualizar);
 
                 $actualizar2 = "UPDATE concentrado_sugerencias SET check_mc='$check' WHERE id = '$id_concentrado'";//ACTUALIZADO CHECK  CONCENTRADO SUGERENCIAS
