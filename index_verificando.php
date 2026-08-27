@@ -21,35 +21,36 @@ $resultado_ead = mysqli_query($conexionEAD, $consulta_ead);
 
 if ($resultado_ead && mysqli_num_rows($resultado_ead) > 0) {
     
-    $row_ead = mysqli_fetch_assoc($resultado_ead);
-    $nombre_supervisor = $row_ead['nombre'];
-
-    $arreglo_ids = [];
-    $consulta_equipos = "SELECT id FROM equipos_ead WHERE supervisor = '$nombre_supervisor'";
-    $resultado_equipos = mysqli_query($conexion, $consulta_equipos);
-
-    if($resultado_equipos && mysqli_num_rows($resultado_equipos) > 0) {
-        while ($row_equipo = mysqli_fetch_assoc($resultado_equipos)) {
-            $arreglo_ids[] = $row_equipo['id'];
-        }
-    }
-
-    $_SESSION['idsEquipos'] = $arreglo_ids;
-
     $consulta_sug = "SELECT * FROM usuarios_colocaboradores_sugerencias WHERE numero_nomina = '$user' AND password='$pass' AND (status != 'Baja' OR status IS NULL)";
     $resultado_sug = mysqli_query($conexion, $consulta_sug);
+
     if ($resultado_sug && mysqli_num_rows($resultado_sug) > 0) {
-        while ($row = mysqli_fetch_array($resultado_sug)) {
-            $id     = $row['id'];
-            $tipo   = "Supervisor";
-            $nombre = $row['colaborador'];
-            $planta = $row['planta'];
+        $row = mysqli_fetch_array($resultado_sug);
+        
+        $id     = $row['id'];
+        $tipo   = "Supervisor";
+        $nombre = $row['colaborador'];
+        $planta = $row['planta'];
+
+        $arreglo_ids = [];
+        
+        $consulta_equipos = "SELECT id FROM equipos_ead WHERE supervisor = '$nombre'";
+        
+        $resultado_equipos = mysqli_query($conexionEAD, $consulta_equipos); 
+        
+        if ($resultado_equipos && mysqli_num_rows($resultado_equipos) > 0) {
+            while ($row_equipo = mysqli_fetch_assoc($resultado_equipos)) {
+                $arreglo_ids[] = $row_equipo['id'];
+            }
         }
         
+        $_SESSION['idsEquipos'] = $arreglo_ids;
+
         $_SESSION["id"]          = $id;
         $_SESSION["usuario"]     = $user;
         $_SESSION["tipo"]        = $tipo;
         $_SESSION["tipo_acceso"] = "Supervisor"; 
+        $_SESSION["tipo_usuario"]= "Supervisor";
         $_SESSION["planta"]      = $planta;
         $_SESSION["nombre"]      = $nombre;
         $_SESSION["password"]    = $pass;
