@@ -2168,158 +2168,188 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                         <!--Fin Modal subir imagenes en retos-->
                             
                    </div>
-                   <div v-else-if="ventana=='configuracion'" v-cloak>
-                    <!--//////////////////////////////////////////////////////////////////////////////APARTADO CONFIGURACIÓN-->
-                    
-                                <div class="row justify-content-center align-items-start ">
-                                        <div class="cintilla col-12 text-center">
-                                        <b> CONFIGURACIÓN</b>
+                <div v-else-if="ventana=='configuracion'" v-cloak>                    
+                    <!--//////////////////////////////////////////////////////////////////////////////APARTADO CONFIGURACIÓN-->                    
+                    <div class="row justify-content-center align-items-start ">
+                        <div class="cintilla col-12 text-center">
+                            <b> CONFIGURACIÓN</b>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center align-items-center mt-3 mx-2">
+                        <div class="col-12 d-flex justify-content-start mb-3">
+                            <button class="btn-configuracion-primary" data-bs-toggle="modal" data-bs-target="#modalAltaUsuario">
+                                <i class="bi bi-person-plus-fill"></i> Alta de Usuarios
+                            </button>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="text-center pt-1">
+                                <span class="badge bg-light text-dark" style="font-size: 0.7em;">
+                                    Administradores / Analistas / Responsables
+                                </span>
+                            </div>
+
+                            <div style="height: 65vh; overflow-x: scroll">
+                                <table class="tablaMonitoreo-sugerencias table table-striped table-bordered ">
+                                    <thead class="encabezado-tabla text-center text-light ">
+                                    <tr >
+                                        <th scope="col" class="sticky">Editar</th>
+                                        <th scope="col">Usuario</th>
+                                        <th scope="col">Password</th>
+                                        <th scope="col">Email </th>
+                                        <th scope="col">Nombre</th>
+                                        <th scope="col">Planta</th>
+                                        <th scope="col">Área</th>
+                                        <th scope="col">Subárea</th>
+                                        <th scope="col">Departamento</th>
+                                        <th scope="col">Tipo </th>
+                                    </tr>
+                                </thead>
+                                <tbody>                                        
+                                    <tr v-for="(admis_usuarios, index) in array_usuarios">
+                                        <td>
+                                            <button v-if="id_update==index+1" type="button" class="btn btn-danger me-2" title="Cancelar" @click="editarUsuarios(0,0)" ><i class="bi bi-x-circle" ></i></button>
+                                            <button v-if="bandera_editar_user == false" type="button" class="btn btn-warning me-2" title="Actualizar" @click="editarUsuarios(1,index+1)"><i class="bi bi-pen" ></i></button>
+                                            <button v-if="id_update==index+1" class="btn btn-primary me-2" title="Guardar" @click="actualizar_admin_y_analista(admis_usuarios.id)"><i class="bi bi-check-circle"></i></button> 
+                                        </td>
+                                        <td> 
+                                            <input v-if="id_update==index+1" class="inputs-concentrado" type="text" v-model="u_user"/> 
+                                            <label v-else>{{admis_usuarios.user}}</label>
+                                        </td>
+                                        <td><input v-if="id_update==index+1" class="inputs-concentrado" type="text" v-model="u_password"/> 
+                                            <label v-else>{{admis_usuarios.password}}<label>
+                                        </td>
+                                        <td><input v-if="id_update==index+1" class="inputs-concentrado" type="text" v-model="u_email"/> 
+                                            <label v-else>{{admis_usuarios.email}}<label>
+                                        </td>
+                                        <td><input v-if="id_update==index+1" class="inputs-concentrado" type="text" v-model="u_nombre"/> 
+                                            <label v-else>{{admis_usuarios.nombre}}<label>
+                                        </td>    
+                                        <td>
+                                            <select v-if="id_update==index+1" class="inputs-concentrado" v-model="u_planta" required>
+                                                <option value="" disabled>Seleccione planta...</option>
+                                                <option v-for="planta_list in lista_planta" :value="planta_list.planta">{{planta_list.planta}}</option>
+                                            </select>  
+                                            <label v-else>{{admis_usuarios.planta}}<label>
+                                        </td>    
+                                        <td>
+                                            <select v-if="id_update==index+1" class="inputs-concentrado" v-model="u_area" required>
+                                                <option value="" disabled>Seleccione área...</option>
+                                                <option v-for="area_list in lista_area" :value="area_list.area">{{area_list.area}}</option>
+                                            </select>  
+                                            <label v-else>{{admis_usuarios.area}}<label>
+                                        </td>    
+                                        <td><select v-if="id_update==index+1" class="inputs-concentrado" v-model="u_subarea" required>
+                                                <option value="" disabled>Seleccione subárea...</option>
+                                                <option v-for="subarea_list in lista_subarea" :value="subarea_list.subarea">{{subarea_list.subarea}}</option>
+                                            </select>  
+                                            <label v-else>{{admis_usuarios.subarea}}<label>
+                                        </td>    
+                                        <td>
+                                            <select v-if="id_update==index+1" class="inputs-concentrado" v-model="u_departamento" required>
+                                                <option value="" disabled>Seleccione departamento...</option>
+                                                <option v-for="area_part in lista_area_participante" :value="area_part.area_participante">{{area_part.area_participante}}</option>
+                                            </select> 
+                                            <label v-else>{{admis_usuarios.departamento}}<label>
+                                        </td>    
+                                        <td>
+                                            <select  v-if="id_update==index+1" class="inputs-concentrado" v-model="u_tipo" required>
+                                                <option value="" disabled>Seleccione tipo...</option>
+                                                <option v-for="array_tipo in array_tipo_usuario" :value="array_tipo">{{array_tipo}}</option>
+                                            </select> 
+                                            <label v-else>{{admis_usuarios.tipo}}<label>
+                                        </td>    
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="modalAltaUsuario" tabindex="-1" aria-labelledby="modalAltaUsuarioLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content modal-configuracion">
+                                <div class="modal-header modal-header-configuracion">
+                                    <h5 class="modal-title fw-bold" id="modalAltaUsuarioLabel" style="color: #b50000">
+                                        ALTA DE ADMIN/ANALISTAS
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+
+                                <div class="modal-body p-4">
+                                    <form @submit.prevent="guardar_admin_y_analista">
+                                        <div class="form-group-configuracion">
+                                            <label>Usuario (No. de Nómina):</label>
+                                            <input type="text" class="input-configuracion" v-model="nuevo_usuario" required>
                                         </div>
+                                        <div class="form-group-configuracion">
+                                            <label>Password:</label>
+                                            <input type="text" class="input-configuracion" v-model="nuevo_password" required>
+                                        </div>
+                                        <div class="form-group-configuracion">
+                                            <label>Nombre Completo:</label>
+                                            <input type="text" class="input-configuracion" v-model="nuevo_nombre" required>
+                                        </div>
+                                        <div class="form-group-configuracion">
+                                            <label>Correo:</label>
+                                            <input type="email" class="input-configuracion" v-model="nuevo_correo" required>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6 form-group-configuracion">
+                                                <label>Planta:</label>
+                                                <select class="input-configuracion" v-model="analista_planta" required>
+                                                    <option value="" disabled>Seleccione planta...</option>
+                                                    <option v-for="planta_analista in lista_planta" :value="planta_analista.planta">{{planta_analista.planta}}</option>
+                                                </select> 
+                                            </div>
+                                            <div class="col-6 form-group-configuracion">
+                                                <label>Área:</label>
+                                                <select class="input-configuracion" v-model="analista_area" required>
+                                                    <option value="" disabled>Seleccione área...</option>
+                                                    <option v-for="area_analista in lista_area" :value="area_analista.area">{{area_analista.area}}</option>
+                                                </select> 
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6 form-group-configuracion">
+                                                <label>Subárea:</label>
+                                                <select class="input-configuracion" v-model="analista_subarea" required>
+                                                    <option value="" disabled>Seleccione subárea...</option>
+                                                    <option v-for="subarea_analista in lista_subarea" :value="subarea_analista.subarea">{{subarea_analista.subarea}}</option>
+                                                </select> 
+                                            </div>
+                                            <div class="col-6 form-group-configuracion">
+                                                <label>Departamento:</label>
+                                                <select class="input-configuracion" v-model="nuevo_departamento" required>
+                                                    <option value="" disabled>Seleccione departamento...</option>
+                                                    <option v-for="area_part in lista_area_participante" :value="area_part.area_participante">{{area_part.area_participante}}</option>
+                                                </select> 
+                                            </div>
+                                        </div>
+                                        <div class="form-group-configuracion">
+                                            <label>Tipo:</label>
+                                            <select class="input-configuracion" v-model="var_tipo_usuario" required>
+                                                <option value="" disabled>Seleccione tipo...</option>
+                                                <option v-for="array_tipo in array_tipo_usuario" :value="array_tipo">{{array_tipo}}</option>
+                                            </select> 
+                                        </div>
+                                    
+                                        <div class="text-end mt-4">
+                                            <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">
+                                                Cancelar
+                                            </button>
+                                            <button type="submit" class="btn-configuracion-primary">
+                                                Guardar Usuario
+                                            </button>
+                                        </div>
+                                    </form>
                                 </div>
-                                <div class="row justify-content-center align-items-center">
-                                   
-                                                <div class="col-12 col-sm-4 col-xl-3  bg-light ms-3  ms-sm-0 mt-2   border bordered-2 border-secondary rounded-2 ">
-                                                    <form @submit.prevent="guardar_admin_y_analista" class="m-2 " style="font-size: 0.9em;">
-                                                    <div class="text-center"><span class="badge text-dark ">ALTA DE ADMIN/ANALISTAS.</span></div>
-                                                        <div class="mb-3">
-                                                        <div><span class="badge text-dark">Usuario (No. de Nómina):</span></div>
-                                                            <input type="text" class="w-100" v-model="nuevo_usuario"  required>
-                                                        </div>
-                                                        <div class="">
-                                                        <div><span class="badge text-dark">Password:</span></div>
-                                                            <input type="text" class="w-100" v-model="nuevo_password" required>
-                                                        </div>
-                                                        <div class="">
-                                                            <div><span class="badge text-dark">Nombre Completo:</span></div>
-                                                            <input type="text"   class="w-100" v-model="nuevo_nombre" required>
-                                                        </div>
-                                                        <div class="">
-                                                            <div><span class="badge text-dark">Correo:</span></div>
-                                                            <input type="email"class="w-100" v-model="nuevo_correo" required>
-                                                        </div>
-                                                        <div class="">
-                                                            <div><span class="badge text-dark">Planta:</span></div>
-                                                            <select class="w-100" v-model="analista_planta" required  style="font-size: 0.9em;">
-                                                                <option value="" disabled>Seleccione planta...</option>
-                                                                <option v-for="planta_analista in lista_planta" :value="planta_analista.planta">{{planta_analista.planta}}</option>
-                                                            </select> 
-                                                        </div>
-                                                        <div class="">
-                                                            <div><span class="badge text-dark">Área:</span></div>
-                                                            <select class="w-100" v-model="analista_area" required  style="font-size: 0.9em;">
-                                                                <option value="" disabled>Seleccione área...</option>
-                                                                <option v-for="area_analista in lista_area" :value="area_analista.area">{{area_analista.area}}</option>
-                                                            </select> 
-                                                        </div>
-                                                        <div class="">
-                                                            <div><span class="badge text-dark">Subárea:</span></div>
-                                                            <select class="w-100" v-model="analista_subarea" required  style="font-size: 0.9em;">
-                                                                <option value="" disabled>Seleccione subárea...</option>
-                                                                <option v-for="subarea_analista in lista_subarea" :value="subarea_analista.subarea">{{subarea_analista.subarea}}</option>
-                                                            </select> 
-                                                        </div>
-                                                        <div class="">
-                                                            <div><span class="badge text-dark">Departamento:</span></div>
-                                                            <select class="w-100" v-model="nuevo_departamento" required  style="font-size: 0.9em;">
-                                                                <option value="" disabled>Seleccione departamento...</option>
-                                                                <option v-for="area_part in lista_area_participante" :value="area_part.area_participante">{{area_part.area_participante}}</option>
-                                                            </select> 
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <div><span class="badge text-dark">Tipo:</span></div>
-                                                            <select class="w-100" v-model="var_tipo_usuario" required  style="font-size: 0.9em;">
-                                                                <option value="" disabled>Seleccione tipo...</option>
-                                                                <option v-for="array_tipo in array_tipo_usuario" :value="array_tipo">{{array_tipo}}</option>
-                                                            </select> 
-                                                        </div>
-                                                    
-                                                        <div class="text-center">
-                                                            <button class="boton-nuevo" > Aceptar</button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                                <div class="col-12 col-sm-8 ">
-                                                            <div class="text-center pt-1 ">
-                                                                <span class="badge bg-light text-dark" style="font-size:0.7em;">Administradores / Analistas / Responsables</span>
-                                                            </div>
-                                                            <div class="" style=" height:65vh; overflow-x: scroll;">
-                                                                <table class="tablaMonitoreo-sugerencias table table-striped table-bordered ">
-                                                                <thead class="encabezado-tabla text-center text-light ">
-                                                                    <tr >
-                                                                        <th scope="col" class="sticky">Editar</th>
-                                                                        <th scope="col">Usuario</th>
-                                                                        <th scope="col">Password</th>
-                                                                        <th scope="col">Email </th>
-                                                                        <th scope="col">Nombre</th>
-                                                                        <th scope="col">Planta</th>
-                                                                        <th scope="col">Área</th>
-                                                                        <th scope="col">Subárea</th>
-                                                                        <th scope="col">Departamento</th>
-                                                                        <th scope="col">Tipo </th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr v-for="(admis_usuarios, index) in array_usuarios">
-                                                                        <td>
-                                                                            <button v-if="id_update==index+1" type="button" class="btn btn-danger me-2" title="Cancelar" @click="editarUsuarios(0,0)" ><i class="bi bi-x-circle" ></i></button>
-                                                                            <button v-if="bandera_editar_user == false" type="button" class="btn btn-warning me-2" title="Actualizar" @click="editarUsuarios(1,index+1)"><i class="bi bi-pen" ></i></button>
-                                                                            <button v-if="id_update==index+1" class="btn btn-primary me-2" title="Guardar" @click="actualizar_admin_y_analista(admis_usuarios.id)"><i class="bi bi-check-circle"></i></button> 
-                                                                        </td>
-                                                                        <td> 
-                                                                            <input v-if="id_update==index+1" class="inputs-concentrado" type="text" v-model="u_user"/> 
-                                                                            <label v-else>{{admis_usuarios.user}}</label>
-                                                                        </td>
-                                                                        <td><input v-if="id_update==index+1" class="inputs-concentrado" type="text" v-model="u_password"/> 
-                                                                            <label v-else>{{admis_usuarios.password}}<label>
-                                                                        </td>
-                                                                        <td><input v-if="id_update==index+1" class="inputs-concentrado" type="text" v-model="u_email"/> 
-                                                                            <label v-else>{{admis_usuarios.email}}<label>
-                                                                        </td>
-                                                                        <td><input v-if="id_update==index+1" class="inputs-concentrado" type="text" v-model="u_nombre"/> 
-                                                                            <label v-else>{{admis_usuarios.nombre}}<label>
-                                                                        </td>    
-                                                                        <td>
-                                                                            <select v-if="id_update==index+1" class="inputs-concentrado" v-model="u_planta" required>
-                                                                                <option value="" disabled>Seleccione planta...</option>
-                                                                                <option v-for="planta_list in lista_planta" :value="planta_list.planta">{{planta_list.planta}}</option>
-                                                                            </select>  
-                                                                            <label v-else>{{admis_usuarios.planta}}<label>
-                                                                        </td>    
-                                                                        <td>
-                                                                            <select v-if="id_update==index+1" class="inputs-concentrado" v-model="u_area" required>
-                                                                                <option value="" disabled>Seleccione área...</option>
-                                                                                <option v-for="area_list in lista_area" :value="area_list.area">{{area_list.area}}</option>
-                                                                            </select>  
-                                                                            <label v-else>{{admis_usuarios.area}}<label>
-                                                                        </td>    
-                                                                        <td><select v-if="id_update==index+1" class="inputs-concentrado" v-model="u_subarea" required>
-                                                                                <option value="" disabled>Seleccione subárea...</option>
-                                                                                <option v-for="subarea_list in lista_subarea" :value="subarea_list.subarea">{{subarea_list.subarea}}</option>
-                                                                            </select>  
-                                                                            <label v-else>{{admis_usuarios.subarea}}<label>
-                                                                        </td>    
-                                                                        <td>
-                                                                            <select v-if="id_update==index+1" class="inputs-concentrado" v-model="u_departamento" required>
-                                                                                <option value="" disabled>Seleccione departamento...</option>
-                                                                                <option v-for="area_part in lista_area_participante" :value="area_part.area_participante">{{area_part.area_participante}}</option>
-                                                                            </select> 
-                                                                            <label v-else>{{admis_usuarios.departamento}}<label>
-                                                                        </td>    
-                                                                        <td>
-                                                                            <select  v-if="id_update==index+1" class="inputs-concentrado" v-model="u_tipo" required>
-                                                                                <option value="" disabled>Seleccione tipo...</option>
-                                                                                <option v-for="array_tipo in array_tipo_usuario" :value="array_tipo">{{array_tipo}}</option>
-                                                                            </select> 
-                                                                            <label v-else>{{admis_usuarios.tipo}}<label>
-                                                                        </td>    
-                                                                    </tr>
-                                                                </tbody>
-                                                                </table>
-                                                            </div>          
-                                                </div>
-                                </div>
-                   </div>
-                   <div v-else-if="ventana=='solicitados'" v-cloak>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+                <div v-else-if="ventana=='solicitados'" v-cloak>
                     <!--//////////////////////////////////////////////////////////////////////////////REMIOS SOLICITADOS-->
                     
                                 <div class="row justify-content-center align-items-start ">
