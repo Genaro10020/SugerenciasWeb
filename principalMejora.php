@@ -80,6 +80,18 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
         transform: translateY(-2px);
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
     }
+
+    .modal-configuracion {
+        border-radius: 12px;
+        border: none;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-header-configuracion {
+        background-color: #f8f9fa;
+        border-bottom: 2px solid #b50000;
+        border-radius: 12px 12px 0 0;
+    }
     </style>
     <div id="app" class="container-fluid  " >
                 <!--BARRA SUPERIOR-->
