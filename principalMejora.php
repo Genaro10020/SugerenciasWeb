@@ -92,6 +92,20 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
         border-bottom: 2px solid #b50000;
         border-radius: 12px 12px 0 0;
     }
+
+    .form-group-configuracion {
+        margin-bottom: 1rem;
+        text-align: left;
+    }
+
+    .form-group-configuracion label {
+        font-weight: 600;
+        color: #4a4a4a;
+        margin-bottom: 5px;
+        display: block;
+        font-size: 0.9em;
+    }
+    
     </style>
     <div id="app" class="container-fluid  " >
                 <!--BARRA SUPERIOR-->
