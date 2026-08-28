@@ -61,6 +61,25 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
         outline: 0 none;
         }
         
+    
+    .btn-configuracion-primary {
+        background-color: #b50000;
+        color: #ffffff;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 20px;
+        font-weight: bold;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-configuracion-primary:hover {
+        background-color: #890000;
+        color: #ffffff;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
     </style>
     <div id="app" class="container-fluid  " >
                 <!--BARRA SUPERIOR-->
