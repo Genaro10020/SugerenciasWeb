@@ -105,7 +105,24 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
         display: block;
         font-size: 0.9em;
     }
-    
+
+    .input-configuracion {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #ced4da;
+        border-radius: 8px;
+        transition: border-color 0.3s, box-shadow 0.3s;
+        background-color: #fafafa;
+        font-size: 0.9em;
+    }
+
+    .input-configuracion:focus {
+        border-color: #b50000;
+        box-shadow: 0 0 0 3px rgba(181, 0, 0, 0.15);
+        outline: none;
+        background-color: #ffffff;
+    }
+
     </style>
     <div id="app" class="container-fluid  " >
                 <!--BARRA SUPERIOR-->
