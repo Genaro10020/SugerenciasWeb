@@ -2245,15 +2245,15 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                 </span>
                             </div>
 
-                            <div style="height: 65vh; overflow-x: scroll">
-                                <table class="tablaMonitoreo-sugerencias table table-striped table-bordered ">
-                                    <thead class="encabezado-tabla text-center text-light ">
+                            <div class="table-configuracion-responsive mt-2">
+                                <table class="table-configuracion text-center">
+                                    <thead>
                                     <tr >
-                                        <th scope="col" class="sticky">Editar</th>
+                                        <th scope="col">Editar</th>
                                         <th scope="col">Usuario</th>
                                         <th scope="col">Password</th>
                                         <th scope="col">Email </th>
-                                        <th scope="col">Nombre</th>
+                                        <th scope="col" class="col-nombre text-start">Nombre</th>
                                         <th scope="col">Planta</th>
                                         <th scope="col">Área</th>
                                         <th scope="col">Subárea</th>
