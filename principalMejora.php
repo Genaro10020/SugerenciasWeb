@@ -3129,7 +3129,34 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
         this.acomodarSugerencias();
 
     },
-
+    activarUsuario(id) {
+        Swal.fire({
+        title: '¿Reactivar usuario?',
+        text: "El usuario recuperará su acceso al sistema.",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#198754',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Sí, reactivar',
+        cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.post('activar_usuario.php', {
+                    id_usuario: id
+                }).then(response => {
+                    if (response.data.success === true) {
+                        Swal.fire('¡Reactivado!', 'El usuario vuelve a estar activo.', 'success');
+                        this.consultar_usuarios();
+                    } else {
+                        Swal.fire('Error', 'Detalle: ' + response.data.error, 'error');
+                    }
+                }).catch(error => {
+                    console.log(error);
+                    Swal.fire('Error', 'Ocurrió un problema de red.', 'error');
+                });
+            }
+        });
+    },
     darDeBajaUsuario(id) {
         Swal.fire({
             title: '¿Confirmar baja?',
