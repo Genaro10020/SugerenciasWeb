@@ -2348,7 +2348,6 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     </div>
                 </div>
             </div>
-        </div>
                 <div v-else-if="ventana=='solicitados'" v-cloak>
                     <!--//////////////////////////////////////////////////////////////////////////////REMIOS SOLICITADOS-->
                     
