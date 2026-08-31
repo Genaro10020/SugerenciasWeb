@@ -3136,7 +3136,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
             text: "El usuario pasará a estado inactivo y perderá acceso",
             icon: "warning",
             showCancelButton: true,
-            confirmButtonColor: '$b50000',
+            confirmButtonColor: '#b50000',
             cancelButtonText: 'Sí, dar de baja',
             cancelButtonText: 'Cancelar'
         }).then((result) => {
