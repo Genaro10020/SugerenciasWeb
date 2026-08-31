@@ -2921,6 +2921,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 analista_subarea:'',
                 array_tipo_usuario: ['Admin','Analista','Responsable'],
                 tabActual: 'Admin',
+                mostrar_inactivos: false,
                 var_tipo_usuario:'',
                 array_usuarios:[],
                 bandera_editar_user:false,
