@@ -123,6 +123,62 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
         background-color: #ffffff;
     }
 
+    .table-configuracion-responsive {
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        background-color: #ffffff;
+        overflow-x: auto;
+        height: 65vh;
+        border: 1px solid #eaeaea;
+    }
+
+    .table-configuracion {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.85em;
+    }
+
+    .table-configuracion thead {
+        background-color: #b50000;
+        color: #ffffff;
+    }
+
+    .table-configuracion thead th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        padding: 12px 15px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border: none;
+    }
+
+    .table-configuracion tbody td {
+        padding: 10px 15px;
+        vertical-align: middle;
+        border-bottom: 1px solid #f0f0f0;
+        color: #4a4a4a;
+    }
+
+    .table-configuracion tbdoy tr:hover {
+        background-color: #fdf5f5;
+        transition: background-color 0.2s ease;
+    }
+
+    .table-configuracion .inputs-configuracion {
+        border: 1px solid #ced4da;
+        border-radius: 6px;
+        padding: 5px;
+        width: 100%;
+        background-color: #fff;
+    }
+
+    .col-nombre {
+        white-space: nowrap;
+        min-width: 250px;
+    } 
+
     </style>
     <div id="app" class="container-fluid  " >
                 <!--BARRA SUPERIOR-->
