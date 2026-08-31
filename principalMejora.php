@@ -2286,24 +2286,34 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                             </button>
                         </div>
 
-                        <div class="col-12">                            
-                            <div class="tabs-configuracion mt-2">
-                                <button
-                                    v-for="tipo in array_tipo_usuario" 
-                                    :key="tipo"
-                                    class="tab-configuracion" 
-                                    :class="{ active: tabActual === tipo }"
-                                    @click="tabActual = tipo"
-                                >
-                                    <i class="bi bi-people-fill me-1"></i> {{ tipo }}s
-                                </button>
-                            </div>
+                        <div class="col-12">
+                            <div class="d-flex justify-content-between align-items-end mt-2 mb-2">
+                                <div class="tabs-configuracion border-0">
+                                    <button
+                                        v-for="tipo in array_tipo_usuario" 
+                                        :key="tipo"
+                                        class="tab-configuracion" 
+                                        :class="{ active: tabActual === tipo }"
+                                        @click="tabActual = tipo"
+                                    >
+                                        <i class="bi bi-people-fill me-1"></i> {{ tipo }}s
+                                    </button>
+                                </div>
+
+                                <div class="form-check form-switch mb-2 pe-2">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="switchInactivos" v-model="mostrar_inactivos">
+                                    <label class="form-check-label fw-bold text-muted" style="font-size: 0.85em;" for="switchInactivos">
+                                        Mostrar inactivos
+                                    </label>
+                                </div>
+                            </div>                            
 
                             <div class="table-configuracion-responsive" style="border-top-left-radius: 0;">
                                 <table class="table-configuracion text-center">
                                     <thead>
                                     <tr >
                                         <th scope="col">Editar</th>
+                                        <th scope="col">Estatus</th>
                                         <th scope="col">Usuario</th>
                                         <th scope="col">Password</th>
                                         <th scope="col">Email </th>
@@ -2316,11 +2326,18 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                     </tr>
                                 </thead>
                                 <tbody>                                        
-                                    <tr v-for="(admis_usuarios, index) in array_usuarios" :key="index" v-show="admis_usuarios.tipo === tabActual">
+                                    <tr v-for="(admis_usuarios, index) in array_usuarios" :key="index" v-show="admis_usuarios.tipo === tabActual && (mostrar_inactivos || admis_usuarios.status !== 'no activo')">
                                         <td>
                                             <button v-if="id_update==index+1" type="button" class="btn btn-danger me-2" title="Cancelar" @click="editarUsuarios(0,0)" ><i class="bi bi-x-circle" ></i></button>
                                             <button v-if="bandera_editar_user == false" type="button" class="btn btn-warning me-2" title="Actualizar" @click="editarUsuarios(1,index+1)"><i class="bi bi-pen" ></i></button>
-                                            <button v-if="id_update==index+1" class="btn btn-primary me-2" title="Guardar" @click="actualizar_admin_y_analista(admis_usuarios.id)"><i class="bi bi-check-circle"></i></button> 
+                                            <button v-if="id_update==index+1" class="btn btn-primary me-2" title="Guardar" @click="actualizar_admin_y_analista(admis_usuarios.id)"><i class="bi bi-check-circle"></i></button>
+                                            <button v-if="admis_usuarios.status !== 'no activo'" type="button" class="btn btn-sm btn-outline-danger mb-1" title="Dar de baja" @click="darDeBajaUsuario(admis_usuarios.id)">
+                                                <i class="bi bi-person-x-fill"></i>
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <span v-if="admis_usuarios.status === 'no activo'" class="badge bg-secondary">Inactivo</span>
+                                            <span v-else class="badge bg-success">Activo</span>
                                         </td>
                                         <td> 
                                             <input v-if="id_update==index+1" class="inputs-concentrado" type="text" v-model="u_user"/> 
@@ -3115,7 +3132,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
 
     darDeBajaUsuario(id) {
         Swal.fire({
-            title: '¿Confirmar baja';
+            title: '¿Confirmar baja',
             text: "El usuario pasará a estado inactivo y perderá acceso",
             icon: "warning",
             showCancelButton: true,
