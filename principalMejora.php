@@ -3113,6 +3113,33 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
 
     },
 
+    darDeBajaUsuario(id) {
+        Swal.fire({
+            title: '¿Confirmar baja';
+            text: "El usuario pasará a estado inactivo y perderá acceso",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: '$b50000',
+            cancelButtonText: 'Sí, dar de baja',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.post('baja_usuario.php', {
+                    id_usuario: id
+                }).then(response => {
+                    if (response.data == true) {
+                        Swal.fire('¡Baja exitosa!', 'El usuario ha sido desactivado.', 'success');
+                        this.consultar_usuarios();
+                    } else {
+                        Swal.fire('Error', 'No se pudo actualizar la base de datos.', 'error');
+                    }
+                }).catch(error => {
+                    console.log(error);
+                    Swal.fire('Error', 'Ocurrio un problema de red', 'error');
+                });
+            }
+        })
+    },
     consultar_planes_de_trabajo(){//consulto al iniar y al seleccionar una opcion de los select
         this.loanding = true;
         axios.post("consultar_planes_de_trabajo.php",{
