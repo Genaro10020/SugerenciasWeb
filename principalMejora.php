@@ -2334,6 +2334,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                             <button v-if="admis_usuarios.status !== 'no activo'" type="button" class="btn btn-sm btn-outline-danger mb-1" title="Dar de baja" @click="darDeBajaUsuario(admis_usuarios.id)">
                                                 <i class="bi bi-person-x-fill"></i>
                                             </button>
+                                            <button v-if="admis_usuarios.status === 'no activo'" type="button" class="btn btn-sm btn-outline-success mb-1" title="Reactivar usuario" @click="activarUsuario(admis_usuarios.id)">
+                                                <i class="bi bi-person-check-fill"></i>
+                                            </button>
                                         </td>
                                         <td>
                                             <span v-if="admis_usuarios.status === 'no activo'" class="badge bg-secondary">Inactivo</span>
