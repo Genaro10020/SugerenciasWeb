@@ -182,6 +182,51 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
         min-width: 250px;
     } 
 
+    .tabs-configuracion {
+        display: flex;
+        gap: 5px;
+        margin-bottom: 0;
+        border-bottom: 2px solid #eaeaea;
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
+
+    .tabs-configuracion::-webkit-scrollbar {
+        display: none;
+    }
+
+    .tab-configuracion {
+        background: transparent;
+        border: none;
+        padding: 12px 24px;
+        font-weight: 600;
+        color: #6c757d;
+        transition: all 0.3s ease;
+        position: relative;
+        white-space: nowrap;
+    }
+
+    .tab-configuracion:hover {
+        color: #b50000;
+        background-color: rgba(181, 0, 0, 0.05);
+        border-radius: 8px 8px 0 0;
+    }
+
+    .tab-configuracion.active {
+        color: #b50000;
+    }
+
+    .tab-configuracion.active::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background-color: #b50000;
+        border-radius: 3px 3px 0 0;
+    }
+
     </style>
     <div id="app" class="container-fluid  " >
                 <!--BARRA SUPERIOR-->
