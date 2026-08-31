@@ -2286,14 +2286,20 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                             </button>
                         </div>
 
-                        <div class="col-12">
-                            <div class="text-center pt-1">
-                                <span class="badge bg-light text-dark" style="font-size: 0.7em;">
-                                    Administradores / Analistas / Responsables
-                                </span>
+                        <div class="col-12">                            
+                            <div class="tabs-configuracion mt-2">
+                                <button
+                                    v-for="tipo in array_tipo_usuario" 
+                                    :key="tipo"
+                                    class="tab-configuracion" 
+                                    :class="{ active: tabActual === tipo }"
+                                    @click="tabActual = tipo"
+                                >
+                                    <i class="bi bi-people-fill me-1"></i> {{ tipo }}s
+                                </button>
                             </div>
 
-                            <div class="table-configuracion-responsive mt-2">
+                            <div class="table-configuracion-responsive" style="border-top-left-radius: 0;">
                                 <table class="table-configuracion text-center">
                                     <thead>
                                     <tr >
@@ -2310,7 +2316,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                     </tr>
                                 </thead>
                                 <tbody>                                        
-                                    <tr v-for="(admis_usuarios, index) in array_usuarios">
+                                    <tr v-for="(admis_usuarios, index) in array_usuarios" :key="index" v-show="admis_usuarios.tipo === tabActual">
                                         <td>
                                             <button v-if="id_update==index+1" type="button" class="btn btn-danger me-2" title="Cancelar" @click="editarUsuarios(0,0)" ><i class="bi bi-x-circle" ></i></button>
                                             <button v-if="bandera_editar_user == false" type="button" class="btn btn-warning me-2" title="Actualizar" @click="editarUsuarios(1,index+1)"><i class="bi bi-pen" ></i></button>
