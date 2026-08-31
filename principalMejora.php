@@ -127,7 +127,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
         border-radius: 12px;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         background-color: #ffffff;
-        overflow-x: auto;
+        overflow: auto;
         height: 65vh;
         border: 1px solid #eaeaea;
     }
@@ -146,12 +146,15 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
     .table-configuracion thead th {
         position: sticky;
         top: 0;
-        z-index: 1;
+        z-index: 10;
+        background-color: #b50000 !important;
+        color: #ffffff !important;
         padding: 12px 15px;
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.5px;
         border: none;
+        box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.2);
     }
 
     .table-configuracion tbody td {
