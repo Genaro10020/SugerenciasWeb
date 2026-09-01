@@ -371,7 +371,7 @@ $incrementar=1;
                                                                                             <div class="d-flex align-items-center gap-1">
                                                                                                 <select class="inputs-concentrado m-0" v-model="responsable_plan" style="flex-grow: 1;">
                                                                                                     <option value="" disabled>Seleccione Responsable...</option>
-                                                                                                    <option v-for="responsable in lista_responsable_plan" :key="responsable.nombre" :value="responsable">{{responsable.nombre}}</option>
+                                                                                                    <option v-for="responsable in lista_responsable_plan" :key="responsable.nombre" :value="responsable.nombre">{{responsable.nombre}}</option>
                                                                                                 </select>
                                                                                                 <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#modalAltaUsuario" title="Dar de alta nuevo responsable">
                                                                                                     <i class="bi bi-person-plus-fill"></i>
@@ -1380,54 +1380,42 @@ $incrementar=1;
                     })
 
                 },*/
-                guardarEditarActividad(tipo,id){
-               
-                /*console.log(this.numero_actividad+this.descripcion_actividad+this.var_responsable_plan+this.fecha_inicial_actividad+this.fecha_final_actividad)*/
-                if(this.descripcion_actividad!='' && this.responsable_plan.nombre!='' && this.fecha_inicial_actividad!='' && this.fecha_final_actividad!=''){
+                guardarEditarActividad(tipo, id) {
+                    if(this.descripcion_actividad != '' && this.responsable_plan != '' && this.fecha_inicial_actividad != '' && this.fecha_final_actividad != '') {
 
-                        axios.post("guardar_update_actividad_plan.php",{
-                            tipo_nueva_actualizar:tipo,
-                            id:id,
-                            id_concentrado:this.id_concentrado_general,
+                        let responsableSeleccionado = this.lista_responsable_plan.find(r => r.nombre === this.responsable_plan);
+                        
+                        let numNominaObtenido = responsableSeleccionado ? responsableSeleccionado.user : '';
+
+                        axios.post("guardar_update_actividad_plan.php", {
+                            tipo_nueva_actualizar: tipo,
+                            id: id,
+                            id_concentrado: this.id_concentrado_general,
                             numero_actividad: this.numero_nueva_actividad,
                             actividad: this.descripcion_actividad,
                             folio: this.folio,
-                            responsable_plan: this.responsable_plan.nombre,
-                            num_nomina: this.responsable_plan.user,         
+                            responsable_plan: this.responsable_plan,
+                            num_nomina: numNominaObtenido,
                             fecha_inicial_actividad: this.fecha_inicial_actividad,
                             fecha_final_actividad: this.fecha_final_actividad,
-                           // porcentaje:this.porcentaje,
                             check_mc: this.check_mc
-                        }).then(response =>{
-                            //    console.log("mal"+this.responsable_plan)
-                                    if(response.data=="si"){
-                                    this.id_actualizar='' // ocultando inputs de actualizar
-                                    this.nueva_actividad = false //guardando y ocultando fila nuevo
-                                    this.actualizar=false //guardando y ocultando fila nuevo
-                                    this.consultarActividades()
-                                    }else if(response.data=="no create"){
-                                        alert('No se guardaron los datos.')
-                                    }else if(response.data=="no update"){
-                                        alert('No se actualizaron los datos')
-                                    }else if(response.data=="no delete"){
-                                        alert('No se elimino la actividad')
-                                    }else if(response.data=="error create"){
-                                        alert('Error al crear.')
-                                    }else if(response.data=="error update"){
-                                        alert('Error al actualizar.')
-                                    }else if(response.data=="error delete"){
-                                        alert('Error al eliminar.')
-                                    }else {
-
-                                    }
-                            
-                        }).catch(error =>{
-                            console.log(error)
-                        })
-                }else{
-                    alert("Todos los campos son requeridos.")
-                }
-            },
+                        }).then(response => {
+                            if(response.data == "si") {
+                                this.id_actualizar = '';
+                                this.nueva_actividad = false;
+                                this.actualizar = false;
+                                this.consultarActividades();
+                            } else {
+                                alert('No se guardaron los datos.');
+                                console.log("Error de PHP:", response.data); 
+                            }
+                        }).catch(error => {
+                            console.log(error);
+                        });
+                    } else {
+                        alert("Todos los campos son requeridos.");
+                    }
+                },
             editarActividad(id){
                 
                 if(id=="0"){// nueva actividad (accion del boton nuevo).
@@ -1449,7 +1437,7 @@ $incrementar=1;
                     var posicion=id
                     this.id_actualizar = id
                     this.descripcion_actividad = this.concentrado_actividades[posicion-1].actividad
-                    this.responsable_plan.nombre = this.concentrado_actividades[posicion-1].responsable
+                    this.responsable_plan = this.concentrado_actividades[posicion-1].responsable;
                     this.fecha_inicial_actividad = this.concentrado_actividades[posicion-1].fecha_inicial
                     this.fecha_final_actividad = this.concentrado_actividades[posicion-1].fecha_final
                    // this.porcentaje = this.concentrado_actividades[posicion-1].porcentaje
