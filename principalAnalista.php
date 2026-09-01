@@ -368,10 +368,15 @@ $incrementar=1;
                                                                                         <td>
                                                                                             <textarea class="inputs-concentrado text-area" type="text"   v-model="descripcion_actividad"></textarea></td>
                                                                                         <td>
-                                                                                        <select class="inputs-concentrado" v-model="responsable_plan" >
-                                                                                            <option value="" disabled>Seleccione Responsable...</option>
-                                                                                            <option v-for="responsable in lista_responsable_plan" :key="responsable.nombre" :value="responsable">{{responsable.nombre}}</option>
-                                                                                        </select>
+                                                                                            <div class="d-flex align-items-center gap-1">
+                                                                                                <select class="inputs-concentrado m-0" v-model="responsable_plan" style="flex-grow: 1;">
+                                                                                                    <option value="" disabled>Seleccione Responsable...</option>
+                                                                                                    <option v-for="responsable in lista_responsable_plan" :key="responsable.nombre" :value="responsable">{{responsable.nombre}}</option>
+                                                                                                </select>
+                                                                                                <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#modalAltaUsuario" title="Dar de alta nuevo responsable">
+                                                                                                    <i class="bi bi-person-plus-fill"></i>
+                                                                                                </button>
+                                                                                            </div>
                                                                                         </td>
                                                                                         <td>
                                                                                             <input class="inputs-concentrado" type="date" v-model="fecha_inicial_actividad"></input></td>
