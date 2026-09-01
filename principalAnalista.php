@@ -883,7 +883,83 @@ $incrementar=1;
 
             </div>
 
-
+            <!-- AQUÍ PEGAS EL MODAL DE ALTA -->
+                        <div class="modal fade" id="modalAltaUsuario" tabindex="-1" aria-labelledby="modalAltaUsuarioLabel" aria-hidden="true" style="z-index: 1060;">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content" style="border-radius: 12px; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+                                    <div class="modal-header" style="background-color: #f8f9fa; border-bottom: 2px solid #b50000; border-radius: 12px 12px 0 0;">
+                                        <h5 class="modal-title fw-bold" id="modalAltaUsuarioLabel" style="color: #b50000;">ALTA DE ADMIN/ANALISTAS</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body p-4 text-start">
+                                        <form @submit.prevent="guardar_admin_y_analista">
+                                            <div class="mb-2">
+                                                <label class="fw-bold text-dark" style="font-size: 0.9em;">Usuario (No. de Nómina):</label>
+                                                <input type="text" class="form-control" v-model="nuevo_usuario" required>
+                                            </div>
+                                            <div class="mb-2">
+                                                <label class="fw-bold text-dark" style="font-size: 0.9em;">Password:</label>
+                                                <input type="text" class="form-control" v-model="nuevo_password" required>
+                                            </div>
+                                            <div class="mb-2">
+                                                <label class="fw-bold text-dark" style="font-size: 0.9em;">Nombre Completo:</label>
+                                                <input type="text" class="form-control" v-model="nuevo_nombre" required>
+                                            </div>
+                                            <div class="mb-2">
+                                                <label class="fw-bold text-dark" style="font-size: 0.9em;">Correo:</label>
+                                                <input type="email" class="form-control" v-model="nuevo_correo" required>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-6 mb-2">
+                                                    <label class="fw-bold text-dark" style="font-size: 0.9em;">Planta:</label>
+                                                    <select class="form-control" v-model="analista_planta" required>
+                                                        <option value="" disabled>Seleccione planta...</option>
+                                                        <option v-for="planta_analista in lista_planta" :value="planta_analista.planta">{{planta_analista.planta}}</option>
+                                                    </select> 
+                                                </div>
+                                                <div class="col-6 mb-2">
+                                                    <label class="fw-bold text-dark" style="font-size: 0.9em;">Área:</label>
+                                                    <select class="form-control" v-model="analista_area" required>
+                                                        <option value="" disabled>Seleccione área...</option>
+                                                        <option v-for="area_analista in lista_area" :value="area_analista.area">{{area_analista.area}}</option>
+                                                    </select> 
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-6 mb-2">
+                                                    <label class="fw-bold text-dark" style="font-size: 0.9em;">Subárea:</label>
+                                                    <select class="form-control" v-model="analista_subarea" required>
+                                                        <option value="" disabled>Seleccione subárea...</option>
+                                                        <option v-for="subarea_analista in lista_subarea" :value="subarea_analista.subarea">{{subarea_analista.subarea}}</option>
+                                                    </select> 
+                                                </div>
+                                                <div class="col-6 mb-2">
+                                                    <label class="fw-bold text-dark" style="font-size: 0.9em;">Departamento:</label>
+                                                    <select class="form-control" v-model="nuevo_departamento" required>
+                                                        <option value="" disabled>Seleccione departamento...</option>
+                                                        <option v-for="area_part in lista_area_participante" :value="area_part.area_participante">{{area_part.area_participante}}</option>
+                                                    </select> 
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="fw-bold text-dark" style="font-size: 0.9em;">Tipo:</label>
+                                                <select class="form-control" v-model="var_tipo_usuario" required>
+                                                    <option value="" disabled>Seleccione tipo...</option>
+                                                    <option v-for="array_tipo in array_tipo_usuario" :value="array_tipo">{{array_tipo}}</option>
+                                                </select> 
+                                            </div>
+                                            <div class="text-end mt-3">
+                                                <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancelar</button>
+                                                <button type="submit" class="btn" style="background-color: #b50000; color: white;">Guardar Usuario</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <div class="row" style="height:10vh; background: url(img/pie.jpg); background-repeat: repeat-x; background-size: 8% 100%;">
+                </div>
+            </div>
                 <!--FOOTER-->
             <div class="row" style="height:10vh; background: url(img/pie.jpg); background-repeat: repeat-x; background-size: 8% 100%;">
 
