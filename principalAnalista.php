@@ -1095,10 +1095,75 @@ $incrementar=1;
             this.consultando_lista_de_desperdicio(),
             this.consulta_lista_objetivos_calidad_ma(),
             this.consulta_responsable_plan(),
-            this.buscarDocPPT()          
+            this.buscarDocPPT();
+            this.consultando_plantas();
+            this.consultando_area();
+            this.consultando_subarea();
+            this.consultando_area_participante();
         },
 
         methods:{
+            consultando_plantas() {
+                axios.post('lista_planta.php', {}).then(response => {
+                    this.lista_planta = response.data;
+                });
+            },
+            consultando_area() {
+                axios.post('lista_area.php', {}).then(response => {
+                    this.lista_area = response.data;
+                });
+            },
+            consultando_subarea() {
+                axios.post('lista_subarea.php', {}).then(response => {
+                    this.lista_subarea = response.data;
+                });
+            },
+            consultando_area_participante() {
+                axios.post('lista_area_participante.php', {}).then(response => {
+                    this.lista_area_participante = response.data;
+                });
+            },
+            guardar_admin_y_analista() {
+                axios.post('guardar_analista_o_admin.php', {
+                    nuevo_usuario: this.nuevo_usuario,
+                    nuevo_password: this.nuevo_password,
+                    nuevo_nombre: this.nuevo_nombre,
+                    nuevo_correo: this.nuevo_correo,
+                    planta: this.analista_planta,
+                    area: this.analista_area,
+                    subarea: this.analista_subarea,
+                    nuevo_departamento: this.nuevo_departamento,
+                    var_tipo_usuario: this.var_tipo_usuario,
+                    accion: 'guardar'
+                }).then(response => {
+                    if(response.data == 'Bien') {
+                        // Limpiamos el formulario
+                        this.nuevo_usuario = '';
+                        this.nuevo_password = '';
+                        this.nuevo_nombre = '';
+                        this.nuevo_correo = '';
+                        this.analista_planta = '';
+                        this.analista_area = '';
+                        this.analista_subarea = '';
+                        this.nuevo_departamento = '';
+                        this.var_tipo_usuario = '';
+                        
+                        // Cerramos el modal
+                        let modalElement = document.getElementById('modalAltaUsuario');
+                        let modalInstance = bootstrap.Modal.getInstance(modalElement);
+                        if(modalInstance) { modalInstance.hide(); }
+
+                        alert("Usuario dado de alta con Éxito.");
+                        
+                        // Actualizamos la lista de responsables en el Plan de Trabajo al instante
+                        this.consulta_responsable_plan(); 
+                    } else {
+                        alert("Algo salió mal al guardar el usuario.");
+                    }
+                }).catch(error => {
+                    console.log("Error en el alta: ", error);
+                });
+            },
             mostrar(dato){
                    this.ventana=dato;
                    if(dato=='principalAnalista'){ this.pintarUno=true}else{this.pintarUno=false}
