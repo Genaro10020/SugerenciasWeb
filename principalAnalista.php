@@ -1149,9 +1149,10 @@ $incrementar=1;
                         this.var_tipo_usuario = '';
                         
                         // Cerramos el modal
-                        let modalElement = document.getElementById('modalAltaUsuario');
-                        let modalInstance = bootstrap.Modal.getInstance(modalElement);
-                        if(modalInstance) { modalInstance.hide(); }
+                        let botonCerrar = document.querySelector('#modalAltaUsuario .btn-close');
+                        if (botonCerrar) { 
+                            botonCerrar.click(); 
+                        }
 
                         alert("Usuario dado de alta con Éxito.");
                         
