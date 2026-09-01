@@ -943,9 +943,8 @@ $incrementar=1;
                                             </div>
                                             <div class="mb-3">
                                                 <label class="fw-bold text-dark" style="font-size: 0.9em;">Tipo:</label>
-                                                <select class="form-control" v-model="var_tipo_usuario" required>
-                                                    <option value="" disabled>Seleccione tipo...</option>
-                                                    <option v-for="array_tipo in array_tipo_usuario" :value="array_tipo">{{array_tipo}}</option>
+                                                <select class="form-control" v-model="var_tipo_usuario" disabled>
+                                                    <option value="Responsable">Responsable</option>
                                                 </select> 
                                             </div>
                                             <div class="text-end mt-3">
@@ -1069,8 +1068,8 @@ $incrementar=1;
                 analista_planta: '',
                 analista_area: '',
                 analista_subarea: '',
-                array_tipo_usuario: ['Admin','Analista','Responsable'],
-                var_tipo_usuario: '',
+                // array_tipo_usuario: ['Admin','Analista','Responsable'],
+                var_tipo_usuario: 'Responsable',
                 lista_planta: [],
                 lista_area: [],
                 lista_subarea: [],
@@ -1124,6 +1123,7 @@ $incrementar=1;
                 });
             },
             guardar_admin_y_analista() {
+                this.var_tipo_usuario = 'Responsable';
                 axios.post('guardar_analista_o_admin.php', {
                     nuevo_usuario: this.nuevo_usuario,
                     nuevo_password: this.nuevo_password,
@@ -1146,6 +1146,7 @@ $incrementar=1;
                         this.analista_area = '';
                         this.analista_subarea = '';
                         this.nuevo_departamento = '';
+                        this.var_tipo_usuario = 'Responsable';
                         this.var_tipo_usuario = '';
                         
                         // Cerramos el modal
