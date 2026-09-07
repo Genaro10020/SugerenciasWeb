@@ -364,32 +364,43 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                 consultarTemas() {
                     axios.get('consultar_temas.php', {}).then(response => {
                         if (response.data[0] == true) {
-                            let temas = response.data[1]
+                            let temas = response.data[1];
+                            this.temas = [];
 
-                            this.temas = []; //Reinicia el array de checkboxes
-                            
-                            console.log("Area: ", this.datosEquipo.area);
                             if (this.datosEquipo.area !== "Inyección") {
                                 const index = temas.findIndex(item => item.tema === "Revisión de Guantes");
-                                // Si se encuentra el índice
                                 if (index !== -1) {
-                                    // Elimina el elemento en esa posición
                                     temas.splice(index, 1);
                                 }
                             }
 
-                            //Asigna los nuevos temas
-                            this.temas = temas;
+                            const equiposAutorizados = [
+                                "los galacticos",
+                                "los galácticos",
+                                "seal star",
+                                "invictus"
+                            ];
+                            
+                            const nombreEquipo = (this.datosEquipo.nombre_ead || '').trim().toLowerCase();
 
-                            //Inicializa temasCheck con el nuevo tamaño
+                            if (!equiposAutorizados.includes(nombreEquipo)) {
+                                const indexDespeje = temas.findIndex(item => 
+                                    item.tema.toLowerCase().includes("despeje de line") || 
+                                    item.tema.toLowerCase().includes("despeje de líne")
+                                );
+                                if (indexDespeje !== -1) {
+                                    temas.splice(indexDespeje, 1);
+                                }
+                            }
+
+                            this.temas = temas;
                             this.temasCheck = Array(temas.length).fill(false);
                         } else {
-                            console.log("Algo salio mal en consulta", response.data)
+                            console.log("Algo salio mal en consulta", response.data);
                         }
-
                     }).catch(error => {
-                        console.log('Error en axios', error)
-                    })
+                        console.log('Error en axios', error);
+                    });
                 },
                 consultarJuntasDeArranque(){
                     this.movil=<?php echo isset($_GET['app']) ? 'true' : 'false'; ?>;
