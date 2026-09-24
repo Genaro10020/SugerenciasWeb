@@ -15,7 +15,7 @@
             UNION ALL
             SELECT id_seccion, area FROM areas_riasa_syma
         ");
-        $responsables = $conexion->query("SELECT id, id_seccion, usuario, email FROM responsables_secciones_syma");
+        $responsables = $conexion->query("SELECT id, id_seccion, usuario, nomina, email FROM responsables_secciones_syma");
 
         $resultado = [];
         while ($s = $secciones->fetch_assoc()) {
@@ -37,6 +37,7 @@
             $resultado[$r['id_seccion']]['usuarios'][] = $r['usuario'];
             $resultado[$r['id_seccion']]['emails'][] = $r['email'];
             $resultado[$r['id_seccion']]['ids_usuarios'][] = $r['id'];
+            $resultado[$r['id_seccion']]['nominas'][] = $r['id'];
         }
     }     
         /* $consulta = "SELECT * FROM secciones_syma"; */

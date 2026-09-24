@@ -6,6 +6,8 @@ $variables = json_decode(file_get_contents('php://input'), true);
 include "conexionGhoner.php";  
 $ruta = $variables['ruta_eliminar']; //recibo la ruta completa
 $cual_documento = $variables['cual_documento']; 
+$folio_carpeta_doc = $variables['folio_carpeta_doc'] ?? null;
+
 if(isset($variables['id_concentrado'])){
     $id_concentrado = $variables['id_concentrado']; 
 }
@@ -59,6 +61,11 @@ if(unlink($ruta_eliminar_doc)){
             $id_premio=$id_concentrado;
             $actualizar = "UPDATE canjer_premios_colaborador_sugerencias SET  cant_img_evidencia='$cantidad' WHERE id = '$id_premio'";
             $query = mysqli_query( $conexion, $actualizar);
+    }
+    if($cual_documento == "evidencia_hallazgo"){
+        $update = $conexion->prepare("UPDATE seguridad_syma SET cant_img_evidencia = ? WHERE id = ?;");
+        $update->bind_param("ii", $cantidad, $folio_carpeta_doc);
+        $respuesta = $update->execute();
     }
 
     $respuesta = "Archivo Eliminado";

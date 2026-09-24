@@ -10,9 +10,15 @@ $cual_documento="";
 
 $folio=$variables['folio_carpeta_doc'];
 $cual_documento=$variables['cual_documento'];
+$id_concentrado = $variables['id_concentrado'] ?? null;
+$tipoEvidenciaHallazgo = $variables['hallazgoEvidencia'] ?? null;
 
-//ruta para buacar
-$ruta = "documentos/".$folio."/".$cual_documento;
+if($tipoEvidenciaHallazgo === 'hallazgo_Evidencia'){
+    $ruta = "evidenciaSeguridad/" .$id_concentrado . "/" . $folio;
+} else {
+    //ruta para buacar
+    $ruta = "documentos/".$folio."/".$cual_documento;
+}
 
 if (is_dir($ruta)){
     // Abre un gestor de directorios para la ruta indicada
