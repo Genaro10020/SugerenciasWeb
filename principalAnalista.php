@@ -1122,7 +1122,7 @@ $incrementar=1;
                 this.var_tipo_usuario = 'Responsable';
                 axios.post('guardar_analista_o_admin.php', {
                     nuevo_usuario: this.nuevo_usuario,
-                    nuevo_password: this.nuevo_password,
+                    nuevo_password: '123',
                     nuevo_nombre: this.nuevo_nombre,
                     nuevo_correo: this.nuevo_correo,
                     planta: this.analista_planta,
