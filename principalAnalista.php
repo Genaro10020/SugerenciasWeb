@@ -896,11 +896,7 @@ $incrementar=1;
                                             <div class="mb-2">
                                                 <label class="fw-bold text-dark" style="font-size: 0.9em;">Usuario (No. de Nómina):</label>
                                                 <input type="text" class="form-control" v-model="nuevo_usuario" required>
-                                            </div>
-                                            <div class="mb-2">
-                                                <label class="fw-bold text-dark" style="font-size: 0.9em;">Password:</label>
-                                                <input type="text" class="form-control" v-model="nuevo_password" required>
-                                            </div>
+                                            </div>                                            
                                             <div class="mb-2">
                                                 <label class="fw-bold text-dark" style="font-size: 0.9em;">Nombre Completo:</label>
                                                 <input type="text" class="form-control" v-model="nuevo_nombre" required>
