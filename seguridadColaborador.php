@@ -321,9 +321,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
             <!-- CONCENTRADO DE HALLAZGOS SOLO PARA EL ADMINISTRADOR -->
             <div v-show="bandera_misHallazgosOconcentrado == 'Concentrado'" class="row justify-content-center pt-2"
                 style="min-height:75vh;">
-
                 <div class="col-12 col-xxl-10 px-3">
-
                     <div class="table-responsive shadow-sm rounded bg-white border" style="max-height: 68vh; overflow-y: auto;">
 
                         <table v-if="concentrado_hallazgos.length > 0" class="table table-hover align-middle mb-0"
@@ -340,7 +338,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                     <th scope="col" class="py-3 text-center align-middle">Evidencia</th>
                                     <th scope="col" class="py-3 text-center align-middle">Estatus / Acciones</th>
                                     <?php if (($_SESSION["esResponsableHallazgo"] ?? true) !== true): ?>
-                                    <th scope="col" class="py-3 text-center pe-3 align-middle" style="width: 70px;">Borrar</th>
+                                    <th scope="col" class="py-3 text-center pe-3 align-middle" style="width: 70px;">Borrar
+                                    </th>
                                     <?php endif; ?>
                                 </tr>
                             </thead>
@@ -353,20 +352,19 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
 
                                     <td class="text-center">
                                         <div class="d-flex flex-column align-items-center">
-                                            <span class="fw-bold text-dark"><i class="bi bi-hash text-muted"></i>{{ concentrado.id
+                                            <span class="fw-bold text-dark"><i class="bi bi-hash text-muted"></i>{{
+                                                concentrado.id
                                                 }}</span>
                                             <span class="text-muted" style="font-size: 0.8rem;"><i
                                                     class="bi bi-calendar3 me-1"></i>{{ concentrado.fecha_hallazgo }}</span>
                                         </div>
                                     </td>
-
                                     <td>
                                         <div class="fw-semibold text-dark mb-1" style="font-size: 0.9rem; line-height: 1.2;">{{
                                             concentrado.colaborador }}</div>
                                         <span class="text-muted font-monospace" style="font-size: 0.75rem;"><i
                                                 class="bi bi-person-badge me-1"></i>{{ concentrado.numero_nomina }}</span>
                                     </td>
-
                                     <td style="min-width: 220px;">
                                         <span class="badge bg-dark mb-1">{{ concentrado.tipo_hallazgo }}</span>
                                         <div class="text-secondary"
@@ -374,10 +372,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                             {{ concentrado.descripcion_hallazgo }}
                                         </div>
                                     </td>
-
                                     <td>
                                         <div class="d-flex flex-column gap-1 py-1">
-                                            <span class="fw-semibold text-dark" style="font-size: 0.9rem;">{{ concentrado.planta
+                                            <span class="fw-semibold text-dark" style="font-size: 0.9rem;">{{
+                                                concentrado.planta
                                                 }}</span>
                                             <span class="text-muted d-flex align-items-center" style="font-size: 0.8rem;">
                                                 <i class="bi bi-geo-alt text-danger me-1 flex-shrink-0"></i>
@@ -385,7 +383,6 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                             </span>
                                         </div>
                                     </td>
-
                                     <td class="text-center">
                                         <button type="button"
                                             class="btn btn-sm btn-light border text-secondary px-2 py-1 text-nowrap shadow-sm"
@@ -398,40 +395,44 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                         <div class="d-flex flex-column gap-1.5 py-2">
 
                                             <div class="d-flex flex-column gap-2 mb-2">
-                                                <span class="badge w-100 py-1.5 fw-medium rounded-pill shadow-sm" 
+                                                <span class="badge w-100 py-1.5 fw-medium rounded-pill shadow-sm"
                                                     :class="obtenerEstado(concentrado.status).color"
                                                     :style="obtenerEstado(concentrado.status).style 
-                                                                ? { backgroundColor: obtenerEstado(concentrado.status).style, color: obtenerEstado(concentrado.status).textColor }
-                                                                : { color: obtenerEstado(concentrado.status).textColor }">
+                                                                                ? { backgroundColor: obtenerEstado(concentrado.status).style, color: obtenerEstado(concentrado.status).textColor }
+                                                                                : { color: obtenerEstado(concentrado.status).textColor }">
                                                     {{ obtenerEstado(concentrado.status).title }}
                                                 </span>
 
-                                                
-                                                <div v-if="accionesHallazgos(concentrado).puedeVerSeguimiento" class="text-muted small text-center px-1">
+                                                <div v-if="accionesHallazgos(concentrado).puedeVerSeguimiento"
+                                                    class="text-muted small text-center px-1">
                                                     <div class="fw-semibold text-dark">
-                                                        <span v-if="(concentrado.comentario_syma !== '' && concentrado.comentario_syma !== null) || hallazgosContinuando[String(concentrado.id)] === true">
-                                                            <span>Completa la información pendiente y agrega tu comentario obligatorio.</span>
+                                                        <span
+                                                            v-if="(concentrado.comentario_syma !== '' && concentrado.comentario_syma !== null && esSyma == true) || hallazgosContinuando[String(concentrado.id)] === true && esSyma == true">
+                                                            <span>Completa la información pendiente y agrega tu comentario
+                                                                obligatorio. {{esSyma}} </span>
                                                         </span>
                                                         <span v-else>
                                                             <i class="bi bi-person-check me-1"></i>
                                                             <span>Tomado por: </span>
-                                                            {{ validar_usuario(concentrado) ? 'SYMA' : concentrado.usuario }}
+                                                            {{ validar_usuario(concentrado) ? 'SYMA' : concentrado.usuario
+                                                            }}
                                                         </span>
                                                     </div>
                                                 </div>
+
                                             </div>
 
                                             <div class="d-flex flex-row flex-wrap gap-1 justify-content-center">
                                                 <button v-if="accionesHallazgos(concentrado).puedeAtender"
-                                                    class="btn btn-sm btn-success px-2 py-1 d-flex align-items-center gap-1 shadow-sm" style="font-size: 11px;"
-                                                    @click="btnStatus('en_proceso', concentrado.id)">
+                                                    class="btn btn-sm btn-success px-2 py-1 d-flex align-items-center gap-1 shadow-sm"
+                                                    style="font-size: 11px;" @click="btnStatus('en_proceso', concentrado.id)">
                                                     <i class="bi bi-play-circle"></i> Atender
                                                 </button>
 
                                                 <?php if (($_SESSION["esResponsableHallazgo"] ?? true) !== true): ?>
                                                 <button v-if="concentrado.status == 'sin_atender'"
                                                     class="btn btn-sm btn-warning text-dark px-2 py-1 d-flex align-items-center gap-1 shadow-sm"
-                                                    style="font-size: 11px;" @click="btnStatus('finalizado', index)">
+                                                    style="font-size: 11px;" @click="btnStatus('atendido', concentrado.id)">
                                                     <i class="bi bi-check2-all"></i> Finalizar
                                                 </button>
                                                 <?php endif; ?>
@@ -456,25 +457,24 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                                     style="font-size: 11px; min-width: 90px;"
                                                     @click="modal_comentario(concentrado.id, concentrado.status, concentrado.comentario_syma, concentrado.comentario_responsable)">
                                                     <i class="bi bi-chat-left-text text-secondary"></i> Comentario
-                                                </button> 
-
+                                                </button>
                                                 <button v-if="accionesHallazgos(concentrado).puedeContinuar"
                                                     class="btn btn-sm btn-light border text-dark px-2 py-1 d-flex align-items-center justify-content-center gap-1 shadow-sm flex-fill"
                                                     style="font-size: 11px; min-width: 90px;"
                                                     @click="continuarProcesoSyma(concentrado.id)">
-                                                    <i class="bi bi-chat-left-text text-secondary"></i> Continuar ---
-                                                </button>                                                 
+                                                    <i class="bi bi-chat-left-text text-secondary"></i> Continuar
+                                                </button>
 
                                                 <button v-if="accionesHallazgos(concentrado).puedeEnviarSyma"
-                                                    class="btn btn-sm btn-primary px-2 py-1 d-flex align-items-center gap-1 shadow-sm" style="font-size: 11px;"
-                                                    @click="btnStatus('esperando_syma', concentrado.id)">
-                                                    <i class="bi bi-send-check"></i> Guardar información
+                                                    class="btn btn-sm btn-primary px-2 py-1 d-flex align-items-center gap-1 shadow-sm"
+                                                    style="font-size: 11px;" @click="btnStatus('esperando_syma', concentrado.id)">
+                                                    <i class="bi bi-send-check"></i> Enviar a syma
                                                 </button>
 
                                                 <button v-if="accionesHallazgos(concentrado).puedeFinalizar"
-                                                    class="btn btn-sm btn-primary px-2 py-1 d-flex align-items-center gap-1 shadow-sm" style="font-size: 11px;"
-                                                    @click="btnStatus('finalizado', concentrado.id)">
-                                                    <i class="bi bi-save"></i> Guardar información
+                                                    class="btn btn-sm btn-success px-2 py-1 d-flex align-items-center gap-1 shadow-sm"
+                                                    style="font-size: 11px;" @click="btnStatus('finalizado', concentrado.id)">
+                                                    <i class="bi bi-save"></i> Finalizar
                                                 </button>
 
                                                 <button v-if="accionesHallazgos(concentrado).puedeEditar"
@@ -483,11 +483,18 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                                     <i class="bi bi-pencil-square"></i> Editar
                                                 </button>
 
-                                                <button v-if="accionesHallazgos(concentrado).puedeVerComentarioFinal"
+                                                <button v-if="accionesHallazgos(concentrado).puedeVerComentarioSymaFinal"
+                                                    class="btn btn-sm px-2 py-1 d-flex align-items-center justify-content-center gap-1 shadow-sm flex-fill text-white bg-secondary"
+                                                    style="font-size: 11px;  min-width: 90px;"
+                                                    @click="modal_comentario(concentrado.id, concentrado.status, concentrado.comentario_syma, concentrado.comentario_responsable, 'finSyma')">
+                                                    <i class="bi bi-chat-square-text text-light"></i> Comentario SYMA
+                                                </button>
+
+                                                <button v-if="accionesHallazgos(concentrado).puedeVerComentarioResponsableFinal"
                                                     class="btn btn-sm px-2 py-1 d-flex align-items-center justify-content-center gap-1 shadow-sm flex-fill text-white"
                                                     style="font-size: 11px; background-color: #495057; border-color: #495057; min-width: 90px;"
-                                                    @click="modal_comentario(concentrado.id, concentrado.status, concentrado.comentario_syma, concentrado.comentario_responsable)">
-                                                    <i class="bi bi-chat-square-text text-light"></i> Comentario
+                                                    @click="modal_comentario(concentrado.id, concentrado.status, concentrado.comentario_syma, concentrado.comentario_responsable, 'finResponsable')">
+                                                    <i class="bi bi-chat-square-text text-light"></i> Comentario Responsable
                                                 </button>
                                             </div>
                                         </div>
@@ -507,12 +514,37 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                             </tbody>
                         </table>
 
+                        <!-- Estado Vacío -->
                         <div v-else class="text-center py-5">
                             <div class="alert alert-warning d-inline-block mb-0 px-4 py-3 shadow-sm">
-                                <i class="bi bi-exclamation-triangle me-2"></i> No existen hallazgos reportados por el momento.
+                                <i class="bi bi-exclamation-triangle me-2"></i> No existen hallazgos reportados por el
+                                momento.
                             </div>
                         </div>
                     </div>
+
+                    <!-- PAGINACIÓN   ***PENDIENTE DE IMPLEMENTAR -->
+                    <!-- <div v-if="concentrado_hallazgos.length > 0"
+                                        class="d-flex flex-wrap justify-content-between align-items-center py-3 px-2">
+                                        <span class="text-muted" style="font-size: 0.8rem;">Mostrando registros activos</span>
+                                        <nav aria-label="Paginación de hallazgos">
+                                            <ul class="pagination pagination-sm mb-0 shadow-sm">
+                                                <li class="page-item disabled">
+                                                    <a class="page-link text-secondary" href="#" tabindex="-1" aria-disabled="true">Anterior</a>
+                                                </li>
+                                                <li class="page-item active">
+                                                    <a class="page-link text-white border-0 fw-bold" style="background-color: rgb(137, 0, 0);"
+                                                        href="#">1</a>
+                                                </li>
+                                                <li class="page-item"><a class="page-link text-dark" href="#">2</a></li>
+                                                <li class="page-item"><a class="page-link text-dark" href="#">3</a></li>
+                                                <li class="page-item">
+                                                    <a class="page-link text-dark" href="#">Siguiente</a>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    </div> -->
+                    <!-- PAGINACIÓN   ***PENDIENTE DE IMPLEMENTAR -->
                 </div>
             </div>
             <!--FIN CUERPO-->
@@ -1162,9 +1194,12 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                 (hallazgo.status === 'esperando_syma' && syma && (continuar || (!!hallazgo.comentario_syma && !continuar))),
                             puedeComentar: (hallazgo.status === 'atendido' && ((usuario && !usuarioSyma) || (usuarioSyma && syma))) ||
                                 (hallazgo.status === 'esperando_syma' && syma),
-                            puedeVerComentarioSymaFinal: hallazgo.status === 'finalizado',
-                            puedeVerComentarioResponsableFinal: hallazgo.status === 'finalizado' && (!usuarioSyma || syma) && hallazgo.comentario_responsable !== '' && hallazgo.comentario_responsable !== null,
-                            puedeGuardarComentario: (hallazgo.status === 'finalizado' && syma && tipoModalSyma) ||
+                            puedeVerComentarioSymaFinal: 
+                                hallazgo.status === 'finalizado',
+                            puedeVerComentarioResponsableFinal: 
+                                hallazgo.status === 'finalizado' && (!usuarioSyma || syma) && hallazgo.comentario_responsable !== '' && hallazgo.comentario_responsable !== null,
+                            puedeGuardarComentario: 
+                                (hallazgo.status === 'finalizado' && syma && tipoModalSyma) ||
                                 (hallazgo.status === 'atendido' && ((usuario && !usuarioSyma) || (usuarioSyma && syma))) ||
                                 (hallazgo.status === 'esperando_syma' && syma && ((!hallazgo.comentario_syma && continuar) || (hallazgo.comentario_syma && !continuar))),
                             puedeLeerMensajeResponsable: (hallazgo.status === 'finalizado' && !continuar && (hallazgo.comentario_syma !== '' && hallazgo.comentario_syma !== null) && (hallazgo.comentario_responsable !== '' && hallazgo.comentario_responsable !== null)),
