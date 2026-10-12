@@ -896,11 +896,7 @@ $incrementar=1;
                                             <div class="mb-2">
                                                 <label class="fw-bold text-dark" style="font-size: 0.9em;">Usuario (No. de Nómina):</label>
                                                 <input type="text" class="form-control" v-model="nuevo_usuario" required>
-                                            </div>
-                                            <div class="mb-2">
-                                                <label class="fw-bold text-dark" style="font-size: 0.9em;">Password:</label>
-                                                <input type="text" class="form-control" v-model="nuevo_password" required>
-                                            </div>
+                                            </div>                                            
                                             <div class="mb-2">
                                                 <label class="fw-bold text-dark" style="font-size: 0.9em;">Nombre Completo:</label>
                                                 <input type="text" class="form-control" v-model="nuevo_nombre" required>
@@ -1126,7 +1122,7 @@ $incrementar=1;
                 this.var_tipo_usuario = 'Responsable';
                 axios.post('guardar_analista_o_admin.php', {
                     nuevo_usuario: this.nuevo_usuario,
-                    nuevo_password: this.nuevo_password,
+                    nuevo_password: '123',
                     nuevo_nombre: this.nuevo_nombre,
                     nuevo_correo: this.nuevo_correo,
                     planta: this.analista_planta,

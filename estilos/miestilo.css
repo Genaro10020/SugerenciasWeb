@@ -322,4 +322,17 @@
     min-width: 100px;
 }
 
+/* ==========================================
+   SELECT - COMPATIBILIDAD WEBVIEW ANDROID
+   ========================================== */
+/* 
+select.form-select {
+    color: #000 !important;
+    background-color: #fff !important;
+   color-scheme: only light !important;
+}
 
+select.form-select option {
+    color: #000 !important;
+    background-color: #fff !important;
+} */
