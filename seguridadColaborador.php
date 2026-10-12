@@ -115,49 +115,58 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
             <?php endif; ?>
 
             <!--APARTADO PARA ENVIAR Y VER HALLAZGOS PROPIOS-->
-            <div v-show="bandera_misHallazgosOconcentrado == 'MisHallazgos'" class="row justify-content-center" style="min-height:75vh;">
+            <div v-show="bandera_misHallazgosOconcentrado == 'MisHallazgos'" class="row justify-content-center"
+                style="min-height:75vh;">
 
                 <div class="contenedorHallazgo mt-3 pb-2 row justify-content-center">
                     <label for="descripcionHallazgo">Descripción del hallazgo:</label>
                     <div class="form-group row">
 
                         <div class="col-11">
-                            <textarea inputmode="text" @keyup="hayTextoHallazgo()" style="outline:none; resize:none" v-model="texto" class="form-control d-flex" id="descripcionHallazgo" rows="3"></textarea>
+                            <textarea inputmode="text" @keyup="hayTextoHallazgo()" style="outline:none; resize:none"
+                                v-model="texto" class="form-control d-flex" id="descripcionHallazgo" rows="3"></textarea>
                         </div>
 
                         <div class="col-1 d-flex align-items-center">
-                            <button :class="{'btn btn-danger': listo_micro !== true,'btn btn-success': listo_micro === true}" @click="btnVoz()">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-mic" viewBox="0 0 16 16">
-                                    <path d="M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5" />
-                                    <path d="M10 8a2 2 0 1 1-4 0V3a2 2 0 1 1 4 0zM8 0a3 3 0 0 0-3 3v5a3 3 0 0 0 6 0V3a3 3 0 0 0-3-3" />
+                            <button
+                                :class="{'btn btn-danger': listo_micro !== true,'btn btn-success': listo_micro === true}"
+                                @click="btnVoz()">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-mic" viewBox="0 0 16 16">
+                                    <path
+                                        d="M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5" />
+                                    <path
+                                        d="M10 8a2 2 0 1 1-4 0V3a2 2 0 1 1 4 0zM8 0a3 3 0 0 0-3 3v5a3 3 0 0 0 6 0V3a3 3 0 0 0-3-3" />
                                 </svg>
                             </button>
                         </div>
                     </div>
                     <div class="col-12 d-flex justify-content-center">
                         <?php if (isset($_GET['app'])) { ?>
-                            <span class="badge alert-info">Si el botón micrófono no realiza ninguna acción actualice su App.</span>
+                            <span class="badge alert-info">Si el botón micrófono no realiza ninguna acción actualice su
+                                App.</span>
                         <?php } ?>
                     </div>
                     <!--<div class="text-center" style="border:1px solid red; height:30%; width:100%;">
-                            <?php if (isset($_GET['app'])) { ?>
-                                 <div class="col-12 " style="margin-top:10%">     
-                                            <div class="col-12 offset-lg-4 col-lg-4 d-flex justify-content-center">
-                                                <a href="ejecutarCamaraMovilSeguridad.php" class="btn_photo"> <img src="img/photo.png" class="img-responsive" width="50"/></a>
-                                            </div>
-                                            <div class="col-12 offset-lg-4 col-lg-4 d-flex justify-content-center">
-                                                <label class="alert alert-info mt-1" style="font-size:0.8em">Tomar evidencia</label>
-                                            </div>
-                                </div>
-                            <?php
-                            } else {
-                            ?>
-                                <span class="badge alert-danger">Dispositivo no compatible con cámara. (Solo Android)</span>
-                            <?php
-                            } ?>     
-                            </div>-->
+                                <?php if (isset($_GET['app'])) { ?>
+                                    <div class="col-12 " style="margin-top:10%">     
+                                                <div class="col-12 offset-lg-4 col-lg-4 d-flex justify-content-center">
+                                                    <a href="ejecutarCamaraMovilSeguridad.php" class="btn_photo"> <img src="img/photo.png" class="img-responsive" width="50"/></a>
+                                                </div>
+                                                <div class="col-12 offset-lg-4 col-lg-4 d-flex justify-content-center">
+                                                    <label class="alert alert-info mt-1" style="font-size:0.8em">Tomar evidencia</label>
+                                                </div>
+                                    </div>
+                                <?php
+                                } else {
+                                ?>
+                                    <span class="badge alert-danger">Dispositivo no compatible con cámara. (Solo Android)</span>
+                                <?php
+                                } ?>     
+                                </div>-->
                     <div class="pt-2"> <!-- TIPO ---->
-                        <select v-model="select_tipo" class="form-select form-select-sm" aria-label=".form-select-sm example">
+                        <select v-model="select_tipo" class="form-select form-select-sm"
+                            aria-label=".form-select-sm example">
                             <option value="" disabled selected>Tipo de hallazgo</option>
                             <option value="Acto inseguro">Acto inseguro</option>
                             <option value="Condición insegura">Condición insegura</option>
@@ -165,7 +174,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     </div>
 
                     <div class="pt-2"> <!--- PLANTA --->
-                        <select v-model="select_planta" @change="select_area=''" class="form-select form-select-sm" aria-label=".form-select-sm example">
+                        <select v-model="select_planta" @change="select_area=''" class="form-select form-select-sm"
+                            aria-label=".form-select-sm example">
                             <option value="" disabled selected>Seleccione una planta</option>
                             <option value="Enerya">Enerya</option>
                             <option value="Riasa">Riasa</option>
@@ -173,7 +183,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
 
                         <div v-if="select_planta=='Enerya'" :disabled="select_planta==''"> <!--areas enerya-->
                             <div class="pt-2"> <!--- AREAS --->
-                                <select v-model="select_area" class="form-select form-select-sm" aria-label=".form-select-sm example">
+                                <select v-model="select_area" class="form-select form-select-sm"
+                                    aria-label=".form-select-sm example">
                                     <option value="" disabled>Seleccione Área </option>
                                     <option v-for="area in areas_enerya" :value="area.id">
                                         {{area.area}}
@@ -184,7 +195,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
 
                         <div v-if="select_planta=='Riasa'" :disabled="select_planta==''"> <!--areas riasa-->
                             <div class="pt-2"> <!--- AREAS --->
-                                <select v-model="select_area" class="form-select form-select-sm" aria-label=".form-select-sm example">
+                                <select v-model="select_area" class="form-select form-select-sm"
+                                    aria-label=".form-select-sm example">
                                     <option value="" disabled>Seleccione Área </option>
                                     <option v-for="area in areas_riasa" :value="area.id">
                                         {{area.area}}
@@ -196,12 +208,15 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
 
                     <!--boton de enviar-->
                     <div class="d-flex justify-content-center pt-2">
-                        <button class="btn btn-success" :disabled="select_tipo=='' || select_planta=='' || select_area == '' || texto.trim()==''" @click="enviarHallazgo()">
+                        <button class="btn btn-success"
+                            :disabled="select_tipo=='' || select_planta=='' || select_area == '' || texto.trim()==''"
+                            @click="enviarHallazgo()">
                             enviar
                         </button>
                     </div>
                     <div class=" d-flex justify-content-center">
-                        <span v-show="bandera_msj_hallazgo==true" class="badge bg-primary text-white mt-2" style="font-size:10px;">
+                        <span v-show="bandera_msj_hallazgo==true" class="badge bg-primary text-white mt-2"
+                            style="font-size:10px;">
                             Su hallazgo fue enviado
                         </span>
                     </div>
@@ -221,7 +236,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
 
                     <table v-if="concentrado_hallazgos.length>0" class="table table-striped " style=" font-size: 0.8em;">
                         <thead>
-                            <tr class="align-middle text-center" style="background:rgb(137, 0, 0); height:5px; color:white; font-size: 1em;">
+                            <tr class="align-middle text-center"
+                                style="background:rgb(137, 0, 0); height:5px; color:white; font-size: 1em;">
                                 <th scope="col">#</th>
                                 <th v-if="movil==true" scope="col">Fotografía</th>
                                 <th scope="col">Tipo</th>
@@ -234,12 +250,14 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                 <td class="text-center">{{index+1}}</td>
                                 <td v-if="movil==true" class="text-center">
                                     <div v-if="concentrado.existe_foto==1">
-                                        <img :src="'fotografiaSeguridad/' + numero_nomina + '/' + concentrado.id + '/fotografia.jpeg?'+Math.random()" class="img-responsive" width="50" alt="Sin Fotografía" />
+                                        <img :src="'fotografiaSeguridad/' + numero_nomina + '/' + concentrado.id + '/fotografia.jpeg?'+Math.random()"
+                                            class="img-responsive" width="50" alt="Sin Fotografía" />
                                     </div>
                                     <div v-else class="d-flex text-center">
                                         <div class="col-12 d-flex justify-content-center">
                                             <div class="col-12 d-flex-colum justify-content-center text-center">
-                                                <a :href="'ejecutarCamaraMovilSeguridad.php?UltimoID=' + concentrado.id+'&&NumeroNomina='+numero_nomina" class="btn_photo mx-auto">
+                                                <a :href="'ejecutarCamaraMovilSeguridad.php?UltimoID=' + concentrado.id+'&&NumeroNomina='+numero_nomina"
+                                                    class="btn_photo mx-auto">
 
                                                     <img src="img/photo.png" class="img-responsive" width="50" />
                                                 </a>
@@ -253,26 +271,30 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                 <td>
                                     <!-- Estado (Intacto según tus requerimientos) -->
                                     <div class="mb-2">
-                                        <span class="badge rounded-pill shadow-sm" :class="obtenerEstado(concentrado.status).color"
-                                            :style="obtenerEstado(concentrado.status).style 
-                                            ? { backgroundColor: obtenerEstado(concentrado.status).style, color: obtenerEstado(concentrado.status).textColor }
-                                            :{ color: obtenerEstado(concentrado.status).textColor} ">
+                                        <span class="badge rounded-pill shadow-sm"
+                                            :class="obtenerEstado(concentrado.status).color" :style="obtenerEstado(concentrado.status).style 
+                                                ? { backgroundColor: obtenerEstado(concentrado.status).style, color: obtenerEstado(concentrado.status).textColor }
+                                                :{ color: obtenerEstado(concentrado.status).textColor} ">
                                             {{ obtenerEstado(concentrado.status).title }}
                                         </span>
                                     </div>
 
                                     <!-- Sección de Comentarios con Títulos en Negrita (Propuesta 2) -->
-                                    <div v-if="concentrado.status === 'esperando_syma' || concentrado.status === 'finalizado'" class="mt-2 text-dark small" style="line-height: 1.3;">
-                                        
+                                    <div v-if="concentrado.status === 'esperando_syma' || concentrado.status === 'finalizado'"
+                                        class="mt-2 text-dark small" style="line-height: 1.3;">
+
                                         <!-- Comentario del responsable -->
-                                        <div v-if="concentrado.comentario_responsable !== '' && concentrado.comentario_responsable !== null" class="mb-1">
+                                        <div v-if="concentrado.comentario_responsable !== '' && concentrado.comentario_responsable !== null"
+                                            class="mb-1">
                                             <strong class="text-secondary d-block">Comentario del responsable:</strong>
-                                            <span class="text-muted text-break">{{ concentrado.comentario_responsable }}</span>
+                                            <span class="text-muted text-break">{{ concentrado.comentario_responsable
+                                                }}</span>
                                             <br>
                                         </div>
-                                        
+
                                         <!-- Comentario de SYMA -->
-                                        <div v-if="concentrado.comentario_syma !== '' && concentrado.comentario_syma !== null">
+                                        <div
+                                            v-if="concentrado.comentario_syma !== '' && concentrado.comentario_syma !== null">
                                             <strong class="text-secondary d-block">Comentario de SYMA:</strong>
                                             <span class="text-muted text-break">{{ concentrado.comentario_syma }}</span>
                                         </div>
@@ -281,15 +303,16 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                 </td>
 
                                 <!-- <td>{{concentrado.descripcion_hallazgo}}</td>
-                                <td v-if="concentrado.status == 'Sin Atender' || concentrado.status == 'En Proceso' || concentrado.status == 'Atendido' || concentrado.status == 'Comentario' || concentrado.status == 'Finalizar'">
-                                    <span class="badge bg-dark" style="font-size:12px;">{{concentrado.status}}</span>
-                                </td>
-                                <td v-else><span class="badge bg-info" style="font-size:12px;">Finalizado:</span> {{concentrado.status}}</td> -->
+                                    <td v-if="concentrado.status == 'Sin Atender' || concentrado.status == 'En Proceso' || concentrado.status == 'Atendido' || concentrado.status == 'Comentario' || concentrado.status == 'Finalizar'">
+                                        <span class="badge bg-dark" style="font-size:12px;">{{concentrado.status}}</span>
+                                    </td>
+                                    <td v-else><span class="badge bg-info" style="font-size:12px;">Finalizado:</span> {{concentrado.status}}</td> -->
                             </tr>
                         </tbody>
                     </table>
                     <div v-else class="d-flex  justify-content-center">
-                        <span class="alert bg-warning ">No cuenta con hallazgos reportados, esperamos tu participación.</span>
+                        <span class="alert bg-warning ">No cuenta con hallazgos reportados, esperamos tu
+                            participación.</span>
                     </div>
                 </div><!--scroll-->
 
@@ -299,16 +322,13 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
             <div v-show="bandera_misHallazgosOconcentrado == 'Concentrado'" class="row justify-content-center pt-2"
                 style="min-height:75vh;">
 
-                <!-- CONTENEDOR PRINCIPAL MAS COMPACTO Y CENTRADO -->
                 <div class="col-12 col-xxl-10 px-3">
 
-                    <!-- WRAPPER CON SCROLL VERTICAL Y ENCABEZADO FIJO -->
                     <div class="table-responsive shadow-sm rounded bg-white border" style="max-height: 68vh; overflow-y: auto;">
 
                         <table v-if="concentrado_hallazgos.length > 0" class="table table-hover align-middle mb-0"
                             style="font-size: 0.9rem;">
 
-                            <!-- THEAD FIJO, CENTRADO Y ALINEADO VERTICALMENTE -->
                             <thead class="sticky-top text-white text-uppercase tracking-wider text-center align-middle"
                                 style="background-color: rgb(137, 0, 0); z-index: 10; font-size: 0.75rem;">
                                 <tr>
@@ -329,10 +349,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                 <tr v-for="(concentrado, index) in concentrado_hallazgos" :key="concentrado.id"
                                     class="border-bottom">
 
-                                    <!-- Columna # -->
                                     <td class="ps-3 fw-bold text-secondary text-center">{{ index + 1 }}</td>
 
-                                    <!-- ID y Fecha agrupados -->
                                     <td class="text-center">
                                         <div class="d-flex flex-column align-items-center">
                                             <span class="fw-bold text-dark"><i class="bi bi-hash text-muted"></i>{{ concentrado.id
@@ -342,7 +360,6 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                         </div>
                                     </td>
 
-                                    <!-- Colaborador y Nómina (Nombre Completo sin recortes) -->
                                     <td>
                                         <div class="fw-semibold text-dark mb-1" style="font-size: 0.9rem; line-height: 1.2;">{{
                                             concentrado.colaborador }}</div>
@@ -350,7 +367,6 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                                 class="bi bi-person-badge me-1"></i>{{ concentrado.numero_nomina }}</span>
                                     </td>
 
-                                    <!-- Tipo y Descripción (Sin scroll interno, texto completamente visible y adaptable) -->
                                     <td style="min-width: 220px;">
                                         <span class="badge bg-dark mb-1">{{ concentrado.tipo_hallazgo }}</span>
                                         <div class="text-secondary"
@@ -359,7 +375,6 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                         </div>
                                     </td>
 
-                                    <!-- Planta y Área (Estructura expandida para evitar solapamiento de íconos) -->
                                     <td>
                                         <div class="d-flex flex-column gap-1 py-1">
                                             <span class="fw-semibold text-dark" style="font-size: 0.9rem;">{{ concentrado.planta
@@ -371,7 +386,6 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                         </div>
                                     </td>
 
-                                    <!-- Evidencia -->
                                     <td class="text-center">
                                         <button type="button"
                                             class="btn btn-sm btn-light border text-secondary px-2 py-1 text-nowrap shadow-sm"
@@ -380,13 +394,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                         </button>
                                     </td>
 
-                                    <!-- Estatus y Botones de Acción  -->
                                     <td style="min-width: 200px;">
                                         <div class="d-flex flex-column gap-1.5 py-2">
 
-                                            <!-- Estados  -->
                                             <div class="d-flex flex-column gap-2 mb-2">
-                                                <!-- Badge de estado (Tus clases y métodos intactos) -->
                                                 <span class="badge w-100 py-1.5 fw-medium rounded-pill shadow-sm" 
                                                     :class="obtenerEstado(concentrado.status).color"
                                                     :style="obtenerEstado(concentrado.status).style 
@@ -410,7 +421,6 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                                 </div>
                                             </div>
 
-                                            <!-- Botones de flujo dinámicos organizados en fila -->
                                             <div class="d-flex flex-row flex-wrap gap-1 justify-content-center">
                                                 <button v-if="accionesHallazgos(concentrado).puedeAtender"
                                                     class="btn btn-sm btn-success px-2 py-1 d-flex align-items-center gap-1 shadow-sm" style="font-size: 11px;"
@@ -433,7 +443,6 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                                     <i class="bi bi-check-circle"></i> Atendido
                                                 </button>
 
-                                                <!-- Botones de Fotos y Comentario -->
                                                 <button v-if="accionesHallazgos(concentrado).puedeVerImagen" type="button"
                                                     class="btn btn-sm btn-light border text-dark px-2 py-1 d-flex align-items-center justify-content-center gap-1 shadow-sm flex-fill"
                                                     style="font-size: 11px; min-width: 90px;" title="Subir Imagen"
@@ -448,6 +457,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                                     @click="modal_comentario(concentrado.id, concentrado.status, concentrado.comentario_syma, concentrado.comentario_responsable)">
                                                     <i class="bi bi-chat-left-text text-secondary"></i> Comentario
                                                 </button> 
+
                                                 <button v-if="accionesHallazgos(concentrado).puedeContinuar"
                                                     class="btn btn-sm btn-light border text-dark px-2 py-1 d-flex align-items-center justify-content-center gap-1 shadow-sm flex-fill"
                                                     style="font-size: 11px; min-width: 90px;"
@@ -467,14 +477,12 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                                     <i class="bi bi-save"></i> Guardar información
                                                 </button>
 
-                                                <!-- Botón de Editar en verde con ícono de lápiz -->
                                                 <button v-if="accionesHallazgos(concentrado).puedeEditar"
                                                     class="btn btn-sm btn-success px-2 py-1 d-flex align-items-center gap-1 shadow-sm text-white"
                                                     style="font-size: 11px;" @click="btnStatus('atendido', concentrado.id)">
                                                     <i class="bi bi-pencil-square"></i> Editar
                                                 </button>
 
-                                                <!-- Botón de Comentario Final -->
                                                 <button v-if="accionesHallazgos(concentrado).puedeVerComentarioFinal"
                                                     class="btn btn-sm px-2 py-1 d-flex align-items-center justify-content-center gap-1 shadow-sm flex-fill text-white"
                                                     style="font-size: 11px; background-color: #495057; border-color: #495057; min-width: 90px;"
@@ -486,7 +494,6 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                     </td>
 
                                     <?php if (($_SESSION["esResponsableHallazgo"] ?? true) !== true): ?>
-                                    <!-- Botón de Eliminar optimizado para móvil -->
                                     <td class="text-center pe-3 align-middle">
                                         <button type="button"
                                             class="btn btn-outline-danger btn-sm d-inline-flex justify-content-center align-items-center shadow-sm"
@@ -500,77 +507,125 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                             </tbody>
                         </table>
 
-                        <!-- Estado Vacío -->
                         <div v-else class="text-center py-5">
                             <div class="alert alert-warning d-inline-block mb-0 px-4 py-3 shadow-sm">
                                 <i class="bi bi-exclamation-triangle me-2"></i> No existen hallazgos reportados por el momento.
                             </div>
                         </div>
                     </div>
-
-                    <!-- PAGINACIÓN -->
-                    <div v-if="concentrado_hallazgos.length > 0"
-                        class="d-flex flex-wrap justify-content-between align-items-center py-3 px-2">
-                        <span class="text-muted" style="font-size: 0.8rem;">Mostrando registros activos</span>
-                        <nav aria-label="Paginación de hallazgos">
-                            <ul class="pagination pagination-sm mb-0 shadow-sm">
-                                <li class="page-item disabled">
-                                    <a class="page-link text-secondary" href="#" tabindex="-1" aria-disabled="true">Anterior</a>
-                                </li>
-                                <li class="page-item active">
-                                    <a class="page-link text-white border-0 fw-bold" style="background-color: rgb(137, 0, 0);"
-                                        href="#">1</a>
-                                </li>
-                                <li class="page-item"><a class="page-link text-dark" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link text-dark" href="#">3</a></li>
-                                <li class="page-item">
-                                    <a class="page-link text-dark" href="#">Siguiente</a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
                 </div>
             </div>
             <!--FIN CUERPO-->
 
             <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-xl">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h6 class="modal-title" id="exampleModalLabel">{{titulo_modal}} con id único: {{this.folio_carpeta_doc}}</h6>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content border-0 shadow-lg" style="border-top: 5px solid rgb(137, 0, 0) !important;">
 
-                            <div class="text-center" v-if="contenido_modal_agregar_eliminar=='Subir'">
+                        <div class="modal-header bg-white border-bottom-0 pb-0 pt-3 px-3">
+                            <div>
+                                <h6 class="modal-title fw-bold text-dark mb-1 d-flex align-items-center"
+                                    id="exampleModalLabel">
+                                    <span class="d-inline-block rounded-circle me-2"
+                                        style="width: 8px; height: 8px; background-color: rgb(137, 0, 0);"></span>
+                                    {{ titulo_modal }}
+                                </h6>
+                                <div class="text-muted small ps-3" style="font-size: 0.8rem;">
+                                    Folio de referencia: <span class="fw-semibold text-dark font-monospace">{{
+                                        this.folio_carpeta_doc }}</span>
+                                </div>
+                            </div>
+                            <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+
+                        <div class="modal-body p-3 bg-light">
+                            <div v-if="contenido_modal_agregar_eliminar == 'Subir'">
                                 <form @submit.prevent="uploadFile('admin')">
-                                    <!--Subir Documento Sugerencia-->
-                                    <div v-if="puedeEditarImagen" class="row">
-                                        <div class="col-12">
-                                            <div class="custom-file my-5">
+
+                                    <div v-if="puedeEditarImagen" class="row justify-content-center mb-3">
+                                        <div class="col-12 col-md-9">
+                                            <div class="card border shadow-sm p-3 text-center bg-white rounded-3">
+                                                <div class="mb-1">
+                                                    <i class="bi bi-cloud-arrow-up fs-2" style="color: rgb(137, 0, 0);"></i>
+                                                </div>
+                                                <label for="input_file_subir"
+                                                    class="form-label text-dark fw-bold mb-2 small">Subir imágenes</label>
+
                                                 <input type="file" id="input_file_subir" ref="archivosydocumentos" multiple
-                                                    required accept=".png,.jpeg,.jpg"><span>{{
-                                                    extensiones_valida }}</span></input>
+                                                    required accept=".png,.jpeg,.jpg"
+                                                    class="form-control form-control-sm mb-2 shadow-none">
+
+                                                <div class="form-text text-muted small mb-3" style="font-size: 0.75rem;">
+                                                    Formatos permitidos: <span class="fw-semibold text-dark">{{
+                                                        extensiones_valida }}</span></div>
+
+                                                <div class="d-flex justify-content-center">
+                                                    <button type="submit" name="upload"
+                                                        class="btn btn-sm text-white px-3 py-1.5 d-flex align-items-center gap-2 shadow-sm"
+                                                        style="background-color: rgb(137, 0, 0); border-color: rgb(137, 0, 0);">
+                                                        <i class="bi bi-upload"></i> Subir Archivos
+                                                    </button>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div  class="col-12">
-                                            <button type="submit" name="upload" class="btn btn-primary">Subir Archivos</button>
                                         </div>
                                     </div>
 
-                                    <!-- Mostrando los archivos cargados -->
-                                    <div v-show="filedoc.length>0 && cual_documento=='evidencia_hallazgo'">
-                                        <hr>
-                                        <div class="col-12" v-for="(filedochallazgoc,index) in filedoc">
-                                            <div class="row">
-                                                <span class="badge bg-secondary">Imagen {{index+1}}</span><br>
-                                                <div v-if="puedeEditarImagen">
-                                                    <button type="button" class="btn btn-danger"
-                                                        @click="eliminarDocumento(filedochallazgoc)">Eliminar</button>
+                                    <div v-show="filedoc.length > 0 && cual_documento == 'evidencia_hallazgo'">
+                                        <hr class="my-3 text-muted opacity-25">
+
+                                        <div class="d-flex justify-content-between align-items-center mb-2 px-2">
+                                            <h6 class="text-uppercase text-secondary fw-bold tracking-wider mb-0"
+                                                style="font-size: 0.75rem;">
+                                                <i class="bi bi-file-earmark-image me-1" style="color: rgb(137, 0, 0);"></i>
+                                                Imágenes cargadas
+                                            </h6>
+                                            <span class="badge bg-white text-dark border shadow-sm"
+                                                style="font-size: 0.75rem;">{{ filedoc.length }} archivo(s)</span>
+                                        </div>
+
+                                        <div class="row g-3">
+                                            <div class="col-12" v-for="(filedochallazgoc, index) in filedoc" :key="index">
+                                                <div class="card border shadow-sm bg-white">
+                                                    <div
+                                                        class="card-header bg-white border-bottom d-flex justify-content-between align-items-center py-2 px-3">
+                                                        <span class="badge text-white font-monospace px-2 py-1"
+                                                            style="background-color: rgb(137, 0, 0); font-size: 0.75rem;">
+                                                            Imagen {{ index + 1 }}
+                                                        </span>
+                                                        <div v-if="puedeEditarImagen">
+                                                            <button type="button"
+                                                                class="btn btn-outline-danger btn-sm py-0 px-2 d-flex align-items-center gap-1 shadow-sm"
+                                                                style="font-size: 0.75rem;"
+                                                                @click="eliminarDocumento(filedochallazgoc)">
+                                                                <i class="bi bi-trash3"></i> Eliminar
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body p-2 bg-light text-center">
+                                                        <iframe :src="filedoc[index]"
+                                                            class="rounded border bg-white shadow-sm w-100"
+                                                            style="height: 360px;"></iframe>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <iframe :src="filedoc[index]" style="width:100%;height:500px;"></iframe>
+                                        </div>
+                                    </div>
+                                    <div v-show="filedoc.length === 0 && cual_documento == 'evidencia_hallazgo'">
+                                        <hr class="my-3 text-muted opacity-25">
 
+                                        <div class="d-flex justify-content-between align-items-center mb-2 px-2">
+                                            <h6 class="text-uppercase text-secondary fw-bold tracking-wider mb-0" style="font-size: 0.75rem;">
+                                                <i class="bi bi-file-earmark-image me-1" style="color: rgb(137, 0, 0);"></i>
+                                                Imágenes cargadas
+                                            </h6>
+                                            <span class="badge bg-white text-dark border shadow-sm" style="font-size: 0.75rem;">0 archivo(s)</span>
+                                        </div>
+
+                                        <div class="card border shadow-sm bg-white">
+                                            <div class="card-body py-4 text-center text-muted bg-light">
+                                                <i class="bi bi-folder2-open fs-3 d-block mb-1 text-secondary opacity-50"></i>
+                                                <span style="font-size: 0.85rem;">No se encontraron imágenes cargadas.</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </form>
@@ -581,9 +636,12 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
             </div>
 
             <!-- APARTADO RESPONSABLES -->
-            <div v-show="bandera_misHallazgosOconcentrado == 'Responsables'" class="row justify-content-center pt-2" style="min-height:75vh;">
+            <div v-show="bandera_misHallazgosOconcentrado == 'Responsables'" class="row justify-content-center pt-2"
+                style="min-height:75vh;">
                 <div class="d-grid gap-2 col-2 mx-auto">
-                    <button class="btn btn-success mb-2" type="button" @click='reserVarGuardar(), modalNuevoResponsable()'><i class="bi bi-person-plus"></i> Nuevo Responsable</button>
+                    <button class="btn btn-success mb-2" type="button"
+                        @click='reserVarGuardar(), modalNuevoResponsable()'><i class="bi bi-person-plus"></i> Nuevo
+                        Responsable</button>
                 </div>
                 <div style="height: 70vh; overflow-x: scroll;">
                     <table class="table table-striped" style="font-size: 0.8em;">
@@ -599,7 +657,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(secciones, seccion, indexa) in responsables_secciones" class="align-middle" :key="indexa">
+                            <tr v-for="(secciones, seccion, indexa) in responsables_secciones" class="align-middle"
+                                :key="indexa">
 
                                 <td class="text-center align-middle"><b>{{indexa+1}}</b></td>
                                 <td class="text-center align-middle">{{secciones.planta}} </td>
@@ -628,8 +687,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                 <td class="text-center align-middle">
 
                                     <div class="d-grid gap-2 col-6 mx-auto">
-                                        <button class="btn btn-warning btn-sm" style="border-radius: 10px;" type="button" @click="reseteaVar(), modalCambioSeccion(secciones)">Cambiar</button>
-                                        <button class="btn btn-danger btn-sm" style="border-radius: 10px;" type="button" @click="reseteaResp(), modalEliminaResp(secciones)">Eliminar</button>
+                                        <button class="btn btn-warning btn-sm" style="border-radius: 10px;" type="button"
+                                            @click="reseteaVar(), modalCambioSeccion(secciones)">Cambiar</button>
+                                        <button class="btn btn-danger btn-sm" style="border-radius: 10px;" type="button"
+                                            @click="reseteaResp(), modalEliminaResp(secciones)">Eliminar</button>
                                     </div>
                                 </td>
                             </tr>
@@ -763,76 +824,140 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
 
             <!-- MODAL AMPLIAR IMAGEN DE HALLAZGO --------------------------------------------->
 
-            <div v-for="(concentrado,index) in concentrado_hallazgos" class="modal" id="modal_hallazgo" tabindex="-1">
+            <div class="modal fade" id="modal_hallazgo" tabindex="-1" aria-labelledby="modalHallazgoLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-xl">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Hallazgo:</h5>
-                            {{hallazgo}}
+                    <div class="modal-content shadow-lg border-0">
+
+                        <div class="modal-header bg-light">
+                            <div>
+                                <h5 class="modal-title fw-bold text-dark" id="modalHallazgoLabel">
+                                    <i class="bi bi-search me-2"></i>Hallazgo
+                                </h5>
+                                <div class="text-muted small mt-1">{{ hallazgo }}</div>
+                            </div>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body text-center d-flex align-items-center justify-content-center">
-                            <img class="" alt="" style="border: 1px solid black; width: 90%; height: 90%;" :src="ruta"></img>
+
+                        <div class="modal-body text-center p-4">
+
+                            <div v-if="imagenCargando" class="py-5">
+                                <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+                                    <span class="visually-hidden">Cargando...</span>
+                                </div>
+                                <p class="text-muted mt-3 mb-0">Cargando imagen...</p>
+                            </div>
+
+                            <div v-if="imagenError" class="py-5 text-muted">
+                                <i class="bi bi-image-fill display-4 d-block mb-2 text-secondary"></i>
+                                <p class="mb-0">El hallazgo no contiene imagen.</p>
+                            </div>
+
+                            <div class="d-flex align-items-center justify-content-center" style="min-height: 300px;">
+                                <img v-show="!imagenCargando && !imagenError" class="img-fluid rounded shadow-sm border"
+                                    @load="imagenCargando = false" @error="imagenError = true; imagenCargando = false"
+                                    alt="Imagen del hallazgo" style="max-height: 70vh; object-fit: contain;" :src="ruta">
+                            </div>
+
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+
+                        <div class="modal-footer bg-light">
+                            <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">Cerrar</button>
                         </div>
+
                     </div>
                 </div>
             </div>
 
             <!--MODAL COMENTARIO --->
 
-
             <div class="modal fade" id="mimodal_comentario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Comentario id {{id_comentario}} </h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content border-0 shadow-lg rounded-3 overflow-hidden">
+
+                        <div class="modal-header text-white px-4 py-3" style="background-color: rgb(137, 0, 0);">
+                            <h5 class="modal-title fs-6 fw-bold text-uppercase tracking-wider m-0" id="exampleModalLabel">
+                                <i class="bi bi-chat-quote-fill me-2"></i> Comentario ID {{ id_comentario }}
+                            </h5>
+                            <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
                         </div>
-                        <div class="modal-body">
-                            <div class="mb-3">
-                                <!-- SOLO RESPONSABLE -->
+
+                        <div class="modal-body p-4 bg-light">
+                            <div class="mb-0">
                                 <?php if (($_SESSION["esResponsableHallazgo"] ?? false) !== false) : ?>
-                                <div v-if="comentario_responsable === '' || comentario_responsable === null">
-                                    <label for="textarea_comentario" class="form-label">Escriba su comentario Responsable</label>
-                                    <textarea class="form-control" id="textarea_comentario" v-model="comentario_responsable" rows="3"
-                                        style="outline:none;resize:none"></textarea>
+                                <div v-if="tipoComentarioModal === 'finResponsable' && puedeLeerMensajeResponsable">
+                                    <label for="textarea_comentario_responsable" class="form-label fw-semibold text-secondary mb-2">
+                                        <i class="bi bi-lock-fill text-danger me-1"></i> Comentario Del Responsable <span
+                                            class="badge bg-secondary font-monospace" style="font-size: 0.65rem;">Solo
+                                            lectura</span>
+                                    </label>
+                                    <textarea class="form-control bg-secondary-subtle text-secondary border opacity-75 shadow-none"
+                                        id="textarea_comentario_responsable" v-model="comentario_responsable" rows="4"
+                                        style="resize:none;" disabled></textarea>
+                                </div>
+                                <div
+                                    v-else-if="hallazgoComentario.comentario_syma !== '' && hallazgoComentario.comentario_syma !== null && tipoComentarioModal !== false">
+                                    <label for="textarea_comentario_syma_r" class="form-label fw-semibold text-secondary mb-2">
+                                        <i class="bi bi-shield-lock-fill text-danger me-1"></i> Comentario de Syma <span
+                                            class="badge bg-secondary font-monospace" style="font-size: 0.65rem;">Solo
+                                            lectura</span>
+                                    </label>
+                                    <textarea class="form-control bg-secondary-subtle text-secondary border opacity-75 shadow-none"
+                                        id="textarea_comentario_syma_r" v-model="comentario" rows="4" style="resize:none;"
+                                        disabled></textarea>
                                 </div>
                                 <div v-else>
-                                    <label for="textarea_comentario" class="form-label">Comentario de Syma</label>
-                                    <textarea class="form-control" id="textarea_comentario" v-model="comentario" rows="3"
-                                        style="outline:none;resize:none" disabled></textarea>                                    
+                                    <label for="textarea_comentarioResponsable" class="form-label fw-semibold text-dark mb-2">
+                                        <i class="bi bi-pencil-square text-primary me-1"></i> Escriba su comentario
+                                        Responsable <span
+                                            class="badge bg-primary-subtle text-primary border border-primary-subtle font-monospace"
+                                            style="font-size: 0.65rem;">Editable</span>
+                                    </label>
+                                    <textarea class="form-control shadow-sm bg-white border border-primary-subtle"
+                                        id="textarea_comentarioResponsable" v-model="comentario_responsable" rows="4"
+                                        style="resize:none;" placeholder="Escriba sus observaciones aquí..."></textarea>
                                 </div>
-
-
                                 <?php else: ?>
-                                    <!-- SOLO SYMA -->
-                                <div v-if="hallazgosContinuando[String(id_comentario)] === true || (comentario !== '' || comentario !== null)">
-                                    <label for="textarea_comentario" class="form-label">Escriba su comentario Syma</label>
-                                    <textarea class="form-control" id="textarea_comentario" v-model="comentario" rows="3"
-                                        style="outline:none;resize:none"></textarea>
+                                <div v-if="puedeLeerMensajeSyma && tipoComentarioModal !== 'finSyma'">
+                                    <label for="textarea_comentario_res" class="form-label fw-semibold text-secondary mb-2">
+                                        <i class="bi bi-lock-fill text-danger me-1"></i> Comentario Del Responsable
+                                        {{tipoComentarioModal}} <span class="badge bg-secondary font-monospace"
+                                            style="font-size: 0.65rem;">Solo lectura</span>
+                                    </label>
+                                    <textarea class="form-control bg-secondary-subtle text-secondary border opacity-75 shadow-none"
+                                        id="textarea_comentario_res" v-model="comentario_responsable" rows="4" style="resize:none;"
+                                        disabled></textarea>
                                 </div>
                                 <div v-else>
-                                    <label for="textarea_comentario" class="form-label">Comentario Del Responsable</label>
-                                    <textarea class="form-control" id="textarea_comentario" v-model="comentario_responsable"
-                                        rows="3" style="outline:none;resize:none" disabled></textarea>
+                                    <label for="textarea_comentario_ssyma" class="form-label fw-semibold text-dark mb-2">
+                                        <i class="bi bi-pencil-square text-primary me-1"></i> Escriba su comentario Syma
+                                        {{tipoComentarioModal}} <span
+                                            class="badge bg-primary-subtle text-primary border border-primary-subtle font-monospace"
+                                            style="font-size: 0.65rem;">Editable</span>
+                                    </label>
+                                    <textarea class="form-control shadow-sm bg-white border border-primary-subtle"
+                                        id="textarea_comentario_ssyma" v-model="comentario" rows="4" style="resize:none;"
+                                        placeholder="Escriba sus observaciones SYMA aquí..."></textarea>
                                 </div>
                                 <?php endif; ?>
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-
+                        <!-- Modal Footer -->
+                        <div class="modal-footer bg-white px-4 py-3 border-top">
+                            <button type="button" class="btn btn-outline-secondary px-3 py-1.5 btn-sm fw-medium"
+                                data-bs-dismiss="modal">Cerrar</button>
                             <?php if (($_SESSION["esResponsableHallazgo"] ?? false) !== false): ?>
-                            <button v-if="puedeGuardarComentario" type="button" class="btn btn-primary"
-                                @click="guardar_comentario(comentario_responsable,id_comentario)">Guardar ss</button>
+                            <button v-if="puedeGuardarComentario" type="button"
+                                class="btn btn-primary px-3 py-1.5 btn-sm fw-medium shadow-sm"
+                                @click="guardar_comentario(comentario_responsable, id_comentario)">Guardar
+                                responsable</button>
                             <?php else: ?>
-                            <button v-if="puedeGuardarComentario" type="button" class="btn btn-primary"
-                                @click="guardar_comentario(comentario,id_comentario)">Guardar</button>
+                            <button v-if="puedeGuardarComentario" type="button"
+                                class="btn btn-primary px-3 py-1.5 btn-sm fw-medium shadow-sm"
+                                @click="guardar_comentario(comentario, id_comentario)">Guardar</button>
                             <?php endif ?>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -962,11 +1087,13 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     idUsuarioActual: <?= json_encode($_SESSION['usuario'] ?? null) ?>,
                     esSyma: <?= !empty($_SESSION['esSyma']) ? 'true' : 'false' ?>,
                     verComentarioSyma: {},
-                    // hallazgoContinuar: [],
+                    tipoComentarioModal: null,
                     hallazgosContinuando: {},
                     id_comentario: null,
-                    estados: [
-                        {
+                    imagenCargando: true,
+                    imagenError: false,
+                    concentradoHallazgoCargando: true,
+                    estados: [{
                             id: 'sin_atender',
                             title: 'Sin Atender',
                             color: 'bg-secondary',
@@ -981,7 +1108,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                         {
                             id: 'atendido',
                             title: 'Atendido',
-                            style:  '#AF38D4', // #ECEB5F #F6F58F #FFDF20
+                            style: '#AF38D4',
                             textColor: '#fff'
                         },
                         {
@@ -1004,17 +1131,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                 this.consultar_hallazgos()
                 this.consultar_areas_enerya_y_riasa()
             },
-            watch: {
-                verComentarioSyma(){
-                    console.log("viendo this.verComentarioSyma " + this.verComentarioSyma[id])
-                },
-                verComentarioOtro(){
-                    console.log("dsfjksfj")
-                    console.log("viendo this.continuar_syma " + this.hallazgosContinuando[String(this.id_comentario)])
-                }
-            },
-            computed: {
 
+            computed: {
                 accionesHallazgos() {
                     return (hallazgo) => {
                         const usuario = Number(hallazgo.iniciado_por) === Number(this.idUsuarioActual)
@@ -1023,62 +1141,66 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                         const syma = this.esSyma === true
                         const key = String(hallazgo.id)
                         const continuar = this.hallazgosContinuando[key] === true
+                        const tipoModalSyma = this.tipoComentarioModal === 'finSyma'
 
                         return {
-                            puedeAtender:
-                                hallazgo.status === 'sin_atender',
-                            puedeAtendido:
-                                hallazgo.status === 'en_proceso' && ((usuario && !usuarioSyma) || (usuarioSyma && syma)),
-                            puedeEnviarSyma:
-                                hallazgo.status === 'atendido' && responsable && usuario &&
+                            puedeAtender: hallazgo.status === 'sin_atender',
+                            puedeAtendido: hallazgo.status === 'en_proceso' && ((usuario && !usuarioSyma) || (usuarioSyma && syma)),
+                            puedeEnviarSyma: hallazgo.status === 'atendido' && responsable && usuario &&
                                 hallazgo.comentario_responsable !== null && hallazgo.comentario_responsable !== '' &&
                                 hallazgo.cant_img_evidencia > 0,
-                            puedeContinuar: 
-                                (hallazgo.status === 'esperando_syma' && !usuarioSyma && syma && !continuar &&  (hallazgo.comentario_syma === null || hallazgo.comentario_syma === '') && hallazgo.comentario_responsable !== ''),   
-                            puedeEditar: 
-                                hallazgo.status === 'esperando_syma' && hallazgo.status !== 'finalizado' && responsable && usuario,                                                            
-                            puedeFinalizar:
-                                (hallazgo.status === 'esperando_syma' && !responsable && hallazgo.comentario_syma !== '' && hallazgo.comentario_syma !== null) ||
-                                (hallazgo.status === 'atendido' && !responsable && hallazgo.comentario_syma !== '' && hallazgo.comentario_syma !== null),
+                            puedeContinuar: (hallazgo.status === 'esperando_syma' && !usuarioSyma && syma && !continuar && (hallazgo.comentario_syma === null || hallazgo.comentario_syma === '') && !!hallazgo.comentario_responsable),
+                            puedeEditar: hallazgo.status === 'esperando_syma' && responsable && usuario,
+                            puedeFinalizar: (hallazgo.status === 'esperando_syma' && !responsable && hallazgo.comentario_syma !== '' && hallazgo.comentario_syma !== null) ||
+                                (hallazgo.status === 'atendido' && !responsable && hallazgo.comentario_syma !== '' && hallazgo.comentario_syma !== null && ((usuario && !usuarioSyma) || (usuarioSyma && syma))),
 
-                            puedeVerImagen:
-                                (hallazgo.status === 'atendido' && ((usuario && !usuarioSyma) || (usuarioSyma && syma))) ||
+                            puedeVerImagen: (hallazgo.status === 'atendido' && ((usuario && !usuarioSyma) || (usuarioSyma && syma))) ||
                                 (hallazgo.status === 'esperando_syma' && syma) ||
-                                (hallazgo.status === 'finalizado' && ((responsable && !usuarioSyma) || (usuarioSyma && syma) || syma)),
-                            puedeEditarImagen:
-                                (hallazgo.status === 'finalizado' && ((usuario && !usuarioSyma) || syma )) ||
-                                (hallazgo.status === 'atendido' && ((usuario && !usuarioSyma) || (usuarioSyma && syma))),
-                            puedeComentar:
+                                (hallazgo.status === 'finalizado'),
+                            puedeEditarImagen: (hallazgo.status === 'finalizado' && ((usuario && !usuarioSyma) || syma)) ||
                                 (hallazgo.status === 'atendido' && ((usuario && !usuarioSyma) || (usuarioSyma && syma))) ||
+                                (hallazgo.status === 'esperando_syma' && syma && (continuar || (!!hallazgo.comentario_syma && !continuar))),
+                            puedeComentar: (hallazgo.status === 'atendido' && ((usuario && !usuarioSyma) || (usuarioSyma && syma))) ||
                                 (hallazgo.status === 'esperando_syma' && syma),
-                            puedeVerComentarioFinal:
-                                hallazgo.status === 'finalizado' && ((usuario && !usuarioSyma) || syma ),
-                            puedeVerSeguimiento:
-                                hallazgo.status !== 'sin_atender' && hallazgo.status !== 'finalizado' && !usuario,
-                            puedeGuardarComentario: 
-                                (hallazgo.status === 'finalizado' && (continuar && syma) || (!continuar && syma)) ||
+                            puedeVerComentarioSymaFinal: hallazgo.status === 'finalizado',
+                            puedeVerComentarioResponsableFinal: hallazgo.status === 'finalizado' && (!usuarioSyma || syma) && hallazgo.comentario_responsable !== '' && hallazgo.comentario_responsable !== null,
+                            puedeGuardarComentario: (hallazgo.status === 'finalizado' && syma && tipoModalSyma) ||
                                 (hallazgo.status === 'atendido' && ((usuario && !usuarioSyma) || (usuarioSyma && syma))) ||
-                                (hallazgo.status === 'esperando_syma' && syma),
+                                (hallazgo.status === 'esperando_syma' && syma && ((!hallazgo.comentario_syma && continuar) || (hallazgo.comentario_syma && !continuar))),
+                            puedeLeerMensajeResponsable: (hallazgo.status === 'finalizado' && !continuar && (hallazgo.comentario_syma !== '' && hallazgo.comentario_syma !== null) && (hallazgo.comentario_responsable !== '' && hallazgo.comentario_responsable !== null)),
+                            puedeLeerMensajeSyma: ((!continuar && hallazgo.comentario_responsable !== '' && hallazgo.comentario_responsable !== null) && (hallazgo.comentario_syma === '' || hallazgo.comentario_syma === null)) ||
+                                hallazgo.status === 'finalizado',
+                            puedeVerSeguimiento: hallazgo.status !== "sin_atender" && hallazgo.status !== "finalizado" && ((usuarioSyma && !syma) || (!usuario && !usuarioSyma)),
                         }
                     }
                 },
                 puedeEditarImagen() {
-                    if(!this.hallazgoImagen){
-                        console.log("es falso")
+                    if (!this.hallazgoImagen) {
                         return false
                     }
                     return this.accionesHallazgos(this.hallazgoImagen).puedeEditarImagen
                 },
                 puedeGuardarComentario() {
-                    if(!this.hallazgoComentario) {
-                        console.log("es Falso")
+                    if (!this.hallazgoComentario) {
                         return false
                     }
                     return this.accionesHallazgos(this.hallazgoComentario).puedeGuardarComentario
                 },
+                puedeLeerMensajeResponsable() {
+                    if (!this.hallazgoComentario) {
+                        return false
+                    }
+                    return this.accionesHallazgos(this.hallazgoComentario).puedeLeerMensajeResponsable
+                },
+                puedeLeerMensajeSyma() {
+                    if (!this.hallazgoComentario) {
+                        return false
+                    }
+                    return this.accionesHallazgos(this.hallazgoComentario).puedeLeerMensajeSyma
+                },
             },
             methods: {
-                obtenerEstado(status){
+                obtenerEstado(status) {
                     const syma = this.esSyma === true
                     const estado = this.estados.find(
                         estado => estado.id === status
@@ -1093,15 +1215,6 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                         }
                     }
                     return estado
-                },
-                validar_usuario(concentrado){
-                    const usuarioSyma = concentrado.iniciado_por === '60083' || concentrado.iniciado_por === '16299'
-                    return usuarioSyma
-                },
-                continuarProcesoSyma(id) {
-                    const key = String(id);
-
-                    this.hallazgosContinuando[key] = true;
                 },
                 /*consultar_plantas(){
                                 axios.post('lista_planta.php',{
@@ -1138,6 +1251,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
 
                     this.hallazgo = this.concentrado_hallazgos[index].descripcion_hallazgo;
 
+                    this.imagenCargando = true;
+                    this.imagenError = false;                    
+
                     //console.log(this.id_, this.idHallazgo_, this.nomina)
                     console.log('la ruta es:', this.ruta)
 
@@ -1154,7 +1270,6 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                         this.descripcion = false;
                     }
                 },
-
 
                 enviarHallazgo() {
 
@@ -1458,38 +1573,47 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                 CONCENTRADO 
                 ########################################*/
 
-                /*----- Consultar hallazgos para la tabla -----*/
-                consultar_hallazgos_concentrado() {
-                    
-                    const data = {}    
+                validar_usuario(concentrado) {
+                    const usuarioSyma = concentrado.iniciado_por === '60083' || concentrado.iniciado_por === '16299'
+                    return usuarioSyma
+                },
+                continuarProcesoSyma(id) {
+                    const key = String(id);
 
-                     if(this.esResponsableHallazgo === true){
-                        data.tipo = 'responsableHallazgo'
-                     } else {
-                        data.tipo = 'admin'
-                     }
-
-                    axios.post('consultar_hallazgos_syma.php', data)
-                    .then(response => {
-                        console.log("Esto después")
-                            this.listaFiltrada = response.data.filter((item, index, self) =>
-                            index === self.findIndex((t) => t.id === item.id)
-                            );
-                            this.concentrado_hallazgos = this.listaFiltrada
-                        console.log('lo que llega es:', response.data);
-
-                        this.objetoCantImgBD = this.concentrado_hallazgos.map(item => ({
-                            id: item.id,
-                            cant_img_evidencia: item.cant_img_evidencia
-                        }))
-
-                        // this.objetoCantImgBD = imgCant
-                        //console.log('los id son:',this.concentrado_hallazgos[index][2])
-                        //console.log(" RESPUESTAA",response.data);
-
-                    })
+                    this.hallazgosContinuando[key] = true;
                 },
 
+                /*----- Consultar hallazgos para la tabla -----*/
+                consultar_hallazgos_concentrado() {
+
+                // this.concentradoHallazgoCargando = true;
+                    const data = {}
+
+                    if (this.esResponsableHallazgo === true) {
+                        data.tipo = 'responsableHallazgo'
+                    } else {
+                        data.tipo = 'admin'
+                    }
+
+                    axios.post('consultar_hallazgos_syma.php', data)
+                        .then(response => {
+                            // this.concentradoHallazgoCargando = false;
+
+                            this.listaFiltrada = response.data.filter((item, index, self) =>
+                                index === self.findIndex((t) => t.id === item.id)
+                            );
+                            this.concentrado_hallazgos = this.listaFiltrada
+
+                            this.objetoCantImgBD = this.concentrado_hallazgos.map(item => ({
+                                id: item.id,
+                                cant_img_evidencia: item.cant_img_evidencia
+                            }))
+
+                        }).catch(error => {
+                            // this.concentradoHallazgoCargando = false;
+                            console.log("Error en axios");
+                        })
+                },
 
                 btnStatus(accion, id_hallazgo) {
                     this.id_hallazgo = id_hallazgo
@@ -1501,12 +1625,21 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                         id: id_hallazgo,
                         tipo: accion
                     }).then(response => {
-                        if(response.data.status = 'false'){
+
+                        if (response.data.status === false) {
                             alert(response.data.mensaje)
                             this.consultar_hallazgos_concentrado();
+                        } else if (response.data.status === true) {
+                            if (response.data.mensaje == 'editado') {
+                                this.consultar_hallazgos_concentrado();
+                            } else {
+                                alert(response.data.mensaje)
+                                this.consultar_hallazgos_concentrado();
+                            }
+
+                        } else {
+                            alert("Ocurrió un error inesperado.");
                         }
-                        this.status_hallazgos = response.data
-                        this.consultar_hallazgos_concentrado();
                     }).catch(error => {
                         console.log("Error en estatus" + error)
                     })
@@ -1554,28 +1687,22 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                 },
 
                 /*----- Comentarios de syma y responsables -----*/
-                modal_comentario(id, status, comentarioSyma, comentarioResponsable) {                                   
-
+                modal_comentario(id, status, comentarioSyma, comentarioResponsable, tipoUsuario = null) {
                     const syma = this.esSyma === true
-                    console.log("soy sima " + syma)
                     this.id_comentario = id;
 
                     this.hallazgoComentario = this.concentrado_hallazgos.find(
                         ch => String(ch.id) === String(this.id_comentario)
                     )
-
-                    console.log("He traído eso: ", this.hallazgoComentario)                     
+                    this.tipoComentarioModal = tipoUsuario;
 
                     if (this.esResponsableHallazgo) {
-                        console.log("Es responsable")
+
                         if (status === 'en_proceso') {
                             this.comentario_responsable = '';
-                            (console.log("if responsable"))
                         } else {
-                            console.log("else responsable")
                             this.comentario_responsable = comentarioResponsable;
                             this.comentario = comentarioSyma;
-                             console.log("Comentarios del responsable = " + this.comentario_responsable)
                         }
                     } else {
                         if (status === 'en_proceso') {
@@ -1583,15 +1710,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                         } else {
                             this.comentario = comentarioSyma;
                             this.comentario_responsable = comentarioResponsable;
-                        }
-                        // this.verComentarioSyma = false
-                        console.log("no es responsable")
+                        }                     
                     }
-
-                    // this.comentario = comentario;
-                    //console.log('Mi comentario es:',comentario)
-                    //console.log('Mi posicion es:',this.posicion)
-                    // console.log('Mi id es:',id);
                     this.myModal = new bootstrap.Modal(document.getElementById('mimodal_comentario'))
                     this.myModal.show();
                 },
@@ -1622,10 +1742,6 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     this.myModal.hide();
                 },
 
-
-
-
-
                 /*----- Subir evidencia de proceso de hallazgo -----*/
                 modal_subir_ver_documentos(tipo, id_concentrado, folio, cual_documento, cantidad) {
 
@@ -1639,8 +1755,6 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     this.hallazgoImagen = this.concentrado_hallazgos.find(
                         ch => String(ch.id) === String(this.folio_carpeta_doc)
                     )
-
-                    console.log("He traído eso: ", this.hallazgoImagen)                       
 
                     if (this.cual_documento === 'evidencia_hallazgo') {
                         this.myModal = new bootstrap.Modal(document.getElementById('modal'))
@@ -1662,7 +1776,6 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     }
 
                     if (this.cantidadDOCFILE === objetoActual.cant_img_evidencia) {
-                        console.log("No hay cambios.")
                         return;
                     }
 
@@ -1676,6 +1789,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                         console.log("Error 500: " + error)
                     })
                 },
+
                 buscarDocumentos(sincronizarCantImg = false) {
                     this.filedoc = [] //limpiado vista del documento bajada en modal 
                     if (!this.folio_carpeta_doc) return
@@ -1696,7 +1810,6 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                             if (this.filedoc.length > 0) {
                                 console.log(this.cantidadDOCFILE + "Archivos encontrados.")
                             }
-
                         }
                     }).catch(error => {
                         console.log(error);

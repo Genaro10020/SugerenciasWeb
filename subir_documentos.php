@@ -18,20 +18,18 @@ if (isset($_FILES['files']['name'])) {
     $cual_documento = $_POST['cual_documento'];
     $folio = $_POST['folio'];
     $img_hallazgoEvidencia = $_POST['tipoArchivo'] ?? null;
-    // hallazgoEvidencia
 
     // Contar archivos totales
     $countfiles = count($_FILES['files']['name']);
     $suma = $countfiles + $cantidad;
     //ruta
+    $valid_ext = [];
 
     if ($img_hallazgoEvidencia === 'hallazgoEvidencia') {
         $path = "evidenciaSeguridad/" . $id_concentrado . "/" . $folio . "/";
     } else {
         $path = "documentos/" . $folio . "/" . $cual_documento . "/";
     }
-
-
 
 
     //verificar si existe directorio de$path = "sample/path/newfolder";

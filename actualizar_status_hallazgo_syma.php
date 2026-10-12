@@ -14,7 +14,7 @@ $comentarioResponsable = $variables['comentario_responsable'] ?? null;
 
 $cant_img_reciente = $variables['cant_img_actual'] ?? null;
 $id_usuario = $_SESSION['usuario'] ?? null;
-$esResponsable = $_SESSION['esResponsableHallazgo'];
+$esResponsable = $_SESSION['esResponsableHallazgo'] ?? false;
 
 include "conexionGhoner.php";
 
@@ -26,11 +26,12 @@ if ($id === null || $id_usuario === null) {
 if ($tipo == 'guardar_actualizar_comentario') {
 
     if ($_SESSION['esResponsableHallazgo'] === true) {
-        $actualizar = $conexion->prepare("UPDATE seguridad_syma SET comentario_responsable = ? WHERE id = ?; ");
-        $actualizar->bind_param("si", $comentarioResponsable,  $id);
+        $actualizar = $conexion->prepare("UPDATE seguridad_syma SET comentario_responsable = ?, modificado_por = ?,fecha_modificacion = ? WHERE id = ?");
+
+        $actualizar->bind_param("sisi", $comentarioResponsable, $id_usuario, $fecha, $id);
     } else {
-        $actualizar = $conexion->prepare("UPDATE seguridad_syma SET comentario_syma = ? WHERE id = ?; ");
-        $actualizar->bind_param("si", $accion, $id);
+        $actualizar = $conexion->prepare("UPDATE seguridad_syma SET comentario_syma = ?, modificado_por = ?, fecha_modificacion = ? WHERE id = ?; ");
+        $actualizar->bind_param("sisi", $accion, $id_usuario, $fecha, $id);
     }
     $resultado = $actualizar->execute();
     $actualizar->close();
@@ -48,11 +49,11 @@ if ($tipo == 'guardar_actualizar_comentario') {
     switch ($tipo) {
         case 'en_proceso':
             if (!$hallazgo) {
-                echo "No existe el hallazgo";
+                echo json_encode(['mensaje' => 'El hallazgo seleccionado no existe. Intenta actualizar la página.', 'status' => false]);
                 exit;
             }
             if ($hallazgo['status'] !== 'sin_atender') {
-                echo json_encode(['mensaje' => 'Error, alguien ya ha tomado el hallazgo.', 'status' => 'false']);
+                echo json_encode(['mensaje' => 'Lo sentimos, este hallazgo ya fue tomado por otro usuario.', 'status' => false]);
                 exit;
             }
             $actualizar = $conexion->prepare("UPDATE seguridad_syma
@@ -63,48 +64,65 @@ if ($tipo == 'guardar_actualizar_comentario') {
 
 
             if ($actualizar->affected_rows === 0) {
-                echo "ya fue tomado";
+                echo json_encode(['mensaje' => 'Ocurrió un error interno. Inténtalo más tarde.', 'status' => false]);
                 exit;
             }
             $actualizar->close();
 
-            echo "tomado correctamente.";
-            echo json_encode($resultado);
+            echo json_encode(['mensaje' => 'El hallazgo fue asignado correctamente.', 'status' => $resultado]);
             break;
+
         case 'atendido':
-            if ($hallazgo['status'] !== 'en_proceso' && $hallazgo['status'] !== 'esperando_syma') {
-                echo "no puede cambiarse de proceso.";
+
+            if ($hallazgo['status'] !== 'en_proceso' && $hallazgo['status'] !== 'esperando_syma' && $hallazgo['status'] !== 'sin_atender') {
+                echo json_encode(['mensaje' => 'No tienes permisos para cambiar el estatus de este hallazgo.', 'status' => false]);
                 exit;
             }
+
             if ($esResponsable) {
                 if ((int) $hallazgo['iniciado_por'] !== (int) $id_usuario) {
-                    echo "ya ha sido iniciado por otra persona.";
+                    echo json_encode(['mensaje' => 'Lo sentimos, este hallazgo ya fue tomado por otro usuario.', 'status' => false]);
                     exit;
                 }
             }
 
-            $actualizar = $conexion->prepare("UPDATE seguridad_syma
+            if ($hallazgo['status'] === 'sin_atender') {
+                $actualizar = $conexion->prepare("UPDATE seguridad_syma
+                                                SET iniciado_por = ?, fecha_inicio = ?, `status` = 'atendido'
+                                                WHERE id = ? AND `status` = 'sin_atender';");
+            } else {
+                $actualizar = $conexion->prepare("UPDATE seguridad_syma
                                 SET modificado_por = ?, fecha_modificacion = ?, `status` = 'atendido'
-                                WHERE id = ? AND `status` = 'en_proceso' OR `status` = 'esperando_syma';");
+                                WHERE id = ? AND `status` IN ('en_proceso', 'esperando_syma') ;");
+            }
+
             $actualizar->bind_param("isi", $id_usuario, $fecha, $id);
             $resultado = $actualizar->execute();
 
             if ($actualizar->affected_rows === 0) {
-                echo "ya fue tomado";
+                echo json_encode(['mensaje' => 'Ocurrió un error interno. Inténtalo más tarde.', 'status' => false]);
                 exit;
             }
             $actualizar->close();
-            echo json_encode($resultado);
+
+            if ($hallazgo['status'] === 'esperando_syma') {
+                echo json_encode(['mensaje' => 'editado', 'status' => $resultado]);
+            } else {
+                echo json_encode(['mensaje' => 'El hallazgo fue marcado como atendido con éxito.', 'status' => $resultado]);
+            }
+
             break;
+
         case 'esperando_syma':
             if ($hallazgo['status'] !== 'atendido') {
-                echo "no puede cambiarse de proceso.";
+                echo json_encode(['mensaje' => 'No tienes permisos para cambiar el estatus de este hallazgo.', 'status' => false]);
                 exit;
             }
             if ((int) $hallazgo['iniciado_por'] !== (int) $id_usuario) {
-                echo "ya ha sido iniciado por otra persona.";
+                echo json_encode(['mensaje' => 'Lo sentimos, este hallazgo ya fue tomado por otro usuario.', 'status' => false]);
                 exit;
             }
+
             $actualizar = $conexion->prepare("UPDATE seguridad_syma
                                 SET modificado_por = ?, fecha_modificacion = ?, `status` = 'esperando_syma'
                                 WHERE id = ? AND `status` = 'atendido' ;");
@@ -112,37 +130,41 @@ if ($tipo == 'guardar_actualizar_comentario') {
             $resultado = $actualizar->execute();
 
             if ($actualizar->affected_rows === 0) {
-                echo "ya fue tomado";
+                echo json_encode(['mensaje' => 'Ocurrió un error interno. Inténtalo más tarde.', 'status' => false]);
                 exit;
             }
             $actualizar->close();
-            echo json_encode($resultado);
+            echo json_encode(['mensaje' => 'El hallazgo fue enviado a SSYMA para su revisión.', 'status' => $resultado]);
+
             break;
+
         case 'finalizado':
+
             if ($hallazgo['status'] !== 'esperando_syma' && $hallazgo['status'] !== 'atendido') {
-                echo "no puede cambiarse de proceso.";
+                echo json_encode(['mensaje' => 'No tienes permisos para cambiar el estatus de este hallazgo.', 'status' => false]);
                 exit;
             }
             if ($esResponsable) {
-                echo "\n No puedes finalizar, eres responsable";
+                echo json_encode(['mensaje' => 'No cuentas con autorización para finalizar este hallazgo.', 'status' => false]);
                 exit;
             }
             $actualizar = $conexion->prepare("UPDATE seguridad_syma
                                 SET modificado_por = ?, fecha_modificacion = ?, `status` = 'finalizado'
-                                WHERE id = ? AND `status` = 'esperando_syma' OR `status` = 'atendido' ;");
+                                WHERE id = ? AND `status` IN ('esperando_syma', 'atendido');");
             $actualizar->bind_param("isi", $id_usuario, $fecha, $id);
             $resultado = $actualizar->execute();
 
             if ($actualizar->affected_rows === 0) {
-                echo "no se pudo completar";
+                echo json_encode(['mensaje' => 'Lo sentimos, este hallazgo ya fue tomado por otro usuario.', 'status' => false]);
                 exit;
             }
             $actualizar->close();
-            echo json_encode($resultado);
+            echo json_encode(['mensaje' => 'El hallazgo fue finalizado correctamente.', 'status' => $resultado]);
+
             break;
 
         default:
-            # code...
+            echo json_encode(['mensaje' => 'Ocurrió un error interno.', 'status' => false]);
             break;
     }
 }

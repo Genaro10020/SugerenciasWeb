@@ -8,20 +8,7 @@ $resultado = [];
 $tipo = $variables['tipo'];
 
 
-
-
-// echo "Esto es consultar";
-// var_dump($variables);
-
-// if ($_SESSION["esResponsableHallazgo"]) {
-//     $tipo = "responsableHallazgo";
-// } else {
-//     $tipo = $variables['tipo'];
-// }
-
-// die();
 if ($tipo == "admin") {
-
 
     $consulta = "SELECT usuarios_colocaboradores_sugerencias.colaborador,
             seguridad_syma.*,
@@ -29,10 +16,10 @@ if ($tipo == "admin") {
         FROM usuarios_colocaboradores_sugerencias
         INNER JOIN seguridad_syma ON usuarios_colocaboradores_sugerencias.numero_nomina = seguridad_syma.numero_nomina
         LEFT JOIN responsables_secciones_syma AS rss ON rss.nomina = seguridad_syma.iniciado_por
-        
-        ORDER BY seguridad_syma.id DESC LIMIT 40;";
+        ORDER BY seguridad_syma.id DESC";
 
     $query = mysqli_query($conexion, $consulta);
+    $tabla = null;
     while ($fila = mysqli_fetch_array($query)) {
         $areaID = $fila['area'];
         $planta = $fila['planta'];
@@ -65,6 +52,7 @@ if ($tipo == "admin") {
     $consulta->bind_param("i", $user);
     $consulta->execute();
     $resultArea = $consulta->get_result();
+    $tabla = null;
 
     if ($resultArea->num_rows > 0) {
         while ($dato = $resultArea->fetch_assoc()) {
@@ -104,7 +92,7 @@ if ($tipo == "admin") {
             INNER JOIN $tabla AS areas ON areas.id = seguridad_syma.area
             LEFT JOIN responsables_secciones_syma AS rss ON rss.nomina = seguridad_syma.iniciado_por
             WHERE seguridad_syma.planta = ? AND seguridad_syma.area IN ($placeholderIdsAreas) 
-            ORDER BY seguridad_syma.id DESC LIMIT 10;");
+            ORDER BY seguridad_syma.id DESC;");
 
 
         $contenido = array_merge([$planta], $ids_areas);

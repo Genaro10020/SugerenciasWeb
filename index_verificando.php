@@ -21,7 +21,7 @@ $resultado_ead = mysqli_query($conexionEAD, $consulta_ead);
 
 if ($resultado_ead && mysqli_num_rows($resultado_ead) > 0) {
 
-    $consulta_sug = "SELECT * FROM usuarios_colocaboradores_sugerencias WHERE numero_nomina = '$user' AND password='$pass' AND (status != 'Baja' OR status IS NULL)";
+    $consulta_sug = "SELECT * FROM usuarios_colocaboradores_sugerencias WHERE numero_nomina = '$user' AND `password` = '$pass' AND (`status` != 'Baja' OR `status` IS NULL)";
     $resultado_sug = mysqli_query($conexion, $consulta_sug);
 
     if ($resultado_sug && mysqli_num_rows($resultado_sug) > 0) {
@@ -61,7 +61,7 @@ if ($resultado_ead && mysqli_num_rows($resultado_ead) > 0) {
     }
 }
 
-$consulta = "SELECT * FROM usuarios_sugerencias WHERE user = '$user' AND password='$pass'";
+$consulta = "SELECT * FROM usuarios_sugerencias WHERE user = '$user' AND `password`='$pass'";
 $resultado = mysqli_query($conexion, $consulta);
 
 if (mysqli_num_rows($resultado) > 0) {
@@ -99,7 +99,7 @@ if (mysqli_num_rows($resultado) > 0) {
         if ($user === "60083" || $user === "16299") {
             $_SESSION["esSyma"] = true;
         } else {
-            // consulta de responsable en ssyma
+            // consulta de responsable en syma
             $consultaReponsable = $conexion->prepare("SELECT * FROM `responsables_secciones_syma` WHERE nomina = ?;");
             $consultaReponsable->bind_param("i", $user);
             $consultaReponsable->execute();
