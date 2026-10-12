@@ -1169,7 +1169,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     return (hallazgo) => {
                         const usuario = Number(hallazgo.iniciado_por) === Number(this.idUsuarioActual)
                         const responsable = this.esResponsableHallazgo === true
-                        const usuarioSyma = hallazgo.iniciado_por === '60083' || hallazgo.iniciado_por === '16299'
+                        const usuarioSyma = hallazgo.iniciado_por === 60083 || hallazgo.iniciado_por === 16299
                         const syma = this.esSyma === true
                         const key = String(hallazgo.id)
                         const continuar = this.hallazgosContinuando[key] === true
@@ -1609,7 +1609,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                 ########################################*/
 
                 validar_usuario(concentrado) {
-                    const usuarioSyma = concentrado.iniciado_por === '60083' || concentrado.iniciado_por === '16299'
+                    const usuarioSyma = concentrado.iniciado_por === 60083 || concentrado.iniciado_por === 16299
                     return usuarioSyma
                 },
                 continuarProcesoSyma(id) {
