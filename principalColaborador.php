@@ -197,7 +197,7 @@ if (isset($_SESSION["usuario"]) && ($_SESSION["tipo"] == "Colaborador" || $_SESS
                         </div>
                     </div>
                 </div>
-                <?php if (isset($_SESSION['lider']) && $_SESSION['lider'] == "Si") { ?><!--Solo lideres-->
+                <?php if ((isset($_SESSION['lider']) && $_SESSION['lider'] == "Si") || $_SESSION["tipo"] == "Supervisor") { ?><!--Solo lideres y supervisores-->
                     <div class="col-6 col-lg-4 d-flex align-items-center justify-content-center">
                         <div id="opciones" style="width: 18rem;" class=" d-flex align-items-center justify-content-center ">
                             <div class="row text-center mb-2 d-flex justify-content-center align-items-center">
