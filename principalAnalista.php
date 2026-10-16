@@ -413,7 +413,7 @@ $incrementar=1;
                                                                                         <td>
                                                                                             <select v-if="id_actualizar==index+1" class="inputs-concentrado" v-model="responsable_plan" >
                                                                                                 <option value="" disabled>Seleccione responsable..</option>
-                                                                                                <option v-for="responsable in lista_responsable_plan" :key="responsable.nombre" :value="responsable">{{responsable.nombre}}</option>
+                                                                                                <option v-for="responsable in lista_responsable_plan" :key="responsable.nombre" :value="responsable.nombre">{{responsable.nombre}}</option>
                                                                                             </select>
                                                                                             <label v-else>{{actividades.responsable}}<label>
                                                                                         </td>
