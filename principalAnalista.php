@@ -179,7 +179,7 @@ $incrementar=1;
                                                             <button v-show="concentrado.dias_restantes>7" type="button" class="btn btn-warning ms-2" style="font-size: 1em; " data-bs-toggle="modal" data-bs-target="#modal"  title="En tiempo" @click="datos_modal_factibilidad('En Implementación',concentrado.id,concentrado.folio,concentrado.numero_nomina, concentrado.status,concentrado.respuesta_analista,concentrado.check_mc,concentrado.validacion_de_impacto)"><i class="bi bi-pencil"></i></i> {{concentrado.status}} </button>
                                                             <button v-show="concentrado.dias_restantes>=0 && concentrado.dias_restantes<=7 " type="button" class="btn ms-2"  style="font-size: 1em; background-color: #fd7e14; border: 1px solid" data-bs-toggle="modal" data-bs-target="#modal"  title="Por Vencer" @click="datos_modal_factibilidad('En Implementación',concentrado.id,concentrado.folio,concentrado.numero_nomina, concentrado.status,concentrado.respuesta_analista,concentrado.check_mc,concentrado.validacion_de_impacto)"><i class="bi bi-pencil"></i></i> {{concentrado.status}} </button>
                                                             <button v-show="concentrado.dias_restantes<0"  type="button" class="btn btn-danger ms-2" style="font-size: 1em;" data-bs-toggle="modal" data-bs-target="#modal"  title="Vencida" @click="datos_modal_factibilidad('En Implementación',concentrado.id,concentrado.folio,concentrado.numero_nomina, concentrado.status,concentrado.respuesta_analista,concentrado.check_mc,concentrado.validacion_de_impacto)"><i class="bi bi-pencil"></i></i> {{concentrado.status}} </button>
-                                                            
+
                                                             <button type="button" class="btn btn-sm btn-success ms-2" data-bs-toggle="modal" data-bs-target="#modalAltaUsuario" title="Dar de alta nuevo responsable">
                                                                 <i class="bi bi-person-plus-fill"></i>
                                                             </button>
@@ -415,10 +415,15 @@ $incrementar=1;
                                                                                         </td>
                                                                                         
                                                                                         <td>
-                                                                                            <select v-if="id_actualizar==index+1" class="inputs-concentrado" v-model="responsable_plan" >
-                                                                                                <option value="" disabled>Seleccione responsable..</option>
-                                                                                                <option v-for="responsable in lista_responsable_plan" :key="responsable.nombre" :value="responsable.nombre">{{responsable.nombre}}</option>
-                                                                                            </select>
+                                                                                            <div v-if="id_actualizar==index+1" class="d-flex align-items-center gap-1">
+                                                                                                <select class="inputs-concentrado m-0" v-model="responsable_plan" style="flex-grow: 1;">
+                                                                                                    <option value="" disabled>Seleccione responsable..</option>
+                                                                                                    <option v-for="responsable in lista_responsable_plan" :key="responsable.nombre" :value="responsable.nombre">{{responsable.nombre}}</option>
+                                                                                                </select>
+                                                                                                <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#modalAltaUsuario" title="Dar de alta nuevo responsable">
+                                                                                                    <i class="bi bi-person-plus-fill"></i>
+                                                                                                </button>
+                                                                                            </div>
                                                                                             <label v-else>{{actividades.responsable}}<label>
                                                                                         </td>
                                                                                         <td><input v-if="id_actualizar==index+1" class="inputs-concentrado" v-model="fecha_inicial_actividad" type="date" ></input><label v-else>{{actividades.fecha_inicial}}<label></td>
