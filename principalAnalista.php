@@ -893,7 +893,7 @@ $incrementar=1;
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content" style="border-radius: 12px; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
                                     <div class="modal-header" style="background-color: #f8f9fa; border-bottom: 2px solid #b50000; border-radius: 12px 12px 0 0;">
-                                        <h5 class="modal-title fw-bold" id="modalAltaUsuarioLabel" style="color: #b50000;">ALTA DE ADMIN/ANALISTAS</h5>
+                                        <h5 class="modal-title fw-bold" id="modalAltaUsuarioLabel" style="color: #b50000;">ALTA DE RESPONSABLES</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body p-4 text-start">
