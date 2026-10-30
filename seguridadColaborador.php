@@ -332,7 +332,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                 <tr>
                                     <th scope="col" class="py-3 ps-3 text-center align-middle" style="width: 50px;">#</th>
                                     <th scope="col" class="py-3 text-center align-middle">Identificador & Fecha</th>
-                                    <th scope="col" class="py-3 text-center align-middle">Colaborador</th>
+                                    <th scope="col" class="py-3 text-center align-middle" hidden>Colaborador</th>
                                     <th scope="col" class="py-3 text-center align-middle">Tipo y Descripción</th>
                                     <th scope="col" class="py-3 text-center align-middle">Ubicación (Planta / Área)</th>
                                     <th scope="col" class="py-3 text-center align-middle">Evidencia</th>
@@ -359,7 +359,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                                                     class="bi bi-calendar3 me-1"></i>{{ concentrado.fecha_hallazgo }}</span>
                                         </div>
                                     </td>
-                                    <td>
+                                    <td hidden>
                                         <div class="fw-semibold text-dark mb-1" style="font-size: 0.9rem; line-height: 1.2;">{{
                                             concentrado.colaborador }}</div>
                                         <span class="text-muted font-monospace" style="font-size: 0.75rem;"><i
