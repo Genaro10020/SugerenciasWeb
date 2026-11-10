@@ -13,8 +13,10 @@ $impacto_secundario=$variables['impacto_secundario'];
 $tipo_desperdicio=$variables['tipo_desperdicio'];
 $objetivos_de_calidadMA = $variables['objetivos_de_calidadMA'];
 $objetivo_de_calidadMA_cadena=implode(',', $objetivos_de_calidadMA);
-
+$analista_de_factibilidad= $_SESSION['nombre'];
 $numero_nomina = $variables['numero_nomina'];
+
+$correo_enviado = false;
 $folio = $variables['folio'];
 $tipo_impacto= $variables['tipo_impacto'];
 //formulario Cuantitativo
@@ -38,16 +40,87 @@ if($check=="Pendiente" || $check=="" || $check==" "){
 }else{
         $check = "Pendiente";
 }
+
 include "conexionGhoner.php";
+                $mail = false;
+                $actualizar1 = "UPDATE plan_trabajo_sugerencias SET enviado_o_no='$enviado_o_no' WHERE id_concentrado = '$id_concentrado'";
+                $query1 = mysqli_query( $conexion, $actualizar1);
+                $consulta1=$query1;
 
-        $actualizar1 = "UPDATE plan_trabajo_sugerencias SET enviado_o_no='$enviado_o_no' WHERE id_concentrado = '$id_concentrado'";
-        $query1 = mysqli_query( $conexion, $actualizar1);
-        $consulta1=$query1;
+                $actualizar2 = "UPDATE concentrado_sugerencias SET impacto_primario = '$impacto_primario', impacto_secundario = '$impacto_secundario', tipo_de_desperdicio = '$tipo_desperdicio', objetivo_de_calidad_ma = '$objetivo_de_calidadMA_cadena', check_mc='$check' WHERE id = '$id_concentrado'";
+                $query2 = mysqli_query( $conexion, $actualizar2);
+                $consulta2=$query2;
 
-        $actualizar2 = "UPDATE concentrado_sugerencias SET impacto_primario = '$impacto_primario', impacto_secundario = '$impacto_secundario', tipo_de_desperdicio = '$tipo_desperdicio', objetivo_de_calidad_ma = '$objetivo_de_calidadMA_cadena', check_mc='$check' WHERE id = '$id_concentrado'";
-        $query2 = mysqli_query( $conexion, $actualizar2);
-        $consulta2=$query2;
+                
+         if($query1==true){
+            //$resultado="actualizada";
+                        if ($check == "Pendiente") {
+                                $accion_recomendada = "Favor de revisar el plan de trabajo.";
+                                $info = "Sugerencia de Mejora - Revisar Plan de Trabajo";
+                                $status= "Nuevo";
+                        } else if ($check == "Corregido") {
+                                $accion_recomendada = "Verificar los cambios realizados en el plan de trabajo.";
+                                $info = "Sugerencia de Mejora - Se corrigio el plan de trabajo";
+                                $status= "Corregido";
+                        } else {
+                                $accion_recomendada = "El estatus de su sugerencia ha sido actualizado.";
+                                $info = "Sugerencia de Mejora - Actualización de Plan de Trabajo";
+                                $status= "Desconocido";
+                        }
+                // Destinatario principal
+                $para = 'agonzalezd@enerya.com';
+                // Título
+                $título = $info;
+                // Mensaje
+                $mensaje = '
+                <html>
+                <head>
+                        <title>Datos del plan de trabajo</title>
+                </head>
+                <body>
+                        <p>¡Revisar plan de trabajo!</p>
+                        <table>
+                        <tr>
+                                <td>Ruta del sistema:</td>
+                                <td>https://vvnorth.com/Sugerencia/</td>
+                        </tr>
+                        <tr>
+                                <th colspan="2">Información del plan de trabajo:</th>
+                        </tr>
+                        <tr>
+                                <td>Estatus:</td>
+                                <td>'.$status.'</td>
+                        </tr>
+                        <tr>
+                                <td>Analista:</td>
+                                <td>'.$analista_de_factibilidad.'</td>
+                        </tr>
+                        <tr>
+                                <td>Folio:</td>
+                                <td>'.$folio.'</td>
+                        </tr>
+                        <tr>
+                                <td>Acción:</td>
+                                <td>'.$accion_recomendada.'</td>
+                        </tr>
+                        </table>
+                </body>
+                </html>';
+                // Cabeceras
+                $cabeceras  = "MIME-Version: 1.0\r\n";
+                $cabeceras .= "Content-Type: text/html; charset=UTF-8\r\n";
+                $cabeceras .= "From: Sugerencias <iscgenarovp@gmail.com>\r\n";
+                $cabeceras .= "Cc: gvillanuevap@enerya.com\r\n";
 
+                // Enviar correo
+                $mail = mail($para, $título, $mensaje, $cabeceras);
+
+                if ($mail) {
+                        error_log("correcto");
+                } else {
+                        error_log("El envío de correo falló.");
+                }
+        }
         if($tipo_impacto=="Cuantitativo"){
                 $consulta = "SELECT * FROM impacto_cuantitativo_sugerencias WHERE id_concentrado = '$id_concentrado'";
                 $query = mysqli_query( $conexion, $consulta);
@@ -90,6 +163,6 @@ include "conexionGhoner.php";
 
         }
 
-        $resultado = [$check,$consulta1,$consulta2,$consulta3,$consulta4];
+        $resultado = [$check,$consulta1,$consulta2,$consulta3,$consulta4,$correo_enviado,$analista_de_factibilidad, $para,$mail];
 echo json_encode($resultado);
 ?>

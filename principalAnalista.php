@@ -1,6 +1,7 @@
 <?php
 session_start();
 if ($_SESSION["usuario"]){
+    print_r($_SESSION);
 $incrementar=1;
 ?>
 <!DOCTYPE html>
