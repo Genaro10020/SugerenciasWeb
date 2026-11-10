@@ -85,7 +85,7 @@ include "conexionGhoner.php";
                                 <td>https://vvnorth.com/Sugerencia/</td>
                         </tr>
                         <tr>
-                                <th colspan="2">Información del plan de trabajo:</th>
+                                <th colspan="4">Información del plan de trabajo:</th>
                         </tr>
                         <tr>
                                 <td>Estatus:</td>

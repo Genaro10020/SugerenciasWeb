@@ -3266,22 +3266,29 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                     console.log(error)
                 })
             },
-    actualizarVoBoPlan(aceptado_rechazado){
-            axios.post('actualizar_vobo_plan.php',{
-                id_concentrado:this.id_concentrado,
-                aceptado_rechazado:aceptado_rechazado,
-                status:this.status
-            }).then(response =>{
-                console.log(response.data)
-                if(response.data==true){
+        actualizarVoBoPlan(aceptado_rechazado) {
+            axios.post('actualizar_vobo_plan.php', {
+                id_concentrado: this.id_concentrado,
+                aceptado_rechazado: aceptado_rechazado,
+                status: this.status
+            }).then(response => {
+                console.log("Respuesta PHP:", response.data);
+
+                if (response.data.success === true) {
                     this.verTodo();
-                   // this.acomodarSugerencias();
-                }else{
-                    alert("Problemas para actualizar.")
+                } else {
+                    alert("Problemas para actualizar: " + response.data.error);
                 }
             }).catch(error => {
-                console.log(error)
-            })
+                console.log("Error:", error);
+
+                if (error.response) {
+                    console.log("Respuesta del servidor:", error.response.data);
+                    alert("Error: " + (error.response.data.error || "No se pudo actualizar."));
+                } else {
+                    alert("Error de conexión con el servidor.");
+                }
+            });
     },
     mensajeAlNueveNueve(){
         alert("El %cumplimiento debe de estar al 99% para que se active. ")
