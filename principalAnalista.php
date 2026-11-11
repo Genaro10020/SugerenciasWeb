@@ -1,7 +1,6 @@
 <?php
 session_start();
 if ($_SESSION["usuario"]){
-    print_r($_SESSION);
 $incrementar=1;
 ?>
 <!DOCTYPE html>
@@ -108,7 +107,7 @@ $incrementar=1;
                                                     <th scope="col">Fecha de Inicio </th>
                                                     <th scope="col">Fecha Limite </th>
                                                     <th scope="col">Status de Factibilidad</th>
-                                                    <th scope="col">Status Plan de Trabajo</th>
+                                                    <!--<th scope="col">Status Plan de Trabajo</th>-->
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -135,9 +134,9 @@ $incrementar=1;
                                                             <button v-if="concentrado.status_factibilidad=='Pendiente'" type="button" class="btn btn-warning" style=" font-size: 1em" title="Factible o No Factible" data-bs-toggle="modal" data-bs-target="#modal" @click="datos_modal_factibilidad('factibilidad',concentrado.id,concentrado.folio,concentrado.numero_nomina, concentrado.status,concentrado.respuesta_analista,concentrado.check_mc,concentrado.validacion_de_impacto)"><i class="bi bi-eye"></i> {{concentrado.status}} </button>
                                                             <button v-else="concentrado.status_factibilidad=='Vencida'" type="button" class="btn btn-danger" style=" font-size: 1em" title="Factible o No Factible" data-bs-toggle="modal" data-bs-target="#modal" @click="datos_modal_factibilidad('factibilidad',concentrado.id,concentrado.folio,concentrado.numero_nomina, concentrado.status,concentrado.respuesta_analista,concentrado.check_mc,concentrado.validacion_de_impacto)"><i class="bi bi-eye"></i> {{concentrado.status}} </button>
                                                         </td>
-                                                        <td>
-                                                            <label> {{concentrado.check_mc}}</label>
-                                                        </td>
+                                                        <!--<td class="text-center">
+                                                           <span v-if="concentrado.check_mc == 'Pendiente'" class="badge bg-info text-white" style="font-size:10px;">Esta sindo revisado por Mejora Continua.</span>
+                                                        </td>-->
                                                     </tr>
                                                 </tbody>
                                                 </table>
@@ -166,7 +165,7 @@ $incrementar=1;
                                                             {{concentrado.nombre_sugerencia}}
                                                             <br>
                                                             <span v-show="concentrado.status_PPT == 'Rechazado' && concentrado.cumplimiento == 99" class="badge bg-warning text-dark" style="font-size:10px;">Rechazado por Mejora Continua</span>
-                                                            <span v-show="concentrado.status_PPT == 'Por Validar' && concentrado.cumplimiento == 99" class="badge bg-primary text-white" style="font-size:10px;">Pendiente a Validar por Mejora Continua</span>
+                                                            <span v-show="concentrado.status_PPT == 'Por Validar' && concentrado.cumplimiento == 99" class="badge bg-primary text-white" style="font-size:10px;">Pendiente a validar documento por Mejora Continua</span>
                                                             <span v-show="concentrado.status_PPT == 'Corregido' && concentrado.cumplimiento == 99" class="badge bg-primary text-white" style="font-size:10px;">Documento Corregido. Pendiente por Aceptar</span>
                                                             <span v-show="concentrado.status_PPT == 'Eliminado' && concentrado.cantidadPPT == '0' && concentrado.cumplimiento == 99" class="badge bg-secondary text-white" style="font-size:10px;">El administrador eliminó los documentos</span>
                                                         </td>
@@ -179,7 +178,10 @@ $incrementar=1;
                                                         <!--Amarillo-->
                                                             <button v-show="concentrado.dias_restantes>7" type="button" class="btn btn-warning ms-2" style="font-size: 1em; " data-bs-toggle="modal" data-bs-target="#modal"  title="En tiempo" @click="datos_modal_factibilidad('En Implementación',concentrado.id,concentrado.folio,concentrado.numero_nomina, concentrado.status,concentrado.respuesta_analista,concentrado.check_mc,concentrado.validacion_de_impacto)"><i class="bi bi-pencil"></i></i> {{concentrado.status}} </button>
                                                             <button v-show="concentrado.dias_restantes>=0 && concentrado.dias_restantes<=7 " type="button" class="btn ms-2"  style="font-size: 1em; background-color: #fd7e14; border: 1px solid" data-bs-toggle="modal" data-bs-target="#modal"  title="Por Vencer" @click="datos_modal_factibilidad('En Implementación',concentrado.id,concentrado.folio,concentrado.numero_nomina, concentrado.status,concentrado.respuesta_analista,concentrado.check_mc,concentrado.validacion_de_impacto)"><i class="bi bi-pencil"></i></i> {{concentrado.status}} </button>
-                                                            <button v-show="concentrado.dias_restantes<0"  type="button" class="btn btn-danger ms-2" style="font-size: 1em;" data-bs-toggle="modal" data-bs-target="#modal"  title="Vencida" @click="datos_modal_factibilidad('En Implementación',concentrado.id,concentrado.folio,concentrado.numero_nomina, concentrado.status,concentrado.respuesta_analista,concentrado.check_mc,concentrado.validacion_de_impacto)"><i class="bi bi-pencil"></i></i> {{concentrado.status}} </button>                                                            
+                                                            <button v-show="concentrado.dias_restantes<0"  type="button" class="btn btn-danger ms-2" style="font-size: 1em;" data-bs-toggle="modal" data-bs-target="#modal"  title="Vencida" @click="datos_modal_factibilidad('En Implementación',concentrado.id,concentrado.folio,concentrado.numero_nomina, concentrado.status,concentrado.respuesta_analista,concentrado.check_mc,concentrado.validacion_de_impacto)"><i class="bi bi-pencil"></i></i> {{concentrado.status}} </button>   <br>  
+                                                            <span v-show="concentrado.check_mc == 'Pendiente'" class="badge bg-warning" style="font-size:10px;color:black">Mejora Continua esta revisando su plan de trabajo</span>  
+                                                            <span v-show="concentrado.check_mc == 'Rechazado'" class="badge bg-danger text-white" style="font-size:10px;">Su plan de trabajo fue rechazo</span> 
+                                                            <span v-show="concentrado.check_mc == 'Corregido'" class="badge bg-primary text-white" style="font-size:10px;">Sus correcciones estan siendo revisadas</span>                                                       
                                                         </td>
                                                         <td class="text-center " style="vertical-align:middle" >
                                                             <label class=" my-around "><b>{{concentrado.dias_restantes}}</b></label>
@@ -459,7 +461,7 @@ $incrementar=1;
                                                                                                                      numero_actividad>0 && bandera_btn_finalizar!='mostrar' && check_mc=='Corregido'">
                                                                                                                      Su plan de trabajo esta siendo revisado por Mejora Continua.</div>
                                                                     <div class="alert alert-danger fw-bold"  v-if="numero_actividad>0 && bandera_btn_finalizar!='mostrar' && check_mc=='Rechazado'">
-                                                                                                                     Su plan fue rechazado por Mejora Continua.</div>
+                                                                                                                     Su plan fue rechazado por Mejora Continua, favor de editar su plan de trabajo y reenvie para su revisión.</div>
                                                                     <div class="alert alert-success fw-bold"  v-if="numero_actividad>0 && bandera_btn_finalizar!='mostrar' && check_mc=='Aceptado'">
                                                                                                                     Su plan fue aceptado, favor de ejecutar en tiempo y forma.</div>                                                    
                                                                 </div> <!--Fin espacio de Plana de trabajo -->  

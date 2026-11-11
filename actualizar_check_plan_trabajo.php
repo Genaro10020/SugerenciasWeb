@@ -1,5 +1,7 @@
 <?php
 session_start();
+ini_set('display_errors', 0);
+error_reporting(E_ALL);
 header("Content-Type: application/json");
 $variables = json_decode(file_get_contents('php://input'), true);
 $resultado=[];
@@ -43,11 +45,33 @@ if($check=="Pendiente" || $check=="" || $check==" "){
 
 include "conexionGhoner.php";
                 $mail = false;
+
+
+                $selecto = "SELECT * FROM concentrado_sugerencias WHERE id = '$id_concentrado'";
+                $query0 = mysqli_query( $conexion, $selecto);
+
+                while ($fila = mysqli_fetch_array($query0)) {
+                        $estatus_actual= $fila['status'];
+                }
+
+                if($estatus_actual == "En Factibilidad"){
+                        $actualizar = "UPDATE concentrado_sugerencias SET fecha_factibilidad = NOW() WHERE id = '$id_concentrado'";
+                        $query = mysqli_query( $conexion, $actualizar);
+                        $resultado = $query;
+                }
+
                 $actualizar1 = "UPDATE plan_trabajo_sugerencias SET enviado_o_no='$enviado_o_no' WHERE id_concentrado = '$id_concentrado'";
                 $query1 = mysqli_query( $conexion, $actualizar1);
                 $consulta1=$query1;
 
-                $actualizar2 = "UPDATE concentrado_sugerencias SET impacto_primario = '$impacto_primario', impacto_secundario = '$impacto_secundario', tipo_de_desperdicio = '$tipo_desperdicio', objetivo_de_calidad_ma = '$objetivo_de_calidadMA_cadena', check_mc='$check' WHERE id = '$id_concentrado'";
+                $actualizar2 = "UPDATE concentrado_sugerencias SET 
+                status = 'En Implementación',
+                impacto_primario = '$impacto_primario', 
+                impacto_secundario = '$impacto_secundario', 
+                tipo_de_desperdicio = '$tipo_desperdicio', 
+                objetivo_de_calidad_ma = '$objetivo_de_calidadMA_cadena', 
+                check_mc='$check' 
+                WHERE id = '$id_concentrado'";
                 $query2 = mysqli_query( $conexion, $actualizar2);
                 $consulta2=$query2;
 

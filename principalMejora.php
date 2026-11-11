@@ -360,10 +360,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                     '' }">
                                     <th scope="row" class="text-center">{{(arregloPosicionPagina*cantidad_p_pagina)+(index+1)}}</th>
                                     <td>
-                                        <button  v-show="concentrado.check_mc=='Pendiente' && concentrado.status!='Cerrada/Fast Response'  && concentrado.status!='Cerrada/No Factible'" class="btn btn-secondary" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalTablaPlan" @click="consultarActividades(concentrado.id,concentrado.status),datosSugerencia(concentrado.id)"><i class="bi bi-table" ></i> {{concentrado.check_mc}}</button>
-                                        <button  v-show="concentrado.check_mc=='Rechazado' && concentrado.status!='Cerrada/Fast Response'  && concentrado.status!='Cerrada/No Factible'" class="btn btn-danger" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalTablaPlan" @click="consultarActividades(concentrado.id,concentrado.status),datosSugerencia(concentrado.id)"><i class="bi bi-table" ></i> {{concentrado.check_mc}}</button>
-                                        <button  v-show="concentrado.check_mc=='Corregido' && concentrado.status!='Cerrada/Fast Response'  && concentrado.status!='Cerrada/No Factible'" class="btn btn-warning" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalTablaPlan" @click="consultarActividades(concentrado.id,concentrado.status),datosSugerencia(concentrado.id)"><i class="bi bi-table"  ></i> {{concentrado.check_mc}}</button>
-                                        <button  v-show="concentrado.check_mc=='Aceptado' && concentrado.status!='Cerrada/Fast Response' && concentrado.status!='Cerrada/No Factible'" class="btn btn-success" style="font-size:.9em" data-bs-toggle="modal" data-bs-target="#modalTablaPlan" @click="consultarActividades(concentrado.id,concentrado.status),datosSugerencia(concentrado.id)"><i class="bi bi-table" ></i> {{concentrado.check_mc}}</button>
+                                        <button  v-show="concentrado.check_mc=='Pendiente' && concentrado.status!='Cerrada/Fast Response'  && concentrado.status!='Cerrada/No Factible'" class="btn btn-secondary" style="font-size:.9em"  @click="inicializandoModal(),consultarActividades(concentrado.id,concentrado.status),datosSugerencia(concentrado.id)"><i class="bi bi-table" ></i> {{concentrado.check_mc}}</button>
+                                        <button  v-show="concentrado.check_mc=='Rechazado' && concentrado.status!='Cerrada/Fast Response'  && concentrado.status!='Cerrada/No Factible'" class="btn btn-danger" style="font-size:.9em" @click="inicializandoModal(),consultarActividades(concentrado.id,concentrado.status),datosSugerencia(concentrado.id)"><i class="bi bi-table" ></i> {{concentrado.check_mc}}</button>
+                                        <button  v-show="concentrado.check_mc=='Corregido' && concentrado.status!='Cerrada/Fast Response'  && concentrado.status!='Cerrada/No Factible'" class="btn btn-warning" style="font-size:.9em" @click="inicializandoModal(),consultarActividades(concentrado.id,concentrado.status),datosSugerencia(concentrado.id)"><i class="bi bi-table"  ></i> {{concentrado.check_mc}}</button>
+                                        <button  v-show="concentrado.check_mc=='Aceptado' && concentrado.status!='Cerrada/Fast Response' && concentrado.status!='Cerrada/No Factible'" class="btn btn-success" style="font-size:.9em" @click="inicializandoModal(),consultarActividades(concentrado.id,concentrado.status),datosSugerencia(concentrado.id)"><i class="bi bi-table" ></i> {{concentrado.check_mc}}</button>
                                     </td>
                                         <td>{{concentrado.folio}}</td> <!--FOLIO-->
                                         <td>
@@ -475,9 +475,9 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                         <th scope="row">
                                                             <label>{{numero_orden_en_select=index+1}}</label>
                                                         </th>
-                                                        <td>    
+                                                        <td class="text-start">    
                                                             <label>{{actividades.actividad}}<label></td>
-                                                        <td>
+                                                        <td class="text-start">
                                                             <label>{{actividades.responsable}}<label>
                                                         </td>
                                                         <td><label>{{actividades.fecha_inicial}}<label></td>
@@ -500,16 +500,31 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                                                             </div>
                                                             
                                                         </td>
+                                                        <td colspan ="6" class="text-center">
+                                                            <button v-show="actividades.porcentaje != 100" type="button" class="btn btn-primary" @click="actualizarActividad(actividades.id,actividades.actividad,actividades.responsable,actividades.fecha_inicial,actividades.fecha_final,actividades.porcentaje)" data-bs-toggle="modal" data-bs-target="#modalActualizarActividad"><i class="bi bi-pencil-square"></i></button>
+
+                                                        </td>
                                                     </tr><!--Fin consuta actividades-->    
                                                 </tbody>
                                             </table>
                                         </div><!--scroll-->
+                                       <div>
+                                            <textarea
+                                                class="form-control form-control-sm my-2"
+                                                style="font-size: 0.9em; min-height: 100px;"
+                                                v-model="motivo_rechazo_plan"
+                                                :placeholder="!datos_sugerencia.motivo_rechazo_plan 
+                                                    ? 'Si va a rechazar el plan coloque aquí, el motivo del rechazo.' 
+                                                    : ''"
+                                                :disabled="!!datos_sugerencia.motivo_rechazo_plan">
+                                            </textarea>
+                                        </div>
                                         <div class="d-flex justify-content-around">
                                             <div>
-                                                    <button type="button" class="btn btn-success" @click="actualizarVoBoPlan('Aceptado')" data-bs-dismiss="modal">Aceptado</button> <!--v-show ="datos_sugerencia.check_mc!='Aceptado'"-->
+                                                <button type="button" class="btn btn-success" @click="actualizarVoBoPlan('Aceptado')">Aceptado</button> <!--v-show ="datos_sugerencia.check_mc!='Aceptado'"-->
                                             </div>
                                             <div>
-                                                    <button  type="button" class="btn btn-danger" @click="actualizarVoBoPlan('Rechazado')" data-bs-dismiss="modal">Rechazado</button><!--v-show ="datos_sugerencia.check_mc!='Aceptado'"-->
+                                                <button  type="button" class="btn btn-danger" @click="actualizarVoBoPlan('Rechazado')">Rechazado</button><!--v-show ="datos_sugerencia.check_mc!='Aceptado'"-->
                                             </div>
                                         </div>
                                     </div>
@@ -2789,6 +2804,8 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 id_colaborador:'',
                 selector_planta_colaborador:'',
                 selector_baja_colaborador:'',
+                motivo_rechazo_plan:'',
+                modalTablaPlan:'',
                 //*Variables Planes de Trabajo*/
                 loanding:true,
                 arregloPlanesDeTrabajo:[],
@@ -3059,11 +3076,17 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
     },
 
        /*METODOS PRINCIPAL MEJORA*/      
+    inicializandoModal(){
+         this.modalTablaPlan = new bootstrap.Modal(document.getElementById("modalTablaPlan"),);
+    },
+
     datosSugerencia(id){
         axios.post("cunsultar_datos_sugerencia.php",{
         id_concentrado:id
         }).then(response =>{
+            this.modalTablaPlan.show();
             console.log(this.datos_sugerencia = response.data)
+            this.motivo_rechazo_plan = response.data.motivo_rechazo_plan
         }).catch(error => {
             console.log(error)
         })
@@ -3267,14 +3290,21 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"]=="Admin"){
                 })
             },
         actualizarVoBoPlan(aceptado_rechazado) {
+            if (aceptado_rechazado === 'Rechazado' && this.motivo_rechazo_plan.trim() === '') {
+                alert("Por favor, ingrese un motivo de rechazo antes de continuar.");
+                return;
+            }
             axios.post('actualizar_vobo_plan.php', {
                 id_concentrado: this.id_concentrado,
                 aceptado_rechazado: aceptado_rechazado,
-                status: this.status
+                status: this.status,
+                motivo_rechazo_plan: this.motivo_rechazo_plan
             }).then(response => {
-                console.log("Respuesta PHP:", response.data);
-
+                  console.log("Actualización correcta:", response.data.message);
+                  console.log("Correo:", response.data.correo);
                 if (response.data.success === true) {
+                     alert("Correcto: " + response.data.message);
+                    this.modalTablaPlan.hide();
                     this.verTodo();
                 } else {
                     alert("Problemas para actualizar: " + response.data.error);

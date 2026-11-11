@@ -4,37 +4,32 @@ session_start();
 header("Content-Type: application/json; charset=UTF-8");
 
 ini_set('display_errors', 0);
-ini_set('log_errors', 1);
 error_reporting(E_ALL);
-mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
 try {
     $variables = json_decode(file_get_contents('php://input'), true);
     if (!$variables) throw new Exception("JSON inválido o vacío.");
 
-    $id_concentrado = $variables['id_concentrado'] ?? null;
-    $check = $variables['aceptado_rechazado'] ?? null;
-    $status = $variables['status'] ?? null;
+        $id_concentrado = $variables['id_concentrado'] ?? null;
+        $check = $variables['aceptado_rechazado'] ?? null;
+        $status = $variables['status'] ?? null;
+        $motivo_rechazo_plan = $variables['motivo_rechazo_plan'] ?? null;
 
+        $motivo_rechazo_plan = ($check == "Rechazado")
+        ? trim($motivo_rechazo_plan ?? "")
+        : "";
+
+   
     if (!$id_concentrado || !$check || !$status) throw new Exception("Faltan parámetros.");
 
     include "conexionGhoner.php";
 
     $nuevo_status = null;
-
-        if ($status != "Implementada" && $check == "Aceptado") {
-                $nuevo_status = "En Implementación";
-        } elseif ($status != "En Implementación" && $status != "Implementada" && $check == "Rechazado") {
-                $nuevo_status = "En Factibilidad";
-        } elseif (($status == "En Implementación" || $status == "Implementada") && $check == "Rechazado") {
-                $nuevo_status = $status;
-        } else {
-                throw new Exception("No existe una regla de actualización para estos datos.");
-        }
-
-                $sql = "UPDATE concentrado_sugerencias SET status = ?, check_mc = ? WHERE id = ?";
+    $nuevo_status = "En Implementación";
+    
+                $sql = "UPDATE concentrado_sugerencias SET status = ?, check_mc = ?, motivo_rechazo_plan = ? WHERE id = ?";
                 $stmt = $conexion->prepare($sql);
-                $stmt->bind_param("ssi", $nuevo_status, $check, $id_concentrado);
+                $stmt->bind_param("sssi", $nuevo_status, $check, $motivo_rechazo_plan, $id_concentrado);
                 $stmt->execute();
 
                         $sql = "SELECT nombre_sugerencia, folio, analista_de_factibilidad FROM concentrado_sugerencias WHERE id = ?";
@@ -80,6 +75,7 @@ try {
                                 <tr><td>Folio:</td><td>' . htmlspecialchars($folio, ENT_QUOTES, 'UTF-8') . '</td></tr>
                                 <tr><td>Acción:</td><td>' . htmlspecialchars($accion_recomendada, ENT_QUOTES, 'UTF-8') . '</td></tr>
                                 <tr><td>Nombre de la sugerencia:</td><td>' . htmlspecialchars($nombre_sugerencia, ENT_QUOTES, 'UTF-8') . '</td></tr>
+                                <tr><td>Motivo de rechazo:</td><td>' . htmlspecialchars($motivo_rechazo_plan, ENT_QUOTES, 'UTF-8') . '</td></tr>
                                 </table></body></html>';
 
                                 $cabeceras = "MIME-Version: 1.0\r\n";
@@ -88,14 +84,19 @@ try {
                                 $cabeceras .= "Cc: agonzalezd@enerya.com, gvillanuevap@enerya.com\r\n";
 
                                 $mail = mail($email, $titulo, $mensaje, $cabeceras);
-
-                                if (!$mail) throw new Exception("Se actualizó el registro, pero falló el envío del correo.");
+                                if (!$mail) {
+                                         error_log("No se pudo enviar el correo a: " . $email);
+                                 $mensaje_correo = "Registro actualizado, pero no se pudo enviar el correo.";
+                                } else {
+                                        $mensaje_correo = "Correo enviado correctamente.";
+                                }
 
                                 echo json_encode([
-                                        "success" => true,
-                                        "message" => "Registro actualizado y correo enviado correctamente.",
-                                        "status" => $nuevo_status
-                        ]);
+                                                "success" => true,
+                                                "message" => "Registro actualizado correctamente.",
+                                                "status" => $nuevo_status,
+                                                "correo" => $mensaje_correo
+                                                ]);
 
         } catch (mysqli_sql_exception $e) {
                 error_log("Error MySQL: " . $e->getMessage());
