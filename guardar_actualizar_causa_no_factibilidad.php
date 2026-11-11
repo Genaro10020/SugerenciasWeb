@@ -18,7 +18,7 @@ include "conexionGhoner.php";
             $resultados[0] = "correcto";
 
             if($no_factible==true){
-                $analista_de_factibilidad = $_SESSION["usuario"];
+                $analista_de_factibilidad = $_SESSION["nombre"];
                 $planta = $_SESSION["planta"];
 
                 $consulta = "SELECT * FROM usuarios_sugerencias WHERE planta = '$planta' && tipo = 'Gerente'";
@@ -31,9 +31,9 @@ include "conexionGhoner.php";
                         // Varios destinatarios
                         //$para  = $email . ', gvillanuevap@enerya.com'; // atención a la coma
                         if (preg_match("/prueba/i", $folio)) {
-                            $para = 'gvillanuevap@enerya.com,practicantexpo@enerya.com';
+                            $para = 'agonzalezd@enerya.com,gvillanuevap@enerya.com';
                         } else {
-                            $para = $email . ', gvillanuevap@enerya.com';;
+                            $para = $email . ',agonzalezd@enerya.com,gvillanuevap@enerya.com';
                         }
                         
                         // título
