@@ -2079,93 +2079,87 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
       var texto = document.getElementById("nombre_colaborador").value;
       this.nombre_colaborador = texto.toUpperCase();
     },
-   
-guardarNuevoColaborador() {
-    if (
-        this.nombre_colaborador == "" ||
-        this.nomina_colaborador == "" ||
-        this.planta_colaborador == ""
-    ) {
-        Swal.fire({
-            icon: "warning",
-            title: "Campos incompletos",
-            text: "Todos los campos son requeridos.",
-            confirmButtonText: "Entendido",
-            confirmButtonColor: "#3085d6"
-        });
-        return;
-    }
-
-    // Mostrar indicador de carga
-    Swal.fire({
-        title: "Guardando colaborador...",
-        text: "Por favor espera un momento.",
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-        didOpen: () => {
-            Swal.showLoading();
-        }
-    });
-
-        axios.post("guardar_nuevo_colaborador.php", {
-            nombre: this.nombre_colaborador,
-            nomina: this.nomina_colaborador,
-            planta: this.planta_colaborador,
-        })
-        .then((response) => {
-
-            if (response.data == true) {
-                this.nombre_colaborador = "";
-                this.nomina_colaborador = "";
-                this.planta_colaborador = "";
-
-                this.myModal.hide();
-                this.consultar_colaboradores();
-
-                Swal.fire({
-                    icon: "success",
-                    title: "¡Colaborador registrado!",
-                    text: "El colaborador se guardó correctamente.",
-                    confirmButtonText: "Aceptar",
-                    confirmButtonColor: "#198754"
+ 
+    
+        guardarNuevoColaborador() {
+            if (
+                this.nombre_colaborador == "" ||
+                this.nomina_colaborador == "" ||
+                this.planta_colaborador == ""
+            ) {
+                return Swal.fire({
+                    icon: "warning",
+                    title: "Campos requeridos",
+                    text: "Todos los campos son obligatorios.",
+                    confirmButtonText: "Entendido"
                 });
-
-            } else if (response.data == "Existe") {
-
-                Swal.fire({
-                    icon: "info",
-                    title: "Registro existente",
-                    text: "Ya existe un colaborador con ese nombre o número de nómina.",
-                    confirmButtonText: "Entendido",
-                    confirmButtonColor: "#3085d6"
-                });
-
-            } else {
-
-                Swal.fire({
-                    icon: "error",
-                    title: "Error al registrar",
-                    text: "No fue posible guardar el colaborador. Intenta nuevamente.",
-                    confirmButtonText: "Aceptar",
-                    confirmButtonColor: "#dc3545"
-                });
-
-                console.log("Error en inserción:", response.data);
             }
-        })
-        .catch((error) => {
-
             Swal.fire({
-                icon: "error",
-                title: "Error de conexión",
-                text: "No se pudo establecer comunicación con el servidor.",
-                confirmButtonText: "Aceptar",
-                confirmButtonColor: "#dc3545"
+                title: "Guardando colaborador...",
+                text: "Por favor, espera.",
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
             });
+            axios
+                .post("guardar_nuevo_colaborador.php", {
+                    nombre: this.nombre_colaborador,
+                    nomina: this.nomina_colaborador,
+                    planta: this.planta_colaborador,
+                    password: "123456"
+                })
+                .then((response) => {
+                    console.log("Respuesta del PHP:", response.data);
+                    if (response.data === true) {
+                        Swal.fire({
+                            icon: "success",
+                            title: "¡Colaborador registrado!",
+                            text: "Se guardó correctamente.",
+                            timer: 3000,
+                            showConfirmButton: false,
+                            timerProgressBar: true
+                        }).then(() => {
 
-            console.log("Error en axios:", error);
-        });
-    },
+                            this.nombre_colaborador = "";
+                            this.nomina_colaborador = "";
+                            this.planta_colaborador = "";
+
+                            this.myModal.hide();
+                            this.consultar_colaboradores();
+
+                        });
+
+                    }else if (response.data === "Existe") {
+                        Swal.fire({
+                            icon: "warning",
+                            title: "Registro existente",
+                            text: "Ya existe un colaborador con ese nombre o número de nómina.",
+                            confirmButtonText: "Aceptar"
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error al guardar",
+                            text: "No se pudo guardar el colaborador. Intenta nuevamente.",
+                            confirmButtonText: "Aceptar"
+                        });
+                        console.log("Error en inserción:", response.data);
+                    }
+                })
+                .catch((error) => {
+                    console.log("Error en Axios:", error);
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error de conexión",
+                        text: "No fue posible comunicarse con el servidor.",
+                        confirmButtonText: "Aceptar"
+                    });
+
+                });
+        }
+
+
     }
 }
         var mountedApp = Vue.createApp(vue3).mount('#app');

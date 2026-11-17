@@ -1,16 +1,16 @@
 
 <?php
 session_start();
-if ($_SESSION["usuario"]){
-        header('Content-Type: application/json; charset=utf-8');
-        if (isset($_SESSION['nombre'])) {
             $arreglo = json_decode(file_get_contents('php://input'), true);
+            header("Content-Type: application/json");
+            
 
-            if (isset($arreglo['nombre']) && isset($arreglo['nomina']) && isset($arreglo['planta'])) {
+            if (isset($arreglo['nombre']) && isset($arreglo['nomina']) && isset($arreglo['planta']) && isset($arreglo['password'])) {
                 $nombre = $arreglo['nombre'];
                 $nomina = $arreglo['nomina'];
                 $planta = $arreglo['planta'];
-
+                $password = $arreglo['password'];
+                
                 include "conexionGhoner.php";
 
                 $consulta = "SELECT COUNT(*) FROM usuarios_colocaboradores_sugerencias WHERE colaborador = ? OR numero_nomina = ?";
@@ -28,15 +28,17 @@ if ($_SESSION["usuario"]){
                 $stmt->close();
 
                 if ($count == 0) {
-                    $insertar = "INSERT INTO usuarios_colocaboradores_sugerencias (colaborador, numero_nomina, `password`, planta) VALUES (?, ?, '123456', ?)";
-                    $stmt = $conexion->prepare($insertar);
+                   $insertar = "INSERT INTO usuarios_colocaboradores_sugerencias (colaborador, numero_nomina, `password`, planta) 
+                        VALUES (?, ?, ?, ?)";
 
-                    if (!$stmt) {
-                        echo json_encode("Error: " . $conexion->error);
-                        exit;
-                    }
+                        $stmt = $conexion->prepare($insertar);
 
-                    $stmt->bind_param("sss", $nombre, $nomina, $planta);
+                        if (!$stmt) {
+                            echo json_encode("Error: " . $conexion->error);
+                            exit;
+                        }
+
+                        $stmt->bind_param("ssss", $nombre, $nomina, $password, $planta);
 
                     if ($stmt->execute()) {
                         $respuesta = ($stmt->affected_rows > 0) ? true : "No se insertó el registro";
@@ -53,11 +55,4 @@ if ($_SESSION["usuario"]){
             } else {
                 echo json_encode("Faltan datos");
             }
-        } else {
-            http_response_code(401);
-            echo json_encode("Sesión no válida");
-        }
-} else {
-    header("Location: index.php");
-}
 ?>
