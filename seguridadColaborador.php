@@ -97,8 +97,11 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     <button class="btn btn-danger btn-sm me-1" @click="concentradoHallazgos()">
                         Concentrado
                     </button>
-                    <button class="btn btn-danger btn-sm" @click="responsables()">
+                    <button class="btn btn-danger btn-sm me-1" @click="responsables()">
                         Responsables
+                    </button>
+                     <button class="btn btn-danger btn-sm me-1" @click="altaConsultaUsuarios()">
+                        Usuarios
                     </button>
                 </div>
             <?php endif; ?>
@@ -731,6 +734,128 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                 </div>
             </div>
 
+            <!-- APARTADO RESPONSABLES -->
+            <div v-show="bandera_misHallazgosOconcentrado == 'AltaConsultaUsuarios'" class="row justify-content-center pt-2" style="min-height:75vh;">
+                <div class="row  justify-content-center align-items-center">
+                    <div class="text-center pt-3 ">
+                        <span class="badge bg-light text-dark" style="font-size:0.7em;">Listado de Colaboradores Registrados: {{ concentrado_colaboradores.Registrados}}</span><br>
+                        <span class="badge bg-light text-dark" style="font-size:0.7em;">No Registrados: {{ concentrado_colaboradores.NoRegistrados}}</span>
+                        <div class="d-flex justify-content-around mt-2 mb-1">
+                            <button class="btn btn-success btn-boton px-2 py-0 me-2" @click="modalAltaColaborador()"><i class="bi bi-person-plus-fill"></i> Dar de alta colaborador</button>
+                        </div>
+                    </div>
+                    <div>
+                        <!-- <div class="row">
+                            <div class="col-12 col-md-12"> 
+                                <div class="outer-container" style=" font-size:1em">
+                                    <form @submit.prevent="subirExcelNuevosColaboradores" style="font-size:0.7em;">
+                                        <div>
+                                            
+                                            <input type="file"  ref="documentoExcel" accept=".csv" required/></input>
+                                            <button type="submit" class="btn btn-primary" style=" font-size: 0.8em" >Importar Registros</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+
+                    <!---->
+                    <div class="" style="height:70vh; overflow-x: scroll;">
+                        <table class="tablaMonitoreo-sugerencias table table-striped table-bordered ">
+                        <thead class="encabezado-tabla text-center text-light ">
+                            <tr>
+                                <!--<th scope="col" class="sticky">Editar</th>-->
+                                <th scope="col" >#</th>
+                                <th scope="col">Nombre Colaborador</th>
+                                <th scope="col">Número de Nómina</th>
+                                <th scope="col">Password</th>
+                                <th scope="col">Planta</th>
+                                <th scope="col">Baja laboral</th>
+                                <!-- <th scope="col">Actualizar</th> -->
+                                <!--<th scope="col">Entregado</th>-->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="text-center align-middle " v-for="(colaboradores, index) in concentrado_colaboradores">    
+                                    <!--<td>
+                                    <button v-if="id_updates==index+1" type="button" class="btn btn-danger me-2" title="Cancelar" @click="editarStutasPremioSolicitado(0,0)" ><i class="bi bi-x-circle" ></i></button>
+                                    <button v-if="bandera_editar_solicitud == false" type="button" class="btn btn-warning me-2" title="Actualizar" @click="editarStutasPremioSolicitado(1,index+1)"><i class="bi bi-pen" ></i></button>
+                                    <button v-if="id_updates==index+1" class="btn btn-primary me-2" title="Guardar" @click="guardarStutasPremioSolicitado(status_premios.id)"><i class="bi bi-check-circle"></i></button> 
+                                    <button v-if="status_premios.status=='Entregado'" type="button" class="btn btn-success  ms-2" title="Subir Imagen" @click="modal_subir_ver_documentos('Subir',status_premios.id,status_premios.solped,'entregado',status_premios.cant_img_evidencia)"><i class="bi bi-paperclip"></i>{{status_premios.cant_img_evidencia}}</button>
+                                    <button v-else-if="status_premios.solped!='' && status_premios.status=='Pte. Entrega'" type="button" class="btn btn-secondary" type="button" title="Subir evidencia de la entrega del premios." @click="modal_subir_ver_documentos('Subir',status_premios.id,status_premios.solped,'entregado',status_premios.cant_img_evidencia)"><i class="bi bi-paperclip"></i>{{concentrado_status_premios.cant_img_evidencia}}</button> 
+                                    <button v-else-if="status_premios.solped==''" title="Coloque número de solped para que se active." class="btn btn-secondary" disabled><i class="bi bi-paperclip"></i></button> 
+                                </td> -->
+                                <td>
+                                    <b>{{index}}</b>
+                                </td> 
+                                <td>
+                                        {{colaboradores.colaborador}}
+                                </td>  
+                                <td>
+                                        {{colaboradores.numero_nomina}}   
+                                </td>   
+                                <td v-if="colaboradores.password=='123456'">
+                                        {{colaboradores.password}}
+                                </td> 
+                                <td v-else class="bg-success text-white">
+                                    <b>{{colaboradores.password}}</b>
+                                </td>
+                                <td>
+                                        {{colaboradores.planta}}
+                                </td>
+                                <td v-if="colaboradores.status=='Baja'" class="bg-danger text-white">
+                                    {{colaboradores.status}}
+                                </td>
+                                <td v-else>
+                                    
+                                </td>   
+                                <!-- <td>
+                                        <button type="button" class="btn btn-warning me-2" title="Actualizar" @click="modalActualizarColaborador(colaboradores.colaborador,colaboradores.id,colaboradores.planta,colaboradores.status)" data-bs-toggle="modal" data-bs-target="#modalColaborador"><i class="bi bi-pen" ></i></button>
+                                </td> -->
+                            </tr>
+                        </tbody>
+                        </table>
+                    </div>          
+                </div>
+
+                 <!--Modal Alta-->
+                <div id="modal_alta_colaborador" class="modal" tabindex="-1" role="dialog">
+                    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h6 class="mx-auto">Alta de Colaborador</h6>
+                                <button type="button" class="badge rounded-pill bg-secondary border border-0" @click="cerrarModal()">X</button>
+                            </div>
+                            <div class="row modal-body  text-start text-sm-center d-flex justify-content-around">
+                                <div class="input-group mb-3 w-75">
+                                    <span class="input-group-text">Nombre</span>
+                                    <input type="text" id="nombre_colaborador" v-model="nombre_colaborador" class="form-control" @keyup="todasMayusculas()" placeholder="Nombre Completo">
+                                </div>
+                                <div class="input-group mb-3 w-75">
+                                    <span class="input-group-text">Número</span>
+                                    <input type="text" v-model="nomina_colaborador" class="form-control" placeholder="Coloque nómina">
+                                </div>
+                                <div class="input-group mb-3 w-75">
+                                    <span class="input-group-text">Planta</span>
+                                    <select class="form-select" v-model="planta_colaborador">
+                                        <option value="" disabled>Seleccione planta</option>
+                                        <option value="ENERYA">Enerya</option>
+                                        <option value="RIASA">Riasa</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary py-1" @click="cerrarModal()">Salir</button>
+                                <button type="button" class="btn btn-primary py-1" @click="guardarNuevoColaborador()">Guardar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Fin Modal Alta-->
+
+            </div>
+
 
             <!-- MODAL PARA DAR DE ALTA UN NUEVO RESPONSABLE -->
             <div class="modal fade" id="modalNuevoResponsable" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -1002,6 +1127,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                 return {
                     seguimiento: false,
                     select_planta: '',
+                    concentrado_colaboradores:[],
                     select_area: '',
                     select_tipo: '',
                     descripcion: false,
@@ -1155,7 +1281,10 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                             color: 'bg-success',
                             textColor: '#fff'
                         }
-                    ]
+                    ],
+                    nombre_colaborador: '',
+                    nomina_colaborador: '',
+                    planta_colaborador: '',
                 }
             },
             mounted() {
@@ -1388,6 +1517,12 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                     this.bandera_misHallazgosOconcentrado = 'Responsables';
                     console.log("Entraste al apartado de Responsables")
                     this.consultarResponables();
+                },
+
+                altaConsultaUsuarios() {
+                    this.bandera_misHallazgosOconcentrado = 'AltaConsultaUsuarios';
+                    this.consultar_colaboradores();
+                    console.log("Entraste al apartado de Alta y Consulta de Usuarios")
                 },
 
                 ///AGREGA NUEVO RESP
@@ -1920,8 +2055,119 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                         console.log("error 500" + error)
                     })
                 },
-            }
+
+        consultar_colaboradores(){
+                axios.post("consultar_colaboradores.php",{
+                    }).then(response =>{
+                        this.concentrado_colaboradores = response.data
+                    // console.log("AVER",this.concentrado_colaboradores)
+                    })
+                },
+    modalAltaColaborador() {
+                this.myModal = new bootstrap.Modal(
+                    document.getElementById("modal_alta_colaborador"),
+                );
+                this.myModal.show();
+            },
+    cerrarModal() {
+         this.myModal.hide();
+         this.nombre_colaborador = "";
+         this.nomina_colaborador = "";
+         this.planta_colaborador = "";
+        },
+    todasMayusculas() {
+      var texto = document.getElementById("nombre_colaborador").value;
+      this.nombre_colaborador = texto.toUpperCase();
+    },
+   
+guardarNuevoColaborador() {
+    if (
+        this.nombre_colaborador == "" ||
+        this.nomina_colaborador == "" ||
+        this.planta_colaborador == ""
+    ) {
+        Swal.fire({
+            icon: "warning",
+            title: "Campos incompletos",
+            text: "Todos los campos son requeridos.",
+            confirmButtonText: "Entendido",
+            confirmButtonColor: "#3085d6"
+        });
+        return;
+    }
+
+    // Mostrar indicador de carga
+    Swal.fire({
+        title: "Guardando colaborador...",
+        text: "Por favor espera un momento.",
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        didOpen: () => {
+            Swal.showLoading();
         }
+    });
+
+        axios.post("guardar_nuevo_colaborador.php", {
+            nombre: this.nombre_colaborador,
+            nomina: this.nomina_colaborador,
+            planta: this.planta_colaborador,
+        })
+        .then((response) => {
+
+            if (response.data == true) {
+                this.nombre_colaborador = "";
+                this.nomina_colaborador = "";
+                this.planta_colaborador = "";
+
+                this.myModal.hide();
+                this.consultar_colaboradores();
+
+                Swal.fire({
+                    icon: "success",
+                    title: "¡Colaborador registrado!",
+                    text: "El colaborador se guardó correctamente.",
+                    confirmButtonText: "Aceptar",
+                    confirmButtonColor: "#198754"
+                });
+
+            } else if (response.data == "Existe") {
+
+                Swal.fire({
+                    icon: "info",
+                    title: "Registro existente",
+                    text: "Ya existe un colaborador con ese nombre o número de nómina.",
+                    confirmButtonText: "Entendido",
+                    confirmButtonColor: "#3085d6"
+                });
+
+            } else {
+
+                Swal.fire({
+                    icon: "error",
+                    title: "Error al registrar",
+                    text: "No fue posible guardar el colaborador. Intenta nuevamente.",
+                    confirmButtonText: "Aceptar",
+                    confirmButtonColor: "#dc3545"
+                });
+
+                console.log("Error en inserción:", response.data);
+            }
+        })
+        .catch((error) => {
+
+            Swal.fire({
+                icon: "error",
+                title: "Error de conexión",
+                text: "No se pudo establecer comunicación con el servidor.",
+                confirmButtonText: "Aceptar",
+                confirmButtonColor: "#dc3545"
+            });
+
+            console.log("Error en axios:", error);
+        });
+    },
+    }
+}
         var mountedApp = Vue.createApp(vue3).mount('#app');
     </script>
 
