@@ -5,11 +5,10 @@ session_start();
             header("Content-Type: application/json");
             
 
-            if (isset($arreglo['nombre']) && isset($arreglo['nomina']) && isset($arreglo['planta']) && isset($arreglo['password'])) {
+            if (isset($arreglo['nombre']) && isset($arreglo['nomina']) && isset($arreglo['planta'])) {
                 $nombre = $arreglo['nombre'];
                 $nomina = $arreglo['nomina'];
                 $planta = $arreglo['planta'];
-                $password = $arreglo['password'];
                 
                 include "conexionGhoner.php";
 
@@ -28,8 +27,8 @@ session_start();
                 $stmt->close();
 
                 if ($count == 0) {
-                   $insertar = "INSERT INTO usuarios_colocaboradores_sugerencias (colaborador, numero_nomina, `password`, planta) 
-                        VALUES (?, ?, ?, ?)";
+                   $insertar = "INSERT INTO usuarios_colocaboradores_sugerencias (colaborador, numero_nomina, planta, `password`) 
+                        VALUES (?, ?, ?, '123456')";
 
                         $stmt = $conexion->prepare($insertar);
 
@@ -38,7 +37,7 @@ session_start();
                             exit;
                         }
 
-                        $stmt->bind_param("ssss", $nombre, $nomina, $password, $planta);
+                        $stmt->bind_param("sss", $nombre, $nomina, $planta);
 
                     if ($stmt->execute()) {
                         $respuesta = ($stmt->affected_rows > 0) ? true : "No se insertó el registro";

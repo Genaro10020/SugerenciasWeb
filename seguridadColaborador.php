@@ -2106,8 +2106,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                 .post("guardar_nuevo_colaborador.php", {
                     nombre: this.nombre_colaborador,
                     nomina: this.nomina_colaborador,
-                    planta: this.planta_colaborador,
-                    password: "123456"
+                    planta: this.planta_colaborador
                 })
                 .then((response) => {
                     console.log("Respuesta del PHP:", response.data);
