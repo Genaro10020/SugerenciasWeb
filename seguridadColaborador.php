@@ -830,7 +830,7 @@ if ($_SESSION["usuario"] && $_SESSION["tipo"] == "Colaborador") {
                             <div class="row modal-body  text-start text-sm-center d-flex justify-content-around">
                                 <div class="input-group mb-3 w-75">
                                     <span class="input-group-text">Nombre</span>
-                                    <input type="text" id="nombre_colaborador" v-model="nombre_colaborador" class="form-control" @keyup="todasMayusculas()" placeholder="Nombre Completo">
+                                    <input type="text" id="nombre_colaborador" autocomplete="off" v-model="nombre_colaborador" class="form-control" @keyup="todasMayusculas()" placeholder="Nombre Completo">
                                 </div>
                                 <div class="input-group mb-3 w-75">
                                     <span class="input-group-text">Número</span>
